@@ -6,12 +6,12 @@ const graphqlHttp = require('express-graphql');
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 
+
 // express server.
 const app = express();
 
 // body parser.
 app.use(bodyParser.json());
-
 
 // setting up the graphql end points.
 // passing in the graphql schema and resolver functions.
@@ -21,6 +21,8 @@ app.use('/graphql', graphqlHttp({
     graphiql: true
 }));
 
-
-
-app.listen(5000);
+// use port no. 5000 for server if environment variable is not present.
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+    console.log('Server Started');
+});
