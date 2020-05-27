@@ -1,13 +1,10 @@
 {
     "env": {
-        "browser": true,
+        "node": true,
         "commonjs": true,
-        "es6": true,
-        "node": true
+        "es6": true
     },
-    "extends": [
-        "airbnb-base"
-    ],
+    "extends": "airbnb-base",
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -16,8 +13,16 @@
         "ecmaVersion": 11
     },
     "rules": {
-        "prettier/prettier": "warn",
-        "no-unused-vars": "warn",
-        "no-console": "off"
+        "no-console": 0,
+        "indent": [
+            "error",
+            4
+        ],
+        "import/newline-after-import": [
+            "error",
+            {
+                "count": 1
+            }
+        ]
     }
 }
