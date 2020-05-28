@@ -13,20 +13,26 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 // express server.
 const app = express();
 
+
 // logging.
 app.use(knexLogger(db));
+app.use(morgan('dev'));
+
 
 // body parser.
-app.use(morgan('dev'));
 app.use(bodyParser.json());
+
 
 // setting up the graphql end points.
 // passing in the graphql schema and resolver functions.
-app.use('/graphql', graphqlHttp({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: true
-}));
+app.use(
+    '/graphql', graphqlHttp({
+        schema: graphQlSchema,
+        rootValue: graphQlResolvers,
+        graphiql: true
+    })
+);
+
 
 // use port no. 5000 for server if environment variable is not present.
 const port = process.env.PORT || 5000;
