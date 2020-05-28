@@ -16,6 +16,8 @@
     "express-graphql": "^0.9.0",
     "graphql": "^15.0.0",
     "knex": "^0.21.1",
+    "knex-logger": "^0.1.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

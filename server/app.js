@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
+const knexLogger = require('knex-logger');
+const morgan = require('morgan');
+const db = require('./db/knex');
 
 // importing the graphql schema and resolver functions.
 const graphQlSchema = require('./graphql/schema/index');
@@ -10,7 +13,11 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 // express server.
 const app = express();
 
+// logging.
+app.use(knexLogger(db));
+
 // body parser.
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 // setting up the graphql end points.
