@@ -8,11 +8,11 @@ module.exports = {
                 return {
                     id: compound.drug_id,
                     name: compound.drug_name
-                }
-            })
+                };
+            });
         } catch (err) {
             console.log(err);
             throw err;
         }
     }
-}
+};
