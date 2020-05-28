@@ -1,4 +1,6 @@
-const { buildSchema } = require('graphql');
+const {
+    buildSchema
+} = require('graphql');
 
 module.exports = buildSchema(`
     type Compound {
@@ -8,6 +10,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         compounds: [Compound!]!
+        compound(compoundId: Int!): Compound!
     }
 
     schema {
