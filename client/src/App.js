@@ -1,11 +1,19 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  Drugs
+} from './Components/index';
+
 
 function App() {
   return (
-    <div className="App">
-      <h1> PharmacoDB </h1>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Drugs} />
+      </Switch>
+    </Router>
   );
 }
+
 
 export default App;
