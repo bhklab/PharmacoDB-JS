@@ -5,8 +5,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 
 import {
-  Drugs
-} from './Components/index';
+  Compounds
+} from './components/index';
 
 
 // apollo client setup.
@@ -15,12 +15,12 @@ const client =  new ApolloClient({
 })
 
 
-function App() {
+const App = () => {
   return (
     <ApolloProvider client={client}>
       <Router>
         <Switch>
-          <Route path="/" exact component={Drugs} />
+          <Route path="/" exact component={Compounds} />
         </Switch>
       </Router>
     </ApolloProvider>

@@ -1,6 +1,6 @@
-import Drugs from './Drugs/Drugs';
+import Compounds from './Compounds/Compounds';
 
 
 export {
-    Drugs
+    Compounds
 };
