@@ -10,14 +10,14 @@ module.exports = {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
+            database: process.env.DB_NAME
         },
         migrations: {
-            directory: `${__dirname}/db/migrations`,
+            directory: `${__dirname}/db/migrations`
         },
         seeds: {
-            directory: `${__dirname}/db/seeds`,
-        },
+            directory: `${__dirname}/db/seeds`
+        }
     },
     production: {
         client: 'mysql',
@@ -25,13 +25,13 @@ module.exports = {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
+            database: process.env.DB_NAME
         },
         migrations: {
-            directory: `${__dirname}/db/migrations`,
+            directory: `${__dirname}/db/migrations`
         },
         seeds: {
-            directory: `${__dirname}/db/seeds`,
-        },
-    },
+            directory: `${__dirname}/db/seeds`
+        }
+    }
 };

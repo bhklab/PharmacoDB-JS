@@ -1,14 +1,11 @@
 const knex = require('../../db/knex');
-const {
-    transformObject
-} = require('../../helpers/transformObject');
-
+const { transformObject } = require('../../helpers/transformObject');
 
 /**
  * Returns a transformed array of objects.
- * @param {array} data 
+ * @param {array} data
  */
-const transformCompound = (data) => {
+const transformCompound = data => {
     return data.map(compound => {
         return {
             id: compound.drug_id,
@@ -16,7 +13,6 @@ const transformCompound = (data) => {
         };
     });
 };
-
 
 /**
  * Returns the transformed data for all the compounds in the database.
@@ -33,19 +29,17 @@ const compounds = async () => {
     }
 };
 
-
 /**
  * Returns the transformed data for all the queried compound in the database.
- * @param {object} args 
+ * @param {object} args
  */
-const compound = async (args) => {
+const compound = async args => {
     try {
         // grabbing the compound id from the args.
-        const {
-            compoundId
-        } = args;
+        const { compoundId } = args;
         // query to get the data based on the compound id.
-        let compound = await knex.select()
+        let compound = await knex
+            .select()
             .from('drugs')
             .where('drug_id', compoundId);
         // transforming the rowdatapacket object.
@@ -59,7 +53,6 @@ const compound = async (args) => {
         throw err;
     }
 };
-
 
 module.exports = {
     compounds,

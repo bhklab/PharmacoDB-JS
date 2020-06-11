@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { getCompoundsQuery } from '../../queries/queries'
-
+import { getCompoundsQuery } from '../../queries/queries';
 
 const Compounds = () => {
     const { loading, error, data } = useQuery(getCompoundsQuery);
@@ -16,7 +15,6 @@ const Compounds = () => {
             </p>
         </div>
     ));
-}
-
+};
 
 export default Compounds;
