@@ -1,4 +1,4 @@
-const compoundsResolver = require('./compounds');
+const compoundsResolver = require('./compound');
 
 const rootResolver = {
     ...compoundsResolver

@@ -1,25 +1,26 @@
 const { buildSchema } = require('graphql');
+const { compoundType, compoundAnnotationType } = require('./compound');
 
-module.exports = buildSchema(`
-    type Compound {
-        id: Int!
-        name: String!
-        annotation: CompoundAnnotation! # to-one
-    }
+// root query for the schema definition.
+const RootQuery = `type RootQuery {
+    compounds: [Compound!]!
+    compound(compoundId: Int!): Compound!
+}`;
 
-    type CompoundAnnotation {
-        drug_id: Int!
-        smiles: String
-        inchikey: String
-        pubchem: String
-    }
+// schema definition.
+const schema = `
+    "Compound Type with id, name and annotations"
+    ${compoundType}
 
-    type RootQuery {
-        compounds: [Compound!]!
-        compound(compoundId: Int!): Compound!
-    }
+    "Compound Annotation Type with drug id, smiles, inchikey and pubchem"
+    ${compoundAnnotationType}
+
+    "Root Query"
+    ${RootQuery}
 
     schema {
         query: RootQuery
     }
-`);
+`;
+
+module.exports = buildSchema(schema);
