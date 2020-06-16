@@ -1,7 +1,9 @@
-const compoundsResolver = require('./compound');
+const compoundResolver = require('./compound');
+const cellLineResolver = require('./cell');
 
 const rootResolver = {
-    ...compoundsResolver
+    ...compoundResolver,
+    ...cellLineResolver
 };
 
 module.exports = rootResolver;
