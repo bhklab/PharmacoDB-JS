@@ -9,7 +9,13 @@ const transformCompound = data => {
     return data.map(compound => {
         return {
             id: compound.drug_id,
-            name: compound.drug_name
+            name: compound.drug_name,
+            annotation: {
+                drug_id: compound.drug_id,
+                smiles: compound.smiles,
+                inchikey: compound.inchikey,
+                pubchem: compound.pubchem
+            }
         };
     });
 };
@@ -20,7 +26,10 @@ const transformCompound = data => {
 const compounds = async () => {
     try {
         // query to get the data for all the compounds.
-        const compounds = await knex.select().from('drugs');
+        const compounds = await knex
+            .select()
+            .from('drugs')
+            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
         // return the transformed data.
         return transformCompound(compounds);
     } catch (err) {
@@ -41,7 +50,8 @@ const compound = async args => {
         let compound = await knex
             .select()
             .from('drugs')
-            .where('drug_id', compoundId);
+            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
+            .where('drugs.drug_id', compoundId);
         // transforming the rowdatapacket object.
         compound = transformObject(compound);
         // getting the right data to be sent.
