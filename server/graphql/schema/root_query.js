@@ -6,6 +6,7 @@ const RootQuery = `type RootQuery {
     datasets: [Dataset!]!
     tissues: [Tissue!]!
     genes: [Gene!]!
+    gene(geneId: Int!): Gene!
 }`;
 
 module.exports = {

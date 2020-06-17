@@ -39,7 +39,7 @@ const compounds = async () => {
 };
 
 /**
- * Returns the transformed data for all the queried compound in the database.
+ * Returns the transformed data for the queried compound in the database.
  * @param {object} args
  */
 const compound = async args => {
