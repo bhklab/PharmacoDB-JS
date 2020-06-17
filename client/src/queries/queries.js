@@ -13,7 +13,14 @@ const getCompoundsQuery = gql`
     }
 `
 
+const disableDrug = gql`
+  {
+    drug @client
+  }
+`;
+
 
 export {
-    getCompoundsQuery
+    getCompoundsQuery,
+    disableDrug
 }
