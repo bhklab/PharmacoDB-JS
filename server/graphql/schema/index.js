@@ -1,13 +1,10 @@
 const { buildSchema } = require('graphql');
 const { compoundType, compoundAnnotationType } = require('./compound');
 const { cellLineType } = require('./cell');
-
-// root query for the schema definition.
-const RootQuery = `type RootQuery {
-    compounds: [Compound!]!
-    compound(compoundId: Int!): Compound!
-    cell_lines: [CellLine!]!
-}`;
+const { datasetType } = require('./dataset');
+const { tissueType } = require('./tissue');
+const { geneType } = require('./gene');
+const { RootQuery } = require('./root_query');
 
 // schema definition.
 const schema = `
@@ -19,6 +16,15 @@ const schema = `
 
     "Cell Line Type with id and name of the cell lines."
     ${cellLineType}
+
+    "Dataset Type with id and name of the datasets."
+    ${datasetType}
+
+    "Tissue Type with id and name of the tissues."
+    ${tissueType}
+
+    "Gene Type with id and name of the genes."
+    ${geneType}
 
     "Root Query"
     ${RootQuery}
