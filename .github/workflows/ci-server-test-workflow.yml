@@ -22,5 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install
       run: npm install
+      working-directory: server #set server as working dir
     - name: Test
       run: npm test
+      working-directory: server #set server as working dir
