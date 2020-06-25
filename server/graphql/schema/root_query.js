@@ -19,6 +19,9 @@ const RootQuery = `type RootQuery {
     "Root Queries for genes."
     genes: [Gene!]!
     gene(geneId: Int!): Gene!
+
+    "Roor Queries for experiments."
+    experiments: [Experiment!]!
 }`;
 
 module.exports = {

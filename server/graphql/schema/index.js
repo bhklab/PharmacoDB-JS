@@ -5,6 +5,7 @@ const { datasetType } = require('./dataset');
 const { tissueType, tissueAnnotationType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
 const { annotationType } = require('./annotation');
+const { experimentType } = require('./experiment');
 const { RootQuery } = require('./root_query');
 
 // schema definition.
@@ -36,6 +37,9 @@ const schema = `
 
     "Gene Annotation Type with gene id, ensg, start and end."
     ${geneAnnotationType}
+
+    "Experiment Type with experiment_id, cell line, tissue, compound and dataset types."
+    ${experimentType}
 
     "Root Query"
     ${RootQuery}
