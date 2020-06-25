@@ -1,7 +1,7 @@
 // root query for the schema definition.
 const RootQuery = `type RootQuery {
     "Root Queries for compounds."
-    compounds: [Compound!]!
+    compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
     compound(compoundId: Int!): Compound!
 
     "Root Queries for cell lines."

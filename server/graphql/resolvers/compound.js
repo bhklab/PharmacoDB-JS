@@ -1,5 +1,6 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
+const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
  * Returns a transformed array of objects.
@@ -22,14 +23,23 @@ const transformCompound = data => {
 
 /**
  * Returns the transformed data for all the compounds in the database.
+ * @param {Object} data - Parameters for the data.
+ * @param {number} [data.page = 1] - Current page number.
+ * @param {number} [data.per_page = 20] - Total values per page.
+ * @param {boolean} [data.all = false] - Boolean value whether to show all the data or not.
  */
-const compounds = async () => {
+const compounds = async ({ page = 1, per_page = 20, all = false }) => {
+    // setting limit and offset.
+    const { limit, offset } = calcLimitOffset(page, per_page);
+    // try catch block and the query to get the data for all the compounds based on the arguments.
     try {
         // query to get the data for all the compounds.
         const compounds = await knex
             .select()
             .from('drugs')
-            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
+            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
+            .limit(all ? '*' : limit)
+            .offset(all ? '*' : offset);
         // return the transformed data.
         return transformCompound(compounds);
     } catch (err) {
@@ -40,7 +50,7 @@ const compounds = async () => {
 
 /**
  * Returns the transformed data for the queried compound in the database.
- * @param {object} args
+ * @param {Object} args
  */
 const compound = async args => {
     try {
