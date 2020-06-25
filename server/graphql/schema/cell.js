@@ -2,6 +2,7 @@ const cellLineType = `
     type CellLine {
         id: Int!
         name: String!
+        tissue: Tissue!
     }
 `;
 
