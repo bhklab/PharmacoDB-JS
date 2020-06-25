@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Compounds from '../Compounds';
-import { getCompoundsQuery } from '../../../queries/queries';
+import Compounds from '../components/Compounds/Compounds';
+import { getCompoundsQuery } from '../queries/queries';
 import { MockedProvider } from '@apollo/react-testing';
 
 const mocks = [
