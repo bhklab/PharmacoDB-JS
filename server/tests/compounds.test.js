@@ -40,7 +40,7 @@ describe('Test: Compounds API', () => {
         .expect(200)
         .end((err, res) => {
             if(err) return done(err);
-            res.body.data.compounds.every(compound => expect(compound).to.have.all.keys('id', 'name'));
+            res.body.data.compounds.every(compound => expect(compound).to.have.all.keys('id', 'names'));
             return done()
         })
     })
