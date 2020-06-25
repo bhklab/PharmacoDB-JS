@@ -1,5 +1,6 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
+const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
  * Returns a transformed array of objects.
@@ -29,8 +30,7 @@ const transformCompound = data => {
  */
 const compounds = async ({ page = 1, per_page = 20, all = false }) => {
     // setting limit and offset.
-    const limit = per_page;
-    const offset = (page - 1) * per_page;
+    const { limit, offset } = calcLimitOffset(page, per_page);
     // try catch block and the query to get the data for all the compounds based on the arguments.
     try {
         // query to get the data for all the compounds.
