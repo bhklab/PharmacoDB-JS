@@ -6,7 +6,7 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for cell lines."
     cell_lines: [CellLine!]!
-    cell_line(cellLineId: Int!): CellLine!
+    cell_line(cellId: Int!): CellLineAnnotation!
 
     "Root Queries for datasets."
     datasets: [Dataset!]!
