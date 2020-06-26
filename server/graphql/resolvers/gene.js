@@ -2,19 +2,20 @@ const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
 
 /**
- * Returns a transformed array of objects.
- * @param {array} data
+ * @param {Array} data
+ * @returns {Array} - Returns a transformed array of objects.
  */
 const transformGene = data => {
     return data.map(gene => {
+        const { gene_id, gene_name, ensg, gene_seq_start, gene_seq_end } = gene;
         return {
-            id: gene.gene_id,
-            name: gene.gene_name,
+            id: gene_id,
+            name: gene_name,
             annotation: {
-                gene_id: gene.gene_id,
-                ensg: gene.ensg,
-                gene_seq_start: gene.gene_seq_start,
-                gene_seq_end: gene.gene_seq_end
+                gene_id: gene_id,
+                ensg: ensg,
+                gene_seq_start: gene_seq_start,
+                gene_seq_end: gene_seq_end
             }
         };
     });

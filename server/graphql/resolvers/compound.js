@@ -3,19 +3,20 @@ const { transformObject } = require('../../helpers/transformObject');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
- * Returns a transformed array of objects.
- * @param {array} data
+ * @param {Array} data
+ * @returns {Array} - Returns a transformed array of objects.
  */
 const transformCompound = data => {
     return data.map(compound => {
+        const { drug_id, drug_name, smiles, inchikey, pubchem } = compound;
         return {
-            id: compound.drug_id,
-            name: compound.drug_name,
+            id: drug_id,
+            name: drug_name,
             annotation: {
-                drug_id: compound.drug_id,
-                smiles: compound.smiles,
-                inchikey: compound.inchikey,
-                pubchem: compound.pubchem
+                drug_id: drug_id,
+                smiles: smiles,
+                inchikey: inchikey,
+                pubchem: pubchem
             }
         };
     });

@@ -2,16 +2,18 @@ const knex = require('../../db/knex');
 
 /**
  * Returns a transformed array of objects.
- * @param {array} data
+ * @param {Array} data
+ * @returns {Array} - transformed array of objects.
  */
 const transformCellLine = data => {
     return data.map(cell => {
+        const { cell_id, cell_name, tissue_id, tissue_name } = cell;
         return {
-            id: cell.cell_id,
-            name: cell.cell_name,
+            id: cell_id,
+            name: cell_name,
             tissue: {
-                id: cell.tissue_id,
-                name: cell.tissue_name
+                id: tissue_id,
+                name: tissue_name
             }
         };
     });

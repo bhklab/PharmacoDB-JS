@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
 
 /**
- * Returns the transformed data for all the datasets in the database.
+ * @returns {Array} Returns the transformed data for all the datasets in the database.
  */
 const tissues = async () => {
     try {
