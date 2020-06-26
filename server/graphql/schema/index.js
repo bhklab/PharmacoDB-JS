@@ -1,9 +1,10 @@
 const { buildSchema } = require('graphql');
 const { compoundType, compoundAnnotationType } = require('./compound');
-const { cellLineType, annotationType, cellAnnotationType } = require('./cell');
+const { cellLineType, cellAnnotationType } = require('./cell');
 const { datasetType } = require('./dataset');
 const { tissueType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
+const { annotationType } = require('./annotation');
 const { RootQuery } = require('./root_query');
 
 // schema definition.
