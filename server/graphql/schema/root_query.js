@@ -14,7 +14,7 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for tissues."
     tissues: [Tissue!]!
-    tissue(tissueId: Int!): Tissue!
+    tissue(tissueId: Int!): TissueAnnotation!
 
     "Root Queries for genes."
     genes: [Gene!]!
