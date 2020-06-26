@@ -26,6 +26,7 @@ const transformCellLine = data => {
  */
 const transformCellLineAnnotation = data => {
     let returnObject = {};
+    const source_cell_name_list = [];
     data.forEach((row, i) => {
         const {
             cell_id,
@@ -37,22 +38,39 @@ const transformCellLineAnnotation = data => {
         } = row;
         // if it's the first element.
         if (!i) {
-            (returnObject['id'] = cell_id),
-                (returnObject['name'] = cell_name),
-                (returnObject['tissue'] = {
-                    id: tissue_id,
-                    name: tissue_name
-                });
+            returnObject['id'] = cell_id;
+            returnObject['name'] = cell_name;
+            returnObject['tissue'] = {
+                id: tissue_id,
+                name: tissue_name
+            };
             returnObject['annotations'] = [
                 {
                     name: source_cell_name,
                     datasets: [dataset_name]
                 }
             ];
+            if (!source_cell_name_list.includes(source_cell_name)) {
+                source_cell_name_list.push(source_cell_name);
+            }
         } else {
+            // for all other elements.
+            if (!source_cell_name_list.includes(source_cell_name)) {
+                returnObject['annotations'].push({
+                    name: source_cell_name,
+                    datasets: [dataset_name]
+                });
+            } else if (source_cell_name_list.includes(source_cell_name)) {
+                returnObject['annotations'].forEach((val, i) => {
+                    if (val['name'] === source_cell_name) {
+                        returnObject['annotations'][i]['datasets'].push(
+                            dataset_name
+                        );
+                    }
+                });
+            }
         }
     });
-    console.log(returnObject);
     return returnObject;
 };
 
