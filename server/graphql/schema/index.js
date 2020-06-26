@@ -1,19 +1,40 @@
-const {
-    buildSchema
-} = require('graphql');
+const { buildSchema } = require('graphql');
+const { compoundType, compoundAnnotationType } = require('./compound');
+const { cellLineType } = require('./cell');
+const { datasetType } = require('./dataset');
+const { tissueType } = require('./tissue');
+const { geneType, geneAnnotationType } = require('./gene');
+const { RootQuery } = require('./root_query');
 
-module.exports = buildSchema(`
-    type Compound {
-        id: Int!
-        name: String!
-    }
+// schema definition.
+const schema = `
+    "Compound Type with id, name and annotations."
+    ${compoundType}
 
-    type RootQuery {
-        compounds: [Compound!]!
-        compound(compoundId: Int!): Compound!
-    }
+    "Compound Annotation Type with drug id, smiles, inchikey and pubchem."
+    ${compoundAnnotationType}
+
+    "Cell Line Type with id and name of the cell lines."
+    ${cellLineType}
+
+    "Dataset Type with id and name of the datasets."
+    ${datasetType}
+
+    "Tissue Type with id and name of the tissues."
+    ${tissueType}
+
+    "Gene Type with id and name of the genes."
+    ${geneType}
+
+    "Gene Annotation Type with gene id, ensg, start and end."
+    ${geneAnnotationType}
+
+    "Root Query"
+    ${RootQuery}
 
     schema {
         query: RootQuery
     }
-`);
+`;
+
+module.exports = buildSchema(schema);

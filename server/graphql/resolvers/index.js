@@ -1,7 +1,15 @@
-const compoundsResolver = require('./compounds');
+const compoundResolver = require('./compound');
+const cellLineResolver = require('./cell');
+const datasetResolver = require('./dataset');
+const geneResolver = require('./gene');
+const tissueResolver = require('./tissue');
 
 const rootResolver = {
-    ...compoundsResolver
+    ...compoundResolver,
+    ...cellLineResolver,
+    ...datasetResolver,
+    ...geneResolver,
+    ...tissueResolver
 };
 
 module.exports = rootResolver;

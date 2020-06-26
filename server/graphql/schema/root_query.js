@@ -1,0 +1,26 @@
+// root query for the schema definition.
+const RootQuery = `type RootQuery {
+    "Root Queries for compounds."
+    compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
+    compound(compoundId: Int!): Compound!
+
+    "Root Queries for cell lines."
+    cell_lines: [CellLine!]!
+    cell_line(cellLineId: Int!): CellLine!
+
+    "Root Queries for datasets."
+    datasets: [Dataset!]!
+    dataset(datasetId: Int!): Dataset!
+
+    "Root Queries for tissues."
+    tissues: [Tissue!]!
+    tissue(tissueId: Int!): Tissue!
+
+    "Root Queries for genes."
+    genes: [Gene!]!
+    gene(geneId: Int!): Gene!
+}`;
+
+module.exports = {
+    RootQuery
+};
