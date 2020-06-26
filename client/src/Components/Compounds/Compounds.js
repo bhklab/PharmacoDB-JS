@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import Layout from '../Layout/Layout';
 // 1) Original
 import { getCompoundsQuery} from '../../queries/queries';
 // 2) Apollo cache
@@ -15,7 +16,16 @@ import { getCompoundsQuery} from '../../queries/queries';
 // }`
 
 
-
+/**
+ * Parent component for the compounds page.
+ * 
+ * @component
+ * @example
+ * 
+ * return (
+ *   <Compounds/>
+ * )
+ */
 const Compounds = () => {
     // 1) Original
     const { loading, error, data } = useQuery(getCompoundsQuery);
@@ -39,21 +49,25 @@ const Compounds = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error!!</p>;
 
-    return data.compounds.map(({ id, name }) => (
-        <div key={id}>
-            {/* 1) original AND 3) graphql-request */}
-            <p>
-                {id}: {name}
-            </p>
-            {/* 2) apollo cache */}
-            {/* <button 
-                onClick={() => localStorage.client.writeData({ data: { drug: id } })}
-                disabled={localStorage.data && localStorage.data.drug === id}
-            >
-                {id}: {name} {localStorage.data && localStorage.data.drug === id ? 'Selected' : null}
-            </button> */}
-        </div>
-    ));
+    return (
+        <Layout>
+            {data.compounds.map(({ id, name }) => (
+                <div key={id}>
+                    {/* 1) original AND 3) graphql-request */}
+                    <p>
+                        {id}: {name}
+                    </p>
+                    {/* 2) apollo cache */}
+                    {/* <button 
+                        onClick={() => localStorage.client.writeData({ data: { drug: id } })}
+                        disabled={localStorage.data && localStorage.data.drug === id}
+                    >
+                        {id}: {name} {localStorage.data && localStorage.data.drug === id ? 'Selected' : null}
+                    </button> */}
+                </div>
+            ))}
+        </Layout>
+    )
 };
 
 export default Compounds;

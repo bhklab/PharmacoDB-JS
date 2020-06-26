@@ -8,7 +8,10 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "apollo-boost": "^0.4.9",
+    "better-docs": "^2.0.1",
     "graphql": "^15.0.0",
+    "jsdoc": "^3.6.4",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -20,13 +23,18 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "jsdoc -r -c jsdoc.conf.json"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "transformIgnorePatterns": [
-      "/node_modules/(?!@babel\/runtime)"
+      "/node_modules/(?!@babel/runtime)"
     ]
   },
   "browserslist": {
@@ -43,10 +51,10 @@
   },
   "devDependencies": {
     "@apollo/react-testing": "^3.1.4",
-    "babel-jest": "^26.1.0",
+    "babel-jest": "^24.9.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.5.0",
-    "jest": "^26.1.0"
+    "jest": "^24.9.0"
   }
 }
