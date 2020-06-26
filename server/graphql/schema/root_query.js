@@ -6,12 +6,15 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for cell lines."
     cell_lines: [CellLine!]!
+    cell_line(cellLineId: Int!): CellLine!
 
     "Root Queries for datasets."
     datasets: [Dataset!]!
+    dataset(datasetId: Int!): Dataset!
 
     "Root Queries for tissues."
     tissues: [Tissue!]!
+    tissue(tissueId: Int!): Tissue!
 
     "Root Queries for genes."
     genes: [Gene!]!
