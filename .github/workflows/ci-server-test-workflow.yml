@@ -4,7 +4,10 @@ name: Github Actions
 on: 
   push:
     branches: 
-      - sandbox-mn
+      - development 
+  pull_request:
+    branches: 
+      - master
 
 jobs:
   test: 
