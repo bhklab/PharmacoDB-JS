@@ -5,7 +5,51 @@ const knex = require('../../db/knex');
  * @param {Array} data
  * @returns {Object} - transformed object.
  */
-const transformTissueAnnotation = data => {};
+const transformTissueAnnotation = data => {
+    // return object interface.
+    let returnObject = {
+        id: 0,
+        name: 'empty',
+        annotations: []
+    };
+    const source_tissue_name_list = [];
+    // looping through each data point.
+    data.forEach((row, i) => {
+        const { tissue_id, tissue_name, dataset_name } = row;
+        let { source_tissue_name } = row;
+        source_tissue_name = source_tissue_name.replace(' ', '');
+
+        // if it's the first element.
+        if (!i) {
+            returnObject['id'] = tissue_id;
+            returnObject['name'] = tissue_name;
+            returnObject['annotations'].push({
+                name: source_tissue_name,
+                datasets: [dataset_name]
+            });
+            if (!source_tissue_name_list.includes(source_tissue_name)) {
+                source_tissue_name_list.push(source_tissue_name);
+            }
+        } else {
+            // for all other elements.
+            if (!source_tissue_name_list.includes(source_tissue_name)) {
+                returnObject['annotations'].push({
+                    name: source_tissue_name,
+                    datasets: [dataset_name]
+                });
+            } else if (source_tissue_name_list.includes(source_tissue_name)) {
+                returnObject['annotations'].forEach((val, i) => {
+                    if (val['name'] === source_tissue_name) {
+                        returnObject['annotations'][i]['datasets'].push(
+                            dataset_name
+                        );
+                    }
+                });
+            }
+        }
+    });
+    return returnObject;
+};
 
 /**
  * @returns {Array} Returns the transformed data for all the datasets in the database.
