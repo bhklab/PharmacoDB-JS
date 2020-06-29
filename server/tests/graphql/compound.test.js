@@ -1,52 +1,48 @@
 /**
- * Unit test code for testing GraphQL API endpoints.
- * Place all GraphQL API tests in this file as follows.
+ * Unit test code for testing GraphQL Compount API endpoints.
  */
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
 
 /**
- * This describe block encompasses all GraphQL API tests.
- * Individual test cases for each resolver is organized under a nexted describe block.
- * For example, tests for compound.js resolver goes under the "Compound" describe block.
+ * This describe block encompasses tests for the Compound API.
+ * Individual test cases for each function within the compound is organized under a nested describe block.
  */
-describe('Tests: GraphQL API', () => {
-    let knex = null;
+describe('Tests: Compound API', () => {
     // declare variables used in this test block.
     before(function(){
         this.failures = [];
         this.successes = [];
-        knex = require('../db/knex');
+        
     })
 
     // Terminate the server after all the tests are done.
-    after(function() {
+    after(function(done) {
         if (this.failures.length) {
             console.log('\tGraphQL: The following ' + this.failures.length + ' test(s) failed:');
             this.failures.forEach(f => console.log('\t\t' + f));
-            // Exit the process with an error code.
-            process.exit(1);
+            done();
         } else {
             console.log('\tGraphQL: Passed all ' + this.successes.length + ' test(s).');
+            done();
         }
-        knex.destroy();
     });
 
     /**
-     * A describe block that contains tests for the compound API.
-     * Title of an API test block should correspond to the resolver file name of the code 
-     * that is being tested. (In this case, "Compound")
-     * Each describe block should have an "afterEach" hook which logs a test result to 
+     * A describe block that contains tests for "comounds" function of the compound module.
+     * Title of a function test block should correspond to the name of a function that is being tested. (In this case, "Compounds")
+     * Each describe block should have an "afterEach" hook which resets database connection and server instance, and logs a test result to 
      * "successes" or "failures" array.
      */
-    describe('Compound', () => {
+    describe('compounds function', () => {
         let server = null;
-        
-        // load a brandnew server instance before each test.
+        let knex = null;
+        // load a brandnew server and db instances before each test.
         beforeEach(function(){
-            delete require.cache[require.resolve('../app')];
-            server = require('../app');
+            delete require.cache[require.resolve('../../app')];
+            knex = require('../../db/knex');
+            server = require('../../app');
         })
 
         // Log test result after each test.
@@ -56,7 +52,8 @@ describe('Tests: GraphQL API', () => {
             } else if (this.currentTest.state === 'failed') {
                 this.failures.push(this.currentTest.title);
             }
-            // close the server instance after each test.
+            // close the server and db instances after each test.
+            knex.destroy();
             server.close(done);
         });
     
