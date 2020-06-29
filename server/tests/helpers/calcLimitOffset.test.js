@@ -7,7 +7,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Import the modules to be tested.
-const calcLimitOffset = require('../helpers/calcLimitOffset')
+const calcLimitOffset = require('../../helpers/calcLimitOffset')
 
 describe('Tests: Helper Functions', () => {
     // declare variables used in this test block.
@@ -20,8 +20,6 @@ describe('Tests: Helper Functions', () => {
         if (this.failures.length) {
             console.log('\tHelper: The following ' + this.failures.length + ' test(s) failed:');
             this.failures.forEach(f => console.log('\t\t' + f));
-            // Exit the process with an error code.
-            process.exit(1);
         } else {
             console.log('\tHelper: Passed all ' + this.successes.length + ' test(s).');
         }
