@@ -19,7 +19,6 @@ import { getCompoundsQuery} from '../../queries/queries';
 const Compounds = () => {
     // 1) Original
     const { loading, error, data } = useQuery(getCompoundsQuery);
-    
     // 2) apollo cache
     // const localStorage = useQuery(disableDrug)
     // const remoteStorage = useQuery(getCompoundsQuery)
