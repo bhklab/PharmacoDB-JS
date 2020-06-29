@@ -1,15 +1,13 @@
 /**
- * Unit test code for testing GraphQL API endpoints.
- * Place all GraphQL API tests in this file as follows.
+ * Unit test code for testing GraphQL Compount API endpoints.
  */
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
 
 /**
- * This describe block encompasses all GraphQL API tests.
- * Individual test cases for each resolver is organized under a nexted describe block.
- * For example, tests for compound.js resolver goes under the "Compound" describe block.
+ * This describe block encompasses tests for the Compound API.
+ * Individual test cases for each function within the compound is organized under a nested describe block.
  */
 describe('Tests: Compound API', () => {
     // declare variables used in this test block.
@@ -20,12 +18,14 @@ describe('Tests: Compound API', () => {
     })
 
     // Terminate the server after all the tests are done.
-    after(function() {
+    after(function(done) {
         if (this.failures.length) {
             console.log('\tGraphQL: The following ' + this.failures.length + ' test(s) failed:');
             this.failures.forEach(f => console.log('\t\t' + f));
+            done();
         } else {
             console.log('\tGraphQL: Passed all ' + this.successes.length + ' test(s).');
+            done();
         }
     });
 
@@ -35,14 +35,14 @@ describe('Tests: Compound API', () => {
      * Each describe block should have an "afterEach" hook which resets database connection and server instance, and logs a test result to 
      * "successes" or "failures" array.
      */
-    describe('Compounds Function', () => {
+    describe('compounds function', () => {
         let server = null;
         let knex = null;
-        // load a brandnew server instance before each test.
+        // load a brandnew server and db instances before each test.
         beforeEach(function(){
             delete require.cache[require.resolve('../../app')];
-            server = require('../../app');
             knex = require('../../db/knex');
+            server = require('../../app');
         })
 
         // Log test result after each test.
@@ -52,9 +52,9 @@ describe('Tests: Compound API', () => {
             } else if (this.currentTest.state === 'failed') {
                 this.failures.push(this.currentTest.title);
             }
-            // close the server instance after each test.
-            server.close(done);
+            // close the server and db instances after each test.
             knex.destroy();
+            server.close(done);
         });
     
         /**
@@ -64,7 +64,7 @@ describe('Tests: Compound API', () => {
         it('Returns "id" and "name" properties of all compounds in the database', done => {
             request(server)
                 .post('/graphql')
-                .send({ query: '{ compounds { id names } }' })
+                .send({ query: '{ compounds { id name } }' })
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);

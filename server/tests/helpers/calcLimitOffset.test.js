@@ -1,15 +1,15 @@
 /**
- * Unit tests for helper functions.
+ * Unit tests for functions in calclimitOffset module.
  * An example test file for non-API unit tests.
  */
 
 const chai = require('chai');
 const expect = chai.expect;
 
-// Import the modules to be tested.
+// Import the module to be tested.
 const calcLimitOffset = require('../../helpers/calcLimitOffset')
 
-describe('Tests: Helper Functions', () => {
+describe('Tests: calcLimitOffset module', () => {
     // declare variables used in this test block.
     before(function(){
         this.failures = [];
@@ -25,7 +25,7 @@ describe('Tests: Helper Functions', () => {
         }
     });
 
-    describe('calcLimitOffset', () => {
+    describe('calcLimitOffset function', () => {
         // Log test result after each test.
         afterEach(function() {
             if (this.currentTest.state === 'passed') {
