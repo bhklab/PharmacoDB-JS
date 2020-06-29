@@ -34,8 +34,8 @@ app.use(
 
 // use port no. 5000 for server if environment variable is not present.
 const port = process.env.PORT || 5000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('Server Started');
 });
 
-module.exports = app;
+module.exports = server;
