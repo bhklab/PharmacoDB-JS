@@ -5,6 +5,7 @@ const { datasetType } = require('./dataset');
 const { tissueType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
 const { experimentType } = require('./experiment');
+const { drugResponseType } = require('./drug_response');
 const { RootQuery } = require('./root_query');
 
 // schema definition.
@@ -32,6 +33,9 @@ const schema = `
 
     "Experiment Type with experiment_id, cell line, tissue, compound and dataset types."
     ${experimentType}
+
+    "Drug Response Type with dose and response values"
+    ${drugResponseType}
 
     "Root Query"
     ${RootQuery}
