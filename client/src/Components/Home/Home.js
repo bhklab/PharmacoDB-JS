@@ -2,6 +2,13 @@ import React from 'react';
 import Description from './Description';
 import Layout from '../Layout/Layout';
 import Stats from './Stats';
+import styled from 'styled-components';
+
+const StyledHome = styled.div`
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+`;
 
 /**
  * Parent component for the home page,
@@ -17,8 +24,10 @@ import Stats from './Stats';
 const Home = () => {
     return (
         <Layout page="home">
-            <Description/>
-            <Stats/>
+            <StyledHome>
+                <Description/>
+                <Stats/>
+            </StyledHome>
         </Layout>
     );
 };
