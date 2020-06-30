@@ -8,7 +8,7 @@ import bg from '../../images/bg.jpg';
 import colors from '../../styles/colors';
 
 const StyledSearchHeader = styled.div`
-    height: 45vh;
+    height: calc(40vh + 50px);
     background: ${colors.light_blue_header};
     background: url('${bg}');
     background-size: cover;
@@ -26,7 +26,7 @@ const StyledSearchHeader = styled.div`
             font-family: 'Overpass', sans-serif;
             font-weight: 400;
             color: ${colors.light_blue_header};
-            margin-bottom:20px;
+            margin:30px 0 20px 0;
         }
     }
 

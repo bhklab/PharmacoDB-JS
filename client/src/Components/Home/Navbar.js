@@ -35,7 +35,8 @@ const StyledLinks = styled.div`
         color: ${colors.light_blue_header};
         font-family: 'Rubik', sans-serif;
         font-weight: 400;
-        font-size: calc(0.2vw + 1em);
+        font-size: calc(0.4vw + 0.9em);
+        letter-spacing:0.5px;
     }
 `;
 
