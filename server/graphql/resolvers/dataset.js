@@ -1,31 +1,34 @@
 const knex = require('../../db/knex');
 
 /**
- * @return {Object} - returns an object {cell_id: Number, cell_name: String}
+ * @returns {Object} - returns an object {cell_id: Number, cell_name: String}
  */
 const datasetQuery = async () => await knex.select().from('datasets');
 
 /**
- * @returns {Object} - return object {source_name: {cell_count: Number, source_name: String}, ....}
+ * @param {String} - takes an argument either 'compound', 'tissue' or 'cell'
+ * @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
-const cellCountQuery = async () => {
+const countQuery = async type => {
     // return object.
     const returnObject = {};
-    // query the database to get the data in the required format.
-    // number of cell lines tested across datasets
-    // @return {cell_count: Number, source_name: String}
+    /**
+     * queries the database to get the data in the required format.
+     * number of cell lines tested across datasets
+     * @returns {count: Number, source: String}
+     */
     const query = await knex
-        .select('source_name')
-        .countDistinct('cell_id as cell_count')
-        .from('source_cell_names as sc')
-        .join('sources as s', 's.source_id', 'sc.source_id')
-        .groupBy('sc.source_id');
-    // return object source_name: {cell_count: Number, source_name: String}
+        .select('source_name as source')
+        .countDistinct(`${type}_id as count`)
+        .from(`source_${type}_names as sn`)
+        .join('sources as s', 's.source_id', 'sn.source_id')
+        .groupBy('sn.source_id');
+    // return object source_name: {count: Number, source: String}
     query.forEach(value => {
-        const { source_name: source, cell_count: count } = value;
+        const { source, count } = value;
         returnObject[source] = {
-            source_name: source,
-            cell_count: count
+            source: source,
+            count: count
         };
     });
     // return the transformed object.
@@ -34,12 +37,21 @@ const cellCountQuery = async () => {
 
 /**
  * Returns the transformed data for all the datasets in the database.
+ * @returns {Object} - {
+ *      id: 'this is the id of the dataset'
+ *      name: 'this is the name of the dataset'
+ *      cells_tested: 'number of cell lines tested across this dataset'
+ *      tissues_tested: 'number of tissues tested across this dataset'
+ *      compounds_tested: ''number of compounds tested across this dataset'
+ * }
  */
 const datasets = async () => {
     try {
         // calling different function in order to execute the corresponding queries.
         const datasets = await datasetQuery();
-        const cell_count = await cellCountQuery();
+        const cell_count = await countQuery('cell');
+        const tissue_count = await countQuery('tissue');
+        const compound_count = await countQuery('drug');
 
         // return the transformed data for this function.
         return datasets.map(dataset => {
@@ -47,7 +59,9 @@ const datasets = async () => {
             return {
                 id: dataset_id,
                 name: dataset_name,
-                tested_cells: cell_count[dataset_name]['cell_count']
+                cells_tested: cell_count[dataset_name].count,
+                tissues_tested: tissue_count[dataset_name].count,
+                compounds_tested: compound_count[dataset_name].count
             };
         });
     } catch (err) {
