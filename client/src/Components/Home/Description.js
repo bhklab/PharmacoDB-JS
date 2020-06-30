@@ -14,7 +14,7 @@ const StyledDescription = styled.div`
 
     .text-container {
         width: 65%;
-        
+    
         display: flex;
         flex-direction: column; 
         

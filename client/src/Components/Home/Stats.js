@@ -15,14 +15,11 @@ const StyledStats = styled.div`
     justify-content:space-evenly;
 
     width: 80%;
-    margin-top:15vh;
     margin-bottom:20vh; //TODO: REMOVE
+    margin-top: 15vh;
     background: ${colors.light_blue_bg};
     height: 14vw;
-    border-radius:calc(1vw + 0.6em);
-    // -webkit-box-shadow: 0px 0px 22px 7px rgba(220,229,232,1);
-    // -moz-box-shadow: 0px 0px 22px 7px rgba(220,229,232,1);
-    // box-shadow: 0px 0px 22px 7px rgba(220,229,232,1);
+    border-radius:calc(0.8vw + 0.4em);
 
     .item-container {
         // width:calc(5.8vw + 40px);
@@ -47,10 +44,11 @@ const StyledStats = styled.div`
             font-weight: 400;
         }
         .big {
-            font-size: calc(0.9vw + 0.4em);
+            font-size: calc(0.9vw + 0.5em);
         }
     }
 `;
+
 /**
  * Shows the stats with graphics on the front page.
  * 
