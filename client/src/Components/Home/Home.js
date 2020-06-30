@@ -3,6 +3,8 @@ import Description from './Description';
 import Layout from '../Layout/Layout';
 import Stats from './Stats';
 import styled from 'styled-components';
+import ScrollToTop from "react-scroll-to-top";
+import "react-scroll-to-top/lib/index.css"
 
 const StyledHome = styled.div`
     display:flex;
@@ -24,6 +26,7 @@ const StyledHome = styled.div`
 const Home = () => {
     return (
         <Layout page="home">
+            <ScrollToTop smooth />
             <StyledHome>
                 <Description/>
                 <Stats/>
