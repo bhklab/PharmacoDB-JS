@@ -4,12 +4,13 @@ name: Github Actions
 on: 
   push:
     branches: 
-      - development
+      - testing
     paths:
       - 'server/**' 
   pull_request:
     branches: 
       - master
+      - development
     paths:
       - 'server/**'
 
