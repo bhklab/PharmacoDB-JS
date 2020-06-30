@@ -72,6 +72,8 @@ const tissues = async () => {
 /**
  * @param {Object} args - arguments passed to the tissue function.
  */
+// this is not the annotation directly like compound and gene,
+// but more like names in different sources.
 const tissue = async args => {
     try {
         // grabbing the tissue line id from the args.
