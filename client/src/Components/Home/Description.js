@@ -10,7 +10,7 @@ const StyledDescription = styled.div`
     align-items: center;
 
     width: 70%;
-    margin-top:80px;
+    margin-top:15vh;
 
     .text-container {
         width: 65%;
@@ -27,7 +27,6 @@ const StyledDescription = styled.div`
             color: ${colors.dark_teal_heading};
             font-family: 'Roboto Slab', serif;
             font-size: calc(2vw + 1em) !important;
-            letter-spacing: 1px;
             margin-bottom: 4vh;
         }
     }
