@@ -11,9 +11,7 @@ const TempBar = styled.div`
 `;
 
 const SearchBar = () => {
-    return (
-        <TempBar/>
-    )
+    return <TempBar />;
 };
 
 export default SearchBar;

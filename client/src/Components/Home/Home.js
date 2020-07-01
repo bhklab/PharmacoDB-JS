@@ -3,22 +3,22 @@ import Description from './Description';
 import Layout from '../Layout/Layout';
 import Stats from './Stats';
 import styled from 'styled-components';
-import ScrollToTop from "react-scroll-to-top";
-import "react-scroll-to-top/lib/index.css"
+import ScrollToTop from 'react-scroll-to-top';
+import 'react-scroll-to-top/lib/index.css';
 
 const StyledHome = styled.div`
-    display:flex;
+    display: flex;
     flex-direction: column;
-    align-items:center;
+    align-items: center;
 `;
 
 /**
  * Parent component for the home page,
  * includes child components for the description and stats.
- * 
+ *
  * @component
  * @example
- * 
+ *
  * return (
  *   <Home/>
  * )
@@ -28,8 +28,8 @@ const Home = () => {
         <Layout page="home">
             <ScrollToTop smooth />
             <StyledHome>
-                <Description/>
-                <Stats/>
+                <Description />
+                <Stats />
             </StyledHome>
         </Layout>
     );

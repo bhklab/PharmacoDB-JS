@@ -10,14 +10,14 @@ const StyledDescription = styled.div`
     align-items: center;
 
     width: 70%;
-    margin-top:15vh;
+    margin-top: 15vh;
 
     .text-container {
         width: 65%;
-    
+
         display: flex;
-        flex-direction: column; 
-        
+        flex-direction: column;
+
         span {
             font-size: calc(0.5vw + 0.7em);
             line-height: calc(1vw + 1em);
@@ -38,12 +38,12 @@ const StyledDescription = styled.div`
 `;
 
 /**
- * Shows the description on the home page 
+ * Shows the description on the home page
  * and the dose-response-curves graphic.
- * 
+ *
  * @component
  * @example
- * 
+ *
  * return (
  *   <Description/>
  * )
@@ -52,15 +52,21 @@ const Description = () => {
     return (
         <StyledDescription>
             <div className="text-container">
-                <h1>Mine multiple cancer <br/>pharmacogenomic datasets.</h1>
-                <span>PharmacoDB allows scientists to search across publicly available datasets to find 
-                instances where a drug or cell line of interest has been profiled, and to view 
-                and compare the dose-response data for a specific cell line - drug pair from any 
-                of the studies included in the database.</span>
+                <h1>
+                    Mine multiple cancer <br />
+                    pharmacogenomic datasets.
+                </h1>
+                <span>
+                    PharmacoDB allows scientists to search across publicly
+                    available datasets to find instances where a drug or cell
+                    line of interest has been profiled, and to view and compare
+                    the dose-response data for a specific cell line - drug pair
+                    from any of the studies included in the database.
+                </span>
             </div>
-            <img className="dose-img" src={doseImg}/>
+            <img className="dose-img" src={doseImg} />
         </StyledDescription>
-    )
+    );
 };
 
 export default Description;

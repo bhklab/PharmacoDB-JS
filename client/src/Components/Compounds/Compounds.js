@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../Layout/Layout';
 // 1) Original
-import { getCompoundsQuery} from '../../queries/queries';
+import { getCompoundsQuery } from '../../queries/queries';
 // 2) Apollo cache
 // import { getCompoundsQuery, disableDrug } from '../../queries/queries';
 
@@ -15,13 +15,12 @@ import { getCompoundsQuery} from '../../queries/queries';
 //     }
 // }`
 
-
 /**
  * Parent component for the compounds page.
- * 
+ *
  * @component
  * @example
- * 
+ *
  * return (
  *   <Compounds/>
  * )
@@ -29,11 +28,11 @@ import { getCompoundsQuery} from '../../queries/queries';
 const Compounds = () => {
     // 1) Original
     const { loading, error, data } = useQuery(getCompoundsQuery);
-    
+
     // 2) apollo cache
     // const localStorage = useQuery(disableDrug)
     // const remoteStorage = useQuery(getCompoundsQuery)
-    // const { loading, error, data } = remoteStorage 
+    // const { loading, error, data } = remoteStorage
 
     // 3) grapql-request
     // const [drugData, setDrugData] = useState({ data: null, loading: true, error: null });
@@ -67,7 +66,7 @@ const Compounds = () => {
                 </div>
             ))}
         </Layout>
-    )
+    );
 };
 
 export default Compounds;

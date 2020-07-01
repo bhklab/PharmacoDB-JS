@@ -36,35 +36,35 @@ const StyledSearchHeader = styled.div`
  * Header component including the navbar and the
  * search bar. Is full size on home page, and minimized
  * on any other page (based on the page prop).
- * 
+ *
  * @component
  * @example
- * 
+ *
  * const page = "home"
  * return (
  *   <SearchHeader page={page}/>
  * )
  */
-const SearchHeader = (props) => {
+const SearchHeader = props => {
     const { page } = props; // check if page is empty and === "home"
     return (
         <StyledSearchHeader>
-            <Navbar/>
+            <Navbar />
             <div className="search-container">
                 <h1>Try searching for a...</h1>
-                <SearchBar/>
+                <SearchBar />
             </div>
         </StyledSearchHeader>
-    )
+    );
 };
 
 SearchHeader.propTypes = {
     /**
      * SearchHeader's page name
      */
-    page: PropTypes.string.isRequired,
+    page: PropTypes.string.isRequired
 };
-  
+
 SearchHeader.defaultProps = {
     page: ''
 };
