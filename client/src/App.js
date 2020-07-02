@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import { Compounds, Home } from './components/index';
+import { Compounds, Home } from './Components/index';
+import GlobalStyles from './styles/GlobalStyles';
 
 // apollo client setup.
 const client = new ApolloClient({
@@ -13,6 +14,7 @@ const client = new ApolloClient({
 const App = () => {
     return (
         <ApolloProvider client={client}>
+            <GlobalStyles />
             <Router>
                 <Switch>
                     <Route path="/" exact component={Home} />
