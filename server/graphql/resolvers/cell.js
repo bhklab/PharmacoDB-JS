@@ -24,6 +24,8 @@ const transformCellLine = data => {
  * @param {Array} data
  * @returns {Object} - transformed object.
  */
+// this is not the annotation directly like compound and gene,
+// but more like names in different sources.
 const transformCellLineAnnotation = data => {
     let returnObject = {};
     const source_cell_name_list = [];

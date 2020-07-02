@@ -6,13 +6,6 @@ const cellLineType = `
     }
 `;
 
-const annotationType = `
-    type Annotation {
-        name: String!
-        datasets: [String!]
-    }
-`;
-
 const cellAnnotationType = `
     type CellLineAnnotation {
         id: Int!
@@ -24,6 +17,5 @@ const cellAnnotationType = `
 
 module.exports = {
     cellLineType,
-    annotationType,
     cellAnnotationType
 };
