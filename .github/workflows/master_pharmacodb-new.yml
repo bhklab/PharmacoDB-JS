@@ -30,6 +30,8 @@ jobs:
         npm i
         npm run build
         popd
+      env:
+         CI: ''
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v1
