@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../Layout/Layout';
+
 import { getCompoundsQuery} from '../../queries/queries';
 
 /**
  * Parent component for the compounds page.
- * 
+ *
  * @component
  * @example
- * 
+ *
  * return (
  *   <Compounds/>
  * )
@@ -29,7 +30,7 @@ const Compounds = () => {
                 </div>
             ))}
         </Layout>
-    )
+    );
 };
 
 export default Compounds;
