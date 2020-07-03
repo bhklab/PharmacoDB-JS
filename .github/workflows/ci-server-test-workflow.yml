@@ -14,6 +14,7 @@ jobs:
   test: 
     name: Server Unit Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     strategy:
       matrix: 
@@ -33,13 +34,13 @@ jobs:
     - name: Install
       run: npm install
     
-    # 3. Run tests.
-    # - name: Test
-    #   # You can import environment varialbes by saving them to repository secrets.
-    #   env: 
-    #     DB_HOST: ${{ secrets.DB_HOST }}
-    #     DB_USER: ${{ secrets.DB_USER }}
-    #     DB_PASS: ${{ secrets.DB_PASS }}
-    #     DB_NAME: ${{ secrets.DB_NAME }}
-    #     NODE_ENV: ${{ secrets.NODE_ENV }}
-    #   run: npm test
+    3. Run tests.
+    - name: Test
+      # You can import environment varialbes by saving them to repository secrets.
+      env: 
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        NODE_ENV: ${{ secrets.NODE_ENV }}
+      run: npm test
