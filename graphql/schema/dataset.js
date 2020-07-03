@@ -2,13 +2,23 @@ const datasetType = `
     type Dataset {
         id: Int!
         name: String!
-        cells_tested: Int!
-        tissues_tested: Int!
-        compounds_tested: Int!
+        cells: Int!
+        tissues: Int!
+        compounds: Int!
         experiments: Int!
     }
 `;
 
+const datasetInformationType = `
+    type DatasetInformation {
+        id: Int!
+        name: String!
+        cells_tested: [String!]
+        compounds_tested: [String!]
+    }
+`;
+
 module.exports = {
-    datasetType
+    datasetType,
+    datasetInformationType
 };

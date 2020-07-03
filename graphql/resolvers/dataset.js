@@ -1,9 +1,20 @@
 const knex = require('../../db/knex');
+const { transformObject } = require('../../helpers/transformObject');
 
 /**
- * @returns {Object} - returns an object {cell_id: Number, cell_name: String}
+ * @returns {Object} - returns an array like this [{cell_id: Number, cell_name: String}]
  */
-const datasetQuery = async () => await knex.select().from('datasets');
+const datasetQuery = async datasetId => {
+    const dataset = await knex
+        .select('dataset_id', 'dataset_name')
+        .from('datasets')
+        .where(builder => {
+            datasetId
+                ? builder.where('dataset_id', datasetId)
+                : builder.where('dataset_id', 'like', '%%');
+        });
+    return transformObject(dataset);
+};
 
 /**
  *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
@@ -60,6 +71,21 @@ const countQuery = async type => {
 };
 
 /**
+ *
+ * @param {String} type - either 'cell' or 'compound'
+ * @param {Number} datasetId
+ */
+const summaryQuery = async (type, datasetId) => {
+    // query to get the id and name for the type.
+    const query = await knex
+        .distinct(`e.${type}_id`, `t.${type}_name`)
+        .from('experiments as e')
+        .join(`${type}s as t`, `t.${type}_id`, `e.${type}_id`)
+        .where('e.dataset_id', datasetId);
+    return query.map(value => value[`${type}_name`]);
+};
+
+/**
  * Returns the transformed data for all the datasets in the database.
  * @returns {Object} - {
  *      id: 'this is the id of the dataset'
@@ -85,9 +111,9 @@ const datasets = async () => {
             return {
                 id: dataset_id,
                 name: dataset_name,
-                cells_tested: cell_count[dataset_name].count,
-                tissues_tested: tissue_count[dataset_name].count,
-                compounds_tested: compound_count[dataset_name].count,
+                cells: cell_count[dataset_name].count,
+                tissues: tissue_count[dataset_name].count,
+                compounds: compound_count[dataset_name].count,
                 experiments: experiment_count[dataset_name].count
             };
         });
@@ -100,10 +126,25 @@ const datasets = async () => {
 /**
  * @param {Object} args - arguments for the dataset function.
  * @param {Number} args.datasetId - datasetId passed as an argument to the function.
+ * @returns {Object} - {
+ *      id: 'id of the dataset',
+ *      name: 'name of the dataset',
+ *      cells_tested: 'a list of all the cell lines that have been tested in the dataset'
+ *      compounds_tested: 'a list of all the compounds that have been tested in the dataset'
+ * }
  */
-
 const dataset = async args => {
+    const { datasetId } = args;
     try {
+        const dataset = await datasetQuery(datasetId);
+        const cells = await summaryQuery('cell', datasetId);
+        const compounds = await summaryQuery('drug', datasetId);
+        return {
+            id: dataset[0]['dataset_id'],
+            name: dataset[0]['dataset_name'],
+            cells_tested: cells,
+            compounds_tested: compounds
+        };
     } catch (err) {
         console.log(err);
         throw err;
