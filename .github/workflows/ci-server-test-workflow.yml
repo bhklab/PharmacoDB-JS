@@ -6,13 +6,13 @@ on:
     branches: 
       - testing
     paths:
-      - 'server/**' 
+      - './**' 
   pull_request:
     branches: 
       - master
       - development
     paths:
-      - 'server/**'
+      - './**'
 
 jobs:
   test: 
@@ -36,7 +36,7 @@ jobs:
     # 2. Run npm install.
     - name: Install
       run: npm install
-      working-directory: server #set server as working dir
+      working-directory: ./ #set root as working dir
     
     # 3. Run tests.
     - name: Test
@@ -48,4 +48,4 @@ jobs:
         DB_NAME: ${{ secrets.DB_NAME }}
         NODE_ENV: ${{ secrets.NODE_ENV }}
       run: npm test
-      working-directory: server #set server as working dir
+      working-directory: ./ #set root as working dir
