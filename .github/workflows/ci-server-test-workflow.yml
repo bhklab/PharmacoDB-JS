@@ -34,7 +34,7 @@ jobs:
     - name: Install
       run: npm install
     
-    3. Run tests.
+    # 3. Run tests.
     - name: Test
       # You can import environment varialbes by saving them to repository secrets.
       env: 
