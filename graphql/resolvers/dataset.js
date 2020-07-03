@@ -6,6 +6,30 @@ const knex = require('../../db/knex');
 const datasetQuery = async () => await knex.select().from('datasets');
 
 /**
+ *
+ */
+const countExperimentsQuery = async () => {
+    // return object.
+    const returnObject = {};
+    const query = await knex
+        .select('d.dataset_name as source')
+        .countDistinct('e.experiment_id as count')
+        .from('experiments as e')
+        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
+        .groupBy('d.dataset_id');
+    // return object source_name: {count: Number, source: String}
+    query.forEach(value => {
+        const { source, count } = value;
+        returnObject[source] = {
+            source: source,
+            count: count
+        };
+    });
+    // return the transformed object.
+    return returnObject;
+};
+
+/**
  * @param {String} - takes an argument either 'compound', 'tissue' or 'cell'
  * @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
@@ -40,9 +64,10 @@ const countQuery = async type => {
  * @returns {Object} - {
  *      id: 'this is the id of the dataset'
  *      name: 'this is the name of the dataset'
- *      cells_tested: 'number of cell lines tested across this dataset'
- *      tissues_tested: 'number of tissues tested across this dataset'
- *      compounds_tested: ''number of compounds tested across this dataset'
+ *      cells_tested: 'number of cell lines tested across the dataset'
+ *      tissues_tested: 'number of tissues tested across the dataset'
+ *      compounds_tested: 'number of compounds tested across the dataset'
+ *      experiments: 'number of experiments held accross the dataset'
  * }
  */
 const datasets = async () => {
@@ -52,6 +77,7 @@ const datasets = async () => {
         const cell_count = await countQuery('cell');
         const tissue_count = await countQuery('tissue');
         const compound_count = await countQuery('drug');
+        const experiment_count = await countExperimentsQuery();
 
         // return the transformed data for this function.
         return datasets.map(dataset => {
@@ -61,7 +87,8 @@ const datasets = async () => {
                 name: dataset_name,
                 cells_tested: cell_count[dataset_name].count,
                 tissues_tested: tissue_count[dataset_name].count,
-                compounds_tested: compound_count[dataset_name].count
+                compounds_tested: compound_count[dataset_name].count,
+                experiments: experiment_count[dataset_name].count
             };
         });
     } catch (err) {
