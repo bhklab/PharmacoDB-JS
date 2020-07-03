@@ -5,6 +5,7 @@ const datasetType = `
         cells_tested: Int!
         tissues_tested: Int!
         compounds_tested: Int!
+        experiments: Int!
     }
 `;
 
