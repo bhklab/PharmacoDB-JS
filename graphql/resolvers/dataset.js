@@ -6,7 +6,7 @@ const knex = require('../../db/knex');
 const datasetQuery = async () => await knex.select().from('datasets');
 
 /**
- *
+ *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
 const countExperimentsQuery = async () => {
     // return object.
