@@ -8,11 +8,7 @@ const datasetQuery = async datasetId => {
     const dataset = await knex
         .select('dataset_id', 'dataset_name')
         .from('datasets')
-        .where(builder => {
-            datasetId
-                ? builder.where('dataset_id', datasetId)
-                : builder.where('dataset_id', 'like', '%%');
-        });
+        .where('dataset_id', 'like', datasetId ? `${datasetId}` : '%%');
     return transformObject(dataset);
 };
 
