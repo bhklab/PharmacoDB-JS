@@ -26,6 +26,7 @@ jobs:
     - name: 'Generate Client Build'
       shell: bash
       run: |
+        npm i
         pushd ./client
         npm i
         npm run build

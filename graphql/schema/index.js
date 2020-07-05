@@ -1,7 +1,7 @@
 const { buildSchema } = require('graphql');
 const { compoundType, compoundAnnotationType } = require('./compound');
 const { cellLineType, cellAnnotationType } = require('./cell');
-const { datasetType } = require('./dataset');
+const { datasetType, datasetInformationType } = require('./dataset');
 const { tissueType, tissueAnnotationType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
 const { annotationType } = require('./annotation');
@@ -26,6 +26,7 @@ const schema = `
 
     "Dataset Type with id and name of the datasets."
     ${datasetType}
+    ${datasetInformationType}
 
     "Tissue Type with id and name of the tissues."
     ${tissueType}
