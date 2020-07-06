@@ -15,12 +15,13 @@ import { getCompoundQuery } from '../../queries/queries';
  *   <Compounds/>
  * )
  */
+
 const IndivCompounds = (props) => {
   const { match: { params } } = props;
   const { loading, error, data } = useQuery(getCompoundQuery, {
-    variables: { compoundId: params.id.toString() },
+    variables: { compoundId: parseInt(params.id) },
   });
-  console.log(data);
+  console.log(loading, error, data);
   return (
     <Layout>
       {loading ? (<p>Loading...</p>)
