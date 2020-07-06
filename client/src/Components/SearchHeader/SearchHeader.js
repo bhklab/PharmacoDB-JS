@@ -20,7 +20,7 @@ const StyledSearchHeader = styled.div`
     flex-direction:column;
 
     .search-container {
-        width: 70%;
+        width: ${(props) => (props.page === 'home' ? '70%' : '100%')};
         align-self:center;
 
         h1 {
