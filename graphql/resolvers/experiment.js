@@ -9,10 +9,22 @@ const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
  */
 const transformExperiments = data => {
     const responseObj = {};
-    
-    // populates the response object to change data structure and accomodata one-to-many relations 
+
+    // populates the response object to change data structure and accomodata one-to-many relations
     data.forEach(row => {
-        const { experiment_id, cell_id, cell_name, drug_id, dataset_id, tissue_id, tissue_name, drug_name, dataset_name, dose, response} = row;
+        const {
+            experiment_id,
+            cell_id,
+            cell_name,
+            drug_id,
+            dataset_id,
+            tissue_id,
+            tissue_name,
+            drug_name,
+            dataset_name,
+            dose,
+            response
+        } = row;
         if (!responseObj[experiment_id]) {
             responseObj[experiment_id] = {
                 id: experiment_id,
@@ -27,7 +39,7 @@ const transformExperiments = data => {
             };
         } else {
             // just pushes dose and response values to an existing experiment
-            responseObj[experiment_id].dose_responses.push({dose, response});
+            responseObj[experiment_id].dose_responses.push({ dose, response });
         }
     });
     // transforms object to array of values
@@ -44,7 +56,7 @@ const transformExperiments = data => {
 const experiments = async ({ page = 1, per_page = 30, all = false }) => {
     // setting limitt and offset
     const { limit, offset } = calcLimitOffset(page, per_page);
-    try {        
+    try {
         // gets experiments metadata. Needed as a subquery because user-specified limit and offset values
         // has to be applied on the experiment level and not be based on the total number of rows
         function subqueryExperiments() {
@@ -61,20 +73,46 @@ const experiments = async ({ page = 1, per_page = 30, all = false }) => {
             )
                 .from('experiments')
                 .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
-                .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
+                .join(
+                    'tissues',
+                    'tissues.tissue_id',
+                    '=',
+                    'experiments.tissue_id'
+                )
                 .join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
-                .join('datasets', 'datasets.dataset_id', '=', 'experiments.dataset_id')
+                .join(
+                    'datasets',
+                    'datasets.dataset_id',
+                    '=',
+                    'experiments.dataset_id'
+                )
                 .limit(all ? '*' : limit)
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
 
         // adds dose responses for all experiments
-        const experiments = await knex.select(
-            'SE.experiment_id as experiment_id', 'cell_name', 'tissue_id', 'cell_id', 'drug_id', 'dataset_id', 'tissue_name', 'drug_name', 'dataset_name', 'dose', 'response'
-        )
+        const experiments = await knex
+            .select(
+                'SE.experiment_id as experiment_id',
+                'cell_name',
+                'tissue_id',
+                'cell_id',
+                'drug_id',
+                'dataset_id',
+                'tissue_name',
+                'drug_name',
+                'dataset_name',
+                'dose',
+                'response'
+            )
             .from(subqueryExperiments)
-            .join('dose_responses', 'SE.experiment_id', '=', 'dose_responses.experiment_id');
+            .join(
+                'dose_responses',
+                'SE.experiment_id',
+                '=',
+                'dose_responses.experiment_id'
+            );
         return transformExperiments(experiments);
     } catch (err) {
         console.log(err);
@@ -110,27 +148,27 @@ const experiment = async args => {
             .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
             .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
             .join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
-            .join('datasets', 'datasets.dataset_id', '=', 'experiments.dataset_id')
-            .join('dose_responses', 'dose_responses.experiment_id', '=', 'experiments.experiment_id')
+            .join(
+                'datasets',
+                'datasets.dataset_id',
+                '=',
+                'experiments.dataset_id'
+            )
+            .join(
+                'dose_responses',
+                'dose_responses.experiment_id',
+                '=',
+                'experiments.experiment_id'
+            )
             .where('experiments.experiment_id', experimentId);
 
         const output = transformExperiments(experiment);
         return output[0];
-        // // transforming the rowdatapacket object.
-        // compound = transformObject(compound);
-        // // getting the right data to be sent.
-        // const data = transformCompound(compound);
-        // // return the first element of the list.
-        // return data[0];
     } catch (err) {
         console.log(err);
         throw err;
     }
 };
-
-
-// .join('dose_responses', 'dose_responses.experiment_id', '=', 'experiments.experiment_id')
-
 
 module.exports = {
     experiment,
