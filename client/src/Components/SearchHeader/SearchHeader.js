@@ -34,7 +34,7 @@ const StyledSearchHeader = styled.div`
     .dropdown {
       position: absolute;
       margin-top: 110px; // height + padding of navbar
-      width: 70%;
+      width: calc(70% - 60px);
       background: white;
       align-self:center;
       padding: 0px 30px;
