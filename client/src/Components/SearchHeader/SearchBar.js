@@ -8,10 +8,22 @@ const TempBar = styled.div`
     background: rgb(233, 245, 255, 0.8);
     border-radius: 40px;
     height: 70px;
+    margin-bottom:50px;
 `;
 
-const SearchBar = () => {
-    return <TempBar />;
-};
+/**
+ * Component for the search bar.
+ *
+ * @component
+ * @example
+ *
+ *
+ * return (
+ *   <SearchBar />
+ * )
+ */
+const SearchBar = (props) => (
+  <TempBar className="search-bar" />
+);
 
 export default SearchBar;

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../Layout/Layout';
@@ -16,21 +17,21 @@ import { getCompoundsQuery } from '../../queries/queries';
 const Compounds = () => {
   const { loading, error, data } = useQuery(getCompoundsQuery);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!!</p>;
-
   return (
     <Layout>
-      {data.compounds.map(({ id, name }) => (
-        <div key={id}>
-          <p>
-            {id}
-            :
-            {' '}
-            {name}
-          </p>
-        </div>
-      ))}
+      {loading ? (<p>Loading...</p>)
+        : (error ? (<p>Error!</p>)
+          : data.compounds.map(({ id, name }) => (
+            <div key={id}>
+              <p>
+                {id}
+                :
+                {' '}
+                {name}
+              </p>
+            </div>
+          )))}
+
     </Layout>
   );
 };
