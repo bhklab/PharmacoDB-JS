@@ -12,6 +12,18 @@ const getCompoundsQuery = gql`
     }
 `;
 
+/**
+ * Query returns info of compound given the id.
+ */
+const getCompoundQuery = gql`
+  query getCompound($compoundId: Int!) {
+    compound (compoundId: $compoundId){
+      id
+      name
+    }
+  }
+`;
+
 const disableDrug = gql`
   {
     drug @client
@@ -20,5 +32,6 @@ const disableDrug = gql`
 
 export {
   getCompoundsQuery,
+  getCompoundQuery,
   disableDrug,
 };
