@@ -4,20 +4,35 @@ const knex = require('../../db/knex');
  * @param {Number} tissueId - the tissue id.
  */
 const cellQuery = async tissueId => {
-    const cell_lines = await knex
-        .select('d.dataset_id')
-        .count('cell_id as total')
-        .from('experiments as e')
-        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .where('e.tissue_id', 7)
-        .groupby('d.dataset_id');
+    return await knex
+        .select('d.dataset_name')
+        .count('dc.cell_id as total')
+        .from('dataset_cells as dc')
+        .join('cells as c', 'c.cell_id', 'dc.cell_id')
+        .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
+        .where('c.tissue_id', tissueId)
+        .groupBy('dc.dataset_id');
 };
 
 /**
  * @param {Number} tissueId - the tissue id.
  */
+const compoundQuery = async tissueId => {};
+
+/**
+ * @param {Number} tissueId - the tissue id.
+ *  {
+ *      id: 'tissue id',
+ *      name: 'tissue name',
+ *      annotations: [
+ *          {
+ *              name: 'Adrenal - different name of the tissue used in the source',
+ *              dataset: 'name of the source(dataset name in our case) it belongs to'
+ *          }
+ *      ]
+ *  }
+ */
 const tissueQuery = async tissueId => {
-    // query
     return await knex
         .select(
             'tissues.tissue_id as tissue_id',
@@ -116,7 +131,8 @@ const tissue = async args => {
         const { tissueId } = args;
 
         const tissue = await tissueQuery(tissueId);
-        console.log(tissue);
+        const cells = await cellQuery(tissueId);
+        console.log(cells);
 
         // return the transformed data.
         return transformTissueAnnotation(tissue);
