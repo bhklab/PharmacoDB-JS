@@ -83,36 +83,25 @@ const summaryQuery = async (type, datasetId) => {
 
 /**
  * Returns the transformed data for all the datasets in the database.
- * @returns {Object} - {
+ * @returns {Object} -
+ *  {
  *      id: 'this is the id of the dataset'
  *      name: 'this is the name of the dataset'
- *      cells_tested: 'number of cell lines tested across the dataset'
- *      tissues_tested: 'number of tissues tested across the dataset'
- *      compounds_tested: 'number of compounds tested across the dataset'
- *      experiments: 'number of experiments held accross the dataset'
- * }
+ *  }
  */
 const datasets = async () => {
     try {
-        // calling different function in order to execute the corresponding queries.
+        // grab the datasets {id, name}.
         const datasets = await datasetQuery();
-        const cell_count = await countQuery('cell');
-        const tissue_count = await countQuery('tissue');
-        const compound_count = await countQuery('drug');
-        const experiment_count = await countExperimentsQuery();
-
         // return the transformed data for this function.
-        return datasets.map(dataset => {
+        const data = datasets.map(dataset => {
             const { dataset_id, dataset_name } = dataset;
             return {
                 id: dataset_id,
-                name: dataset_name,
-                cells: cell_count[dataset_name].count,
-                tissues: tissue_count[dataset_name].count,
-                compounds: compound_count[dataset_name].count,
-                experiments: experiment_count[dataset_name].count
+                name: dataset_name
             };
         });
+        return data;
     } catch (err) {
         console.log(err);
         throw err;
@@ -125,6 +114,10 @@ const datasets = async () => {
  * @returns {Object} - {
  *      id: 'id of the dataset',
  *      name: 'name of the dataset',
+ *      cells_tested: 'number of cell lines tested across the dataset'
+ *      tissues_tested: 'number of tissues tested across the dataset'
+ *      compounds_tested: 'number of compounds tested across the dataset'
+ *      experiments: 'number of experiments held accross the dataset'
  *      cells_tested: 'a list of all the cell lines that have been tested in the dataset'
  *      compounds_tested: 'a list of all the compounds that have been tested in the dataset'
  * }
@@ -132,15 +125,36 @@ const datasets = async () => {
 const dataset = async args => {
     const { datasetId } = args;
     try {
-        const dataset = await datasetQuery(datasetId);
+        const returnData = [];
+        const datasets = await datasetQuery();
+        const cell_count = await countQuery('cell');
+        const tissue_count = await countQuery('tissue');
+        const compound_count = await countQuery('drug');
+        const experiment_count = await countExperimentsQuery();
         const cells = await summaryQuery('cell', datasetId);
         const compounds = await summaryQuery('drug', datasetId);
-        return {
-            id: dataset[0]['dataset_id'],
-            name: dataset[0]['dataset_name'],
-            cells_tested: cells,
-            compounds_tested: compounds
-        };
+
+        datasets.forEach(dataset => {
+            const { dataset_id, dataset_name } = dataset;
+            const data = {};
+
+            data['id'] = dataset_id;
+            data['name'] = dataset_name;
+            data['cells'] = cell_count[dataset_name].count;
+            data['tissues'] = tissue_count[dataset_name].count;
+            data['compounds'] = compound_count[dataset_name].count;
+            data['experiments'] = experiment_count[dataset_name].count;
+
+            if (dataset_id === datasetId) {
+                data['cells_tested'] = cells;
+                data['compounds_tested'] = compounds;
+
+                returnData.unshift(data);
+            } else {
+                returnData.push(data);
+            }
+        });
+        return returnData;
     } catch (err) {
         console.log(err);
         throw err;

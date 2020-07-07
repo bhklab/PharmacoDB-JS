@@ -10,7 +10,7 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for datasets."
     datasets: [Dataset!]!
-    dataset(datasetId: Int!): DatasetInformation!
+    dataset(datasetId: Int!): [DatasetInformation!]!
 
     "Root Queries for tissues."
     tissues: [Tissue!]!
