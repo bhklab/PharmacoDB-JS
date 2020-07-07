@@ -38,7 +38,8 @@ const StyledSearchHeader = styled.div`
       background: white;
       align-self:center;
       padding: 0px 30px;
-      border-bottom:3px solid ${colors.light_blue_bg}
+      border-bottom:3px solid ${colors.light_blue_bg};
+      z-index:999;
     }
 `;
 /**
