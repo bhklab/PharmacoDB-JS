@@ -13,6 +13,7 @@ const tissueAnnotationType = `
         id: Int!
         name: String!
         annotations: [Annotation!]
+
     }
 `;
 

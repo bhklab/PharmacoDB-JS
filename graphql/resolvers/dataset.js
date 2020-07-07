@@ -45,7 +45,7 @@ const countQuery = async type => {
     const returnObject = {};
     /**
      * queries the database to get the data in the required format.
-     * number of cell lines tested across datasets
+     * number of give type total across datasets
      * @returns {count: Number, source: String}
      */
     const query = await knex
@@ -116,10 +116,10 @@ const datasets = async () => {
  *  Object = {
  *      id: 'id of the dataset',
  *      name: 'name of the dataset',
- *      cells_tested: 'number of cell lines tested across the dataset'
- *      tissues_tested: 'number of tissues tested across the dataset'
- *      compounds_tested: 'number of compounds tested across the dataset'
- *      experiments: 'number of experiments held accross the dataset'
+ *      cell_count: 'number of cell lines across the dataset'
+ *      tissue_count: 'number of tissues across the dataset'
+ *      compound_count: 'number of compounds across the dataset'
+ *      experiment_count: 'number of experiments held accross the dataset'
  *      cells_tested (data only for the datasetId): 'a list of all the cell lines that have been tested in the dataset'
  *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
  *  }
