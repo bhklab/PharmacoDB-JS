@@ -1,6 +1,42 @@
 const knex = require('../../db/knex');
 
 /**
+ * @param {Number} tissueId - the tissue id.
+ */
+const cellQuery = async tissueId => {
+    const cell_lines = await knex
+        .select('d.dataset_id')
+        .count('cell_id as total')
+        .from('experiments as e')
+        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
+        .where('e.tissue_id', 7)
+        .groupby('d.dataset_id');
+};
+
+/**
+ * @param {Number} tissueId - the tissue id.
+ */
+const tissueQuery = async tissueId => {
+    // query
+    return await knex
+        .select(
+            'tissues.tissue_id as tissue_id',
+            'tissues.tissue_name as tissue_name',
+            'source_tissue_names.tissue_name as source_tissue_name',
+            'datasets.dataset_name as dataset_name'
+        )
+        .from('tissues')
+        .join(
+            'source_tissue_names',
+            'tissues.tissue_id',
+            'source_tissue_names.tissue_id'
+        )
+        .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
+        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
+        .where('tissues.tissue_id', tissueId);
+};
+
+/**
  * Returns a transformed array of objects.
  * @param {Array} data
  * @returns {Object} - transformed object.
@@ -78,27 +114,10 @@ const tissue = async args => {
     try {
         // grabbing the tissue line id from the args.
         const { tissueId } = args;
-        // query
-        let tissue = await knex
-            .select(
-                'tissues.tissue_id as tissue_id',
-                'tissues.tissue_name as tissue_name',
-                'source_tissue_names.tissue_name as source_tissue_name',
-                'datasets.dataset_name as dataset_name'
-            )
-            .from('tissues')
-            .join(
-                'source_tissue_names',
-                'tissues.tissue_id',
-                'source_tissue_names.tissue_id'
-            )
-            .join(
-                'sources',
-                'sources.source_id',
-                'source_tissue_names.source_id'
-            )
-            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-            .where('tissues.tissue_id', tissueId);
+
+        const tissue = await tissueQuery(tissueId);
+        console.log(tissue);
+
         // return the transformed data.
         return transformTissueAnnotation(tissue);
     } catch (err) {
