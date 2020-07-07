@@ -16,6 +16,8 @@ const StyledIndivCompounds = styled.div`
     color: ${colors.dark_teal_heading};
     font-family: 'Roboto Slab', serif;
     font-size: calc(2vw + 1.5em);
+    text-align:center;
+    width:100%;
   }
   .container {
     width: 100%;
@@ -26,14 +28,14 @@ const StyledIndivCompounds = styled.div`
     flex-direction: column;
     
     .content{
-      width: 75%;
+      width: calc(100% - (5vw + 4em) - 2em);
     }
   }
   .temp {
     width: 100%;
     height: 400px;
     background: ${colors.light_blue_bg};
-    margin: 20px 0px;
+    margin-bottom:100px;
   }
 
   // full size container when too small
