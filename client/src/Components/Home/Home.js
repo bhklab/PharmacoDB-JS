@@ -1,9 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+import ScrollToTop from 'react-scroll-to-top';
 import Description from './Description';
 import Layout from '../Layout/Layout';
 import Stats from './Stats';
-import styled from 'styled-components';
-import ScrollToTop from 'react-scroll-to-top';
 import 'react-scroll-to-top/lib/index.css';
 
 const StyledHome = styled.div`
@@ -23,16 +23,14 @@ const StyledHome = styled.div`
  *   <Home/>
  * )
  */
-const Home = () => {
-    return (
-        <Layout page="home">
-            <ScrollToTop smooth />
-            <StyledHome>
-                <Description />
-                <Stats />
-            </StyledHome>
-        </Layout>
-    );
-};
+const Home = () => (
+  <Layout page="home">
+    <ScrollToTop smooth />
+    <StyledHome>
+      <Description />
+      <Stats />
+    </StyledHome>
+  </Layout>
+);
 
 export default Home;

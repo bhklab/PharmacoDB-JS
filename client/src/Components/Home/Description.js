@@ -48,25 +48,25 @@ const StyledDescription = styled.div`
  *   <Description/>
  * )
  */
-const Description = () => {
-    return (
-        <StyledDescription>
-            <div className="text-container">
-                <h1>
-                    Mine multiple cancer <br />
-                    pharmacogenomic datasets.
-                </h1>
-                <span>
-                    PharmacoDB allows scientists to search across publicly
-                    available datasets to find instances where a drug or cell
-                    line of interest has been profiled, and to view and compare
-                    the dose-response data for a specific cell line - drug pair
-                    from any of the studies included in the database.
-                </span>
-            </div>
-            <img className="dose-img" src={doseImg} />
-        </StyledDescription>
-    );
-};
+const Description = () => (
+  <StyledDescription>
+    <div className="text-container">
+      <h1>
+        Mine multiple cancer
+        {' '}
+        <br />
+        pharmacogenomic datasets.
+      </h1>
+      <span>
+        PharmacoDB allows scientists to search across publicly
+        available datasets to find instances where a drug or cell
+        line of interest has been profiled, and to view and compare
+        the dose-response data for a specific cell line - drug pair
+        from any of the studies included in the database.
+      </span>
+    </div>
+    <img className="dose-img" src={doseImg} />
+  </StyledDescription>
+);
 
 export default Description;

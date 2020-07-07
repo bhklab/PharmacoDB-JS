@@ -53,16 +53,16 @@ const StyledStats = styled.div`
  * @returns {Object} - returns an Object of different types with name and value.
  */
 const statistics = {
-    datasets: { name: 'datasets', value: '7', image: datasetsImg },
-    tissues: { name: 'tissues', value: '41', image: tissuesImg },
-    cells: { name: 'cell-lines', value: '1,691', image: cellsImg },
-    experiments: {
-        name: 'experiments',
-        value: '650,894',
-        image: experimentsImg
-    },
-    genes: { name: 'genes', value: '19,933', image: genesImg },
-    compounds: { name: 'compounds', value: '759', image: compoundsImg }
+  datasets: { name: 'datasets', value: '7', image: datasetsImg },
+  tissues: { name: 'tissues', value: '41', image: tissuesImg },
+  cells: { name: 'cell-lines', value: '1,691', image: cellsImg },
+  experiments: {
+    name: 'experiments',
+    value: '650,894',
+    image: experimentsImg,
+  },
+  genes: { name: 'genes', value: '19,933', image: genesImg },
+  compounds: { name: 'compounds', value: '759', image: compoundsImg },
 };
 
 /**
@@ -75,25 +75,21 @@ const statistics = {
  *   <Stats/>
  * )
  */
-const Stats = () => {
-    return (
-        <StyledStats>
-            {Object.keys(statistics).map(type => {
-                return (
-                    <div className="item-container">
-                        <img src={`${statistics[type]['image']}`} />
-                        <div className="text">
-                            <span className="big">
-                                {`${statistics[type]['value']}`}
-                            </span>
-                            <br />
-                            {`${statistics[type]['name']}`}
-                        </div>
-                    </div>
-                );
-            })}
-        </StyledStats>
-    );
-};
+const Stats = () => (
+  <StyledStats>
+    {Object.keys(statistics).map((type) => (
+      <div key={statistics[type].name} className="item-container">
+        <img alt={statistics[type].value} src={`${statistics[type].image}`} />
+        <div className="text">
+          <span className="big">
+            {`${statistics[type].value}`}
+          </span>
+          <br />
+          {`${statistics[type].name}`}
+        </div>
+      </div>
+    ))}
+  </StyledStats>
+);
 
 export default Stats;
