@@ -83,10 +83,11 @@ const summaryQuery = async (type, datasetId) => {
 
 /**
  * Returns the transformed data for all the datasets in the database.
- * @returns {Object} -
+ * @returns {Array} - return an array of dataset object.
+ * dataset {Object} -
  *  {
- *      id: 'this is the id of the dataset'
- *      name: 'this is the name of the dataset'
+ *      id: 'id of the dataset'
+ *      name: 'name of the dataset'
  *  }
  */
 const datasets = async () => {
@@ -111,20 +112,23 @@ const datasets = async () => {
 /**
  * @param {Object} args - arguments for the dataset function.
  * @param {Number} args.datasetId - datasetId passed as an argument to the function.
- * @returns {Object} - {
+ * @returns {Array} - return an array of Object (defined below).
+ *  Object = {
  *      id: 'id of the dataset',
  *      name: 'name of the dataset',
  *      cells_tested: 'number of cell lines tested across the dataset'
  *      tissues_tested: 'number of tissues tested across the dataset'
  *      compounds_tested: 'number of compounds tested across the dataset'
  *      experiments: 'number of experiments held accross the dataset'
- *      cells_tested: 'a list of all the cell lines that have been tested in the dataset'
- *      compounds_tested: 'a list of all the compounds that have been tested in the dataset'
- * }
+ *      cells_tested (data only for the datasetId): 'a list of all the cell lines that have been tested in the dataset'
+ *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
+ *  }
  */
 const dataset = async args => {
+    // dataset id ie 1 or 2 or...
     const { datasetId } = args;
     try {
+        // data returned from the graphql API.
         const returnData = [];
         const datasets = await datasetQuery();
         const cell_count = await countQuery('cell');
@@ -135,7 +139,9 @@ const dataset = async args => {
         const compounds = await summaryQuery('drug', datasetId);
 
         datasets.forEach(dataset => {
+            // destructuring the dataset object.
             const { dataset_id, dataset_name } = dataset;
+            // data object.
             const data = {};
 
             data['id'] = dataset_id;
