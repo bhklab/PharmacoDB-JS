@@ -1,23 +1,41 @@
 const knex = require('../../db/knex');
+const { transformObject } = require('../../helpers/transformObject');
 
 /**
+ * Number of cell lines of a particular tissue per dataset
  * @param {Number} tissueId - the tissue id.
+ * @returns {Array} - returns array of objects.
+ *      {
+ *          dataset: 'dataset name',
+ *          total: 'number of cells of 'tissueId' tissue in the dataset'
+ *      }
  */
 const cellQuery = async tissueId => {
-    return await knex
-        .select('d.dataset_name')
+    const data = await knex
+        .select('d.dataset_name as dataset')
         .count('dc.cell_id as total')
         .from('dataset_cells as dc')
         .join('cells as c', 'c.cell_id', 'dc.cell_id')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
         .where('c.tissue_id', tissueId)
         .groupBy('dc.dataset_id');
+    return transformObject(data);
 };
 
 /**
+ * Number of compounds tested with a particular tissue cellline.
  * @param {Number} tissueId - the tissue id.
  */
-const compoundQuery = async tissueId => {};
+const compoundQuery = async tissueId => {
+    const data = await knex
+        .select('d.dataset_name as dataset')
+        .countDistinct('e.drug_id as total')
+        .from('experiments as e')
+        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
+        .where('tissue_id', tissueId)
+        .groupBy('d.dataset_id');
+    return transformObject(data);
+};
 
 /**
  * @param {Number} tissueId - the tissue id.
@@ -132,7 +150,8 @@ const tissue = async args => {
 
         const tissue = await tissueQuery(tissueId);
         const cells = await cellQuery(tissueId);
-        console.log(cells);
+        const compounds = await compoundQuery(tissueId);
+        console.log(cells, compounds);
 
         // return the transformed data.
         return transformTissueAnnotation(tissue);
