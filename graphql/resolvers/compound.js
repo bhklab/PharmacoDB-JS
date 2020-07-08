@@ -22,6 +22,40 @@ const transformCompound = data => {
 };
 
 /**
+ *  @param {Number} - compoundId.
+ */
+const compoundSourceQuery = async compoundId => {
+    return await knex
+        .select(
+            'compounds.compound_id as compound_id',
+            'compounds.compound_name as compound_name',
+            'source_compound_names.compound_name as source_compound_name',
+            'datasets.dataset_name as dataset_name'
+        )
+        .from('compounds')
+        .join(
+            'source_compound_names',
+            'compounds.compound_id',
+            'source_compound_names.compound_id'
+        )
+        .join('sources', 'sources.source_id', 'source_compound_names.source_id')
+        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
+        .where('compounds.compound_id', compoundId);
+};
+
+/**
+ * @param {Number} - compoundId.
+ * @returns {Object} - compound object.
+ */
+const compoundQuery = async compoundId => {
+    return await knex
+        .select()
+        .from('drugs')
+        .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
+        .where('drugs.drug_id', compoundId);
+};
+
+/**
  * Returns the transformed data for all the compounds in the database.
  * @param {Object} data - Parameters for the data.
  * @param {number} [data.page = 1] - Current page number.
@@ -57,13 +91,9 @@ const compound = async args => {
         // grabbing the compound id from the args.
         const { compoundId } = args;
         // query to get the data based on the compound id.
-        let compound = await knex
-            .select()
-            .from('drugs')
-            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
-            .where('drugs.drug_id', compoundId);
+        let compoundData = await compoundQuery(compoundId);
         // transforming the rowdatapacket object.
-        compound = transformObject(compound);
+        const compound = transformObject(compoundData);
         // getting the right data to be sent.
         const data = transformCompound(compound);
         // return the first element of the list.

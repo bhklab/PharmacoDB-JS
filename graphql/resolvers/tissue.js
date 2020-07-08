@@ -10,7 +10,7 @@ const { transformObject } = require('../../helpers/transformObject');
  *          total: 'number of cells of 'tissueId' tissue in the dataset'
  *      }
  */
-const cellQuery = async tissueId => {
+const cellCountQuery = async tissueId => {
     const data = await knex
         .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .count('dc.cell_id as total')
@@ -26,7 +26,7 @@ const cellQuery = async tissueId => {
  * Number of compounds tested with a particular tissue cellline.
  * @param {Number} tissueId - the tissue id.
  */
-const compoundQuery = async tissueId => {
+const compoundTestedQuery = async tissueId => {
     const data = await knex
         .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .countDistinct('e.drug_id as total')
@@ -50,7 +50,7 @@ const compoundQuery = async tissueId => {
  *      ]
  *  }
  */
-const tissueQuery = async tissueId => {
+const tissueSourceQuery = async tissueId => {
     return await knex
         .select(
             'tissues.tissue_id as tissue_id',
@@ -167,9 +167,9 @@ const tissue = async args => {
         // grabbing the tissue line id from the args.
         const { tissueId } = args;
 
-        const tissue = await tissueQuery(tissueId);
-        const cell_count = await cellQuery(tissueId);
-        const compound_tested = await compoundQuery(tissueId);
+        const tissue = await tissueSourceQuery(tissueId);
+        const cell_count = await cellCountQuery(tissueId);
+        const compound_tested = await compoundTestedQuery(tissueId);
 
         // return the transformed data.
         return transformTissueAnnotation(tissue, cell_count, compound_tested);

@@ -3,6 +3,9 @@ const compoundAnnotationType = `
         smiles: String
         inchikey: String
         pubchem: String
+        """this is either 0 or 1 in the database, 
+            but API gives the output as Approved/Non-Approved"""
+        fda_status: String
     }
 `;
 
@@ -17,7 +20,7 @@ const compoundType = `
 const singleCompoundType = `
     type SingleCompound {
         compound: Compound!
-        
+        synonyms: [SourceAnnotation!]
     }
 `;
 
