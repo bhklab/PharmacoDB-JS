@@ -49,7 +49,7 @@ const transformCellLineAnnotation = data => {
             returnObject['synonyms'] = [
                 {
                     name: source_cell_name,
-                    datasets: [dataset_name]
+                    source: [dataset_name]
                 }
             ];
             if (!source_cell_name_list.includes(source_cell_name)) {
@@ -60,12 +60,12 @@ const transformCellLineAnnotation = data => {
             if (!source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].push({
                     name: source_cell_name,
-                    datasets: [dataset_name]
+                    source: [dataset_name]
                 });
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['datasets'].push(
+                        returnObject['synonyms'][i]['source'].push(
                             dataset_name
                         );
                     }

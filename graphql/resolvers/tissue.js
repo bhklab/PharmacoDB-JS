@@ -95,7 +95,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
             returnObject['name'] = tissue_name;
             returnObject['synonyms'].push({
                 name: source_tissue_name,
-                datasets: [dataset_name]
+                source: [dataset_name]
             });
             returnObject['cell_count'] = cell_count.map(value => {
                 return {
@@ -123,12 +123,12 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
             if (!source_tissue_name_list.includes(source_tissue_name)) {
                 returnObject['synonyms'].push({
                     name: source_tissue_name,
-                    datasets: [dataset_name]
+                    source: [dataset_name]
                 });
             } else if (source_tissue_name_list.includes(source_tissue_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_tissue_name) {
-                        returnObject['synonyms'][i]['datasets'].push(
+                        returnObject['synonyms'][i]['source'].push(
                             dataset_name
                         );
                     }

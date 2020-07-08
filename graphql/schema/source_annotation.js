@@ -1,7 +1,7 @@
 const sourceAnnotationType = `
     type SourceAnnotation {
         name: String!
-        datasets: [String!]
+        source: [String!]
     }
 `;
 
