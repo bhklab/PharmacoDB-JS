@@ -13,7 +13,6 @@ const transformCompound = data => {
             id: drug_id,
             name: drug_name,
             annotation: {
-                drug_id: drug_id,
                 smiles: smiles,
                 inchikey: inchikey,
                 pubchem: pubchem

@@ -1,3 +1,11 @@
+const compoundAnnotationType = `
+    type CompoundAnnotation {
+        smiles: String
+        inchikey: String
+        pubchem: String
+    }
+`;
+
 const compoundType = ` 
     type Compound {
         id: Int!
@@ -6,16 +14,14 @@ const compoundType = `
     }
 `;
 
-const compoundAnnotationType = `
-    type CompoundAnnotation {
-        drug_id: Int!
-        smiles: String
-        inchikey: String
-        pubchem: String
+const singleCompoundType = `
+    type SingleCompound {
+
     }
 `;
 
 module.exports = {
     compoundType,
-    compoundAnnotationType
+    compoundAnnotationType,
+    singleCompoundType
 };
