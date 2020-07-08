@@ -23,24 +23,22 @@ const transformCompound = data => {
 
 /**
  *  @param {Number} - compoundId.
+ *
  */
+// todo: change the query using `compound` based on the new database compound table.
 const compoundSourceQuery = async compoundId => {
     return await knex
         .select(
-            'compounds.compound_id as compound_id',
-            'compounds.compound_name as compound_name',
-            'source_compound_names.compound_name as source_compound_name',
+            'drugs.drug_id as compound_id',
+            'drugs.drug_name as compound_name',
+            'source_drug_names.drug_name as source_compound_name',
             'datasets.dataset_name as dataset_name'
         )
-        .from('compounds')
-        .join(
-            'source_compound_names',
-            'compounds.compound_id',
-            'source_compound_names.compound_id'
-        )
-        .join('sources', 'sources.source_id', 'source_compound_names.source_id')
+        .from('drugs')
+        .join('source_drug_names', 'drugs.drug_id', 'source_drug_names.drug_id')
+        .join('sources', 'sources.source_id', 'source_drug_names.source_id')
         .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-        .where('compounds.compound_id', compoundId);
+        .where('drugs.drug_id', compoundId);
 };
 
 /**
@@ -92,6 +90,9 @@ const compound = async args => {
         const { compoundId } = args;
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundId);
+        // query to get compound source synonyms.
+        let compoundSynonyms = await compoundSourceQuery(compoundId);
+        console.log(compoundSynonyms);
         // transforming the rowdatapacket object.
         const compound = transformObject(compoundData);
         // getting the right data to be sent.
