@@ -1,72 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Dropdown } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
 import logoLight from '../../images/pharmacodb-logo.png';
 import magnifImg from '../../images/magnif-glass.png';
 import closeSearchImg from '../../images/close.png';
-import colors from '../../styles/colors';
-
-const StyledNavBar = styled.div`
-    position: static;
-    width: 100%;
-    padding-top: 40px;
-    height: 70px;
-    
-    display: flex;
-    justify-content: center;
-
-    .container {
-        width: 70%;
-        padding-bottom: 30px;
-        border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .logo {
-        width: 200px;
-    }
-`;
-
-const StyledLinks = styled.div`
-    width: ${(props) => (props.page === 'home' ? '30%' : '40%')};
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    a {
-        color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
-        font-family: 'Rubik', sans-serif;
-        font-weight: 400;
-        font-size: calc(0.4vw + 0.9em);
-        letter-spacing: 0.5px;
-    }
-`;
-
-const StyledSearchButton = styled.button`
-    border-radius:50%;
-    width: 40px;
-    height: 40px;
-    background: ${colors.light_blue_bg};
-    display:flex;
-    justify-content: center;
-    align-items:center;
-    cursor: pointer;
-    border: none;
-
-    img {
-      width:15px;
-    }
-    
-    &:focus {
-      outline:0;
-    }
-  
-`;
+import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from './SearchHeaderStyles';
 
 /**
  * Component for the navigation with links and logo.
@@ -104,10 +46,50 @@ const NavBar = (props) => {
     <StyledNavBar page={page}>
       <div className="container">
         <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
-        <StyledLinks page={page}>
-          <Link to="/">About</Link>
-          <Link to="/">Tools</Link>
-          <Link to="/compounds">Datatypes</Link>
+        <StyledLinkDropdowns page={page}>
+          <Dropdown className="link-dropdown" text="About" simple>
+            <Dropdown.Menu className="link-menu">
+              <Dropdown.Item><Link to="/about">About Us</Link></Dropdown.Item>
+              <Dropdown.Item><Link to="/documentation">Documentation</Link></Dropdown.Item>
+              <Dropdown.Item><Link to="/cite">Cite Us</Link></Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown className="link-dropdown" text="Tools" simple>
+            <Dropdown.Menu className="link-menu">
+              <Dropdown.Item><Link to="/explore">Explore</Link></Dropdown.Item>
+              <Dropdown.Item><Link to="/batch">Batch Query</Link></Dropdown.Item>
+              <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown className="link-dropdown" text="Datatypes" simple>
+            <Dropdown.Menu className="link-menu">
+              <Dropdown.Item>
+                <span className="description">7</span>
+                <Link to="/datasets">Datasets</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <span className="description">1,691</span>
+                <Link to="/cell_lines">Cell lines</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <span className="description">41</span>
+                <Link to="/tissues">Tissues</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <span className="description">759</span>
+                <Link to="/compounds">Compounds</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <span className="description">19,933</span>
+                <Link to="/genes">Genes</Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <span className="description">650,894</span>
+                <Link to="/experiments">Experiments</Link>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
           {page === 'home' ? null : (
             <StyledSearchButton className="search-button" onClick={handleClick}>
               {isOpen ? (
@@ -117,7 +99,7 @@ const NavBar = (props) => {
               )}
             </StyledSearchButton>
           )}
-        </StyledLinks>
+        </StyledLinkDropdowns>
 
       </div>
     </StyledNavBar>
