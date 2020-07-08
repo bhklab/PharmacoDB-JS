@@ -4,7 +4,7 @@ const { cellLineType, cellAnnotationType } = require('./cell');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { tissueType, tissueAnnotationType, countType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
-const { annotationType } = require('./annotation');
+const { sourceAnnotationType } = require('./source_annotation');
 const { experimentType } = require('./experiment');
 const { drugResponseType } = require('./drug_response');
 const { RootQuery } = require('./root_query');
@@ -21,7 +21,7 @@ const schema = `
     ${cellLineType}
 
     "Cell Line Annotation type with id, name, tissue information and annotations including the name of source and datasets it's present in"
-    ${annotationType}
+    ${sourceAnnotationType}
     ${cellAnnotationType}
 
     "Dataset Type with id and name of the datasets."

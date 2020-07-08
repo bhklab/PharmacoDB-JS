@@ -16,7 +16,8 @@ const compoundType = `
 
 const singleCompoundType = `
     type SingleCompound {
-
+        compound: Compound!
+        
     }
 `;
 
