@@ -46,7 +46,7 @@ const transformCellLineAnnotation = data => {
                 id: tissue_id,
                 name: tissue_name
             };
-            returnObject['annotations'] = [
+            returnObject['synonyms'] = [
                 {
                     name: source_cell_name,
                     datasets: [dataset_name]
@@ -58,14 +58,14 @@ const transformCellLineAnnotation = data => {
         } else {
             // for all other elements.
             if (!source_cell_name_list.includes(source_cell_name)) {
-                returnObject['annotations'].push({
+                returnObject['synonyms'].push({
                     name: source_cell_name,
                     datasets: [dataset_name]
                 });
             } else if (source_cell_name_list.includes(source_cell_name)) {
-                returnObject['annotations'].forEach((val, i) => {
+                returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['annotations'][i]['datasets'].push(
+                        returnObject['synonyms'][i]['datasets'].push(
                             dataset_name
                         );
                     }

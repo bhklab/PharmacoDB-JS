@@ -42,7 +42,7 @@ const compoundQuery = async tissueId => {
  *  {
  *      id: 'tissue id',
  *      name: 'tissue name',
- *      annotations: [
+ *      synonyms: [
  *          {
  *              name: 'Adrenal - different name of the tissue used in the source',
  *              dataset: 'name of the source(dataset name in our case) it belongs to'
@@ -80,7 +80,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
     let returnObject = {
         id: 0,
         name: 'empty',
-        annotations: []
+        synonyms: []
     };
     const source_tissue_name_list = [];
     // looping through each data point.
@@ -93,7 +93,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
         if (!i) {
             returnObject['id'] = tissue_id;
             returnObject['name'] = tissue_name;
-            returnObject['annotations'].push({
+            returnObject['synonyms'].push({
                 name: source_tissue_name,
                 datasets: [dataset_name]
             });
@@ -121,14 +121,14 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
         } else {
             // for all other elements.
             if (!source_tissue_name_list.includes(source_tissue_name)) {
-                returnObject['annotations'].push({
+                returnObject['synonyms'].push({
                     name: source_tissue_name,
                     datasets: [dataset_name]
                 });
             } else if (source_tissue_name_list.includes(source_tissue_name)) {
-                returnObject['annotations'].forEach((val, i) => {
+                returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_tissue_name) {
-                        returnObject['annotations'][i]['datasets'].push(
+                        returnObject['synonyms'][i]['datasets'].push(
                             dataset_name
                         );
                     }
