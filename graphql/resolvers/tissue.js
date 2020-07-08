@@ -12,7 +12,7 @@ const { transformObject } = require('../../helpers/transformObject');
  */
 const cellQuery = async tissueId => {
     const data = await knex
-        .select('d.dataset_name as dataset')
+        .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .count('dc.cell_id as total')
         .from('dataset_cells as dc')
         .join('cells as c', 'c.cell_id', 'dc.cell_id')
@@ -28,7 +28,7 @@ const cellQuery = async tissueId => {
  */
 const compoundQuery = async tissueId => {
     const data = await knex
-        .select('d.dataset_name as dataset')
+        .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .countDistinct('e.drug_id as total')
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
@@ -74,7 +74,8 @@ const tissueQuery = async tissueId => {
  * @param {Array} data
  * @returns {Object} - transformed object.
  */
-const transformTissueAnnotation = data => {
+const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
+    console.log(compound_tested);
     // return object interface.
     let returnObject = {
         id: 0,
@@ -83,7 +84,7 @@ const transformTissueAnnotation = data => {
     };
     const source_tissue_name_list = [];
     // looping through each data point.
-    data.forEach((row, i) => {
+    tissue.forEach((row, i) => {
         const { tissue_id, tissue_name, dataset_name } = row;
         let { source_tissue_name } = row;
         source_tissue_name = source_tissue_name.replace(' ', '');
@@ -95,6 +96,24 @@ const transformTissueAnnotation = data => {
             returnObject['annotations'].push({
                 name: source_tissue_name,
                 datasets: [dataset_name]
+            });
+            returnObject['cell_count'] = cell_count.map(value => {
+                return {
+                    dataset: {
+                        id: value.dataset_id,
+                        name: value.dataset_name
+                    },
+                    count: value.total
+                };
+            });
+            returnObject['compounds_tested'] = compound_tested.map(value => {
+                return {
+                    dataset: {
+                        id: value.dataset_id,
+                        name: value.dataset_name
+                    },
+                    count: value.total
+                };
             });
             if (!source_tissue_name_list.includes(source_tissue_name)) {
                 source_tissue_name_list.push(source_tissue_name);
@@ -149,12 +168,11 @@ const tissue = async args => {
         const { tissueId } = args;
 
         const tissue = await tissueQuery(tissueId);
-        const cells = await cellQuery(tissueId);
-        const compounds = await compoundQuery(tissueId);
-        console.log(cells, compounds);
+        const cell_count = await cellQuery(tissueId);
+        const compound_tested = await compoundQuery(tissueId);
 
         // return the transformed data.
-        return transformTissueAnnotation(tissue);
+        return transformTissueAnnotation(tissue, cell_count, compound_tested);
     } catch (err) {
         console.log(err);
         return err;

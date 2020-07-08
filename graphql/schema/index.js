@@ -2,7 +2,7 @@ const { buildSchema } = require('graphql');
 const { compoundType, compoundAnnotationType } = require('./compound');
 const { cellLineType, cellAnnotationType } = require('./cell');
 const { datasetType, datasetInformationType } = require('./dataset');
-const { tissueType, tissueAnnotationType } = require('./tissue');
+const { tissueType, tissueAnnotationType, countType } = require('./tissue');
 const { geneType, geneAnnotationType } = require('./gene');
 const { annotationType } = require('./annotation');
 const { experimentType } = require('./experiment');
@@ -33,6 +33,7 @@ const schema = `
 
     "Tissue Annotation type with id, name, annotations object including the name of source and datasets it's present in"
     ${tissueAnnotationType}
+    ${countType}
 
     "Gene Type with id and name of the genes."
     ${geneType}
