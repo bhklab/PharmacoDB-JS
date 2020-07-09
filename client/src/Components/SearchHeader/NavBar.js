@@ -8,7 +8,7 @@ import logoDark from '../../images/pharmacodb-logo-dark.png';
 import logoLight from '../../images/pharmacodb-logo.png';
 import magnifImg from '../../images/magnif-glass.png';
 import closeSearchImg from '../../images/close.png';
-import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from './SearchHeaderStyles';
+import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../styles/SearchHeaderStyles';
 
 /**
  * Component for the navigation with links and logo.

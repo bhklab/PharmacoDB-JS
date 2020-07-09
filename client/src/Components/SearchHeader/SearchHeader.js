@@ -5,7 +5,7 @@ import NavBar from './NavBar';
 import SearchBar from './SearchBar';
 import 'react-slidedown/lib/slidedown.css';
 
-import { StyledSearchHeader } from './SearchHeaderStyles';
+import { StyledSearchHeader } from '../../styles/SearchHeaderStyles';
 
 /**
  * Header component including the navbar and the

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import bg from '../../images/bg.jpg';
-import colors from '../../styles/colors';
+import bg from '../images/bg.jpg';
+import colors from './colors';
 
 /**
  * Styles for the search header parent component.
@@ -18,7 +18,7 @@ const StyledSearchHeader = styled.div`
 
     .search-container {
         width: ${(props) => (props.page === 'home' ? '70%' : '100%')};
-        margin-top: 5vh;
+        margin-top: 7vh;
         padding-bottom: 5vh;
         align-self:center;
 
@@ -33,7 +33,7 @@ const StyledSearchHeader = styled.div`
     .search-dropdown {
       position: absolute;
       margin-top: 110px; // height + padding of navbar
-      width: calc(70% - 60px);
+      width: 70%;
       background: white;
       align-self:center;
       padding: 0px 30px;
@@ -48,7 +48,7 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 40px;
+    padding-top: 60px;
     height: 70px;
     
     display: flex;
