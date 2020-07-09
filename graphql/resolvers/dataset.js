@@ -1,5 +1,7 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
+const {
+    transformObject
+} = require('../../helpers/transformObject');
 
 /**
  * @returns {Object} - returns an array like this [{cell_id: Number, cell_name: String}]
@@ -26,7 +28,10 @@ const countExperimentsQuery = async () => {
         .groupBy('d.dataset_id');
     // return object source_name: {count: Number, source: String}
     query.forEach(value => {
-        const { source, count } = value;
+        const {
+            source,
+            count
+        } = value;
         returnObject[source] = {
             source: source,
             count: count
@@ -56,7 +61,10 @@ const countQuery = async type => {
         .groupBy('sn.source_id');
     // return object source_name: {count: Number, source: String}
     query.forEach(value => {
-        const { source, count } = value;
+        const {
+            source,
+            count
+        } = value;
         returnObject[source] = {
             source: source,
             count: count
@@ -96,7 +104,10 @@ const datasets = async () => {
         const datasets = await datasetQuery();
         // return the transformed data for this function.
         const data = datasets.map(dataset => {
-            const { dataset_id, dataset_name } = dataset;
+            const {
+                dataset_id,
+                dataset_name
+            } = dataset;
             return {
                 id: dataset_id,
                 name: dataset_name
@@ -126,7 +137,9 @@ const datasets = async () => {
  */
 const dataset = async args => {
     // dataset id ie 1 or 2 or...
-    const { datasetId } = args;
+    const {
+        datasetId
+    } = args;
     try {
         // data returned from the graphql API.
         const returnData = [];
@@ -140,7 +153,10 @@ const dataset = async args => {
 
         datasets.forEach(dataset => {
             // destructuring the dataset object.
-            const { dataset_id, dataset_name } = dataset;
+            const {
+                dataset_id,
+                dataset_name
+            } = dataset;
             // data object.
             const data = {};
 

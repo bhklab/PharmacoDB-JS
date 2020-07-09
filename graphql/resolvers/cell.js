@@ -7,7 +7,12 @@ const knex = require('../../db/knex');
  */
 const transformCellLines = data => {
     return data.map(cell => {
-        const { cell_id, cell_name, tissue_id, tissue_name } = cell;
+        const {
+            cell_id,
+            cell_name,
+            tissue_id,
+            tissue_name
+        } = cell;
         return {
             id: cell_id,
             name: cell_name,
@@ -46,12 +51,10 @@ const transformSingleCellLine = data => {
                 id: tissue_id,
                 name: tissue_name
             };
-            returnObject['synonyms'] = [
-                {
-                    name: source_cell_name,
-                    source: [dataset_name]
-                }
-            ];
+            returnObject['synonyms'] = [{
+                name: source_cell_name,
+                source: [dataset_name]
+            }];
             if (!source_cell_name_list.includes(source_cell_name)) {
                 source_cell_name_list.push(source_cell_name);
             }
@@ -65,9 +68,7 @@ const transformSingleCellLine = data => {
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push(
-                            dataset_name
-                        );
+                        returnObject['synonyms'][i]['source'].push(dataset_name);
                     }
                 });
             }
@@ -99,24 +100,22 @@ const cell_lines = async () => {
 const cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
-        const { cellId } = args;
+        const {
+            cellId
+        } = args;
         // query
         let cell_line = await knex
-            .select(
-                'cells.cell_id as cell_id',
+            .select('cells.cell_id as cell_id',
                 'cells.cell_name as cell_name',
                 'tissues.tissue_id as tissue_id',
                 'tissues.tissue_name as tissue_name',
                 'source_cell_names.cell_name as source_cell_name',
-                'datasets.dataset_name as dataset_name'
-            )
+                'datasets.dataset_name as dataset_name')
             .from('cells')
             .join('tissues', 'tissues.tissue_id', 'cells.tissue_id')
-            .join(
-                'source_cell_names',
+            .join('source_cell_names',
                 'cells.cell_id',
-                'source_cell_names.cell_id'
-            )
+                'source_cell_names.cell_id')
             .join('sources', 'sources.source_id', 'source_cell_names.source_id')
             .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
             .where('cells.cell_id', cellId);

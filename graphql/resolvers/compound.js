@@ -1,5 +1,7 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const {
+    calcLimitOffset
+} = require('../../helpers/calcLimitOffset');
 
 /**
  * 
@@ -29,7 +31,10 @@ const transformFdaStatus = value => (value ? 'Approved' : 'Not Approved');
 const transformSynonyms = data => {
     const returnList = {};
     data.map((value, i) => {
-        const { source_compound_name, dataset_name } = value;
+        const {
+            source_compound_name,
+            dataset_name
+        } = value;
         if (!i || !Object.keys(returnList).includes(source_compound_name)) {
             returnList[source_compound_name] = {
                 name: source_compound_name,
@@ -92,12 +97,10 @@ const transformSingleCompound = (compoundData, compoundSynonyms) => {
 // todo: change the query using `compound` based on the new database compound table.
 const compoundSourceSynonymQuery = async compoundId => {
     return await knex
-        .select(
-            'drugs.drug_id as compound_id',
+        .select('drugs.drug_id as compound_id',
             'drugs.drug_name as compound_name',
             'source_drug_names.drug_name as source_compound_name',
-            'datasets.dataset_name as dataset_name'
-        )
+            'datasets.dataset_name as dataset_name')
         .from('drugs')
         .join('source_drug_names', 'drugs.drug_id', 'source_drug_names.drug_id')
         .join('sources', 'sources.source_id', 'source_drug_names.source_id')
@@ -124,9 +127,16 @@ const compoundQuery = async compoundId => {
  * @param {number} [data.per_page = 20] - Total values per page.
  * @param {boolean} [data.all = false] - Boolean value whether to show all the data or not.
  */
-const compounds = async ({ page = 1, per_page = 20, all = false }) => {
+const compounds = async ({
+    page = 1,
+    per_page = 20,
+    all = false
+}) => {
     // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(page, per_page);
+    const {
+        limit,
+        offset
+    } = calcLimitOffset(page, per_page);
     // try catch block and the query to get the data for all the compounds based on the arguments.
     try {
         // query to get the data for all the compounds.
@@ -151,7 +161,9 @@ const compounds = async ({ page = 1, per_page = 20, all = false }) => {
 const compound = async args => {
     try {
         // grabbing the compound id from the args.
-        const { compoundId } = args;
+        const {
+            compoundId
+        } = args;
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundId);
         // query to get compound source synonyms.

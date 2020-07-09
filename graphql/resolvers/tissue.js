@@ -1,5 +1,7 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
+const {
+    transformObject
+} = require('../../helpers/transformObject');
 
 /**
  * Number of cell lines of a particular tissue per dataset
@@ -52,18 +54,14 @@ const compoundTestedQuery = async tissueId => {
  */
 const tissueSourceQuery = async tissueId => {
     return await knex
-        .select(
-            'tissues.tissue_id as tissue_id',
+        .select('tissues.tissue_id as tissue_id',
             'tissues.tissue_name as tissue_name',
             'source_tissue_names.tissue_name as source_tissue_name',
-            'datasets.dataset_name as dataset_name'
-        )
+            'datasets.dataset_name as dataset_name')
         .from('tissues')
-        .join(
-            'source_tissue_names',
+        .join('source_tissue_names',
             'tissues.tissue_id',
-            'source_tissue_names.tissue_id'
-        )
+            'source_tissue_names.tissue_id')
         .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
         .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
         .where('tissues.tissue_id', tissueId);
@@ -85,8 +83,14 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
     const source_tissue_name_list = [];
     // looping through each data point.
     tissue.forEach((row, i) => {
-        const { tissue_id, tissue_name, dataset_name } = row;
-        let { source_tissue_name } = row;
+        const {
+            tissue_id,
+            tissue_name,
+            dataset_name
+        } = row;
+        let {
+            source_tissue_name
+        } = row;
         source_tissue_name = source_tissue_name.replace(' ', '');
 
         // if it's the first element.
@@ -128,9 +132,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
             } else if (source_tissue_name_list.includes(source_tissue_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_tissue_name) {
-                        returnObject['synonyms'][i]['source'].push(
-                            dataset_name
-                        );
+                        returnObject['synonyms'][i]['source'].push(dataset_name);
                     }
                 });
             }
@@ -165,7 +167,9 @@ const tissues = async () => {
 const tissue = async args => {
     try {
         // grabbing the tissue line id from the args.
-        const { tissueId } = args;
+        const {
+            tissueId
+        } = args;
 
         const tissue = await tissueSourceQuery(tissueId);
         const cell_count = await cellCountQuery(tissueId);
