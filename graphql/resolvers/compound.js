@@ -2,13 +2,29 @@ const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
+ * 
  * @param {Number} - value which is either 1 or 0.
  * @returns {String}
  */
 const transformFdaStatus = value => (value ? 'Approved' : 'Not Approved');
 
 /**
- *
+ * 
+ *  @param {Array} - takes an array of object like below
+ *      {
+ *          compound_id: 526,
+ *          compound_name: 'paclitaxel',
+ *          source_compound_name: 'Paclitaxel',
+ *          dataset_name: 'CCLE'
+ *      }
+ *  @returns {Object} - returns the object with name of the synonym belonging to the sources.
+ *      {
+ *        "name": "paclitaxel",
+ *          "source": [
+ *            "gCSI",
+ *            "CTRPv2"
+ *          ]
+ *       }
  */
 const transformSynonyms = data => {
     const returnList = {};
@@ -27,6 +43,7 @@ const transformSynonyms = data => {
 };
 
 /**
+ * 
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
@@ -54,7 +71,9 @@ const transformCompounds = data => {
 };
 
 /**
- *
+ * 
+ * @param {Array} compoundData 
+ * @param {Array} compoundSynonyms 
  */
 const transformSingleCompound = (compoundData, compoundSynonyms) => {
     const transformedCompound = transformCompounds(compoundData);
