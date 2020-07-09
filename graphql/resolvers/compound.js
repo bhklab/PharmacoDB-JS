@@ -1,24 +1,69 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+
+/**
+ * @param {Number} - value which is either 1 or 0.
+ * @returns {String}
+ */
+const transformFdaStatus = value => (value ? 'Approved' : 'Not Approved');
+
+/**
+ *
+ */
+const transformSynonyms = data => {
+    const returnList = {};
+    data.map((value, i) => {
+        const { source_compound_name, dataset_name } = value;
+        if (!i || !Object.keys(returnList).includes(source_compound_name)) {
+            returnList[source_compound_name] = {
+                name: source_compound_name,
+                source: [dataset_name]
+            };
+        } else if (Object.keys(returnList).includes(source_compound_name)) {
+            returnList[source_compound_name]['source'].push(dataset_name);
+        }
+    });
+    return Object.values(returnList);
+};
 
 /**
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
-const transformCompound = data => {
+const transformCompounds = data => {
     return data.map(compound => {
-        const { drug_id, drug_name, smiles, inchikey, pubchem } = compound;
+        const {
+            drug_id,
+            drug_name,
+            smiles,
+            inchikey,
+            pubchem,
+            fda_status
+        } = compound;
         return {
             id: drug_id,
             name: drug_name,
             annotation: {
                 smiles: smiles,
                 inchikey: inchikey,
-                pubchem: pubchem
+                pubchem: pubchem,
+                fda_status: transformFdaStatus(fda_status)
             }
         };
     });
+};
+
+/**
+ *
+ */
+const transformSingleCompound = (compoundData, compoundSynonyms) => {
+    const transformedCompound = transformCompounds(compoundData);
+    const transformedSynonyms = transformSynonyms(compoundSynonyms);
+
+    return {
+        compound: transformedCompound[0],
+        synonyms: transformedSynonyms
+    };
 };
 
 /**
@@ -26,7 +71,7 @@ const transformCompound = data => {
  *
  */
 // todo: change the query using `compound` based on the new database compound table.
-const compoundSourceQuery = async compoundId => {
+const compoundSourceSynonymQuery = async compoundId => {
     return await knex
         .select(
             'drugs.drug_id as compound_id',
@@ -73,7 +118,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }) => {
             .limit(all ? '*' : limit)
             .offset(all ? '*' : offset);
         // return the transformed data.
-        return transformCompound(compounds);
+        return transformCompounds(compounds);
     } catch (err) {
         console.log(err);
         throw err;
@@ -91,14 +136,9 @@ const compound = async args => {
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundId);
         // query to get compound source synonyms.
-        let compoundSynonyms = await compoundSourceQuery(compoundId);
-        console.log(compoundSynonyms);
-        // transforming the rowdatapacket object.
-        const compound = transformObject(compoundData);
-        // getting the right data to be sent.
-        const data = transformCompound(compound);
-        // return the first element of the list.
-        return data[0];
+        let compoundSynonyms = await compoundSourceSynonymQuery(compoundId);
+        // return the compound object.
+        return transformSingleCompound(compoundData, compoundSynonyms);
     } catch (err) {
         console.log(err);
         throw err;

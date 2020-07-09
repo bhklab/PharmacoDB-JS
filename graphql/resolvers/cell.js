@@ -5,7 +5,7 @@ const knex = require('../../db/knex');
  * @param {Array} data
  * @returns {Array} - transformed array of objects.
  */
-const transformCellLine = data => {
+const transformCellLines = data => {
     return data.map(cell => {
         const { cell_id, cell_name, tissue_id, tissue_name } = cell;
         return {
@@ -26,7 +26,7 @@ const transformCellLine = data => {
  */
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
-const transformCellLineAnnotation = data => {
+const transformSingleCellLine = data => {
     let returnObject = {};
     const source_cell_name_list = [];
     data.forEach((row, i) => {
@@ -86,7 +86,7 @@ const cell_lines = async () => {
             .from('cells')
             .join('tissues', 'cells.tissue_id', 'tissues.tissue_id');
         // return the transformed data.
-        return transformCellLine(cell_lines);
+        return transformCellLines(cell_lines);
     } catch (err) {
         console.log(err);
         throw err;
@@ -121,7 +121,7 @@ const cell_line = async args => {
             .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
             .where('cells.cell_id', cellId);
         // return the transformed data.
-        return transformCellLineAnnotation(cell_line);
+        return transformSingleCellLine(cell_line);
     } catch (err) {
         console.log(err);
         return err;

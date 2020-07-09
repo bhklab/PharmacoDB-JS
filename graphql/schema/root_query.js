@@ -2,7 +2,7 @@
 const RootQuery = `type RootQuery {
     "Root Queries for compounds."
     compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
-    compound(compoundId: Int!): Compound!
+    compound(compoundId: Int!): SingleCompound!
 
     "Root Queries for cell lines."
     cell_lines: [CellLine!]!
