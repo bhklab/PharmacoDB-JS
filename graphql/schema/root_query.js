@@ -23,6 +23,9 @@ const RootQuery = `type RootQuery {
     genes: [Gene!]!
     gene(geneId: Int!): Gene!
 
+    "Root Queries for sources"
+    sources: [Source!]!
+
     "Root Queries for targets."
     compound_target(compoundId: Int!): CompoundTarget!
 

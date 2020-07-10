@@ -4,7 +4,8 @@ const {
 } = require('../../helpers/transformObject');
 
 /**
- * @returns {Object} - returns an array like this [{cell_id: Number, cell_name: String}]
+ * @param {Number} - datasetId (optional)
+ * @returns {Object} - returns an array like this [{dataset_id: Number, dataset_name: String}]
  */
 const datasetQuery = async datasetId => {
     const dataset = await knex
@@ -17,7 +18,7 @@ const datasetQuery = async datasetId => {
 /**
  *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
-const countExperimentsQuery = async () => {
+const experiementsGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const query = await knex
@@ -147,7 +148,7 @@ const dataset = async args => {
         const cell_count = await countQuery('cell');
         const tissue_count = await countQuery('tissue');
         const compound_count = await countQuery('drug');
-        const experiment_count = await countExperimentsQuery();
+        const experiment_count = await experiementsGroupByDatasetQuery();
         const cells = await summaryQuery('cell', datasetId);
         const compounds = await summaryQuery('drug', datasetId);
 
