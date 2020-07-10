@@ -18,7 +18,7 @@ const datasetInformationType = `
         # number of experiments held across the dataset.
         experiments: Int!
         # cells tested in the dataset.
-        cell_tested: [String!]
+        cells_tested: [String!]
         # compounds tested in the dataset.
         compounds_tested: [String!]
     }
