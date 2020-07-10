@@ -21,6 +21,7 @@ const singleCompoundType = `
     type SingleCompound {
         compound: Compound!
         synonyms: [SourceAnnotation!]
+        targets: [Target!]
     }
 `;
 

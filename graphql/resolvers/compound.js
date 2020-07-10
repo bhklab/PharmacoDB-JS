@@ -2,6 +2,9 @@ const knex = require('../../db/knex');
 const {
     calcLimitOffset
 } = require('../../helpers/calcLimitOffset');
+const {
+    compound_target
+} = require('./target');
 
 /**
  * 
@@ -80,13 +83,17 @@ const transformCompounds = data => {
  * @param {Array} compoundData 
  * @param {Array} compoundSynonyms 
  */
-const transformSingleCompound = (compoundData, compoundSynonyms) => {
+const transformSingleCompound = async (compoundId, compoundData, compoundSynonyms) => {
     const transformedCompound = transformCompounds(compoundData);
     const transformedSynonyms = transformSynonyms(compoundSynonyms);
+    const targets = await compound_target({
+        compoundId: compoundId
+    });
 
     return {
         compound: transformedCompound[0],
-        synonyms: transformedSynonyms
+        synonyms: transformedSynonyms,
+        targets: targets['targets']
     };
 };
 
@@ -169,7 +176,7 @@ const compound = async args => {
         // query to get compound source synonyms.
         let compoundSynonyms = await compoundSourceSynonymQuery(compoundId);
         // return the compound object.
-        return transformSingleCompound(compoundData, compoundSynonyms);
+        return transformSingleCompound(compoundId, compoundData, compoundSynonyms);
     } catch (err) {
         console.log(err);
         throw err;
