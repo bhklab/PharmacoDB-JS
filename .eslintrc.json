@@ -17,6 +17,9 @@
         "quotes": ["error", "single"],
         "semi": ["error", "always"],
         "no-console": "off",
-        "function-paren-newline": ["error", "never"]
+        "function-paren-newline": ["error", "never"],
+        "object-property-newline": ["error", {
+            "allowAllPropertiesOnSameLine": true
+        }]
     }
 }
