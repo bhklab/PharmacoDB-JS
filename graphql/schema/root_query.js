@@ -25,6 +25,7 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for sources"
     sources: [Source!]!
+    source_stats: [SourceStats!]!
 
     "Root Queries for targets."
     compound_target(compoundId: Int!): CompoundTarget!

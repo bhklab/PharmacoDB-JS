@@ -7,7 +7,7 @@ const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { RootQuery } = require('./root_query');
-const { sourceType } = require('./source');
+const { sourceType, sourceStatsType } = require('./source');
 const { sourceAnnotationType } = require('./source_annotation');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueAnnotationType, countType } = require('./tissue');
@@ -45,6 +45,7 @@ const schema = `
 
     "Source Type"
     ${sourceType}
+    ${sourceStatsType}
 
     "Target Type"
     ${targetType}

@@ -9,6 +9,18 @@ const sourceType = `
     }
 `;
 
+const sourceStatsType = `
+    type SourceStats {
+        source_id: Int!
+        source_name: String!
+        cell_line_count: Int!
+        tissue_count: Int!
+        compound_count: Int!
+        experiment_count: Int!
+    }
+`;
+
 module.exports = {
-    sourceType
+    sourceType,
+    sourceStatsType
 };

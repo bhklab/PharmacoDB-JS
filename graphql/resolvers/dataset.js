@@ -1,7 +1,6 @@
 const knex = require('../../db/knex');
-const {
-    transformObject
-} = require('../../helpers/transformObject');
+const { transformObject } = require('../../helpers/transformObject');
+const { typeCountGroupBySource } = require('./source');
 
 /**
  * @param {Number} - datasetId (optional)
@@ -14,6 +13,7 @@ const datasetQuery = async datasetId => {
         .where('dataset_id', 'like', datasetId ? `${datasetId}` : '%%');
     return transformObject(dataset);
 };
+
 
 /**
  *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
@@ -42,38 +42,6 @@ const experiementsGroupByDatasetQuery = async () => {
     return returnObject;
 };
 
-/**
- * @param {String} - takes an argument either 'compound', 'tissue' or 'cell'
- * @returns {Object} - return object {source: {count: Number, source: String}, ....}
- */
-const countQuery = async type => {
-    // return object.
-    const returnObject = {};
-    /**
-     * queries the database to get the data in the required format.
-     * number of give type total across datasets
-     * @returns {count: Number, source: String}
-     */
-    const query = await knex
-        .select('source_name as source')
-        .countDistinct(`${type}_id as count`)
-        .from(`source_${type}_names as sn`)
-        .join('sources as s', 's.source_id', 'sn.source_id')
-        .groupBy('sn.source_id');
-    // return object source_name: {count: Number, source: String}
-    query.forEach(value => {
-        const {
-            source,
-            count
-        } = value;
-        returnObject[source] = {
-            source: source,
-            count: count
-        };
-    });
-    // return the transformed object.
-    return returnObject;
-};
 
 /**
  *
@@ -121,6 +89,7 @@ const datasets = async () => {
     }
 };
 
+
 /**
  * @param {Object} args - arguments for the dataset function.
  * @param {Number} args.datasetId - datasetId passed as an argument to the function.
@@ -145,9 +114,9 @@ const dataset = async args => {
         // data returned from the graphql API.
         const returnData = [];
         const datasets = await datasetQuery();
-        const cell_count = await countQuery('cell');
-        const tissue_count = await countQuery('tissue');
-        const compound_count = await countQuery('drug');
+        const cell_count = await typeCountGroupBySource('cell');
+        const tissue_count = await typeCountGroupBySource('tissue');
+        const compound_count = await typeCountGroupBySource('drug');
         const experiment_count = await experiementsGroupByDatasetQuery();
         const cells = await summaryQuery('cell', datasetId);
         const compounds = await summaryQuery('drug', datasetId);
@@ -183,6 +152,7 @@ const dataset = async args => {
         throw err;
     }
 };
+
 
 module.exports = {
     datasets,
