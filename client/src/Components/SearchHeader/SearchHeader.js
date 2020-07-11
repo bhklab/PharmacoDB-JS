@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useContext } from 'react';
 import { SlideDown } from 'react-slidedown';
 import NavBar from './NavBar';
 import SearchBar from './SearchBar';
 import 'react-slidedown/lib/slidedown.css';
+import PageContext from '../../context/PageContext';
 
 import { StyledSearchHeader } from '../../styles/SearchHeaderStyles';
 
@@ -15,13 +15,12 @@ import { StyledSearchHeader } from '../../styles/SearchHeaderStyles';
  * @component
  * @example
  *
- * const page = "home"
  * return (
- *   <SearchHeader page={page}/>
+ *   <SearchHeader />
  * )
  */
-const SearchHeader = (props) => {
-  const { page } = props;
+const SearchHeader = () => {
+  const page = useContext(PageContext);
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -39,35 +38,24 @@ const SearchHeader = (props) => {
 
   return (
     <StyledSearchHeader page={page}>
-      <NavBar page={page} onClick={onClick} />
+      <NavBar onClick={onClick} />
       { page === 'home' ? (
         <div className="search-container">
           <h1>Try searching for a...</h1>
-          <SearchBar page={page} />
+          <SearchBar />
         </div>
       ) : (
         <SlideDown className="search-dropdown">
           {isOpen ? (
             <div className="search-container">
               <h1>Try searching for a...</h1>
-              <SearchBar page={page} />
+              <SearchBar />
             </div>
           ) : null}
         </SlideDown>
       )}
     </StyledSearchHeader>
   );
-};
-
-SearchHeader.propTypes = {
-  /**
-     * SearchHeader's page name
-     */
-  page: PropTypes.string,
-};
-
-SearchHeader.defaultProps = {
-  page: '',
 };
 
 export default SearchHeader;

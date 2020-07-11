@@ -22,7 +22,7 @@ const TempBar = styled.div`
  *   <SearchBar />
  * )
  */
-const SearchBar = (props) => (
+const SearchBar = () => (
   <TempBar className="search-bar" />
 );
 

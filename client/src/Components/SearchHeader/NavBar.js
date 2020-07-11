@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import PageContext from '../../context/PageContext';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
 import logoLight from '../../images/pharmacodb-logo.png';
@@ -17,14 +17,15 @@ import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../sty
  * @component
  * @example
  *
- * const page = "home"
  * const onClick = (e) => {};
  * return (
- *   <NavBar page={page} onClick={onClick}/>
+ *   <NavBar onClick={onClick}/>
  * )
  */
 const NavBar = (props) => {
-  const { page, onClick } = props;
+  const { onClick } = props;
+  const page = useContext(PageContext);
+
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -104,17 +105,6 @@ const NavBar = (props) => {
       </div>
     </StyledNavBar>
   );
-};
-
-NavBar.propTypes = {
-  /**
-   * NavBar's page name
-  */
-  page: PropTypes.string,
-};
-
-NavBar.defaultProps = {
-  page: '',
 };
 
 export default NavBar;
