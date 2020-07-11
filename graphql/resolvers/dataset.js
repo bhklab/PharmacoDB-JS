@@ -1,6 +1,5 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
-const { typeCountGroupBySource } = require('./source');
 
 /**
  * @param {Number} - datasetId (optional)
@@ -15,15 +14,41 @@ const datasetQuery = async datasetId => {
 };
 
 
+const typeCountGroupByDatasetQuery = async (type) => {
+    // return object.
+    const returnObject = {};
+    const query = await knex
+        .select('d.dataset_name')
+        .countDistinct(`dc.${type}_id as count`)
+        .from('dataset_cells as dc')
+        .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
+        .groupBy('d.dataset_id');
+        // return object source_name: {count: Number, source: String}
+    query.forEach(value => {
+        const {
+            dataset_name,
+            count
+        } = value;
+        returnObject[dataset_name] = {
+            source: dataset_name,
+            count: count
+        };
+    });
+    // return the transformed object.
+    return returnObject;
+};
+
+
 /**
+ *  @param {String} - string for which we want to get the count, eg experiment, tissue etc.
  *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
-const experiementsGroupByDatasetQuery = async () => {
+const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object.
     const returnObject = {};
     const query = await knex
         .select('d.dataset_name as source')
-        .countDistinct('e.experiment_id as count')
+        .countDistinct(`e.${type}_id as count`)
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
         .groupBy('d.dataset_id');
@@ -47,6 +72,7 @@ const experiementsGroupByDatasetQuery = async () => {
  *
  * @param {String} type - either 'cell' or 'compound'
  * @param {Number} datasetId
+ * @return {Array}
  */
 const summaryQuery = async (type, datasetId) => {
     // query to get the id and name for the type.
@@ -114,10 +140,10 @@ const dataset = async args => {
         // data returned from the graphql API.
         const returnData = [];
         const datasets = await datasetQuery();
-        const cell_count = await typeCountGroupBySource('cell');
-        const tissue_count = await typeCountGroupBySource('tissue');
-        const compound_count = await typeCountGroupBySource('drug');
-        const experiment_count = await experiementsGroupByDatasetQuery();
+        const cell_count = await typeCountGroupByDatasetQuery('cell');
+        const compound_count = await typeTestedCountGroupByDatasetQuery('drug');
+        const tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
+        const experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
         const cells = await summaryQuery('cell', datasetId);
         const compounds = await summaryQuery('drug', datasetId);
 
