@@ -14,12 +14,18 @@ const datasetQuery = async datasetId => {
 };
 
 
-const typeCountGroupByDatasetQuery = async (type) => {
+/**
+ * 
+ * @returns {Object} - {
+ *      CCLE: { dataset: 'dataset name', count: 'number of cell lines in the dataset' }
+ * }
+ */
+const cellCountGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const query = await knex
         .select('d.dataset_name')
-        .countDistinct(`dc.${type}_id as count`)
+        .countDistinct('dc.cell_id as count')
         .from('dataset_cells as dc')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
         .groupBy('d.dataset_id');
@@ -30,7 +36,7 @@ const typeCountGroupByDatasetQuery = async (type) => {
             count
         } = value;
         returnObject[dataset_name] = {
-            source: dataset_name,
+            dataset: dataset_name,
             count: count
         };
     });
@@ -47,7 +53,7 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object.
     const returnObject = {};
     const query = await knex
-        .select('d.dataset_name as source')
+        .select('d.dataset_name')
         .countDistinct(`e.${type}_id as count`)
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
@@ -55,11 +61,11 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object source_name: {count: Number, source: String}
     query.forEach(value => {
         const {
-            source,
+            dataset_name,
             count
         } = value;
-        returnObject[source] = {
-            source: source,
+        returnObject[dataset_name] = {
+            dataset: dataset_name,
             count: count
         };
     });
@@ -140,7 +146,7 @@ const dataset = async args => {
         // data returned from the graphql API.
         const returnData = [];
         const datasets = await datasetQuery();
-        const cell_count = await typeCountGroupByDatasetQuery('cell');
+        const cell_count = await cellCountGroupByDatasetQuery('cell');
         const compound_count = await typeTestedCountGroupByDatasetQuery('drug');
         const tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
         const experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
