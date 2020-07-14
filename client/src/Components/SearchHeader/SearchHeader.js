@@ -43,6 +43,7 @@ const SearchHeader = () => {
         <div className="search-container">
           <h1>Try searching for a...</h1>
           <SearchBar />
+          <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
         </div>
       ) : (
         <SlideDown className="search-dropdown">
@@ -50,6 +51,7 @@ const SearchHeader = () => {
             <div className="search-container">
               <h1>Try searching for a...</h1>
               <SearchBar />
+              <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
             </div>
           ) : null}
         </SlideDown>

@@ -18,7 +18,7 @@ const StyledSearchHeader = styled.div`
 
     .search-container {
         width: ${(props) => (props.page === 'home' ? '70%' : '100%')};
-        margin-top: 7vh;
+        margin-top: 4vh;
         padding-bottom: 5vh;
         align-self:center;
 
@@ -27,6 +27,14 @@ const StyledSearchHeader = styled.div`
             font-weight: 400;
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
+        }
+
+        span {
+            font-family: 'Overpass', sans-serif;
+            font-weight: 400;
+            color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
+            margin-bottom: 20px;
+            font-size: 1.2em;
         }
     }
 
@@ -77,7 +85,7 @@ const StyledLinkDropdowns = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    .link-dropdown {
+    .link-dropdown, .link {
         width: auto;
         color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
         font-family: 'Rubik', sans-serif;

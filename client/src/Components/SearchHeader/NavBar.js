@@ -53,39 +53,28 @@ const NavBar = (props) => {
               <Dropdown.Item><Link to="/about">About Us</Link></Dropdown.Item>
               <Dropdown.Item><Link to="/documentation">Documentation</Link></Dropdown.Item>
               <Dropdown.Item><Link to="/cite">Cite Us</Link></Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown className="link-dropdown" text="Tools" simple>
-            <Dropdown.Menu className="link-menu">
-              <Dropdown.Item><Link to="/explore">Explore</Link></Dropdown.Item>
-              <Dropdown.Item><Link to="/batch">Batch Query</Link></Dropdown.Item>
               <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown className="link-dropdown" text="Datatypes" simple>
+          <Link className="link" to="/explore">Explore</Link>
+          <Dropdown className="link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
               <Dropdown.Item>
-                <span className="description">7</span>
                 <Link to="/datasets">Datasets</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <span className="description">1,691</span>
                 <Link to="/cell_lines">Cell lines</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <span className="description">41</span>
                 <Link to="/tissues">Tissues</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <span className="description">759</span>
                 <Link to="/compounds">Compounds</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <span className="description">19,933</span>
                 <Link to="/genes">Genes</Link>
               </Dropdown.Item>
               <Dropdown.Item>
-                <span className="description">650,894</span>
                 <Link to="/experiments">Experiments</Link>
               </Dropdown.Item>
             </Dropdown.Menu>

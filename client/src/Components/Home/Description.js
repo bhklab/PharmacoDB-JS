@@ -10,7 +10,7 @@ const StyledDescription = styled.div`
     align-items: center;
 
     width: 70%;
-    margin-top: 15vh;
+    margin-top: 8vh;
 
     .text-container {
         width: 65%;
@@ -26,14 +26,14 @@ const StyledDescription = styled.div`
         h1 {
             color: ${colors.dark_teal_heading};
             font-family: 'Roboto Slab', serif;
-            font-size: calc(2vw + 1em) !important;
+            font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
         }
     }
 
     .dose-img {
-        width: 30%;
-        max-width: 400px;
+        width: 28%;
+        max-width: 370px;
     }
 `;
 

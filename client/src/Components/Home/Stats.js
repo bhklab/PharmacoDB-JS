@@ -16,7 +16,7 @@ const StyledStats = styled.div`
 
     width: 80%;
     margin-bottom: 20vh; //TODO: REMOVE
-    margin-top: 15vh;
+    margin-top: 8vh;
     background: ${colors.light_blue_bg};
     height: 14vw;
     border-radius: calc(0.8vw + 0.4em);
@@ -42,6 +42,7 @@ const StyledStats = styled.div`
             text-align: center;
             font-family: 'Rubik', sans-serif;
             font-weight: 400;
+            line-height: calc(0.8vw + 0.4em);
         }
         .big {
             font-size: calc(0.9vw + 0.5em);
