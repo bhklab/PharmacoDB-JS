@@ -146,7 +146,7 @@ const dataset = async args => {
         // data returned from the graphql API.
         const returnData = [];
         const datasets = await datasetQuery();
-        const cell_count = await cellCountGroupByDatasetQuery('cell');
+        const cell_count = await cellCountGroupByDatasetQuery();
         const compound_count = await typeTestedCountGroupByDatasetQuery('drug');
         const tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
         const experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
