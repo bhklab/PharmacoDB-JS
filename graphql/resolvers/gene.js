@@ -1,5 +1,7 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
+const {
+    transformObject
+} = require('../../helpers/transformObject');
 
 /**
  * @param {Array} data
@@ -7,7 +9,13 @@ const { transformObject } = require('../../helpers/transformObject');
  */
 const transformGene = data => {
     return data.map(gene => {
-        const { gene_id, gene_name, ensg, gene_seq_start, gene_seq_end } = gene;
+        const {
+            gene_id,
+            gene_name,
+            ensg,
+            gene_seq_start,
+            gene_seq_end
+        } = gene;
         return {
             id: gene_id,
             name: gene_name,
@@ -41,7 +49,9 @@ const genes = async () => {
  */
 // TODO: the code has to be changed in future when new database will be in place.
 const gene = async args => {
-    const { geneId } = args;
+    const {
+        geneId
+    } = args;
     try {
         let gene = await knex
             .select()
