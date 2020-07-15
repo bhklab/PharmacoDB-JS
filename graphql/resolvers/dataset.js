@@ -17,14 +17,14 @@ const datasetQuery = async datasetId => {
 /**
  * 
  * @returns {Object} - {
- *      CCLE: { dataset: 'dataset name', count: 'number of cell lines in the dataset' }
+ *      CCLE: { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  * }
  */
 const cellCountGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const query = await knex
-        .select('d.dataset_name')
+        .select('d.dataset_name', 'd.dataset_id')
         .countDistinct('dc.cell_id as count')
         .from('dataset_cells as dc')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
@@ -33,10 +33,14 @@ const cellCountGroupByDatasetQuery = async () => {
     query.forEach(value => {
         const {
             dataset_name,
+            dataset_id,
             count
         } = value;
         returnObject[dataset_name] = {
-            dataset: dataset_name,
+            dataset: {
+                id: dataset_id,
+                name: dataset_name
+            },
             count: count
         };
     });
@@ -53,7 +57,7 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object.
     const returnObject = {};
     const query = await knex
-        .select('d.dataset_name')
+        .select('d.dataset_name', 'd.dataset_id')
         .countDistinct(`e.${type}_id as count`)
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
@@ -62,10 +66,14 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
     query.forEach(value => {
         const {
             dataset_name,
+            dataset_id,
             count
         } = value;
         returnObject[dataset_name] = {
-            dataset: dataset_name,
+            dataset: {
+                id: dataset_id,
+                name: dataset_name
+            },
             count: count
         };
     });
@@ -186,7 +194,17 @@ const dataset = async args => {
 };
 
 
+/**
+ * @returns {Object} - { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
+ */
+const cell_lines_per_dataset = async () => {
+    const cell_count = await cellCountGroupByDatasetQuery();
+    return Object.keys(cell_count).map(value => cell_count[value]);
+};
+
+
 module.exports = {
     datasets,
-    dataset
+    dataset,
+    cell_lines_per_dataset
 };
