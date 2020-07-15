@@ -1,7 +1,8 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
 const { cellLineType, cellAnnotationType } = require('./cell');
+const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
+const { datasetCountType } = require('./count');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
@@ -10,7 +11,7 @@ const { RootQuery } = require('./root_query');
 const { sourceType, sourceStatsType } = require('./source');
 const { sourceAnnotationType } = require('./source_annotation');
 const { targetType, compoundTargetType } = require('./target');
-const { tissueType, tissueAnnotationType, countType } = require('./tissue');
+const { tissueType, tissueAnnotationType} = require('./tissue');
 
 
 // schema definition.
@@ -27,6 +28,9 @@ const schema = `
      and annotations including the name of source and datasets it's present in"""
     ${sourceAnnotationType}
     ${cellAnnotationType}
+
+    "Dataset Count Type"
+    ${datasetCountType}
 
     "Dataset Type with id and name of the datasets."
     ${datasetType}
@@ -56,7 +60,6 @@ const schema = `
     """Tissue Annotation type with id, name, annotations object 
      including the name of source and datasets it's present in"""
     ${tissueAnnotationType}
-    ${countType}
 
     "Root Query"
     ${RootQuery}
