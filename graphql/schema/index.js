@@ -2,7 +2,7 @@
 const { buildSchema } = require('graphql');
 const { cellLineType, cellAnnotationType } = require('./cell');
 const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
-const { CountType } = require('./count');
+const { CountType, summaryType, genericType } = require('./count');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
@@ -47,9 +47,15 @@ const schema = `
     "Gene Annotation Type with gene id, ensg, start and end."
     ${geneAnnotationType}
 
+    "Generic Type"
+    ${genericType}
+
     "Source Type"
     ${sourceType}
     ${sourceStatsType}
+
+    "Summary Type"
+    ${summaryType}
 
     "Target Type"
     ${targetType}

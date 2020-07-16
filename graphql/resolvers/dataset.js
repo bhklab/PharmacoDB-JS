@@ -210,11 +210,31 @@ const cell_lines_per_dataset = async () => {
 
 /**
  * @returns {Array} - returns an array of the objects. 
- * { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
+ * { 
+ *      dataset: {id: 'dataset id', name: 'dataset name'}, 
+ *      type: 'example compound', 
+ *      list: {id: 'type id', name: 'type name' } 
+ * }
  */
-const type_tested_on_dataset = async ({type}) => {
-    const type_count = await typeTestedCountGroupByDatasetQuery(type);
-    return Object.keys(type_count).map(value => type_count[value]);
+const type_tested_on_dataset = async ({type, datasetId}) => {
+    const type_list = await summaryQuery(type, datasetId);
+    const returnObject = {};
+    type_list.forEach((value, i) => {
+        const {dataset_name, dataset_id} = value;
+        if(!i) {
+            returnObject['dataset'] = {
+                id: dataset_id,
+                name: dataset_name
+            };
+            returnObject['type'] = type;
+            returnObject['list'] = [];
+        }
+        returnObject['list'].push({
+            id: value[`${type}_id`],
+            name: value[`${type}_name`]
+        });
+    });
+    return returnObject;
 };
 
 

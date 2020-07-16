@@ -8,6 +8,25 @@ const CountType = `
 `;
 
 
+const genericType = `
+    type Generic {
+        id: Int!
+        name: String!
+    }
+`;
+
+
+const summaryType = `
+    type Summary {
+        dataset: Dataset!
+        type: String!
+        list: [Generic!]
+    }
+`;
+
+
 module.exports = {
-    CountType
+    CountType,
+    summaryType,
+    genericType
 };
