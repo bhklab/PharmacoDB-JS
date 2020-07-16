@@ -199,6 +199,7 @@ const dataset = async args => {
 
 
 /**
+ * cell lines grouped by the dataset.
  * @returns {Array} - returns an array of the objects.
  * { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  */
@@ -209,6 +210,7 @@ const cell_lines_per_dataset = async () => {
 
 
 /**
+ * @param {Object} - Args {type: 'it can be compound, tissue, cells', datasetId: 'dataset id'}
  * @returns {Array} - returns an array of the objects. 
  * { 
  *      dataset: {id: 'dataset id', name: 'dataset name'}, 
@@ -218,6 +220,7 @@ const cell_lines_per_dataset = async () => {
  */
 const type_tested_on_dataset = async ({type, datasetId}) => {
     const type_list = await summaryQuery(type, datasetId);
+    const count = type_list.length;
     const returnObject = {};
     type_list.forEach((value, i) => {
         const {dataset_name, dataset_id} = value;
@@ -227,6 +230,7 @@ const type_tested_on_dataset = async ({type, datasetId}) => {
                 name: dataset_name
             };
             returnObject['type'] = type;
+            returnObject['count'] = count;
             returnObject['list'] = [];
         }
         returnObject['list'].push({

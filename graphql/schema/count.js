@@ -1,4 +1,4 @@
-const CountType = `
+const countType = `
     type Count {
         "This is the dataset object"
         dataset: Dataset!
@@ -20,13 +20,14 @@ const summaryType = `
     type Summary {
         dataset: Dataset!
         type: String!
+        count: Int!
         list: [Generic!]
     }
 `;
 
 
 module.exports = {
-    CountType,
+    countType,
     summaryType,
     genericType
 };
