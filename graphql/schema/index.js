@@ -2,7 +2,7 @@
 const { buildSchema } = require('graphql');
 const { cellLineType, cellAnnotationType } = require('./cell');
 const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
-const { datasetCountType } = require('./count');
+const { CountType } = require('./count');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
@@ -29,8 +29,8 @@ const schema = `
     ${sourceAnnotationType}
     ${cellAnnotationType}
 
-    "Dataset Count Type"
-    ${datasetCountType}
+    "Count Type"
+    ${CountType}
 
     "Dataset Type with id and name of the datasets."
     ${datasetType}

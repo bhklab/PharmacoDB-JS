@@ -1,5 +1,5 @@
-const datasetCountType = `
-    type DatasetCount {
+const CountType = `
+    type Count {
         "This is the dataset object"
         dataset: Dataset!
         "Number of the elements in source/dataset"
@@ -7,6 +7,7 @@ const datasetCountType = `
     }
 `;
 
+
 module.exports = {
-    datasetCountType
+    CountType
 };

@@ -16,9 +16,9 @@ const tissueAnnotationType = `
         # annotations: [SourceAnnotation!]
         synonyms: [SourceAnnotation!]
         # number of cell lines of the tissue type per dataset.
-        cell_count: [DatasetCount!]
+        cell_count: [Count!]
         # number of compounds tested with the particular tissue cell lines.
-        compounds_tested: [DatasetCount!]
+        compounds_tested: [Count!]
     }
 `;
 

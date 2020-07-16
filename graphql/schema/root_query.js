@@ -11,7 +11,9 @@ const RootQuery = `type RootQuery {
     "Root Queries for datasets."
     datasets: [Dataset!]!
     dataset(datasetId: Int!): [DatasetInformation!]!
-    cell_lines_per_dataset: [DatasetCount!]!
+    cell_lines_per_dataset: [Count!]!
+    "arguments that can be passed: 'cell', 'tissue', 'drug', 'experiment'"
+    type_tested_on_dataset(type: String!, datasetId: Int!): [Count!]!
 
     """Root Queries for experiments.
     'page' is the page number for output (default value is 1)'.
