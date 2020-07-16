@@ -9,6 +9,16 @@ const sourceType = `
     }
 `;
 
+
+const sourceAnnotationType = `
+    type SourceAnnotation {
+        name: String!
+        """it's dataset in our case"""
+        source: [String!]
+    }
+`;
+
+
 const sourceStatsType = `
     type SourceStats {
         source_id: Int!
@@ -22,5 +32,6 @@ const sourceStatsType = `
 
 module.exports = {
     sourceType,
+    sourceAnnotationType,
     sourceStatsType
 };

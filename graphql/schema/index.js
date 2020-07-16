@@ -1,16 +1,16 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
 const { cellLineType, cellAnnotationType } = require('./cell');
+const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
+const { countType, summaryType, genericType, enumAllowedType } = require('./count');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { RootQuery } = require('./root_query');
-const { sourceType, sourceStatsType } = require('./source');
-const { sourceAnnotationType } = require('./source_annotation');
+const { sourceType, sourceAnnotationType, sourceStatsType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
-const { tissueType, tissueAnnotationType, countType } = require('./tissue');
+const { tissueType, tissueAnnotationType} = require('./tissue');
 
 
 // schema definition.
@@ -28,12 +28,17 @@ const schema = `
     ${sourceAnnotationType}
     ${cellAnnotationType}
 
+    "Count Type"
+    ${countType}
+
     "Dataset Type with id and name of the datasets."
     ${datasetType}
     ${datasetInformationType}
 
     "Drug Response Type with dose and response values"
     ${drugResponseType}
+
+    ${enumAllowedType}
 
     "Experiment Type with experiment_id, cell line, tissue, compound and dataset types."
     ${experimentType}
@@ -43,9 +48,15 @@ const schema = `
     "Gene Annotation Type with gene id, ensg, start and end."
     ${geneAnnotationType}
 
+    "Generic Type"
+    ${genericType}
+
     "Source Type"
     ${sourceType}
     ${sourceStatsType}
+
+    "Summary Type"
+    ${summaryType}
 
     "Target Type"
     ${targetType}
@@ -56,7 +67,6 @@ const schema = `
     """Tissue Annotation type with id, name, annotations object 
      including the name of source and datasets it's present in"""
     ${tissueAnnotationType}
-    ${countType}
 
     "Root Query"
     ${RootQuery}

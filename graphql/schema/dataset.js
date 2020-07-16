@@ -7,6 +7,7 @@ const datasetType = `
     }
 `;
 
+
 const datasetInformationType = `
     type DatasetInformation {
         "id of the dataset"
@@ -14,21 +15,22 @@ const datasetInformationType = `
         "name of the dataset"
         name: String!
         "number of cell-lines in the dataset"
-        cells: Int!
+        cell_count: Int!
         "number of tissues in the dataset"
-        tissues: Int!
+        tissue_tested_count: Int!
         "number of compounds in the dataset"
-        compounds: Int!
+        compound_tested_count: Int!
         "number of experiments held across the dataset"
-        experiments: Int!
-        "cell lines tested in the dataset"
+        experiment_count: Int!
+        "cell line names tested in the dataset"
         cells_tested: [String!]
-        "compounds tested in the dataset"
+        "compound names tested in the dataset"
         compounds_tested: [String!]
     }
 `;
 
+
 module.exports = {
     datasetType,
-    datasetInformationType
+    datasetInformationType,
 };

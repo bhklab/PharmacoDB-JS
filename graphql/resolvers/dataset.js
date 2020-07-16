@@ -1,6 +1,7 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
 
+
 /**
  * @param {Number} - datasetId (optional)
  * @returns {Object} - returns an array like this [{dataset_id: Number, dataset_name: String}]
@@ -17,26 +18,30 @@ const datasetQuery = async datasetId => {
 /**
  * 
  * @returns {Object} - {
- *      CCLE: { dataset: 'dataset name', count: 'number of cell lines in the dataset' }
+ *      CCLE: { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  * }
  */
 const cellCountGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const query = await knex
-        .select('d.dataset_name')
+        .select('d.dataset_name', 'd.dataset_id')
         .countDistinct('dc.cell_id as count')
         .from('dataset_cells as dc')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
         .groupBy('d.dataset_id');
-        // return object source_name: {count: Number, source: String}
+        // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
     query.forEach(value => {
         const {
             dataset_name,
+            dataset_id,
             count
         } = value;
         returnObject[dataset_name] = {
-            dataset: dataset_name,
+            dataset: {
+                id: dataset_id,
+                name: dataset_name
+            },
             count: count
         };
     });
@@ -47,25 +52,29 @@ const cellCountGroupByDatasetQuery = async () => {
 
 /**
  *  @param {String} - string for which we want to get the count, eg experiment, tissue etc.
- *  @returns {Object} - return object {source: {count: Number, source: String}, ....}
+ *  @returns {Object} - return object {{dataset: {id: 'dataset id', name: 'dataset name'}, count: Number}, ....}
  */
 const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object.
     const returnObject = {};
     const query = await knex
-        .select('d.dataset_name')
+        .select('d.dataset_name', 'd.dataset_id')
         .countDistinct(`e.${type}_id as count`)
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
         .groupBy('d.dataset_id');
-    // return object source_name: {count: Number, source: String}
+    // return object {dataset: {id: Number, name: String}, count: number of 'types' tested in the dataset}.
     query.forEach(value => {
         const {
             dataset_name,
+            dataset_id,
             count
         } = value;
         returnObject[dataset_name] = {
-            dataset: dataset_name,
+            dataset: {
+                id: dataset_id,
+                name: dataset_name
+            },
             count: count
         };
     });
@@ -78,17 +87,20 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
  *
  * @param {String} type - either 'cell' or 'compound'
  * @param {Number} datasetId
- * @return {Array}
+ * @return {Array} - returns an array of cells tested or compounds tested on the dataset.
  */
 const summaryQuery = async (type, datasetId) => {
     // query to get the id and name for the type.
     const query = await knex
+        .select('d.dataset_name', 'd.dataset_id')
         .distinct(`e.${type}_id`, `t.${type}_name`)
         .from('experiments as e')
+        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
         .join(`${type}s as t`, `t.${type}_id`, `e.${type}_id`)
         .where('e.dataset_id', datasetId);
-    return query.map(value => value[`${type}_name`]);
+    return transformObject(query);
 };
+
 
 /**
  * Returns the transformed data for all the datasets in the database.
@@ -164,14 +176,14 @@ const dataset = async args => {
 
             data['id'] = dataset_id;
             data['name'] = dataset_name;
-            data['cells'] = cell_count[dataset_name].count;
-            data['tissues'] = tissue_count[dataset_name].count;
-            data['compounds'] = compound_count[dataset_name].count;
-            data['experiments'] = experiment_count[dataset_name].count;
+            data['cell_count'] = cell_count[dataset_name].count;
+            data['tissue_tested_count'] = tissue_count[dataset_name].count;
+            data['compound_tested_count'] = compound_count[dataset_name].count;
+            data['experiment_count'] = experiment_count[dataset_name].count;
 
             if (dataset_id === datasetId) {
-                data['cells_tested'] = cells;
-                data['compounds_tested'] = compounds;
+                data['cells_tested'] = cells.map(value => value['cell_name']);
+                data['compounds_tested'] = compounds.map(value => value['drug_name']);
 
                 returnData.unshift(data);
             } else {
@@ -186,7 +198,53 @@ const dataset = async args => {
 };
 
 
+/**
+ * cell lines grouped by the dataset.
+ * @returns {Array} - returns an array of the objects.
+ * { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
+ */
+const cell_lines_per_dataset = async () => {
+    const cell_count = await cellCountGroupByDatasetQuery();
+    return Object.keys(cell_count).map(value => cell_count[value]);
+};
+
+
+/**
+ * @param {Object} - Args {type: 'it can be compound, tissue, cells', datasetId: 'dataset id'}
+ * @returns {Array} - returns an array of the objects. 
+ * { 
+ *      dataset: {id: 'dataset id', name: 'dataset name'}, 
+ *      type: 'example compound', 
+ *      list: {id: 'type id', name: 'type name' } 
+ * }
+ */
+const type_tested_on_dataset = async ({type, datasetId}) => {
+    const type_list = await summaryQuery(type, datasetId);
+    const count = type_list.length;
+    const returnObject = {};
+    type_list.forEach((value, i) => {
+        const {dataset_name, dataset_id} = value;
+        if(!i) {
+            returnObject['dataset'] = {
+                id: dataset_id,
+                name: dataset_name
+            };
+            returnObject['type'] = type;
+            returnObject['count'] = count;
+            returnObject['list'] = [];
+        }
+        returnObject['list'].push({
+            id: value[`${type}_id`],
+            name: value[`${type}_name`]
+        });
+    });
+    return returnObject;
+};
+
+
 module.exports = {
     datasets,
-    dataset
+    dataset,
+    cell_lines_per_dataset,
+    type_tested_on_dataset
 };

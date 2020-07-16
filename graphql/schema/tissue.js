@@ -5,12 +5,6 @@ const tissueType = `
     }
 `;
 
-const countType = `
-    type Count {
-        dataset: Dataset!
-        count: Int!
-    }
-`;
 
 // we can also merge this to the tissue type itself and query based on it.
 // but for the simplicity sake I am not doing that with this type.
@@ -28,8 +22,8 @@ const tissueAnnotationType = `
     }
 `;
 
+
 module.exports = {
     tissueType,
     tissueAnnotationType,
-    countType
 };
