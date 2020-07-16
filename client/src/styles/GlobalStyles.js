@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import colors from './colors';
 
-
 const GlobalStyles = createGlobalStyle`
     body {
         margin:0;
@@ -12,6 +11,10 @@ const GlobalStyles = createGlobalStyle`
 
     a {
         text-decoration: none;
+        transition: all 0.25s ease-out 0s;
+    }
+    a:hover {
+        transition: all 0.25s ease-out 0s;
     }
 
     h1, h2, h3 {
@@ -26,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
 // font-family: 'Nunito', sans-serif; 400, 600
 // font-family: 'Open Sans', sans-serif; 400, 600
 // font-family: 'Overpass', sans-serif; 400, 600
-// font-family: 'Crete Round', serif;
+// font-family: 'Roboto Slab', serif; 600
 // font-family: 'Rubik', sans-serif; 400, 500
 
 export default GlobalStyles;

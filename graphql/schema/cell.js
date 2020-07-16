@@ -11,7 +11,7 @@ const cellAnnotationType = `
         id: Int!
         name: String!
         tissue: Tissue!
-        annotations: [Annotation!]
+        synonyms: [SourceAnnotation!]
     }
 `;
 

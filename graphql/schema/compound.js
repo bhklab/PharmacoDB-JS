@@ -1,3 +1,14 @@
+const compoundAnnotationType = `
+    type CompoundAnnotation {
+        smiles: String
+        inchikey: String
+        pubchem: String
+        """ this is either 0 or 1 in the database, 
+            but API gives the output as Approved/Not-Approved """
+        fda_status: String
+    }
+`;
+
 const compoundType = ` 
     type Compound {
         id: Int!
@@ -6,16 +17,16 @@ const compoundType = `
     }
 `;
 
-const compoundAnnotationType = `
-    type CompoundAnnotation {
-        drug_id: Int!
-        smiles: String
-        inchikey: String
-        pubchem: String
+const singleCompoundType = `
+    type SingleCompound {
+        compound: Compound!
+        synonyms: [SourceAnnotation!]
+        targets: [Target!]
     }
 `;
 
 module.exports = {
     compoundType,
-    compoundAnnotationType
+    compoundAnnotationType,
+    singleCompoundType
 };
