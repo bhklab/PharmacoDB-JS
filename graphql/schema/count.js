@@ -26,8 +26,18 @@ const summaryType = `
 `;
 
 
+const enumAllowedType = `
+    enum AllowedValues {
+        DRUG
+        CELL
+        TISSUE
+    }
+`;
+
+
 module.exports = {
     countType,
     summaryType,
-    genericType
+    genericType,
+    enumAllowedType
 };
