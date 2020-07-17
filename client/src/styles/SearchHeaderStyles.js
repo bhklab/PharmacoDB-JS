@@ -47,17 +47,6 @@ const StyledSearchHeader = styled.div`
         padding-top:50px;
     }
 
-    .visible {
-        visibility: visible;
-        opacity: 1;
-        transition: opacity 0.25s linear;
-      }
-      .hidden {
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0s 0.25s, opacity 0.25s linear;
-      }
-
     .search-dropdown {
       position: absolute;
       margin-top: 110px; // height + padding of navbar

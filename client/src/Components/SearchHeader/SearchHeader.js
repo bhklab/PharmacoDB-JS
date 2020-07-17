@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { SlideDown } from 'react-slidedown';
 import NavBar from './NavBar';
 import SearchBar from './SearchBar';
 import 'react-slidedown/lib/slidedown.css';
@@ -46,16 +45,6 @@ const SearchHeader = () => {
           <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
         </div>
       ) : (
-      // <SlideDown className="search-dropdown">
-      //   {isOpen ? (
-      //     <div className="search-container">
-      //       <h1>Try searching for a...</h1>
-      //       <SearchBar />
-      //       <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
-      //     </div>
-      //   ) : null}
-      // </SlideDown>
-
         <div className={`search-container popup ${isOpen ? 'visible' : 'hidden'}`}>
           <h1>Try searching for a...</h1>
           <SearchBar />

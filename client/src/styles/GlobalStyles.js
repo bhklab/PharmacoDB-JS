@@ -24,6 +24,18 @@ const GlobalStyles = createGlobalStyle`
     h1 {
         font-size: calc(0.5vw + 2em);
     }
+
+    .visible {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.25s linear;
+    }
+    
+    .hidden {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 0.25s, opacity 0.25s linear;
+    }
 `;
 
 // font-family: 'Nunito', sans-serif; 400, 600
