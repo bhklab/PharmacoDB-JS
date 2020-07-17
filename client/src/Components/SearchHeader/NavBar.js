@@ -43,6 +43,34 @@ const NavBar = (props) => {
     onClick(isOpen);
   };
 
+  /**
+   * Returns the dropdown items to be rendered.
+   *
+   * @param {Object} e  On click event
+   * @returns {JSX} JSX to be rendered
+   */
+
+  const dropdownItems = (data) => data.map((x) => (
+      <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
+    ));
+
+  // for about menu dropdown
+  const aboutLinks = [
+    { url: '/about', name: 'About Us' },
+    { url: '/documentation', name: 'Documentation' },
+    { url: '/cite', name: 'Cite Us' },
+  ];
+
+  // for data menu dropdown
+  const dataLinks = [
+    { url: '/datasets', name: 'Datasets' },
+    { url: '/cell_lines', name: 'Cell Lines' },
+    { url: '/tissues', name: 'Tissues' },
+    { url: '/compounds', name: 'Compounds' },
+    { url: '/genes', name: 'Genes' },
+    { url: '/experiments', name: 'Experiments' },
+  ];
+
   return (
     <StyledNavBar page={page}>
       <div className="container">
@@ -50,33 +78,14 @@ const NavBar = (props) => {
         <StyledLinkDropdowns page={page}>
           <Dropdown className="link-dropdown" text="About" simple>
             <Dropdown.Menu className="link-menu">
-              <Dropdown.Item><Link to="/about">About Us</Link></Dropdown.Item>
-              <Dropdown.Item><Link to="/documentation">Documentation</Link></Dropdown.Item>
-              <Dropdown.Item><Link to="/cite">Cite Us</Link></Dropdown.Item>
+              {dropdownItems(aboutLinks)}
               <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Link className="link" to="/explore">Explore</Link>
           <Dropdown className="link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
-              <Dropdown.Item>
-                <Link to="/datasets">Datasets</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/cell_lines">Cell lines</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/tissues">Tissues</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/compounds">Compounds</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/genes">Genes</Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Link to="/experiments">Experiments</Link>
-              </Dropdown.Item>
+              {dropdownItems(dataLinks)}
             </Dropdown.Menu>
           </Dropdown>
 
