@@ -20,6 +20,11 @@ const getCompoundQuery = gql`
     compound(compoundId: $compoundId) {
       id
       name
+      annotation {
+        smiles
+        inchikey
+        pubchem
+      }
     }
   }
 `;

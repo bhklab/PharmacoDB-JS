@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SearchHeader from '../SearchHeader/SearchHeader';
+import PageContext from '../../context/PageContext';
 
 /**
  * Wrapper for every page - includes the SearchHeader,
@@ -18,10 +19,10 @@ import SearchHeader from '../SearchHeader/SearchHeader';
 const Layout = (props) => {
   const { children, page } = props;
   return (
-    <>
-      <SearchHeader page={page} />
+    <PageContext.Provider value={page}>
+      <SearchHeader />
       <main>{children}</main>
-    </>
+    </PageContext.Provider>
   );
 };
 

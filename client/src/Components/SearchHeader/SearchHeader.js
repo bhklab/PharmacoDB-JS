@@ -1,47 +1,11 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { SlideDown } from 'react-slidedown';
+import React, { useState, useContext } from 'react';
 import NavBar from './NavBar';
 import SearchBar from './SearchBar';
 import 'react-slidedown/lib/slidedown.css';
+import PageContext from '../../context/PageContext';
 
-import bg from '../../images/bg.jpg';
-import colors from '../../styles/colors';
+import { StyledSearchHeader } from '../../styles/SearchHeaderStyles';
 
-const StyledSearchHeader = styled.div`
-    height: ${(props) => (props.page === 'home' ? 'calc(30vh + 150px)' : 'auto')};
-    background: ${(props) => (props.page === 'home' ? `url('${bg}')` : 'white')};
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    
-    display:flex;
-    flex-direction:column;
-
-    .search-container {
-        width: ${(props) => (props.page === 'home' ? '70%' : '100%')};
-        align-self:center;
-
-        h1 {
-            font-family: 'Overpass', sans-serif;
-            font-weight: 400;
-            color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
-            margin:50px 0 20px 0;
-        }
-    }
-
-    .dropdown {
-      position: absolute;
-      margin-top: 110px; // height + padding of navbar
-      width: calc(70% - 60px);
-      background: white;
-      align-self:center;
-      padding: 0px 30px;
-      border-bottom:3px solid ${colors.light_blue_bg};
-      z-index:999;
-    }
-`;
 /**
  * Header component including the navbar and the
  * search bar. Is full size on home page, and minimized
@@ -50,13 +14,12 @@ const StyledSearchHeader = styled.div`
  * @component
  * @example
  *
- * const page = "home"
  * return (
- *   <SearchHeader page={page}/>
+ *   <SearchHeader />
  * )
  */
-const SearchHeader = (props) => {
-  const { page } = props;
+const SearchHeader = () => {
+  const page = useContext(PageContext);
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -73,36 +36,23 @@ const SearchHeader = (props) => {
   };
 
   return (
-    <StyledSearchHeader page={page}>
-      <NavBar page={page} onClick={onClick} />
+    <StyledSearchHeader page={page} isOpen={isOpen}>
+      <NavBar onClick={onClick} />
       { page === 'home' ? (
         <div className="search-container">
           <h1>Try searching for a...</h1>
-          <SearchBar page={page} />
+          <SearchBar />
+          <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
         </div>
       ) : (
-        <SlideDown className="dropdown">
-          {isOpen ? (
-            <div className="search-container">
-              <h1>Try searching for a...</h1>
-              <SearchBar page={page} />
-            </div>
-          ) : null}
-        </SlideDown>
+        <div className={`search-container popup ${isOpen ? 'visible' : 'hidden'}`}>
+          <h1>Try searching for a...</h1>
+          <SearchBar />
+          <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
+        </div>
       )}
     </StyledSearchHeader>
   );
-};
-
-SearchHeader.propTypes = {
-  /**
-     * SearchHeader's page name
-     */
-  page: PropTypes.string,
-};
-
-SearchHeader.defaultProps = {
-  page: '',
 };
 
 export default SearchHeader;
