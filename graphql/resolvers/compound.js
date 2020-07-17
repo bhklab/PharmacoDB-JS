@@ -1,25 +1,126 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { compound_target } = require('./target');
 
 /**
+ * 
+ * @param {Number} - value which is either 1 or 0.
+ * @returns {String}
+ */
+const transformFdaStatus = value => (value ? 'Approved' : 'Not Approved');
+
+/**
+ * 
+ *  @param {Array} - takes an array of object like below
+ *      {
+ *          compound_id: 526,
+ *          compound_name: 'paclitaxel',
+ *          source_compound_name: 'Paclitaxel',
+ *          dataset_name: 'CCLE'
+ *      }
+ *  @returns {Object} - returns the object with name of the synonym belonging to the sources.
+ *      {
+ *        "name": "paclitaxel",
+ *          "source": [
+ *            "gCSI",
+ *            "CTRPv2"
+ *          ]
+ *       }
+ */
+const transformSynonyms = data => {
+    const returnList = {};
+    data.map((value, i) => {
+        const {
+            source_compound_name,
+            dataset_name
+        } = value;
+        if (!i || !Object.keys(returnList).includes(source_compound_name)) {
+            returnList[source_compound_name] = {
+                name: source_compound_name,
+                source: [dataset_name]
+            };
+        } else if (Object.keys(returnList).includes(source_compound_name)) {
+            returnList[source_compound_name]['source'].push(dataset_name);
+        }
+    });
+    return Object.values(returnList);
+};
+
+/**
+ * 
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
-const transformCompound = data => {
+const transformCompounds = data => {
     return data.map(compound => {
-        const { drug_id, drug_name, smiles, inchikey, pubchem } = compound;
+        const {
+            drug_id,
+            drug_name,
+            smiles,
+            inchikey,
+            pubchem,
+            fda_status
+        } = compound;
         return {
             id: drug_id,
             name: drug_name,
             annotation: {
-                drug_id: drug_id,
                 smiles: smiles,
                 inchikey: inchikey,
-                pubchem: pubchem
+                pubchem: pubchem,
+                fda_status: transformFdaStatus(fda_status)
             }
         };
     });
+};
+
+/**
+ * 
+ * @param {Array} compoundData 
+ * @param {Array} compoundSynonyms 
+ */
+const transformSingleCompound = async (compoundId, compoundData, compoundSynonyms) => {
+    const transformedCompound = transformCompounds(compoundData);
+    const transformedSynonyms = transformSynonyms(compoundSynonyms);
+    const targets = await compound_target({
+        compoundId: compoundId
+    });
+
+    return {
+        compound: transformedCompound[0],
+        synonyms: transformedSynonyms,
+        targets: targets['targets']
+    };
+};
+
+/**
+ *  @param {Number} - compoundId.
+ *
+ */
+// todo: change the query using `compound` based on the new database compound table.
+const compoundSourceSynonymQuery = async compoundId => {
+    return await knex
+        .select('drugs.drug_id as compound_id',
+            'drugs.drug_name as compound_name',
+            'source_drug_names.drug_name as source_compound_name',
+            'datasets.dataset_name as dataset_name')
+        .from('drugs')
+        .join('source_drug_names', 'drugs.drug_id', 'source_drug_names.drug_id')
+        .join('sources', 'sources.source_id', 'source_drug_names.source_id')
+        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
+        .where('drugs.drug_id', compoundId);
+};
+
+/**
+ * @param {Number} - compoundId.
+ * @returns {Object} - compound object.
+ */
+const compoundQuery = async compoundId => {
+    return await knex
+        .select()
+        .from('drugs')
+        .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
+        .where('drugs.drug_id', compoundId);
 };
 
 /**
@@ -42,7 +143,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }) => {
             .limit(all ? '*' : limit)
             .offset(all ? '*' : offset);
         // return the transformed data.
-        return transformCompound(compounds);
+        return transformCompounds(compounds);
     } catch (err) {
         console.log(err);
         throw err;
@@ -56,19 +157,15 @@ const compounds = async ({ page = 1, per_page = 20, all = false }) => {
 const compound = async args => {
     try {
         // grabbing the compound id from the args.
-        const { compoundId } = args;
+        const {
+            compoundId
+        } = args;
         // query to get the data based on the compound id.
-        let compound = await knex
-            .select()
-            .from('drugs')
-            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
-            .where('drugs.drug_id', compoundId);
-        // transforming the rowdatapacket object.
-        compound = transformObject(compound);
-        // getting the right data to be sent.
-        const data = transformCompound(compound);
-        // return the first element of the list.
-        return data[0];
+        let compoundData = await compoundQuery(compoundId);
+        // query to get compound source synonyms.
+        let compoundSynonyms = await compoundSourceSynonymQuery(compoundId);
+        // return the compound object.
+        return transformSingleCompound(compoundId, compoundData, compoundSynonyms);
     } catch (err) {
         console.log(err);
         throw err;
