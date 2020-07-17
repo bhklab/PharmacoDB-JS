@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import PropTypes from 'prop-types';
 import PageContext from '../../context/PageContext';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
@@ -51,8 +52,8 @@ const NavBar = (props) => {
    */
 
   const dropdownItems = (data) => data.map((x) => (
-      <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
-    ));
+    <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
+  ));
 
   // for about menu dropdown
   const aboutLinks = [
@@ -103,6 +104,13 @@ const NavBar = (props) => {
       </div>
     </StyledNavBar>
   );
+};
+
+NavBar.propTypes = {
+  /**
+   * NavBar' onClick handler for search
+  */
+  onClick: PropTypes.func.isRequired,
 };
 
 export default NavBar;

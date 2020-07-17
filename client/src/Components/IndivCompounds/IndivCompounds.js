@@ -68,17 +68,9 @@ IndivCompounds.propTypes = {
   */
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }),
-};
-
-IndivCompounds.defaultProps = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: '1',
-    }),
-  }),
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default IndivCompounds;
