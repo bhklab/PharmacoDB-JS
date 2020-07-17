@@ -17,7 +17,7 @@ const StyledSearchHeader = styled.div`
     flex-direction:column;
 
     .search-container {
-        width: ${(props) => (props.page === 'home' ? '70%' : '100%')};
+        width: 70%;
         margin-top: 4vh;
         padding-bottom: 5vh;
         align-self:center;
@@ -37,6 +37,26 @@ const StyledSearchHeader = styled.div`
             font-size: 1.2em;
         }
     }
+
+    .popup {
+        position:absolute;
+        margin-top:100px; // height + padding of navbar
+        background: rgb(255,255,255,0.8);
+        z-index:999;
+        height:100%;
+        padding-top:50px;
+    }
+
+    .visible {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.25s linear;
+      }
+      .hidden {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 0.25s, opacity 0.25s linear;
+      }
 
     .search-dropdown {
       position: absolute;
