@@ -8,6 +8,7 @@ const StyledDescription = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-height:370px;
 
     width: 70%;
     margin-top: 8vh;
@@ -32,7 +33,7 @@ const StyledDescription = styled.div`
     }
 
     .dose-img {
-        width: 28%;
+        width: 25%;
         max-width: 370px;
     }
 `;

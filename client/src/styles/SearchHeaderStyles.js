@@ -7,7 +7,7 @@ import colors from './colors';
  * Styles for the search header parent component.
  */
 const StyledSearchHeader = styled.div`
-    // height: ${(props) => (props.page === 'home' ? 'calc(25vh + 150px)' : 'auto')};
+    max-height: ${(props) => (props.page === 'home' ? 'calc(25vh + 150px)' : 'auto')};
     background: ${(props) => (props.page === 'home' ? `url('${bg}')` : 'white')};
     background-size: cover;
     background-attachment: fixed;
@@ -57,6 +57,17 @@ const StyledSearchHeader = styled.div`
       border-bottom:3px solid ${colors.light_blue_bg};
       z-index:999;
     }
+
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .header-links {
+            display: none;
+        }
+
+        .search-container {
+            margin-top: 110px;
+        }
+    } 
 `;
 
 /**
@@ -94,6 +105,11 @@ const StyledLinkDropdowns = styled.div`
     justify-content: space-between;
     align-items: center;
 
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        width: auto;
+    } 
+
     .link-dropdown, .link {
         width: auto;
         color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
@@ -103,7 +119,7 @@ const StyledLinkDropdowns = styled.div`
         letter-spacing: 0.5px;
         background: transparent;
         border: none;
-        padding: 13px 0px;
+        padding: 13px 0;
 
         a {
             color: ${colors.dark_teal_heading};
@@ -118,6 +134,10 @@ const StyledLinkDropdowns = styled.div`
         .item {
             margin: 10px 0px;
         }
+    }
+
+    .dropdown.icon {
+        margin-left: 0.5em !important;
     }
 `;
 

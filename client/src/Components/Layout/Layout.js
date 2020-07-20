@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import PageContext from '../../context/PageContext';
+import BurgerMenu from '../SearchHeader/BurgerMenu';
 
 /**
  * Wrapper for every page - includes the SearchHeader,
@@ -20,6 +21,7 @@ const Layout = (props) => {
   const { children, page } = props;
   return (
     <PageContext.Provider value={page}>
+      <BurgerMenu />
       <SearchHeader />
       <main>{children}</main>
     </PageContext.Provider>

@@ -18,13 +18,10 @@ const StyledStats = styled.div`
     margin-bottom: 20vh; //TODO: REMOVE
     margin-top: 8vh;
     background: ${colors.light_blue_bg};
-    height: 14vw;
+    height: 12vw;
     border-radius: calc(0.8vw + 0.4em);
 
     .item-container {
-        // width:calc(5.8vw + 40px);
-        // height:calc(9vw + 30px);
-        // border-radius:calc(1vw + 0.5em);
         background: ${colors.light_blue_bg};
 
         display: flex;
@@ -33,7 +30,7 @@ const StyledStats = styled.div`
         justify-content: center;
 
         img {
-            width: calc(4vw + 35px);
+            width: calc(3.8vw + 30px);
             margin-bottom: 1vw;
         }
         .text {

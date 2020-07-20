@@ -36,6 +36,32 @@ const GlobalStyles = createGlobalStyle`
         opacity: 0;
         transition: visibility 0s 0.25s, opacity 0.25s linear;
     }
+
+    /* Burger Menu */
+    .burger-menu {
+        position:fixed;
+        h2 {
+            margin-bottom: 10px;
+        }
+        .burger-item{ 
+            border-left: 1px solid white;
+            padding: 10px;
+            margin-left: 5px;
+
+            &:hover {
+                border-left: 5px solid white;
+            }
+        }
+        p {
+            margin: 2em;
+        }
+    }
+    /* desktop */
+    @media only screen and (min-width: 1082px) { 
+        .burger-menu, .bm-burger-button {
+            display:none;
+        }
+    }
 `;
 
 // font-family: 'Nunito', sans-serif; 400, 600

@@ -73,18 +73,18 @@ const NavBar = (props) => {
   ];
 
   return (
-    <StyledNavBar page={page}>
+    <StyledNavBar className="header" page={page}>
       <div className="container">
         <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
         <StyledLinkDropdowns page={page}>
-          <Dropdown className="link-dropdown" text="About" simple>
+          <Dropdown className="header-links link-dropdown" text="About" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(aboutLinks)}
               <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Link className="link" to="/explore">Explore</Link>
-          <Dropdown className="link-dropdown" text="Data" simple>
+          <Link className="header-links link" to="/explore">Explore</Link>
+          <Dropdown className="header-links link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(dataLinks)}
             </Dropdown.Menu>
