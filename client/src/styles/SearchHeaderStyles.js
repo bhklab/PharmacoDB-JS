@@ -63,10 +63,6 @@ const StyledSearchHeader = styled.div`
         .header-links {
             display: none;
         }
-
-        .search-container {
-            margin-top: 110px;
-        }
     } 
 `;
 
