@@ -36,6 +36,16 @@ const StyledDescription = styled.div`
         width: 25%;
         max-width: 370px;
     }
+
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .dose-img {
+            display: none;
+        }
+        .text-container{
+          width:100%;
+        }
+    } 
 `;
 
 /**

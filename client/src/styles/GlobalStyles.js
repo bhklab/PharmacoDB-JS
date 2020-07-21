@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     h1 {
-        font-size: calc(0.5vw + 2em);
+        font-size: calc(0.5vw + 1.8em);
     }
 
     .visible {

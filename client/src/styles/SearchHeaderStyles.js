@@ -34,7 +34,7 @@ const StyledSearchHeader = styled.div`
             font-weight: 400;
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: calc(0.3vw + 0.8em);
         }
     }
 
@@ -88,7 +88,8 @@ const StyledNavBar = styled.div`
         align-items: center;
     }
     .logo {
-        width: 200px;
+        width: calc(5vw + 150px);
+        max-width: 200px;
     }
 `;
 
