@@ -61,13 +61,14 @@ const StyledSearchHeader = styled.div`
     /* Burger */
     .burger-bg {
         position: fixed;
-        width: 80px;
+        width: 53px;
         height: 46px;
         right: 0;
         top: 36px;
         background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : 'white')};
         display:none;
         opacity:0.7;
+        z-index:999;
     }
     /* mobile */
     @media only screen and (max-width: 1081px) {
@@ -173,6 +174,15 @@ const StyledSearchButton = styled.button`
     &:focus {
       outline:0;
     }
+
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        width: 33px;
+        height: 33px;
+        img {
+            width: 12px;
+        }
+    } 
   
 `;
 

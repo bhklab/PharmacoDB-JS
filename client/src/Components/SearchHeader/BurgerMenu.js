@@ -11,7 +11,7 @@ const BurgerMenu = () => {
       position: 'fixed',
       width: '34px',
       height: '30px',
-      right: '36px',
+      right: '10px',
       top: '45px',
     },
     bmBurgerBars: {
@@ -81,15 +81,13 @@ const BurgerMenu = () => {
   ];
 
   return (
-    <div className="burger-bg">
-      <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
-        <h2>About</h2>
-        {dropdownItems(aboutLinks)}
-        <p />
-        <h2>Data</h2>
-        {dropdownItems(dataLinks)}
-      </Menu>
-    </div>
+    <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
+      <h2>About</h2>
+      {dropdownItems(aboutLinks)}
+      <p />
+      <h2>Data</h2>
+      {dropdownItems(dataLinks)}
+    </Menu>
 
   );
 };

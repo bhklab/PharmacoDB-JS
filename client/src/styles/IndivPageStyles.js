@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import colors from './colors';
 
 const StyledWrapper = styled.div`
-    margin-top: 5vh;
+    margin-top: 6vh;
 
     display: flex;
     flex-direction: column;
