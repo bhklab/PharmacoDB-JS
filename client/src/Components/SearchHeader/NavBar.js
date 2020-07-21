@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import PropTypes from 'prop-types';
 import PageContext from '../../context/PageContext';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
@@ -51,8 +52,8 @@ const NavBar = (props) => {
    */
 
   const dropdownItems = (data) => data.map((x) => (
-      <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
-    ));
+    <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
+  ));
 
   // for about menu dropdown
   const aboutLinks = [
@@ -72,18 +73,18 @@ const NavBar = (props) => {
   ];
 
   return (
-    <StyledNavBar page={page}>
+    <StyledNavBar className="header" page={page}>
       <div className="container">
         <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
         <StyledLinkDropdowns page={page}>
-          <Dropdown className="link-dropdown" text="About" simple>
+          <Dropdown className="header-links link-dropdown" text="About" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(aboutLinks)}
               <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Link className="link" to="/explore">Explore</Link>
-          <Dropdown className="link-dropdown" text="Data" simple>
+          <Link className="header-links link" to="/explore">Explore</Link>
+          <Dropdown className="header-links link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(dataLinks)}
             </Dropdown.Menu>
@@ -103,6 +104,13 @@ const NavBar = (props) => {
       </div>
     </StyledNavBar>
   );
+};
+
+NavBar.propTypes = {
+  /**
+   * NavBar' onClick handler for search
+  */
+  onClick: PropTypes.func.isRequired,
 };
 
 export default NavBar;

@@ -8,6 +8,7 @@ const TempBar = styled.div`
     background: rgb(233, 245, 255, 0.8);
     border-radius: 40px;
     height: 5.5vh;
+    min-height: 40px;
     margin-bottom:20px;
 `;
 

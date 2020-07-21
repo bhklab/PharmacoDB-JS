@@ -37,6 +37,7 @@ const SearchHeader = () => {
 
   return (
     <StyledSearchHeader page={page} isOpen={isOpen}>
+      <div className="burger-bg" />
       <NavBar onClick={onClick} />
       { page === 'home' ? (
         <div className="search-container">

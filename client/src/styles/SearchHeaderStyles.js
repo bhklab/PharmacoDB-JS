@@ -7,7 +7,7 @@ import colors from './colors';
  * Styles for the search header parent component.
  */
 const StyledSearchHeader = styled.div`
-    // height: ${(props) => (props.page === 'home' ? 'calc(25vh + 150px)' : 'auto')};
+    max-height: ${(props) => (props.page === 'home' ? 'calc(25vh + 150px)' : 'auto')};
     background: ${(props) => (props.page === 'home' ? `url('${bg}')` : 'white')};
     background-size: cover;
     background-attachment: fixed;
@@ -34,7 +34,7 @@ const StyledSearchHeader = styled.div`
             font-weight: 400;
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: calc(0.3vw + 0.8em);
         }
     }
 
@@ -57,6 +57,28 @@ const StyledSearchHeader = styled.div`
       border-bottom:3px solid ${colors.light_blue_bg};
       z-index:999;
     }
+
+    /* Burger */
+    .burger-bg {
+        position: fixed;
+        width: 53px;
+        height: 46px;
+        right: 0;
+        top: 36px;
+        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : 'white')};
+        display:none;
+        opacity:0.7;
+        z-index:999;
+    }
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .header-links {
+            display: none;
+        }
+        .burger-bg {
+            display: block;
+        }
+    } 
 `;
 
 /**
@@ -81,7 +103,8 @@ const StyledNavBar = styled.div`
         align-items: center;
     }
     .logo {
-        width: 200px;
+        width: calc(5vw + 150px);
+        max-width: 200px;
     }
 `;
 
@@ -94,6 +117,11 @@ const StyledLinkDropdowns = styled.div`
     justify-content: space-between;
     align-items: center;
 
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        width: auto;
+    } 
+
     .link-dropdown, .link {
         width: auto;
         color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
@@ -103,7 +131,7 @@ const StyledLinkDropdowns = styled.div`
         letter-spacing: 0.5px;
         background: transparent;
         border: none;
-        padding: 13px 0px;
+        padding: 13px 0;
 
         a {
             color: ${colors.dark_teal_heading};
@@ -118,6 +146,10 @@ const StyledLinkDropdowns = styled.div`
         .item {
             margin: 10px 0px;
         }
+    }
+
+    .dropdown.icon {
+        margin-left: 0.5em !important;
     }
 `;
 
@@ -142,6 +174,15 @@ const StyledSearchButton = styled.button`
     &:focus {
       outline:0;
     }
+
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        width: 33px;
+        height: 33px;
+        img {
+            width: 12px;
+        }
+    } 
   
 `;
 

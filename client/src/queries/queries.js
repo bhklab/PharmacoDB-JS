@@ -18,14 +18,17 @@ const getCompoundsQuery = gql`
 const getCompoundQuery = gql`
  query Compound($compoundId: Int!) {
     compound(compoundId: $compoundId) {
-      id
-      name
-      annotation {
-        smiles
-        inchikey
-        pubchem
+      compound {
+        id
+        name
+        annotation {
+          smiles
+          inchikey
+          pubchem
+        }
       }
     }
+    
   }
 `;
 
