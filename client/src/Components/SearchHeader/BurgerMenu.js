@@ -4,6 +4,16 @@ import { Link } from 'react-router-dom';
 import colors from '../../styles/colors';
 import PageContext from '../../context/PageContext';
 
+/**
+ * Burger menu component for mobile responsive navigation.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <BurgerMenu/>
+ * )
+ */
 const BurgerMenu = () => {
   const page = useContext(PageContext);
   const styles = {
@@ -57,7 +67,6 @@ const BurgerMenu = () => {
    * @param {Object} e  On click event
    * @returns {JSX} JSX to be rendered
    */
-
   const dropdownItems = (data) => data.map((x) => (
     <Link className="burger-item" to={x.url}>{x.name}</Link>
   ));
@@ -88,7 +97,6 @@ const BurgerMenu = () => {
       <h2>Data</h2>
       {dropdownItems(dataLinks)}
     </Menu>
-
   );
 };
 
