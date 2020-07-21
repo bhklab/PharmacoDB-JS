@@ -9,17 +9,15 @@ const BurgerMenu = () => {
   const styles = {
     bmBurgerButton: {
       position: 'fixed',
-      width: '36px',
+      width: '34px',
       height: '30px',
       right: '36px',
-      top: '40px',
-      background: page === 'home' ? colors.dark_teal_heading : 'white',
+      top: '45px',
     },
     bmBurgerBars: {
       background: page === 'home' ? 'white' : colors.dark_teal_heading,
       opacity: 0.8,
-    },
-    bmBurgerBarsHover: {
+      height: '3px',
     },
     bmCrossButton: {
       height: '24px',
@@ -83,13 +81,16 @@ const BurgerMenu = () => {
   ];
 
   return (
-    <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
-      <h2>About</h2>
-      {dropdownItems(aboutLinks)}
-      <p />
-      <h2>Data</h2>
-      {dropdownItems(dataLinks)}
-    </Menu>
+    <div className="burger-bg">
+      <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
+        <h2>About</h2>
+        {dropdownItems(aboutLinks)}
+        <p />
+        <h2>Data</h2>
+        {dropdownItems(dataLinks)}
+      </Menu>
+    </div>
+
   );
 };
 

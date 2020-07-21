@@ -37,7 +37,6 @@ const GlobalStyles = createGlobalStyle`
         transition: visibility 0s 0.25s, opacity 0.25s linear;
     }
 
-    /* Burger Menu */
     .burger-menu {
         position:fixed;
         h2 {

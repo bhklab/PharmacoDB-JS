@@ -30,7 +30,7 @@ const IndivCompounds = (props) => {
   const [compound, setCompound] = useState({});
   useEffect(() => {
     if (data !== undefined) {
-      setCompound(data.compound);
+      setCompound(data.compound.compound);
     }
   }, [data]);
 

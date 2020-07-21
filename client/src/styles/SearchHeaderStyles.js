@@ -58,10 +58,24 @@ const StyledSearchHeader = styled.div`
       z-index:999;
     }
 
+    /* Burger */
+    .burger-bg {
+        position: fixed;
+        width: 80px;
+        height: 46px;
+        right: 0;
+        top: 36px;
+        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : 'white')};
+        display:none;
+        opacity:0.7;
+    }
     /* mobile */
     @media only screen and (max-width: 1081px) {
         .header-links {
             display: none;
+        }
+        .burger-bg {
+            display: block;
         }
     } 
 `;
