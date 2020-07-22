@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Layout from '../Layout/Layout';
+import Layout from '../Utils/Layout';
 import { getCompoundsQuery } from '../../queries/queries';
 
 /**

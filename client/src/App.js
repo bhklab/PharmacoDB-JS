@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import { IndivCompounds, Compounds, Home } from './Components/index';
+import {
+ IndivCompounds, Compounds, Home, NotFoundPage 
+} from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
 // apollo client setup.
@@ -19,6 +21,7 @@ const App = () => (
         <Route path="/" exact component={Home} />
         <Route path="/compounds" exact component={Compounds} />
         <Route path="/compounds/:id" component={IndivCompounds} />
+        <Route path="*" component={NotFoundPage} />
       </Switch>
     </Router>
   </ApolloProvider>

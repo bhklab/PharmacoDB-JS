@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Layout from '../Layout/Layout';
+import Layout from '../Utils/Layout';
 import { getCompoundQuery } from '../../queries/queries';
 
-import { StyledWrapper, StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
+import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
+import StyledWrapper from '../../styles/utils';
 
 /**
  * Parent component for the individual compound page.

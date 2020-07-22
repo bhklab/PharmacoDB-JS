@@ -1,26 +1,7 @@
 import styled from 'styled-components';
 import colors from './colors';
 
-const StyledWrapper = styled.div`
-    margin-top: 6vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    & > * {
-        width: 70%;
-    }
-`;
-
 const StyledIndivPage = styled.div`
-  h1 {
-    color: ${colors.dark_teal_heading};
-    font-family: 'Roboto Slab', serif;
-    font-size: calc(2vw + 1.5em);
-    text-align:center;
-    width:100%;
-  }
   .container {
     width: 100%;
     margin-top: 5vh;
@@ -86,5 +67,4 @@ const StyledSidebar = styled.div`
 export {
   StyledIndivPage,
   StyledSidebar,
-  StyledWrapper,
 };

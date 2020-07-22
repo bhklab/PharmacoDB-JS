@@ -89,6 +89,7 @@ const StyledNavBar = styled.div`
     width: 100%;
     padding-top: 60px;
     height: 70px;
+    margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
     
     display: flex;
     justify-content: center;
