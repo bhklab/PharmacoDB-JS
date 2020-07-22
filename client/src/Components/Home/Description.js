@@ -76,7 +76,7 @@ const Description = () => (
         from any of the studies included in the database.
       </span>
     </div>
-    <img className="dose-img" src={doseImg} />
+    <img alt="dose-response curves" className="dose-img" src={doseImg} />
   </StyledDescription>
 );
 

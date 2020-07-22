@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly with a mocked query 1`] = `
+exports[`renders correctly with a mocked query and id prop 1`] = `
 <MockedProvider
   addTypename={false}
   mocks={
@@ -12,19 +12,37 @@ exports[`renders correctly with a mocked query 1`] = `
               Object {
                 "directives": Array [],
                 "kind": "OperationDefinition",
-                "name": undefined,
+                "name": Object {
+                  "kind": "Name",
+                  "value": "getCompound",
+                },
                 "operation": "query",
                 "selectionSet": Object {
                   "kind": "SelectionSet",
                   "selections": Array [
                     Object {
                       "alias": undefined,
-                      "arguments": Array [],
+                      "arguments": Array [
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "compoundId",
+                          },
+                          "value": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "compoundId",
+                            },
+                          },
+                        },
+                      ],
                       "directives": Array [],
                       "kind": "Field",
                       "name": Object {
                         "kind": "Name",
-                        "value": "compounds",
+                        "value": "compound",
                       },
                       "selectionSet": Object {
                         "kind": "SelectionSet",
@@ -36,213 +54,7 @@ exports[`renders correctly with a mocked query 1`] = `
                             "kind": "Field",
                             "name": Object {
                               "kind": "Name",
-                              "value": "id",
-                            },
-                            "selectionSet": undefined,
-                          },
-                          Object {
-                            "alias": undefined,
-                            "arguments": Array [],
-                            "directives": Array [],
-                            "kind": "Field",
-                            "name": Object {
-                              "kind": "Name",
-                              "value": "name",
-                            },
-                            "selectionSet": undefined,
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-                "variableDefinitions": Array [],
-              },
-            ],
-            "kind": "Document",
-            "loc": Object {
-              "end": 75,
-              "start": 0,
-            },
-          },
-        },
-        "result": Object {
-          "data": Object {
-            "compounds": Object {
-              "id": 1,
-              "name": "testDrug",
-            },
-          },
-        },
-      },
-    ]
-  }
->
-  <ApolloProvider
-    client={
-      ApolloClient {
-        "cache": InMemoryCache {
-          "addTypename": false,
-          "cacheKeyRoot": KeyTrie {
-            "weak": WeakMap {},
-            "weakness": true,
-          },
-          "config": Object {
-            "addTypename": false,
-            "dataIdFromObject": [Function],
-            "fragmentMatcher": HeuristicFragmentMatcher {},
-            "freezeResults": false,
-            "resultCaching": true,
-          },
-          "data": DepTrackingCache {
-            "data": Object {},
-            "depend": [Function],
-          },
-          "maybeBroadcastWatch": [Function],
-          "optimisticData": DepTrackingCache {
-            "data": Object {},
-            "depend": [Function],
-          },
-          "silenceBroadcast": false,
-          "storeReader": StoreReader {
-            "executeSelectionSet": [Function],
-            "executeStoreQuery": [Function],
-            "executeSubSelectedArray": [Function],
-            "freezeResults": false,
-          },
-          "storeWriter": StoreWriter {},
-          "typenameDocumentCache": Map {},
-          "watches": Set {
-            Object {
-              "callback": [Function],
-              "optimistic": true,
-              "previousResult": [Function],
-              "query": Object {
-                "definitions": Array [
-                  Object {
-                    "directives": Array [],
-                    "kind": "OperationDefinition",
-                    "name": undefined,
-                    "operation": "query",
-                    "selectionSet": Object {
-                      "kind": "SelectionSet",
-                      "selections": Array [
-                        Object {
-                          "alias": undefined,
-                          "arguments": Array [],
-                          "directives": Array [],
-                          "kind": "Field",
-                          "name": Object {
-                            "kind": "Name",
-                            "value": "compounds",
-                          },
-                          "selectionSet": Object {
-                            "kind": "SelectionSet",
-                            "selections": Array [
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "id",
-                                },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "name",
-                                },
-                                "selectionSet": undefined,
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                    "variableDefinitions": Array [],
-                  },
-                ],
-                "kind": "Document",
-                "loc": Object {
-                  "end": 75,
-                  "start": 0,
-                },
-              },
-              "variables": Object {},
-            },
-          },
-        },
-        "clearStoreCallbacks": Array [],
-        "defaultOptions": Object {},
-        "disableNetworkFetches": false,
-        "link": MockLink {
-          "addTypename": false,
-          "mockedResponsesByKey": Object {
-            "{\\"query\\":\\"{\\\\n  compounds {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
-          },
-        },
-        "localState": LocalState {
-          "cache": InMemoryCache {
-            "addTypename": false,
-            "cacheKeyRoot": KeyTrie {
-              "weak": WeakMap {},
-              "weakness": true,
-            },
-            "config": Object {
-              "addTypename": false,
-              "dataIdFromObject": [Function],
-              "fragmentMatcher": HeuristicFragmentMatcher {},
-              "freezeResults": false,
-              "resultCaching": true,
-            },
-            "data": DepTrackingCache {
-              "data": Object {},
-              "depend": [Function],
-            },
-            "maybeBroadcastWatch": [Function],
-            "optimisticData": DepTrackingCache {
-              "data": Object {},
-              "depend": [Function],
-            },
-            "silenceBroadcast": false,
-            "storeReader": StoreReader {
-              "executeSelectionSet": [Function],
-              "executeStoreQuery": [Function],
-              "executeSubSelectedArray": [Function],
-              "freezeResults": false,
-            },
-            "storeWriter": StoreWriter {},
-            "typenameDocumentCache": Map {},
-            "watches": Set {
-              Object {
-                "callback": [Function],
-                "optimistic": true,
-                "previousResult": [Function],
-                "query": Object {
-                  "definitions": Array [
-                    Object {
-                      "directives": Array [],
-                      "kind": "OperationDefinition",
-                      "name": undefined,
-                      "operation": "query",
-                      "selectionSet": Object {
-                        "kind": "SelectionSet",
-                        "selections": Array [
-                          Object {
-                            "alias": undefined,
-                            "arguments": Array [],
-                            "directives": Array [],
-                            "kind": "Field",
-                            "name": Object {
-                              "kind": "Name",
-                              "value": "compounds",
+                              "value": "compound",
                             },
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -269,21 +81,663 @@ exports[`renders correctly with a mocked query 1`] = `
                                   },
                                   "selectionSet": undefined,
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "annotation",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "smiles",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "inchikey",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "pubchem",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
                         ],
                       },
-                      "variableDefinitions": Array [],
+                    },
+                  ],
+                },
+                "variableDefinitions": Array [
+                  Object {
+                    "defaultValue": undefined,
+                    "directives": Array [],
+                    "kind": "VariableDefinition",
+                    "type": Object {
+                      "kind": "NonNullType",
+                      "type": Object {
+                        "kind": "NamedType",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "Int",
+                        },
+                      },
+                    },
+                    "variable": Object {
+                      "kind": "Variable",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "compoundId",
+                      },
+                    },
+                  },
+                ],
+              },
+            ],
+            "kind": "Document",
+            "loc": Object {
+              "end": 230,
+              "start": 0,
+            },
+          },
+          "variables": Object {
+            "compoundId": 1,
+          },
+        },
+        "result": Object {
+          "data": Object {
+            "compound": Object {
+              "compound": Object {
+                "annotation": Object {
+                  "inchikey": "0",
+                  "pubchem": "0",
+                  "smiles": "OCO",
+                },
+                "id": "1",
+                "name": "testDrug",
+              },
+            },
+          },
+        },
+      },
+    ]
+  }
+>
+  <ApolloProvider
+    client={
+      ApolloClient {
+        "cache": InMemoryCache {
+          "addTypename": false,
+          "cacheKeyRoot": KeyTrie {
+            "weak": WeakMap {},
+            "weakness": true,
+          },
+          "config": Object {
+            "addTypename": false,
+            "dataIdFromObject": [Function],
+            "fragmentMatcher": HeuristicFragmentMatcher {},
+            "freezeResults": false,
+            "resultCaching": true,
+          },
+          "data": DepTrackingCache {
+            "data": Object {
+              "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                "compound": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+              "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                "annotation": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                  "type": "id",
+                  "typename": undefined,
+                },
+                "id": "1",
+                "name": "testDrug",
+              },
+              "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                "inchikey": "0",
+                "pubchem": "0",
+                "smiles": "OCO",
+              },
+              "ROOT_QUERY": Object {
+                "compound({\\"compoundId\\":1})": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+            },
+            "depend": [Function],
+          },
+          "maybeBroadcastWatch": [Function],
+          "optimisticData": DepTrackingCache {
+            "data": Object {
+              "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                "compound": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+              "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                "annotation": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                  "type": "id",
+                  "typename": undefined,
+                },
+                "id": "1",
+                "name": "testDrug",
+              },
+              "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                "inchikey": "0",
+                "pubchem": "0",
+                "smiles": "OCO",
+              },
+              "ROOT_QUERY": Object {
+                "compound({\\"compoundId\\":1})": Object {
+                  "generated": true,
+                  "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                  "type": "id",
+                  "typename": undefined,
+                },
+              },
+            },
+            "depend": [Function],
+          },
+          "silenceBroadcast": false,
+          "storeReader": StoreReader {
+            "executeSelectionSet": [Function],
+            "executeStoreQuery": [Function],
+            "executeSubSelectedArray": [Function],
+            "freezeResults": false,
+          },
+          "storeWriter": StoreWriter {},
+          "typenameDocumentCache": Map {},
+          "watches": Set {
+            Object {
+              "callback": [Function],
+              "optimistic": true,
+              "previousResult": [Function],
+              "query": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getCompound",
+                    },
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "compoundId",
+                              },
+                              "value": Object {
+                                "kind": "Variable",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compoundId",
+                                },
+                              },
+                            },
+                          ],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "compound",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compound",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "annotation",
+                                      },
+                                      "selectionSet": Object {
+                                        "kind": "SelectionSet",
+                                        "selections": Array [
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "smiles",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "inchikey",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "pubchem",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [
+                      Object {
+                        "defaultValue": undefined,
+                        "directives": Array [],
+                        "kind": "VariableDefinition",
+                        "type": Object {
+                          "kind": "NonNullType",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "Int",
+                            },
+                          },
+                        },
+                        "variable": Object {
+                          "kind": "Variable",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "compoundId",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 230,
+                  "start": 0,
+                },
+              },
+              "variables": Object {
+                "compoundId": 1,
+              },
+            },
+          },
+        },
+        "clearStoreCallbacks": Array [],
+        "defaultOptions": Object {},
+        "disableNetworkFetches": false,
+        "link": MockLink {
+          "addTypename": false,
+          "mockedResponsesByKey": Object {
+            "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+          },
+        },
+        "localState": LocalState {
+          "cache": InMemoryCache {
+            "addTypename": false,
+            "cacheKeyRoot": KeyTrie {
+              "weak": WeakMap {},
+              "weakness": true,
+            },
+            "config": Object {
+              "addTypename": false,
+              "dataIdFromObject": [Function],
+              "fragmentMatcher": HeuristicFragmentMatcher {},
+              "freezeResults": false,
+              "resultCaching": true,
+            },
+            "data": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                  "compound": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                  "annotation": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  "id": "1",
+                  "name": "testDrug",
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                  "inchikey": "0",
+                  "pubchem": "0",
+                  "smiles": "OCO",
+                },
+                "ROOT_QUERY": Object {
+                  "compound({\\"compoundId\\":1})": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "maybeBroadcastWatch": [Function],
+            "optimisticData": DepTrackingCache {
+              "data": Object {
+                "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                  "compound": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                  "annotation": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  "id": "1",
+                  "name": "testDrug",
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                  "inchikey": "0",
+                  "pubchem": "0",
+                  "smiles": "OCO",
+                },
+                "ROOT_QUERY": Object {
+                  "compound({\\"compoundId\\":1})": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
+              "depend": [Function],
+            },
+            "silenceBroadcast": false,
+            "storeReader": StoreReader {
+              "executeSelectionSet": [Function],
+              "executeStoreQuery": [Function],
+              "executeSubSelectedArray": [Function],
+              "freezeResults": false,
+            },
+            "storeWriter": StoreWriter {},
+            "typenameDocumentCache": Map {},
+            "watches": Set {
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getCompound",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compoundId",
+                                },
+                                "value": Object {
+                                  "kind": "Variable",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                },
+                              },
+                            ],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "compound",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compound",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "annotation",
+                                        },
+                                        "selectionSet": Object {
+                                          "kind": "SelectionSet",
+                                          "selections": Array [
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "smiles",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "inchikey",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "pubchem",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [
+                        Object {
+                          "defaultValue": undefined,
+                          "directives": Array [],
+                          "kind": "VariableDefinition",
+                          "type": Object {
+                            "kind": "NonNullType",
+                            "type": Object {
+                              "kind": "NamedType",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "Int",
+                              },
+                            },
+                          },
+                          "variable": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "compoundId",
+                            },
+                          },
+                        },
+                      ],
                     },
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 230,
                     "start": 0,
                   },
                 },
-                "variables": Object {},
+                "variables": Object {
+                  "compoundId": 1,
+                },
               },
             },
           },
@@ -313,12 +767,76 @@ exports[`renders correctly with a mocked query 1`] = `
                 "resultCaching": true,
               },
               "data": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                    "compound": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                    "annotation": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    "id": "1",
+                    "name": "testDrug",
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                    "inchikey": "0",
+                    "pubchem": "0",
+                    "smiles": "OCO",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compound({\\"compoundId\\":1})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "maybeBroadcastWatch": [Function],
               "optimisticData": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                    "compound": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                    "annotation": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    "id": "1",
+                    "name": "testDrug",
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                    "inchikey": "0",
+                    "pubchem": "0",
+                    "smiles": "OCO",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compound({\\"compoundId\\":1})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "silenceBroadcast": false,
@@ -340,19 +858,37 @@ exports[`renders correctly with a mocked query 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getCompound",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                  "value": Object {
+                                    "kind": "Variable",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "compoundId",
+                                    },
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
                                 "kind": "Name",
-                                "value": "compounds",
+                                "value": "compound",
                               },
                               "selectionSet": Object {
                                 "kind": "SelectionSet",
@@ -364,112 +900,135 @@ exports[`renders correctly with a mocked query 1`] = `
                                     "kind": "Field",
                                     "name": Object {
                                       "kind": "Name",
-                                      "value": "id",
+                                      "value": "compound",
                                     },
-                                    "selectionSet": undefined,
-                                  },
-                                  Object {
-                                    "alias": undefined,
-                                    "arguments": Array [],
-                                    "directives": Array [],
-                                    "kind": "Field",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "name",
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "annotation",
+                                          },
+                                          "selectionSet": Object {
+                                            "kind": "SelectionSet",
+                                            "selections": Array [
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "smiles",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "inchikey",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "pubchem",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
                                     },
-                                    "selectionSet": undefined,
                                   },
                                 ],
                               },
                             },
                           ],
                         },
-                        "variableDefinitions": Array [],
+                        "variableDefinitions": Array [
+                          Object {
+                            "defaultValue": undefined,
+                            "directives": Array [],
+                            "kind": "VariableDefinition",
+                            "type": Object {
+                              "kind": "NonNullType",
+                              "type": Object {
+                                "kind": "NamedType",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "Int",
+                                },
+                              },
+                            },
+                            "variable": Object {
+                              "kind": "Variable",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "compoundId",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 230,
                       "start": 0,
                     },
                   },
-                  "variables": Object {},
-                },
-              },
-            },
-          },
-          "fetchQueryRejectFns": Map {
-            "fetchRequest:1" => [Function],
-          },
-          "idCounter": 3,
-          "inFlightLinkObservables": Map {
-            Object {
-              "definitions": Array [
-                Object {
-                  "directives": Array [],
-                  "kind": "OperationDefinition",
-                  "name": undefined,
-                  "operation": "query",
-                  "selectionSet": Object {
-                    "kind": "SelectionSet",
-                    "selections": Array [
-                      Object {
-                        "alias": undefined,
-                        "arguments": Array [],
-                        "directives": Array [],
-                        "kind": "Field",
-                        "name": Object {
-                          "kind": "Name",
-                          "value": "compounds",
-                        },
-                        "selectionSet": Object {
-                          "kind": "SelectionSet",
-                          "selections": Array [
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "id",
-                              },
-                              "selectionSet": undefined,
-                            },
-                            Object {
-                              "alias": undefined,
-                              "arguments": Array [],
-                              "directives": Array [],
-                              "kind": "Field",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "name",
-                              },
-                              "selectionSet": undefined,
-                            },
-                          ],
-                        },
-                      },
-                    ],
+                  "variables": Object {
+                    "compoundId": 1,
                   },
-                  "variableDefinitions": Array [],
                 },
-              ],
-              "kind": "Document",
-              "loc": Object {
-                "end": 75,
-                "start": 0,
-              },
-            } => Map {
-              "{}" => Observable {
-                "_subscriber": [Function],
               },
             },
           },
+          "fetchQueryRejectFns": Map {},
+          "idCounter": 3,
+          "inFlightLinkObservables": Map {},
           "link": MockLink {
             "addTypename": false,
             "mockedResponsesByKey": Object {
-              "{\\"query\\":\\"{\\\\n  compounds {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+              "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
             },
           },
           "localState": LocalState {
@@ -487,12 +1046,76 @@ exports[`renders correctly with a mocked query 1`] = `
                 "resultCaching": true,
               },
               "data": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                    "compound": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                    "annotation": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    "id": "1",
+                    "name": "testDrug",
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                    "inchikey": "0",
+                    "pubchem": "0",
+                    "smiles": "OCO",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compound({\\"compoundId\\":1})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "maybeBroadcastWatch": [Function],
               "optimisticData": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                    "compound": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                    "annotation": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                    "id": "1",
+                    "name": "testDrug",
+                  },
+                  "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                    "inchikey": "0",
+                    "pubchem": "0",
+                    "smiles": "OCO",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compound({\\"compoundId\\":1})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "silenceBroadcast": false,
@@ -514,19 +1137,37 @@ exports[`renders correctly with a mocked query 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getCompound",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                  "value": Object {
+                                    "kind": "Variable",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "compoundId",
+                                    },
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
                                 "kind": "Name",
-                                "value": "compounds",
+                                "value": "compound",
                               },
                               "selectionSet": Object {
                                 "kind": "SelectionSet",
@@ -538,36 +1179,124 @@ exports[`renders correctly with a mocked query 1`] = `
                                     "kind": "Field",
                                     "name": Object {
                                       "kind": "Name",
-                                      "value": "id",
+                                      "value": "compound",
                                     },
-                                    "selectionSet": undefined,
-                                  },
-                                  Object {
-                                    "alias": undefined,
-                                    "arguments": Array [],
-                                    "directives": Array [],
-                                    "kind": "Field",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "name",
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "annotation",
+                                          },
+                                          "selectionSet": Object {
+                                            "kind": "SelectionSet",
+                                            "selections": Array [
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "smiles",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "inchikey",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "pubchem",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
                                     },
-                                    "selectionSet": undefined,
                                   },
                                 ],
                               },
                             },
                           ],
                         },
-                        "variableDefinitions": Array [],
+                        "variableDefinitions": Array [
+                          Object {
+                            "defaultValue": undefined,
+                            "directives": Array [],
+                            "kind": "VariableDefinition",
+                            "type": Object {
+                              "kind": "NonNullType",
+                              "type": Object {
+                                "kind": "NamedType",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "Int",
+                                },
+                              },
+                            },
+                            "variable": Object {
+                              "kind": "Variable",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "compoundId",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 230,
                       "start": 0,
                     },
                   },
-                  "variables": Object {},
+                  "variables": Object {
+                    "compoundId": 1,
+                  },
                 },
               },
             },
@@ -586,19 +1315,37 @@ exports[`renders correctly with a mocked query 1`] = `
                   Object {
                     "directives": Array [],
                     "kind": "OperationDefinition",
-                    "name": undefined,
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getCompound",
+                    },
                     "operation": "query",
                     "selectionSet": Object {
                       "kind": "SelectionSet",
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "compoundId",
+                              },
+                              "value": Object {
+                                "kind": "Variable",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compoundId",
+                                },
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
                             "kind": "Name",
-                            "value": "compounds",
+                            "value": "compound",
                           },
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -610,32 +1357,118 @@ exports[`renders correctly with a mocked query 1`] = `
                                 "kind": "Field",
                                 "name": Object {
                                   "kind": "Name",
-                                  "value": "id",
+                                  "value": "compound",
                                 },
-                                "selectionSet": undefined,
-                              },
-                              Object {
-                                "alias": undefined,
-                                "arguments": Array [],
-                                "directives": Array [],
-                                "kind": "Field",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "name",
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "annotation",
+                                      },
+                                      "selectionSet": Object {
+                                        "kind": "SelectionSet",
+                                        "selections": Array [
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "smiles",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "inchikey",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "pubchem",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
                                 },
-                                "selectionSet": undefined,
                               },
                             ],
                           },
                         },
                       ],
                     },
-                    "variableDefinitions": Array [],
+                    "variableDefinitions": Array [
+                      Object {
+                        "defaultValue": undefined,
+                        "directives": Array [],
+                        "kind": "VariableDefinition",
+                        "type": Object {
+                          "kind": "NonNullType",
+                          "type": Object {
+                            "kind": "NamedType",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "Int",
+                            },
+                          },
+                        },
+                        "variable": Object {
+                          "kind": "Variable",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "compoundId",
+                          },
+                        },
+                      },
+                    ],
                   },
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 75,
+                  "end": 230,
                   "start": 0,
                 },
               },
@@ -648,6 +1481,42 @@ exports[`renders correctly with a mocked query 1`] = `
               "observableQuery": ObservableQuery {
                 "_subscriber": [Function],
                 "isTornDown": false,
+                "lastResult": Object {
+                  "data": Object {
+                    "compound": Object {
+                      "compound": Object {
+                        "annotation": Object {
+                          "inchikey": "0",
+                          "pubchem": "0",
+                          "smiles": "OCO",
+                        },
+                        "id": "1",
+                        "name": "testDrug",
+                      },
+                    },
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "lastResultSnapshot": Object {
+                  "data": Object {
+                    "compound": Object {
+                      "compound": Object {
+                        "annotation": Object {
+                          "inchikey": "0",
+                          "pubchem": "0",
+                          "smiles": "OCO",
+                        },
+                        "id": "1",
+                        "name": "testDrug",
+                      },
+                    },
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
                 "observers": Set {
                   SubscriptionObserver {
                     "_subscription": Subscription {
@@ -675,19 +1544,37 @@ exports[`renders correctly with a mocked query 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getCompound",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                  "value": Object {
+                                    "kind": "Variable",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "compoundId",
+                                    },
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
                                 "kind": "Name",
-                                "value": "compounds",
+                                "value": "compound",
                               },
                               "selectionSet": Object {
                                 "kind": "SelectionSet",
@@ -699,64 +1586,135 @@ exports[`renders correctly with a mocked query 1`] = `
                                     "kind": "Field",
                                     "name": Object {
                                       "kind": "Name",
-                                      "value": "id",
+                                      "value": "compound",
                                     },
-                                    "selectionSet": undefined,
-                                  },
-                                  Object {
-                                    "alias": undefined,
-                                    "arguments": Array [],
-                                    "directives": Array [],
-                                    "kind": "Field",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "name",
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "annotation",
+                                          },
+                                          "selectionSet": Object {
+                                            "kind": "SelectionSet",
+                                            "selections": Array [
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "smiles",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "inchikey",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "pubchem",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
                                     },
-                                    "selectionSet": undefined,
                                   },
                                 ],
                               },
                             },
                           ],
                         },
-                        "variableDefinitions": Array [],
+                        "variableDefinitions": Array [
+                          Object {
+                            "defaultValue": undefined,
+                            "directives": Array [],
+                            "kind": "VariableDefinition",
+                            "type": Object {
+                              "kind": "NonNullType",
+                              "type": Object {
+                                "kind": "NamedType",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "Int",
+                                },
+                              },
+                            },
+                            "variable": Object {
+                              "kind": "Variable",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "compoundId",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 230,
                       "start": 0,
                     },
                   },
-                  "variables": Object {},
+                  "variables": Object {
+                    "compoundId": 1,
+                  },
                 },
                 "queryId": "1",
                 "queryManager": [Circular],
-                "queryName": undefined,
+                "queryName": "getCompound",
                 "shouldSubscribe": true,
                 "subscriptions": Set {},
-                "variables": Object {},
-              },
-              "subscriptions": Set {
-                Subscription {
-                  "_cleanup": Subscription {
-                    "_cleanup": [Function],
-                    "_observer": Object {
-                      "complete": [Function],
-                      "error": [Function],
-                      "next": [Function],
-                    },
-                    "_queue": undefined,
-                    "_state": "ready",
-                  },
-                  "_observer": Object {
-                    "complete": [Function],
-                    "error": [Function],
-                  },
-                  "_queue": undefined,
-                  "_state": "ready",
+                "variables": Object {
+                  "compoundId": 1,
                 },
               },
+              "subscriptions": Set {},
             },
           },
           "queryDeduplication": true,
@@ -768,19 +1726,37 @@ exports[`renders correctly with a mocked query 1`] = `
                     Object {
                       "directives": Array [],
                       "kind": "OperationDefinition",
-                      "name": undefined,
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getCompound",
+                      },
                       "operation": "query",
                       "selectionSet": Object {
                         "kind": "SelectionSet",
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [],
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compoundId",
+                                },
+                                "value": Object {
+                                  "kind": "Variable",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                },
+                              },
+                            ],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
                               "kind": "Name",
-                              "value": "compounds",
+                              "value": "compound",
                             },
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -792,32 +1768,118 @@ exports[`renders correctly with a mocked query 1`] = `
                                   "kind": "Field",
                                   "name": Object {
                                     "kind": "Name",
-                                    "value": "id",
+                                    "value": "compound",
                                   },
-                                  "selectionSet": undefined,
-                                },
-                                Object {
-                                  "alias": undefined,
-                                  "arguments": Array [],
-                                  "directives": Array [],
-                                  "kind": "Field",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "name",
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "annotation",
+                                        },
+                                        "selectionSet": Object {
+                                          "kind": "SelectionSet",
+                                          "selections": Array [
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "smiles",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "inchikey",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "pubchem",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
                                   },
-                                  "selectionSet": undefined,
                                 },
                               ],
                             },
                           },
                         ],
                       },
-                      "variableDefinitions": Array [],
+                      "variableDefinitions": Array [
+                        Object {
+                          "defaultValue": undefined,
+                          "directives": Array [],
+                          "kind": "VariableDefinition",
+                          "type": Object {
+                            "kind": "NonNullType",
+                            "type": Object {
+                              "kind": "NamedType",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "Int",
+                              },
+                            },
+                          },
+                          "variable": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "compoundId",
+                            },
+                          },
+                        },
+                      ],
                     },
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 230,
                     "start": 0,
                   },
                 },
@@ -828,9 +1890,11 @@ exports[`renders correctly with a mocked query 1`] = `
                   },
                 },
                 "networkError": null,
-                "networkStatus": 1,
+                "networkStatus": 7,
                 "previousVariables": null,
-                "variables": Object {},
+                "variables": Object {
+                  "compoundId": 1,
+                },
               },
             },
           },
@@ -855,12 +1919,76 @@ exports[`renders correctly with a mocked query 1`] = `
               "resultCaching": true,
             },
             "data": DepTrackingCache {
-              "data": Object {},
+              "data": Object {
+                "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                  "compound": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                  "annotation": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  "id": "1",
+                  "name": "testDrug",
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                  "inchikey": "0",
+                  "pubchem": "0",
+                  "smiles": "OCO",
+                },
+                "ROOT_QUERY": Object {
+                  "compound({\\"compoundId\\":1})": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
               "depend": [Function],
             },
             "maybeBroadcastWatch": [Function],
             "optimisticData": DepTrackingCache {
-              "data": Object {},
+              "data": Object {
+                "$ROOT_QUERY.compound({\\"compoundId\\":1})": Object {
+                  "compound": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound": Object {
+                  "annotation": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                  "id": "1",
+                  "name": "testDrug",
+                },
+                "$ROOT_QUERY.compound({\\"compoundId\\":1}).compound.annotation": Object {
+                  "inchikey": "0",
+                  "pubchem": "0",
+                  "smiles": "OCO",
+                },
+                "ROOT_QUERY": Object {
+                  "compound({\\"compoundId\\":1})": Object {
+                    "generated": true,
+                    "id": "$ROOT_QUERY.compound({\\"compoundId\\":1})",
+                    "type": "id",
+                    "typename": undefined,
+                  },
+                },
+              },
               "depend": [Function],
             },
             "silenceBroadcast": false,
@@ -882,19 +2010,37 @@ exports[`renders correctly with a mocked query 1`] = `
                     Object {
                       "directives": Array [],
                       "kind": "OperationDefinition",
-                      "name": undefined,
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getCompound",
+                      },
                       "operation": "query",
                       "selectionSet": Object {
                         "kind": "SelectionSet",
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [],
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "compoundId",
+                                },
+                                "value": Object {
+                                  "kind": "Variable",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "compoundId",
+                                  },
+                                },
+                              },
+                            ],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
                               "kind": "Name",
-                              "value": "compounds",
+                              "value": "compound",
                             },
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -906,36 +2052,124 @@ exports[`renders correctly with a mocked query 1`] = `
                                   "kind": "Field",
                                   "name": Object {
                                     "kind": "Name",
-                                    "value": "id",
+                                    "value": "compound",
                                   },
-                                  "selectionSet": undefined,
-                                },
-                                Object {
-                                  "alias": undefined,
-                                  "arguments": Array [],
-                                  "directives": Array [],
-                                  "kind": "Field",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "name",
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "annotation",
+                                        },
+                                        "selectionSet": Object {
+                                          "kind": "SelectionSet",
+                                          "selections": Array [
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "smiles",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "inchikey",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "pubchem",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
+                                          ],
+                                        },
+                                      },
+                                    ],
                                   },
-                                  "selectionSet": undefined,
                                 },
                               ],
                             },
                           },
                         ],
                       },
-                      "variableDefinitions": Array [],
+                      "variableDefinitions": Array [
+                        Object {
+                          "defaultValue": undefined,
+                          "directives": Array [],
+                          "kind": "VariableDefinition",
+                          "type": Object {
+                            "kind": "NonNullType",
+                            "type": Object {
+                              "kind": "NamedType",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "Int",
+                              },
+                            },
+                          },
+                          "variable": Object {
+                            "kind": "Variable",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "compoundId",
+                            },
+                          },
+                        },
+                      ],
                     },
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 230,
                     "start": 0,
                   },
                 },
-                "variables": Object {},
+                "variables": Object {
+                  "compoundId": 1,
+                },
               },
             },
           },
@@ -946,7 +2180,15 @@ exports[`renders correctly with a mocked query 1`] = `
       }
     }
   >
-    <Compounds>
+    <IndivCompounds
+      match={
+        Object {
+          "params": Object {
+            "id": "1",
+          },
+        }
+      }
+    >
       <Layout
         page=""
       >
@@ -2397,12 +3639,18 @@ exports[`renders correctly with a mocked query 1`] = `
           </styled.div>
         </SearchHeader>
         <main>
-          <p>
-            Loading...
-          </p>
+          <styled.div>
+            <div
+              className="sc-AxgMl ePJxIh"
+            >
+              <p>
+                Loading...
+              </p>
+            </div>
+          </styled.div>
         </main>
       </Layout>
-    </Compounds>
+    </IndivCompounds>
   </ApolloProvider>
 </MockedProvider>
 `;

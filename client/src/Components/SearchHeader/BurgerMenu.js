@@ -1,6 +1,6 @@
 import { slide as Menu } from 'react-burger-menu';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter } from 'react-router-dom';
 import colors from '../../styles/colors';
 import PageContext from '../../context/PageContext';
 
@@ -68,7 +68,7 @@ const BurgerMenu = () => {
    * @returns {JSX} JSX to be rendered
    */
   const dropdownItems = (data) => data.map((x) => (
-    <Link className="burger-item" to={x.url}>{x.name}</Link>
+    <Link key={x.url} className="burger-item" to={x.url}>{x.name}</Link>
   ));
 
   // for about menu dropdown
@@ -92,10 +92,14 @@ const BurgerMenu = () => {
   return (
     <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
       <h2>About</h2>
-      {dropdownItems(aboutLinks)}
-      <p />
-      <h2>Data</h2>
-      {dropdownItems(dataLinks)}
+      <BrowserRouter>
+        <>
+          {dropdownItems(aboutLinks)}
+          <p />
+          <h2>Data</h2>
+          {dropdownItems(dataLinks)}
+        </>
+      </BrowserRouter>
     </Menu>
   );
 };

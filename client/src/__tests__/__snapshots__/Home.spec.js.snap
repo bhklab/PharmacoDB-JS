@@ -1,0 +1,1607 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Home>
+  <Layout
+    page="home"
+  >
+    <BurgerMenu>
+      <Menu
+        bodyClassName=""
+        burgerBarClassName=""
+        burgerButtonClassName=""
+        className="burger-menu"
+        crossButtonClassName=""
+        crossClassName=""
+        disableAutoFocus={true}
+        disableCloseOnEsc={false}
+        htmlClassName=""
+        id=""
+        isOpen={false}
+        itemClassName=""
+        itemListClassName=""
+        menuClassName=""
+        morphShapeClassName=""
+        noOverlay={true}
+        noTransition={false}
+        onIconHoverChange={[Function]}
+        onStateChange={[Function]}
+        outerContainerId=""
+        overlayClassName=""
+        pageWrapId=""
+        right={true}
+        styles={
+          Object {
+            "bmBurgerBars": Object {
+              "background": "white",
+              "height": "3px",
+              "opacity": 0.8,
+            },
+            "bmBurgerButton": Object {
+              "height": "30px",
+              "position": "fixed",
+              "right": "10px",
+              "top": "45px",
+              "width": "34px",
+            },
+            "bmCross": Object {
+              "background": "#bdc3c7",
+            },
+            "bmCrossButton": Object {
+              "height": "24px",
+              "width": "24px",
+            },
+            "bmItem": Object {
+              "color": "white",
+              "display": "inline-block",
+              "fontFamily": "'Rubik', sans-serif",
+            },
+            "bmItemList": Object {
+              "display": "flex",
+              "flexDirection": "column",
+              "height": "auto",
+              "padding": "0.8em",
+            },
+            "bmMenu": Object {
+              "background": "#454d4f",
+              "color": "white",
+              "fontSize": "1.15em",
+              "padding": "2.5em 1.5em 0",
+            },
+            "bmMenuWrap": Object {
+              "position": "fixed",
+            },
+            "bmOverlay": Object {
+              "background": "rgba(0, 0, 0, 0.3)",
+            },
+          }
+        }
+        width={300}
+      >
+        <div>
+          <div
+            className="bm-menu-wrap burger-menu"
+            id=""
+            style={
+              Object {
+                "MozTransform": "translate3d(100%, 0, 0)",
+                "MsTransform": "translate3d(100%, 0, 0)",
+                "OTransform": "translate3d(100%, 0, 0)",
+                "WebkitTransform": "translate3d(100%, 0, 0)",
+                "height": "100%",
+                "position": "fixed",
+                "right": 0,
+                "transform": "translate3d(100%, 0, 0)",
+                "transition": "all 0.5s",
+                "width": "300px",
+                "zIndex": 1100,
+              }
+            }
+          >
+            <div
+              className="bm-menu"
+              style={
+                Object {
+                  "background": "#454d4f",
+                  "boxSizing": "border-box",
+                  "color": "white",
+                  "fontSize": "1.15em",
+                  "height": "100%",
+                  "overflow": "auto",
+                  "padding": "2.5em 1.5em 0",
+                }
+              }
+            >
+              <nav
+                className="bm-item-list"
+                style={
+                  Object {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "height": "auto",
+                    "padding": "0.8em",
+                  }
+                }
+              >
+                <h2
+                  className="bm-item"
+                  key="0/.0"
+                  style={
+                    Object {
+                      "color": "white",
+                      "display": "inline-block",
+                      "fontFamily": "'Rubik', sans-serif",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  About
+                </h2>
+                <BrowserRouter
+                  className="bm-item"
+                  key="1/.1"
+                  style={
+                    Object {
+                      "color": "white",
+                      "display": "inline-block",
+                      "fontFamily": "'Rubik', sans-serif",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <Router
+                    history={
+                      Object {
+                        "action": "POP",
+                        "block": [Function],
+                        "createHref": [Function],
+                        "go": [Function],
+                        "goBack": [Function],
+                        "goForward": [Function],
+                        "length": 1,
+                        "listen": [Function],
+                        "location": Object {
+                          "hash": "",
+                          "pathname": "/",
+                          "search": "",
+                          "state": undefined,
+                        },
+                        "push": [Function],
+                        "replace": [Function],
+                      }
+                    }
+                  >
+                    <Link
+                      className="burger-item"
+                      key="/about"
+                      to="/about"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/about"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/about"
+                          onClick={[Function]}
+                        >
+                          About Us
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/explore"
+                      to="/explore"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/explore"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/explore"
+                          onClick={[Function]}
+                        >
+                          Explore
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/documentation"
+                      to="/documentation"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/documentation"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/documentation"
+                          onClick={[Function]}
+                        >
+                          Documentation
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/cite"
+                      to="/cite"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/cite"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/cite"
+                          onClick={[Function]}
+                        >
+                          Cite Us
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <p />
+                    <h2>
+                      Data
+                    </h2>
+                    <Link
+                      className="burger-item"
+                      key="/datasets"
+                      to="/datasets"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/datasets"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/datasets"
+                          onClick={[Function]}
+                        >
+                          Datasets
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/cell_lines"
+                      to="/cell_lines"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/cell_lines"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/cell_lines"
+                          onClick={[Function]}
+                        >
+                          Cell Lines
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/tissues"
+                      to="/tissues"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/tissues"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/tissues"
+                          onClick={[Function]}
+                        >
+                          Tissues
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/compounds"
+                      to="/compounds"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/compounds"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/compounds"
+                          onClick={[Function]}
+                        >
+                          Compounds
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/genes"
+                      to="/genes"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/genes"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/genes"
+                          onClick={[Function]}
+                        >
+                          Genes
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <Link
+                      className="burger-item"
+                      key="/experiments"
+                      to="/experiments"
+                    >
+                      <LinkAnchor
+                        className="burger-item"
+                        href="/experiments"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="burger-item"
+                          href="/experiments"
+                          onClick={[Function]}
+                        >
+                          Experiments
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                  </Router>
+                </BrowserRouter>
+              </nav>
+            </div>
+            <div
+              style={Object {}}
+            >
+              <CrossIcon
+                className=""
+                crossClassName=""
+                onClick={[Function]}
+                styles={
+                  Object {
+                    "bmBurgerBars": Object {
+                      "background": "white",
+                      "height": "3px",
+                      "opacity": 0.8,
+                    },
+                    "bmBurgerButton": Object {
+                      "height": "30px",
+                      "position": "fixed",
+                      "right": "10px",
+                      "top": "45px",
+                      "width": "34px",
+                    },
+                    "bmCross": Object {
+                      "background": "#bdc3c7",
+                    },
+                    "bmCrossButton": Object {
+                      "height": "24px",
+                      "width": "24px",
+                    },
+                    "bmItem": Object {
+                      "color": "white",
+                      "display": "inline-block",
+                      "fontFamily": "'Rubik', sans-serif",
+                    },
+                    "bmItemList": Object {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "height": "auto",
+                      "padding": "0.8em",
+                    },
+                    "bmMenu": Object {
+                      "background": "#454d4f",
+                      "color": "white",
+                      "fontSize": "1.15em",
+                      "padding": "2.5em 1.5em 0",
+                    },
+                    "bmMenuWrap": Object {
+                      "position": "fixed",
+                    },
+                    "bmOverlay": Object {
+                      "background": "rgba(0, 0, 0, 0.3)",
+                    },
+                  }
+                }
+                tabIndex={-1}
+              >
+                <div
+                  className="bm-cross-button"
+                  style={
+                    Object {
+                      "height": "24px",
+                      "position": "absolute",
+                      "right": 8,
+                      "top": 8,
+                      "width": "24px",
+                    }
+                  }
+                >
+                  <span
+                    style={
+                      Object {
+                        "position": "absolute",
+                        "right": "14px",
+                        "top": "6px",
+                      }
+                    }
+                  >
+                    <span
+                      className="bm-cross"
+                      key="0"
+                      style={
+                        Object {
+                          "background": "#bdc3c7",
+                          "height": 14,
+                          "position": "absolute",
+                          "transform": "rotate(45deg)",
+                          "width": 3,
+                        }
+                      }
+                    />
+                    <span
+                      className="bm-cross"
+                      key="1"
+                      style={
+                        Object {
+                          "background": "#bdc3c7",
+                          "height": 14,
+                          "position": "absolute",
+                          "transform": "rotate(-45deg)",
+                          "width": 3,
+                        }
+                      }
+                    />
+                  </span>
+                  <button
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "background": "transparent",
+                        "border": "none",
+                        "cursor": "pointer",
+                        "fontSize": 0,
+                        "height": "100%",
+                        "left": 0,
+                        "margin": 0,
+                        "padding": 0,
+                        "position": "absolute",
+                        "top": 0,
+                        "width": "100%",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    Close Menu
+                  </button>
+                </div>
+              </CrossIcon>
+            </div>
+          </div>
+          <div
+            style={Object {}}
+          >
+            <BurgerIcon
+              barClassName=""
+              className=""
+              onClick={[Function]}
+              styles={
+                Object {
+                  "bmBurgerBars": Object {
+                    "background": "white",
+                    "height": "3px",
+                    "opacity": 0.8,
+                  },
+                  "bmBurgerButton": Object {
+                    "height": "30px",
+                    "position": "fixed",
+                    "right": "10px",
+                    "top": "45px",
+                    "width": "34px",
+                  },
+                  "bmCross": Object {
+                    "background": "#bdc3c7",
+                  },
+                  "bmCrossButton": Object {
+                    "height": "24px",
+                    "width": "24px",
+                  },
+                  "bmItem": Object {
+                    "color": "white",
+                    "display": "inline-block",
+                    "fontFamily": "'Rubik', sans-serif",
+                  },
+                  "bmItemList": Object {
+                    "display": "flex",
+                    "flexDirection": "column",
+                    "height": "auto",
+                    "padding": "0.8em",
+                  },
+                  "bmMenu": Object {
+                    "background": "#454d4f",
+                    "color": "white",
+                    "fontSize": "1.15em",
+                    "padding": "2.5em 1.5em 0",
+                  },
+                  "bmMenuWrap": Object {
+                    "position": "fixed",
+                  },
+                  "bmOverlay": Object {
+                    "background": "rgba(0, 0, 0, 0.3)",
+                  },
+                }
+              }
+            >
+              <div
+                className="bm-burger-button"
+                style={
+                  Object {
+                    "height": "30px",
+                    "position": "fixed",
+                    "right": "10px",
+                    "top": "45px",
+                    "width": "34px",
+                    "zIndex": 1000,
+                  }
+                }
+              >
+                <span>
+                  <span
+                    className="bm-burger-bars"
+                    key="0"
+                    style={
+                      Object {
+                        "background": "white",
+                        "height": "3px",
+                        "left": 0,
+                        "opacity": 0.8,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": "0%",
+                      }
+                    }
+                  />
+                  <span
+                    className="bm-burger-bars"
+                    key="1"
+                    style={
+                      Object {
+                        "background": "white",
+                        "height": "3px",
+                        "left": 0,
+                        "opacity": 0.8,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": "40%",
+                      }
+                    }
+                  />
+                  <span
+                    className="bm-burger-bars"
+                    key="2"
+                    style={
+                      Object {
+                        "background": "white",
+                        "height": "3px",
+                        "left": 0,
+                        "opacity": 0.8,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": "80%",
+                      }
+                    }
+                  />
+                </span>
+                <button
+                  onClick={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  style={
+                    Object {
+                      "background": "transparent",
+                      "border": "none",
+                      "cursor": "pointer",
+                      "fontSize": 0,
+                      "height": "100%",
+                      "left": 0,
+                      "margin": 0,
+                      "padding": 0,
+                      "position": "absolute",
+                      "top": 0,
+                      "width": "100%",
+                    }
+                  }
+                >
+                  Open Menu
+                </button>
+              </div>
+            </BurgerIcon>
+          </div>
+        </div>
+      </Menu>
+    </BurgerMenu>
+    <SearchHeader>
+      <styled.div
+        isOpen={false}
+        page="home"
+      >
+        <div
+          className="sc-AxirZ VyWkz"
+        >
+          <div
+            className="burger-bg"
+          />
+          <NavBar
+            onClick={[Function]}
+          >
+            <styled.div
+              className="header"
+              page="home"
+            >
+              <div
+                className="sc-AxiKw flIYSq header"
+              >
+                <BrowserRouter>
+                  <Router
+                    history={
+                      Object {
+                        "action": "POP",
+                        "block": [Function],
+                        "createHref": [Function],
+                        "go": [Function],
+                        "goBack": [Function],
+                        "goForward": [Function],
+                        "length": 1,
+                        "listen": [Function],
+                        "location": Object {
+                          "hash": "",
+                          "pathname": "/",
+                          "search": "",
+                          "state": undefined,
+                        },
+                        "push": [Function],
+                        "replace": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className="container"
+                    >
+                      <Link
+                        to="/"
+                      >
+                        <LinkAnchor
+                          href="/"
+                          navigate={[Function]}
+                        >
+                          <a
+                            href="/"
+                            onClick={[Function]}
+                          >
+                            <img
+                              alt="logo"
+                              className="logo"
+                              src=""
+                            />
+                          </a>
+                        </LinkAnchor>
+                      </Link>
+                      <styled.div
+                        page="home"
+                      >
+                        <div
+                          className="sc-AxhCb cssddF"
+                        >
+                          <Dropdown
+                            additionLabel="Add "
+                            additionPosition="top"
+                            className="header-links link-dropdown"
+                            closeOnBlur={true}
+                            closeOnEscape={true}
+                            deburr={false}
+                            icon="dropdown"
+                            minCharacters={1}
+                            noResultsMessage="No results found."
+                            openOnFocus={true}
+                            renderLabel={[Function]}
+                            searchInput="text"
+                            selectOnBlur={true}
+                            selectOnNavigation={true}
+                            simple={true}
+                            text="About"
+                            wrapSelection={true}
+                          >
+                            <Ref
+                              innerRef={
+                                Object {
+                                  "current": <div
+                                    aria-expanded="false"
+                                    class="ui simple dropdown header-links link-dropdown"
+                                    role="listbox"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      aria-atomic="true"
+                                      aria-live="polite"
+                                      class="text"
+                                      role="alert"
+                                    >
+                                      About
+                                    </div>
+                                    <i
+                                      aria-hidden="true"
+                                      class="dropdown icon"
+                                    />
+                                    <div
+                                      class="menu transition link-menu"
+                                    >
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/about"
+                                        >
+                                          About Us
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/documentation"
+                                        >
+                                          Documentation
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/cite"
+                                        >
+                                          Cite Us
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="http://github.com/bhklab/pharmacodb"
+                                        >
+                                          Github
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>,
+                                }
+                              }
+                            >
+                              <RefFindNode
+                                innerRef={
+                                  Object {
+                                    "current": <div
+                                      aria-expanded="false"
+                                      class="ui simple dropdown header-links link-dropdown"
+                                      role="listbox"
+                                      tabindex="0"
+                                    >
+                                      <div
+                                        aria-atomic="true"
+                                        aria-live="polite"
+                                        class="text"
+                                        role="alert"
+                                      >
+                                        About
+                                      </div>
+                                      <i
+                                        aria-hidden="true"
+                                        class="dropdown icon"
+                                      />
+                                      <div
+                                        class="menu transition link-menu"
+                                      >
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/about"
+                                          >
+                                            About Us
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/documentation"
+                                          >
+                                            Documentation
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/cite"
+                                          >
+                                            Cite Us
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="http://github.com/bhklab/pharmacodb"
+                                          >
+                                            Github
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>,
+                                  }
+                                }
+                              >
+                                <div
+                                  aria-expanded={false}
+                                  className="ui simple dropdown header-links link-dropdown"
+                                  onBlur={[Function]}
+                                  onChange={[Function]}
+                                  onClick={[Function]}
+                                  onFocus={[Function]}
+                                  onMouseDown={[Function]}
+                                  role="listbox"
+                                  tabIndex={0}
+                                >
+                                  <div
+                                    aria-atomic={true}
+                                    aria-live="polite"
+                                    className="text"
+                                    role="alert"
+                                  >
+                                    About
+                                  </div>
+                                  <Icon
+                                    as="i"
+                                    className=""
+                                    name="dropdown"
+                                    onClick={[Function]}
+                                  >
+                                    <i
+                                      aria-hidden="true"
+                                      className="dropdown icon"
+                                      onClick={[Function]}
+                                    />
+                                  </Icon>
+                                  <DropdownMenu
+                                    className="link-menu"
+                                  >
+                                    <div
+                                      className="menu transition link-menu"
+                                    >
+                                      <DropdownItem
+                                        key="About Us"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/about"
+                                          >
+                                            <LinkAnchor
+                                              href="/about"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/about"
+                                                onClick={[Function]}
+                                              >
+                                                About Us
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Documentation"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/documentation"
+                                          >
+                                            <LinkAnchor
+                                              href="/documentation"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/documentation"
+                                                onClick={[Function]}
+                                              >
+                                                Documentation
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Cite Us"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/cite"
+                                          >
+                                            <LinkAnchor
+                                              href="/cite"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/cite"
+                                                onClick={[Function]}
+                                              >
+                                                Cite Us
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem>
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <a
+                                            href="http://github.com/bhklab/pharmacodb"
+                                          >
+                                            Github
+                                          </a>
+                                        </div>
+                                      </DropdownItem>
+                                    </div>
+                                  </DropdownMenu>
+                                </div>
+                              </RefFindNode>
+                            </Ref>
+                          </Dropdown>
+                          <Link
+                            className="header-links link"
+                            to="/explore"
+                          >
+                            <LinkAnchor
+                              className="header-links link"
+                              href="/explore"
+                              navigate={[Function]}
+                            >
+                              <a
+                                className="header-links link"
+                                href="/explore"
+                                onClick={[Function]}
+                              >
+                                Explore
+                              </a>
+                            </LinkAnchor>
+                          </Link>
+                          <Dropdown
+                            additionLabel="Add "
+                            additionPosition="top"
+                            className="header-links link-dropdown"
+                            closeOnBlur={true}
+                            closeOnEscape={true}
+                            deburr={false}
+                            icon="dropdown"
+                            minCharacters={1}
+                            noResultsMessage="No results found."
+                            openOnFocus={true}
+                            renderLabel={[Function]}
+                            searchInput="text"
+                            selectOnBlur={true}
+                            selectOnNavigation={true}
+                            simple={true}
+                            text="Data"
+                            wrapSelection={true}
+                          >
+                            <Ref
+                              innerRef={
+                                Object {
+                                  "current": <div
+                                    aria-expanded="false"
+                                    class="ui simple dropdown header-links link-dropdown"
+                                    role="listbox"
+                                    tabindex="0"
+                                  >
+                                    <div
+                                      aria-atomic="true"
+                                      aria-live="polite"
+                                      class="text"
+                                      role="alert"
+                                    >
+                                      Data
+                                    </div>
+                                    <i
+                                      aria-hidden="true"
+                                      class="dropdown icon"
+                                    />
+                                    <div
+                                      class="menu transition link-menu"
+                                    >
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/datasets"
+                                        >
+                                          Datasets
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/cell_lines"
+                                        >
+                                          Cell Lines
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/tissues"
+                                        >
+                                          Tissues
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/compounds"
+                                        >
+                                          Compounds
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/genes"
+                                        >
+                                          Genes
+                                        </a>
+                                      </div>
+                                      <div
+                                        class="item"
+                                        role="option"
+                                      >
+                                        <a
+                                          href="/experiments"
+                                        >
+                                          Experiments
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>,
+                                }
+                              }
+                            >
+                              <RefFindNode
+                                innerRef={
+                                  Object {
+                                    "current": <div
+                                      aria-expanded="false"
+                                      class="ui simple dropdown header-links link-dropdown"
+                                      role="listbox"
+                                      tabindex="0"
+                                    >
+                                      <div
+                                        aria-atomic="true"
+                                        aria-live="polite"
+                                        class="text"
+                                        role="alert"
+                                      >
+                                        Data
+                                      </div>
+                                      <i
+                                        aria-hidden="true"
+                                        class="dropdown icon"
+                                      />
+                                      <div
+                                        class="menu transition link-menu"
+                                      >
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/datasets"
+                                          >
+                                            Datasets
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/cell_lines"
+                                          >
+                                            Cell Lines
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/tissues"
+                                          >
+                                            Tissues
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/compounds"
+                                          >
+                                            Compounds
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/genes"
+                                          >
+                                            Genes
+                                          </a>
+                                        </div>
+                                        <div
+                                          class="item"
+                                          role="option"
+                                        >
+                                          <a
+                                            href="/experiments"
+                                          >
+                                            Experiments
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>,
+                                  }
+                                }
+                              >
+                                <div
+                                  aria-expanded={false}
+                                  className="ui simple dropdown header-links link-dropdown"
+                                  onBlur={[Function]}
+                                  onChange={[Function]}
+                                  onClick={[Function]}
+                                  onFocus={[Function]}
+                                  onMouseDown={[Function]}
+                                  role="listbox"
+                                  tabIndex={0}
+                                >
+                                  <div
+                                    aria-atomic={true}
+                                    aria-live="polite"
+                                    className="text"
+                                    role="alert"
+                                  >
+                                    Data
+                                  </div>
+                                  <Icon
+                                    as="i"
+                                    className=""
+                                    name="dropdown"
+                                    onClick={[Function]}
+                                  >
+                                    <i
+                                      aria-hidden="true"
+                                      className="dropdown icon"
+                                      onClick={[Function]}
+                                    />
+                                  </Icon>
+                                  <DropdownMenu
+                                    className="link-menu"
+                                  >
+                                    <div
+                                      className="menu transition link-menu"
+                                    >
+                                      <DropdownItem
+                                        key="Datasets"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/datasets"
+                                          >
+                                            <LinkAnchor
+                                              href="/datasets"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/datasets"
+                                                onClick={[Function]}
+                                              >
+                                                Datasets
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Cell Lines"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/cell_lines"
+                                          >
+                                            <LinkAnchor
+                                              href="/cell_lines"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/cell_lines"
+                                                onClick={[Function]}
+                                              >
+                                                Cell Lines
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Tissues"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/tissues"
+                                          >
+                                            <LinkAnchor
+                                              href="/tissues"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/tissues"
+                                                onClick={[Function]}
+                                              >
+                                                Tissues
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Compounds"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/compounds"
+                                          >
+                                            <LinkAnchor
+                                              href="/compounds"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/compounds"
+                                                onClick={[Function]}
+                                              >
+                                                Compounds
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Genes"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/genes"
+                                          >
+                                            <LinkAnchor
+                                              href="/genes"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/genes"
+                                                onClick={[Function]}
+                                              >
+                                                Genes
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                      <DropdownItem
+                                        key="Experiments"
+                                      >
+                                        <div
+                                          className="item"
+                                          onClick={[Function]}
+                                          role="option"
+                                        >
+                                          <Link
+                                            to="/experiments"
+                                          >
+                                            <LinkAnchor
+                                              href="/experiments"
+                                              navigate={[Function]}
+                                            >
+                                              <a
+                                                href="/experiments"
+                                                onClick={[Function]}
+                                              >
+                                                Experiments
+                                              </a>
+                                            </LinkAnchor>
+                                          </Link>
+                                        </div>
+                                      </DropdownItem>
+                                    </div>
+                                  </DropdownMenu>
+                                </div>
+                              </RefFindNode>
+                            </Ref>
+                          </Dropdown>
+                        </div>
+                      </styled.div>
+                    </div>
+                  </Router>
+                </BrowserRouter>
+              </div>
+            </styled.div>
+          </NavBar>
+          <div
+            className="search-container"
+          >
+            <h1>
+              Try searching for a...
+            </h1>
+            <SearchBar>
+              <styled.div
+                className="search-bar"
+              >
+                <div
+                  className="sc-AxgMl ewqSKM search-bar"
+                />
+              </styled.div>
+            </SearchBar>
+            <span>
+              Example:   paclitaxel   •   22rv1   •   mcf7 paclitaxel
+            </span>
+          </div>
+        </div>
+      </styled.div>
+    </SearchHeader>
+    <main>
+      <ScrollToTop
+        smooth={true}
+      />
+      <styled.div>
+        <div
+          className="sc-Axmtr eDjUno"
+        >
+          <Description>
+            <styled.div>
+              <div
+                className="sc-AxjAm hrJyPP"
+              >
+                <div
+                  className="text-container"
+                >
+                  <h1>
+                    Mine multiple cancer
+                     
+                    <br />
+                    pharmacogenomic datasets.
+                  </h1>
+                  <span>
+                    PharmacoDB allows scientists to search across publicly available datasets to find instances where a drug or cell line of interest has been profiled, and to view and compare the dose-response data for a specific cell line - drug pair from any of the studies included in the database.
+                  </span>
+                </div>
+                <img
+                  alt="dose-response curves"
+                  className="dose-img"
+                  src=""
+                />
+              </div>
+            </styled.div>
+          </Description>
+          <Stats>
+            <styled.div>
+              <div
+                className="sc-AxheI bpaaNM"
+              >
+                <div
+                  className="item-container"
+                  key="datasets"
+                >
+                  <img
+                    alt="7"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      7
+                    </span>
+                    <br />
+                    datasets
+                  </div>
+                </div>
+                <div
+                  className="item-container"
+                  key="tissues"
+                >
+                  <img
+                    alt="41"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      41
+                    </span>
+                    <br />
+                    tissues
+                  </div>
+                </div>
+                <div
+                  className="item-container"
+                  key="cell-lines"
+                >
+                  <img
+                    alt="1,691"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      1,691
+                    </span>
+                    <br />
+                    cell-lines
+                  </div>
+                </div>
+                <div
+                  className="item-container"
+                  key="experiments"
+                >
+                  <img
+                    alt="650,894"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      650,894
+                    </span>
+                    <br />
+                    experiments
+                  </div>
+                </div>
+                <div
+                  className="item-container"
+                  key="genes"
+                >
+                  <img
+                    alt="19,933"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      19,933
+                    </span>
+                    <br />
+                    genes
+                  </div>
+                </div>
+                <div
+                  className="item-container"
+                  key="compounds"
+                >
+                  <img
+                    alt="759"
+                    src=""
+                  />
+                  <div
+                    className="text"
+                  >
+                    <span
+                      className="big"
+                    >
+                      759
+                    </span>
+                    <br />
+                    compounds
+                  </div>
+                </div>
+              </div>
+            </styled.div>
+          </Stats>
+        </div>
+      </styled.div>
+    </main>
+  </Layout>
+</Home>
+`;

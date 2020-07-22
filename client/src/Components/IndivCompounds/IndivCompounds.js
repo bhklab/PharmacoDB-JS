@@ -40,7 +40,7 @@ const IndivCompounds = (props) => {
         {loading ? (<p>Loading...</p>)
           : (error ? (<p>Error!</p>)
             : (
-              <StyledIndivPage>
+              <StyledIndivPage className="indiv-compounds">
                 <h1>{compound.name}</h1>
                 <StyledSidebar>
                   <Link className="link" activeClass="selected" to="synonyms" spy smooth duration={200} offset={-400}>Synonyms</Link>

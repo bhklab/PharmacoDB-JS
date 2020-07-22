@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Compounds from '../components/Compounds/Compounds';
-import { getCompoundsQuery } from '../queries/queries';
 import { MockedProvider } from '@apollo/react-testing';
+import Compounds from '../Components/Compounds/Compounds';
+import { getCompoundsQuery } from '../queries/queries';
 
 const mocks = [
   {
@@ -11,13 +11,13 @@ const mocks = [
     },
     result: {
       data: {
-        compounds: { id: 1, name: "testDrug" },
+        compounds: { id: 1, name: 'testDrug' },
       },
     },
   },
 ];
 
-it('renders correctly without props', () => {
+it('renders correctly with a mocked query', () => {
   // must use mount to access Compounds (because child component)
   const component = mount(
     <MockedProvider mocks={mocks} addTypename={false}>
@@ -26,4 +26,3 @@ it('renders correctly without props', () => {
   );
   expect(component).toMatchSnapshot();
 });
-
