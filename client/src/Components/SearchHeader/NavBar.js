@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, BrowserRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import PropTypes from 'prop-types';
@@ -74,35 +74,33 @@ const NavBar = (props) => {
 
   return (
     <StyledNavBar className="header" page={page}>
-      <BrowserRouter>
-        <div className="container">
-          <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
-          <StyledLinkDropdowns page={page}>
-            <Dropdown className="header-links link-dropdown" text="About" simple>
-              <Dropdown.Menu className="link-menu">
+      <div className="container">
+        <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
+        <StyledLinkDropdowns page={page}>
+          <Dropdown className="header-links link-dropdown" text="About" simple>
+            <Dropdown.Menu className="link-menu">
                 {dropdownItems(aboutLinks)}
                 <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
-            <Link className="header-links link" to="/explore">Explore</Link>
-            <Dropdown className="header-links link-dropdown" text="Data" simple>
-              <Dropdown.Menu className="link-menu">
+          </Dropdown>
+          <Link className="header-links link" to="/explore">Explore</Link>
+          <Dropdown className="header-links link-dropdown" text="Data" simple>
+            <Dropdown.Menu className="link-menu">
                 {dropdownItems(dataLinks)}
               </Dropdown.Menu>
-            </Dropdown>
+          </Dropdown>
 
-            {page === 'home' ? null : (
-              <StyledSearchButton className="search-button" onClick={handleClick}>
+          {page === 'home' ? null : (
+            <StyledSearchButton className="search-button" onClick={handleClick}>
                 {isOpen ? (
-                  <img alt="close" src={closeSearchImg} />
-                ) : (
-                  <img alt="magnifying glass" src={magnifImg} />
-                )}
+                    <img alt="close" src={closeSearchImg} />
+                  ) : (
+                    <img alt="magnifying glass" src={magnifImg} />
+                  )}
               </StyledSearchButton>
-            )}
-          </StyledLinkDropdowns>
-        </div>
-      </BrowserRouter>
+          )}
+        </StyledLinkDropdowns>
+      </div>
     </StyledNavBar>
   );
 };

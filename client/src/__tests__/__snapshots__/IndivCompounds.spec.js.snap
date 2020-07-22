@@ -2180,184 +2180,173 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
       }
     }
   >
-    <IndivCompounds
-      match={
-        Object {
-          "params": Object {
-            "id": "1",
-          },
+    <BrowserRouter>
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "createHref": [Function],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
         }
-      }
-    >
-      <Layout
-        page=""
       >
-        <BurgerMenu>
-          <Menu
-            bodyClassName=""
-            burgerBarClassName=""
-            burgerButtonClassName=""
-            className="burger-menu"
-            crossButtonClassName=""
-            crossClassName=""
-            disableAutoFocus={true}
-            disableCloseOnEsc={false}
-            htmlClassName=""
-            id=""
-            isOpen={false}
-            itemClassName=""
-            itemListClassName=""
-            menuClassName=""
-            morphShapeClassName=""
-            noOverlay={true}
-            noTransition={false}
-            onIconHoverChange={[Function]}
-            onStateChange={[Function]}
-            outerContainerId=""
-            overlayClassName=""
-            pageWrapId=""
-            right={true}
-            styles={
-              Object {
-                "bmBurgerBars": Object {
-                  "background": "#205e74",
-                  "height": "3px",
-                  "opacity": 0.8,
-                },
-                "bmBurgerButton": Object {
-                  "height": "30px",
-                  "position": "fixed",
-                  "right": "10px",
-                  "top": "45px",
-                  "width": "34px",
-                },
-                "bmCross": Object {
-                  "background": "#bdc3c7",
-                },
-                "bmCrossButton": Object {
-                  "height": "24px",
-                  "width": "24px",
-                },
-                "bmItem": Object {
-                  "color": "white",
-                  "display": "inline-block",
-                  "fontFamily": "'Rubik', sans-serif",
-                },
-                "bmItemList": Object {
-                  "display": "flex",
-                  "flexDirection": "column",
-                  "height": "auto",
-                  "padding": "0.8em",
-                },
-                "bmMenu": Object {
-                  "background": "#454d4f",
-                  "color": "white",
-                  "fontSize": "1.15em",
-                  "padding": "2.5em 1.5em 0",
-                },
-                "bmMenuWrap": Object {
-                  "position": "fixed",
-                },
-                "bmOverlay": Object {
-                  "background": "rgba(0, 0, 0, 0.3)",
-                },
-              }
+        <IndivCompounds
+          match={
+            Object {
+              "params": Object {
+                "id": "1",
+              },
             }
-            width={300}
+          }
+        >
+          <Layout
+            page=""
           >
-            <div>
-              <div
-                className="bm-menu-wrap burger-menu"
+            <BurgerMenu>
+              <Menu
+                bodyClassName=""
+                burgerBarClassName=""
+                burgerButtonClassName=""
+                className="burger-menu"
+                crossButtonClassName=""
+                crossClassName=""
+                disableAutoFocus={true}
+                disableCloseOnEsc={false}
+                htmlClassName=""
                 id=""
-                style={
+                isOpen={false}
+                itemClassName=""
+                itemListClassName=""
+                menuClassName=""
+                morphShapeClassName=""
+                noOverlay={true}
+                noTransition={false}
+                onIconHoverChange={[Function]}
+                onStateChange={[Function]}
+                outerContainerId=""
+                overlayClassName=""
+                pageWrapId=""
+                right={true}
+                styles={
                   Object {
-                    "MozTransform": "translate3d(100%, 0, 0)",
-                    "MsTransform": "translate3d(100%, 0, 0)",
-                    "OTransform": "translate3d(100%, 0, 0)",
-                    "WebkitTransform": "translate3d(100%, 0, 0)",
-                    "height": "100%",
-                    "position": "fixed",
-                    "right": 0,
-                    "transform": "translate3d(100%, 0, 0)",
-                    "transition": "all 0.5s",
-                    "width": "300px",
-                    "zIndex": 1100,
-                  }
-                }
-              >
-                <div
-                  className="bm-menu"
-                  style={
-                    Object {
+                    "bmBurgerBars": Object {
+                      "background": "#205e74",
+                      "height": "3px",
+                      "opacity": 0.8,
+                    },
+                    "bmBurgerButton": Object {
+                      "height": "30px",
+                      "position": "fixed",
+                      "right": "10px",
+                      "top": "45px",
+                      "width": "34px",
+                    },
+                    "bmCross": Object {
+                      "background": "#bdc3c7",
+                    },
+                    "bmCrossButton": Object {
+                      "height": "24px",
+                      "width": "24px",
+                    },
+                    "bmItem": Object {
+                      "color": "white",
+                      "display": "inline-block",
+                      "fontFamily": "'Rubik', sans-serif",
+                    },
+                    "bmItemList": Object {
+                      "display": "flex",
+                      "flexDirection": "column",
+                      "height": "auto",
+                      "padding": "0.8em",
+                    },
+                    "bmMenu": Object {
                       "background": "#454d4f",
-                      "boxSizing": "border-box",
                       "color": "white",
                       "fontSize": "1.15em",
-                      "height": "100%",
-                      "overflow": "auto",
                       "padding": "2.5em 1.5em 0",
-                    }
+                    },
+                    "bmMenuWrap": Object {
+                      "position": "fixed",
+                    },
+                    "bmOverlay": Object {
+                      "background": "rgba(0, 0, 0, 0.3)",
+                    },
                   }
-                >
-                  <nav
-                    className="bm-item-list"
+                }
+                width={300}
+              >
+                <div>
+                  <div
+                    className="bm-menu-wrap burger-menu"
+                    id=""
                     style={
                       Object {
-                        "display": "flex",
-                        "flexDirection": "column",
-                        "height": "auto",
-                        "padding": "0.8em",
+                        "MozTransform": "translate3d(100%, 0, 0)",
+                        "MsTransform": "translate3d(100%, 0, 0)",
+                        "OTransform": "translate3d(100%, 0, 0)",
+                        "WebkitTransform": "translate3d(100%, 0, 0)",
+                        "height": "100%",
+                        "position": "fixed",
+                        "right": 0,
+                        "transform": "translate3d(100%, 0, 0)",
+                        "transition": "all 0.5s",
+                        "width": "300px",
+                        "zIndex": 1100,
                       }
                     }
                   >
-                    <h2
-                      className="bm-item"
-                      key="0/.0"
+                    <div
+                      className="bm-menu"
                       style={
                         Object {
+                          "background": "#454d4f",
+                          "boxSizing": "border-box",
                           "color": "white",
-                          "display": "inline-block",
-                          "fontFamily": "'Rubik', sans-serif",
+                          "fontSize": "1.15em",
+                          "height": "100%",
+                          "overflow": "auto",
+                          "padding": "2.5em 1.5em 0",
                         }
                       }
-                      tabIndex={-1}
                     >
-                      About
-                    </h2>
-                    <BrowserRouter
-                      className="bm-item"
-                      key="1/.1"
-                      style={
-                        Object {
-                          "color": "white",
-                          "display": "inline-block",
-                          "fontFamily": "'Rubik', sans-serif",
-                        }
-                      }
-                      tabIndex={-1}
-                    >
-                      <Router
-                        history={
+                      <nav
+                        className="bm-item-list"
+                        style={
                           Object {
-                            "action": "POP",
-                            "block": [Function],
-                            "createHref": [Function],
-                            "go": [Function],
-                            "goBack": [Function],
-                            "goForward": [Function],
-                            "length": 1,
-                            "listen": [Function],
-                            "location": Object {
-                              "hash": "",
-                              "pathname": "/",
-                              "search": "",
-                              "state": undefined,
-                            },
-                            "push": [Function],
-                            "replace": [Function],
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "height": "auto",
+                            "padding": "0.8em",
                           }
                         }
                       >
+                        <h2
+                          className="bm-item"
+                          key="0/.0"
+                          style={
+                            Object {
+                              "color": "white",
+                              "display": "inline-block",
+                              "fontFamily": "'Rubik', sans-serif",
+                            }
+                          }
+                          tabIndex={-1}
+                        >
+                          About
+                        </h2>
                         <Link
                           className="burger-item"
                           key="/about"
@@ -2552,323 +2541,298 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                             </a>
                           </LinkAnchor>
                         </Link>
-                      </Router>
-                    </BrowserRouter>
-                  </nav>
-                </div>
-                <div
-                  style={Object {}}
-                >
-                  <CrossIcon
-                    className=""
-                    crossClassName=""
-                    onClick={[Function]}
-                    styles={
-                      Object {
-                        "bmBurgerBars": Object {
-                          "background": "#205e74",
-                          "height": "3px",
-                          "opacity": 0.8,
-                        },
-                        "bmBurgerButton": Object {
-                          "height": "30px",
-                          "position": "fixed",
-                          "right": "10px",
-                          "top": "45px",
-                          "width": "34px",
-                        },
-                        "bmCross": Object {
-                          "background": "#bdc3c7",
-                        },
-                        "bmCrossButton": Object {
-                          "height": "24px",
-                          "width": "24px",
-                        },
-                        "bmItem": Object {
-                          "color": "white",
-                          "display": "inline-block",
-                          "fontFamily": "'Rubik', sans-serif",
-                        },
-                        "bmItemList": Object {
-                          "display": "flex",
-                          "flexDirection": "column",
-                          "height": "auto",
-                          "padding": "0.8em",
-                        },
-                        "bmMenu": Object {
-                          "background": "#454d4f",
-                          "color": "white",
-                          "fontSize": "1.15em",
-                          "padding": "2.5em 1.5em 0",
-                        },
-                        "bmMenuWrap": Object {
-                          "position": "fixed",
-                        },
-                        "bmOverlay": Object {
-                          "background": "rgba(0, 0, 0, 0.3)",
-                        },
-                      }
-                    }
-                    tabIndex={-1}
-                  >
+                      </nav>
+                    </div>
                     <div
-                      className="bm-cross-button"
-                      style={
-                        Object {
-                          "height": "24px",
-                          "position": "absolute",
-                          "right": 8,
-                          "top": 8,
-                          "width": "24px",
-                        }
-                      }
+                      style={Object {}}
                     >
-                      <span
-                        style={
-                          Object {
-                            "position": "absolute",
-                            "right": "14px",
-                            "top": "6px",
-                          }
-                        }
-                      >
-                        <span
-                          className="bm-cross"
-                          key="0"
-                          style={
-                            Object {
-                              "background": "#bdc3c7",
-                              "height": 14,
-                              "position": "absolute",
-                              "transform": "rotate(45deg)",
-                              "width": 3,
-                            }
-                          }
-                        />
-                        <span
-                          className="bm-cross"
-                          key="1"
-                          style={
-                            Object {
-                              "background": "#bdc3c7",
-                              "height": 14,
-                              "position": "absolute",
-                              "transform": "rotate(-45deg)",
-                              "width": 3,
-                            }
-                          }
-                        />
-                      </span>
-                      <button
+                      <CrossIcon
+                        className=""
+                        crossClassName=""
                         onClick={[Function]}
-                        style={
+                        styles={
                           Object {
-                            "background": "transparent",
-                            "border": "none",
-                            "cursor": "pointer",
-                            "fontSize": 0,
-                            "height": "100%",
-                            "left": 0,
-                            "margin": 0,
-                            "padding": 0,
-                            "position": "absolute",
-                            "top": 0,
-                            "width": "100%",
+                            "bmBurgerBars": Object {
+                              "background": "#205e74",
+                              "height": "3px",
+                              "opacity": 0.8,
+                            },
+                            "bmBurgerButton": Object {
+                              "height": "30px",
+                              "position": "fixed",
+                              "right": "10px",
+                              "top": "45px",
+                              "width": "34px",
+                            },
+                            "bmCross": Object {
+                              "background": "#bdc3c7",
+                            },
+                            "bmCrossButton": Object {
+                              "height": "24px",
+                              "width": "24px",
+                            },
+                            "bmItem": Object {
+                              "color": "white",
+                              "display": "inline-block",
+                              "fontFamily": "'Rubik', sans-serif",
+                            },
+                            "bmItemList": Object {
+                              "display": "flex",
+                              "flexDirection": "column",
+                              "height": "auto",
+                              "padding": "0.8em",
+                            },
+                            "bmMenu": Object {
+                              "background": "#454d4f",
+                              "color": "white",
+                              "fontSize": "1.15em",
+                              "padding": "2.5em 1.5em 0",
+                            },
+                            "bmMenuWrap": Object {
+                              "position": "fixed",
+                            },
+                            "bmOverlay": Object {
+                              "background": "rgba(0, 0, 0, 0.3)",
+                            },
                           }
                         }
                         tabIndex={-1}
                       >
-                        Close Menu
-                      </button>
+                        <div
+                          className="bm-cross-button"
+                          style={
+                            Object {
+                              "height": "24px",
+                              "position": "absolute",
+                              "right": 8,
+                              "top": 8,
+                              "width": "24px",
+                            }
+                          }
+                        >
+                          <span
+                            style={
+                              Object {
+                                "position": "absolute",
+                                "right": "14px",
+                                "top": "6px",
+                              }
+                            }
+                          >
+                            <span
+                              className="bm-cross"
+                              key="0"
+                              style={
+                                Object {
+                                  "background": "#bdc3c7",
+                                  "height": 14,
+                                  "position": "absolute",
+                                  "transform": "rotate(45deg)",
+                                  "width": 3,
+                                }
+                              }
+                            />
+                            <span
+                              className="bm-cross"
+                              key="1"
+                              style={
+                                Object {
+                                  "background": "#bdc3c7",
+                                  "height": 14,
+                                  "position": "absolute",
+                                  "transform": "rotate(-45deg)",
+                                  "width": 3,
+                                }
+                              }
+                            />
+                          </span>
+                          <button
+                            onClick={[Function]}
+                            style={
+                              Object {
+                                "background": "transparent",
+                                "border": "none",
+                                "cursor": "pointer",
+                                "fontSize": 0,
+                                "height": "100%",
+                                "left": 0,
+                                "margin": 0,
+                                "padding": 0,
+                                "position": "absolute",
+                                "top": 0,
+                                "width": "100%",
+                              }
+                            }
+                            tabIndex={-1}
+                          >
+                            Close Menu
+                          </button>
+                        </div>
+                      </CrossIcon>
                     </div>
-                  </CrossIcon>
-                </div>
-              </div>
-              <div
-                style={Object {}}
-              >
-                <BurgerIcon
-                  barClassName=""
-                  className=""
-                  onClick={[Function]}
-                  styles={
-                    Object {
-                      "bmBurgerBars": Object {
-                        "background": "#205e74",
-                        "height": "3px",
-                        "opacity": 0.8,
-                      },
-                      "bmBurgerButton": Object {
-                        "height": "30px",
-                        "position": "fixed",
-                        "right": "10px",
-                        "top": "45px",
-                        "width": "34px",
-                      },
-                      "bmCross": Object {
-                        "background": "#bdc3c7",
-                      },
-                      "bmCrossButton": Object {
-                        "height": "24px",
-                        "width": "24px",
-                      },
-                      "bmItem": Object {
-                        "color": "white",
-                        "display": "inline-block",
-                        "fontFamily": "'Rubik', sans-serif",
-                      },
-                      "bmItemList": Object {
-                        "display": "flex",
-                        "flexDirection": "column",
-                        "height": "auto",
-                        "padding": "0.8em",
-                      },
-                      "bmMenu": Object {
-                        "background": "#454d4f",
-                        "color": "white",
-                        "fontSize": "1.15em",
-                        "padding": "2.5em 1.5em 0",
-                      },
-                      "bmMenuWrap": Object {
-                        "position": "fixed",
-                      },
-                      "bmOverlay": Object {
-                        "background": "rgba(0, 0, 0, 0.3)",
-                      },
-                    }
-                  }
-                >
+                  </div>
                   <div
-                    className="bm-burger-button"
-                    style={
-                      Object {
-                        "height": "30px",
-                        "position": "fixed",
-                        "right": "10px",
-                        "top": "45px",
-                        "width": "34px",
-                        "zIndex": 1000,
-                      }
-                    }
+                    style={Object {}}
                   >
-                    <span>
-                      <span
-                        className="bm-burger-bars"
-                        key="0"
-                        style={
-                          Object {
-                            "background": "#205e74",
-                            "height": "3px",
-                            "left": 0,
-                            "opacity": 0.8,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": "0%",
-                          }
-                        }
-                      />
-                      <span
-                        className="bm-burger-bars"
-                        key="1"
-                        style={
-                          Object {
-                            "background": "#205e74",
-                            "height": "3px",
-                            "left": 0,
-                            "opacity": 0.8,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": "40%",
-                          }
-                        }
-                      />
-                      <span
-                        className="bm-burger-bars"
-                        key="2"
-                        style={
-                          Object {
-                            "background": "#205e74",
-                            "height": "3px",
-                            "left": 0,
-                            "opacity": 0.8,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": "80%",
-                          }
-                        }
-                      />
-                    </span>
-                    <button
+                    <BurgerIcon
+                      barClassName=""
+                      className=""
                       onClick={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                      style={
+                      styles={
                         Object {
-                          "background": "transparent",
-                          "border": "none",
-                          "cursor": "pointer",
-                          "fontSize": 0,
-                          "height": "100%",
-                          "left": 0,
-                          "margin": 0,
-                          "padding": 0,
-                          "position": "absolute",
-                          "top": 0,
-                          "width": "100%",
+                          "bmBurgerBars": Object {
+                            "background": "#205e74",
+                            "height": "3px",
+                            "opacity": 0.8,
+                          },
+                          "bmBurgerButton": Object {
+                            "height": "30px",
+                            "position": "fixed",
+                            "right": "10px",
+                            "top": "45px",
+                            "width": "34px",
+                          },
+                          "bmCross": Object {
+                            "background": "#bdc3c7",
+                          },
+                          "bmCrossButton": Object {
+                            "height": "24px",
+                            "width": "24px",
+                          },
+                          "bmItem": Object {
+                            "color": "white",
+                            "display": "inline-block",
+                            "fontFamily": "'Rubik', sans-serif",
+                          },
+                          "bmItemList": Object {
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "height": "auto",
+                            "padding": "0.8em",
+                          },
+                          "bmMenu": Object {
+                            "background": "#454d4f",
+                            "color": "white",
+                            "fontSize": "1.15em",
+                            "padding": "2.5em 1.5em 0",
+                          },
+                          "bmMenuWrap": Object {
+                            "position": "fixed",
+                          },
+                          "bmOverlay": Object {
+                            "background": "rgba(0, 0, 0, 0.3)",
+                          },
                         }
                       }
                     >
-                      Open Menu
-                    </button>
-                  </div>
-                </BurgerIcon>
-              </div>
-            </div>
-          </Menu>
-        </BurgerMenu>
-        <SearchHeader>
-          <styled.div
-            isOpen={false}
-            page=""
-          >
-            <div
-              className="sc-AxjAm hBVroR"
-            >
-              <div
-                className="burger-bg"
-              />
-              <NavBar
-                onClick={[Function]}
-              >
-                <styled.div
-                  className="header"
-                  page=""
-                >
-                  <div
-                    className="sc-AxirZ leGUCD header"
-                  >
-                    <BrowserRouter>
-                      <Router
-                        history={
+                      <div
+                        className="bm-burger-button"
+                        style={
                           Object {
-                            "action": "POP",
-                            "block": [Function],
-                            "createHref": [Function],
-                            "go": [Function],
-                            "goBack": [Function],
-                            "goForward": [Function],
-                            "length": 1,
-                            "listen": [Function],
-                            "location": Object {
-                              "hash": "",
-                              "pathname": "/",
-                              "search": "",
-                              "state": undefined,
-                            },
-                            "push": [Function],
-                            "replace": [Function],
+                            "height": "30px",
+                            "position": "fixed",
+                            "right": "10px",
+                            "top": "45px",
+                            "width": "34px",
+                            "zIndex": 1000,
                           }
                         }
+                      >
+                        <span>
+                          <span
+                            className="bm-burger-bars"
+                            key="0"
+                            style={
+                              Object {
+                                "background": "#205e74",
+                                "height": "3px",
+                                "left": 0,
+                                "opacity": 0.8,
+                                "position": "absolute",
+                                "right": 0,
+                                "top": "0%",
+                              }
+                            }
+                          />
+                          <span
+                            className="bm-burger-bars"
+                            key="1"
+                            style={
+                              Object {
+                                "background": "#205e74",
+                                "height": "3px",
+                                "left": 0,
+                                "opacity": 0.8,
+                                "position": "absolute",
+                                "right": 0,
+                                "top": "40%",
+                              }
+                            }
+                          />
+                          <span
+                            className="bm-burger-bars"
+                            key="2"
+                            style={
+                              Object {
+                                "background": "#205e74",
+                                "height": "3px",
+                                "left": 0,
+                                "opacity": 0.8,
+                                "position": "absolute",
+                                "right": 0,
+                                "top": "80%",
+                              }
+                            }
+                          />
+                        </span>
+                        <button
+                          onClick={[Function]}
+                          onMouseOut={[Function]}
+                          onMouseOver={[Function]}
+                          style={
+                            Object {
+                              "background": "transparent",
+                              "border": "none",
+                              "cursor": "pointer",
+                              "fontSize": 0,
+                              "height": "100%",
+                              "left": 0,
+                              "margin": 0,
+                              "padding": 0,
+                              "position": "absolute",
+                              "top": 0,
+                              "width": "100%",
+                            }
+                          }
+                        >
+                          Open Menu
+                        </button>
+                      </div>
+                    </BurgerIcon>
+                  </div>
+                </div>
+              </Menu>
+            </BurgerMenu>
+            <SearchHeader>
+              <styled.div
+                isOpen={false}
+                page=""
+              >
+                <div
+                  className="sc-AxjAm hBVroR"
+                >
+                  <div
+                    className="burger-bg"
+                  />
+                  <NavBar
+                    onClick={[Function]}
+                  >
+                    <styled.div
+                      className="header"
+                      page=""
+                    >
+                      <div
+                        className="sc-AxirZ tpVmv header"
                       >
                         <div
                           className="container"
@@ -3611,46 +3575,46 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                             </div>
                           </styled.div>
                         </div>
-                      </Router>
-                    </BrowserRouter>
-                  </div>
-                </styled.div>
-              </NavBar>
-              <div
-                className="search-container popup hidden"
-              >
-                <h1>
-                  Try searching for a...
-                </h1>
-                <SearchBar>
-                  <styled.div
-                    className="search-bar"
+                      </div>
+                    </styled.div>
+                  </NavBar>
+                  <div
+                    className="search-container popup hidden"
                   >
-                    <div
-                      className="sc-AxhUy dglwly search-bar"
-                    />
-                  </styled.div>
-                </SearchBar>
-                <span>
-                  Example:   paclitaxel   •   22rv1   •   mcf7 paclitaxel
-                </span>
-              </div>
-            </div>
-          </styled.div>
-        </SearchHeader>
-        <main>
-          <styled.div>
-            <div
-              className="sc-AxgMl ePJxIh"
-            >
-              <p>
-                Loading...
-              </p>
-            </div>
-          </styled.div>
-        </main>
-      </Layout>
-    </IndivCompounds>
+                    <h1>
+                      Try searching for a...
+                    </h1>
+                    <SearchBar>
+                      <styled.div
+                        className="search-bar"
+                      >
+                        <div
+                          className="sc-AxhUy dglwly search-bar"
+                        />
+                      </styled.div>
+                    </SearchBar>
+                    <span>
+                      Example:   paclitaxel   •   22rv1   •   mcf7 paclitaxel
+                    </span>
+                  </div>
+                </div>
+              </styled.div>
+            </SearchHeader>
+            <main>
+              <styled.div>
+                <div
+                  className="sc-Axmtr cdTgto"
+                >
+                  <p>
+                    Loading...
+                  </p>
+                </div>
+              </styled.div>
+            </main>
+          </Layout>
+        </IndivCompounds>
+      </Router>
+    </BrowserRouter>
   </ApolloProvider>
 </MockedProvider>
 `;

@@ -92,14 +92,12 @@ const BurgerMenu = () => {
   return (
     <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
       <h2>About</h2>
-      <BrowserRouter>
-        <>
-          {dropdownItems(aboutLinks)}
-          <p />
-          <h2>Data</h2>
-          {dropdownItems(dataLinks)}
-        </>
-      </BrowserRouter>
+      <>
+        {dropdownItems(aboutLinks)}
+        <p />
+        <h2>Data</h2>
+        {dropdownItems(dataLinks)}
+      </>
     </Menu>
   );
 };

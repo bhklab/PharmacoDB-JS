@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { wait, act } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 // for async tests
 import regeneratorRuntime from 'regenerator-runtime';
 import IndivCompounds from '../Components/IndivCompounds/IndivCompounds';
@@ -47,7 +48,9 @@ it('renders correctly with a mocked query and id prop', async () => {
   // must use mount to access IndivCompounds (because child component)
   const component = mount(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <IndivCompounds match={{ params: { id: '1' } }} />
+      <BrowserRouter>
+        <IndivCompounds match={{ params: { id: '1' } }} />
+      </BrowserRouter>
     </MockedProvider>,
   );
   await act(wait);

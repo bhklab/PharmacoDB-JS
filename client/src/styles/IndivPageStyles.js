@@ -5,6 +5,7 @@ const StyledIndivPage = styled.div`
   .container {
     width: 100%;
     margin-top: 5vh;
+    font-size: calc(0.4vw + 0.7em);
     
     display:flex;
     align-items: flex-end;
@@ -40,7 +41,7 @@ const StyledSidebar = styled.div`
     display:block;
     color: ${colors.dark_teal_heading};
     border-right: 5px solid ${colors.light_blue_header};
-    font-size: calc(0.4vw + 0.7em);
+    font-size: calc(0.5vw + 0.7em);
     font-family: 'Overpass', sans-serif;
     text-align: right;
     padding:20px 20px 20px 0px;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
+import { BrowserRouter } from 'react-router-dom';
 import Compounds from '../Components/Compounds/Compounds';
 import { getCompoundsQuery } from '../queries/queries';
 
@@ -21,7 +22,9 @@ it('renders correctly with a mocked query', () => {
   // must use mount to access Compounds (because child component)
   const component = mount(
     <MockedProvider mocks={mocks} addTypename={false}>
-      <Compounds />
+      <BrowserRouter>
+        <Compounds />
+      </BrowserRouter>
     </MockedProvider>,
   );
   expect(component).toMatchSnapshot();
