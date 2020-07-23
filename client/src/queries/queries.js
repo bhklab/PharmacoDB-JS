@@ -8,6 +8,12 @@ const getCompoundsQuery = gql`
         compounds {
             id
             name
+			annotation {
+				smiles
+				inchikey
+				pubchem
+				fda_status
+			}
         }
     }
 `;
@@ -16,26 +22,26 @@ const getCompoundsQuery = gql`
  * Query returns info of compound given the id.
  */
 const getCompoundQuery = gql`
- query getCompound($compoundId: Int!) {
-    compound(compoundId: $compoundId) {
-      compound {
-        id
-        name
-        annotation {
-          smiles
-          inchikey
-          pubchem
-        }
-      }
-    }
-    
-  }
+query getCompound($compoundId: Int!) {
+	compound(compoundId: $compoundId) {
+		compound {
+			id
+			name
+			annotation {
+				smiles
+				inchikey
+				pubchem
+				fda_status
+			}
+		}
+	}
+}
 `;
 
 const disableDrug = gql`
-  {
-    drug @client
-  }
+	{
+		drug @client
+	}
 `;
 
 export {
