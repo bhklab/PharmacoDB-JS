@@ -4,7 +4,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import {
- IndivCompounds, Compounds, Home, NotFoundPage 
+  IndivCompounds, Compounds, Home, NotFoundPage,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
