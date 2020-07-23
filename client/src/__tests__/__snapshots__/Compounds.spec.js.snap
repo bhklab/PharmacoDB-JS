@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly with a mocked query 1`] = `
+exports[`renders Compounds correctly with a mocked query 1`] = `
 <MockedProvider
   addTypename={false}
   mocks={
@@ -2359,9 +2359,15 @@ exports[`renders correctly with a mocked query 1`] = `
               </styled.div>
             </SearchHeader>
             <main>
-              <p>
-                Loading...
-              </p>
+              <styled.div>
+                <div
+                  className="sc-AxgMl gwpnWx"
+                >
+                  <p>
+                    Loading...
+                  </p>
+                </div>
+              </styled.div>
             </main>
           </Layout>
         </Compounds>

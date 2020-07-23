@@ -6,6 +6,7 @@ import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../Utils/Layout';
 import { getCompoundQuery } from '../../queries/queries';
+import { NotFoundContent } from '../Utils/NotFoundPage';
 
 import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
 import StyledWrapper from '../../styles/utils';
@@ -39,7 +40,7 @@ const IndivCompounds = (props) => {
     <Layout>
       <StyledWrapper>
         {loading ? (<p>Loading...</p>)
-          : (error ? (<p>Error!</p>)
+          : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-compounds">
                 <h1>{compound.name}</h1>

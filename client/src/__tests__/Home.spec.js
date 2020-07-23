@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Home from '../Components/Home/Home';
 
 // Catch-all snapshot test for entire rendering of home
-it('renders correctly', () => {
+it('renders Home correctly', () => {
   const component = mount(
     <BrowserRouter>
       <Home />
