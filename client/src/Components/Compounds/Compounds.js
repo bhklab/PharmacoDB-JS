@@ -137,7 +137,7 @@ const Table = ({ columns, data }) => {
 				))}
 			</thead>
 			<tbody {...getTableBodyProps()}>
-				{rows.map((row, i) => {
+				{page.map((row, i) => {
 				prepareRow(row)
 				return (
 					<tr {...row.getRowProps()}>

@@ -5,7 +5,7 @@ import { gql } from 'apollo-boost';
  */
 const getCompoundsQuery = gql`
     {
-        compounds {
+        compounds(all: true) {
             id
             name
 			annotation {
