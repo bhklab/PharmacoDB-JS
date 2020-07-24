@@ -1,29 +1,11 @@
 import styled from 'styled-components';
 import colors from './colors';
 
-const StyledWrapper = styled.div`
-    margin-top: 6vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    & > * {
-        width: 70%;
-    }
-`;
-
 const StyledIndivPage = styled.div`
-  h1 {
-    color: ${colors.dark_teal_heading};
-    font-family: 'Roboto Slab', serif;
-    font-size: calc(2vw + 1.5em);
-    text-align:center;
-    width:100%;
-  }
   .container {
     width: 100%;
     margin-top: 5vh;
+    font-size: calc(0.4vw + 0.7em);
     
     display:flex;
     align-items: flex-end;
@@ -59,7 +41,7 @@ const StyledSidebar = styled.div`
     display:block;
     color: ${colors.dark_teal_heading};
     border-right: 5px solid ${colors.light_blue_header};
-    font-size: calc(0.4vw + 0.7em);
+    font-size: calc(0.5vw + 0.7em);
     font-family: 'Overpass', sans-serif;
     text-align: right;
     padding:20px 20px 20px 0px;
@@ -86,5 +68,4 @@ const StyledSidebar = styled.div`
 export {
   StyledIndivPage,
   StyledSidebar,
-  StyledWrapper,
 };

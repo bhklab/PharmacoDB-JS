@@ -46,6 +46,7 @@ const GlobalStyles = createGlobalStyle`
             border-left: 1px solid white;
             padding: 10px;
             margin-left: 5px;
+            color: white;
 
             &:hover {
                 border-left: 5px solid white;

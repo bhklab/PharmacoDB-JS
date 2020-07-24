@@ -16,7 +16,7 @@ const getCompoundsQuery = gql`
  * Query returns info of compound given the id.
  */
 const getCompoundQuery = gql`
- query Compound($compoundId: Int!) {
+ query getCompound($compoundId: Int!) {
     compound(compoundId: $compoundId) {
       compound {
         id

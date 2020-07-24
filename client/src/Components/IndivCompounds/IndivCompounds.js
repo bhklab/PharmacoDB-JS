@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Layout from '../Layout/Layout';
+import Layout from '../Utils/Layout';
 import { getCompoundQuery } from '../../queries/queries';
+import { NotFoundContent } from '../Utils/NotFoundPage';
 
-import { StyledWrapper, StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
+import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
+import StyledWrapper from '../../styles/utils';
 
 /**
  * Parent component for the individual compound page.
@@ -38,9 +40,9 @@ const IndivCompounds = (props) => {
     <Layout>
       <StyledWrapper>
         {loading ? (<p>Loading...</p>)
-          : (error ? (<p>Error!</p>)
+          : (error ? (<NotFoundContent />)
             : (
-              <StyledIndivPage>
+              <StyledIndivPage className="indiv-compounds">
                 <h1>{compound.name}</h1>
                 <StyledSidebar>
                   <Link className="link" activeClass="selected" to="synonyms" spy smooth duration={200} offset={-400}>Synonyms</Link>

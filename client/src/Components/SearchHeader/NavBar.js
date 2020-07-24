@@ -52,7 +52,7 @@ const NavBar = (props) => {
    */
 
   const dropdownItems = (data) => data.map((x) => (
-    <Dropdown.Item><Link to={x.url}>{x.name}</Link></Dropdown.Item>
+    <Dropdown.Item key={x.name}><Link to={x.url}>{x.name}</Link></Dropdown.Item>
   ));
 
   // for about menu dropdown
@@ -100,7 +100,6 @@ const NavBar = (props) => {
             </StyledSearchButton>
           )}
         </StyledLinkDropdowns>
-
       </div>
     </StyledNavBar>
   );

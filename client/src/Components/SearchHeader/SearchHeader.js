@@ -39,19 +39,13 @@ const SearchHeader = () => {
     <StyledSearchHeader page={page} isOpen={isOpen}>
       <div className="burger-bg" />
       <NavBar onClick={onClick} />
-      { page === 'home' ? (
-        <div className="search-container">
-          <h1>Try searching for a...</h1>
-          <SearchBar />
-          <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
-        </div>
-      ) : (
-        <div className={`search-container popup ${isOpen ? 'visible' : 'hidden'}`}>
-          <h1>Try searching for a...</h1>
-          <SearchBar />
-          <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
-        </div>
-      )}
+      {/* Ternaries determine the classes to put based on if the page is home or not, and if the popup
+      should be visible or not based on search button click. */}
+      <div className={`search-container${page === 'home' ? '' : ` popup ${isOpen ? 'visible' : 'hidden'}`}`}>
+        <h1>Try searching for a...</h1>
+        <SearchBar />
+        <span>Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
+      </div>
     </StyledSearchHeader>
   );
 };
