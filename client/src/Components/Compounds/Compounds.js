@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo } from 'react';
-import { useTable } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../Utils/Layout';
 import { getCompoundsQuery } from '../../queries/queries';
@@ -87,10 +87,13 @@ const Table = ({ columns, data }) => {
 	  headerGroups,
 	  rows,
 	  prepareRow,
-	} = useTable({
-	  columns,
-	  data,
-	})
+	} = useTable(
+		{
+			columns,
+			data,
+		},
+		useSortBy
+	)
   
 	// Render the UI for your table
 	return (
@@ -99,7 +102,19 @@ const Table = ({ columns, data }) => {
 		  {headerGroups.map(headerGroup => (
 			<tr {...headerGroup.getHeaderGroupProps()}>
 			  {headerGroup.headers.map(column => (
-				<th {...column.getHeaderProps()}>{column.render('Header')}</th>
+				// Add the sorting props to control sorting. For this example
+                // we can add them into the header props
+				<th {...column.getHeaderProps(column.getSortByToggleProps())}>
+					{column.render('Header')}
+					{/* Add a sort direction indicator */}
+					<span>
+						{column.isSorted
+						? column.isSortedDesc
+							? ' 🔽'
+							: ' 🔼'
+						: ''}
+                  	</span>
+				</th>
 			  ))}
 			</tr>
 		  ))}
