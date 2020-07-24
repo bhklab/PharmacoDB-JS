@@ -38,8 +38,10 @@ const NavBar = (props) => {
   const handleClick = (e) => {
     if (isOpen) {
       setIsOpen(false);
+      document.body.style.overflow = 'scroll';
     } else {
       setIsOpen(true);
+      document.body.style.overflow = 'hidden';
     }
     onClick(isOpen);
   };

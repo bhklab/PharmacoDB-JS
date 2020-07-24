@@ -25,6 +25,7 @@ const GlobalStyles = createGlobalStyle`
         font-size: calc(0.5vw + 1.8em);
     }
 
+    // Seach Header visibility
     .visible {
         visibility: visible;
         opacity: 1;

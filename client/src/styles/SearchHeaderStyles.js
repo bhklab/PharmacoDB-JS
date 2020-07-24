@@ -49,7 +49,7 @@ const StyledSearchHeader = styled.div`
         margin-top:100px; // height + padding of navbar
         background: rgb(255,255,255,0.8);
         z-index:999;
-        height:100%;
+        height:100vh;
         padding-top:50px;
     }
 
