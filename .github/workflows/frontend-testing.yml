@@ -1,4 +1,4 @@
-name: Github Actions
+name: Front-end testing
 
 # Define an event (or events) that triggers this workflow.
 on:
