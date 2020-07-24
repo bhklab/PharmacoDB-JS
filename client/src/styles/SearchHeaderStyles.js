@@ -47,7 +47,7 @@ const StyledSearchHeader = styled.div`
     .popup {
         position:absolute;
         margin-top:100px; // height + padding of navbar
-        background: rgb(255,255,255,0.8);
+        background: rgb(255,255,255,0.7);
         z-index:999;
         height:100vh;
         padding-top:50px;

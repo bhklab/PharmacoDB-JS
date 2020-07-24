@@ -38,6 +38,14 @@ const GlobalStyles = createGlobalStyle`
         transition: visibility 0s 0.25s, opacity 0.25s linear;
     }
 
+    .blur {
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+    }
+
     .burger-menu {
         position:fixed;
         h2 {

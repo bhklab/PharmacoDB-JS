@@ -1577,7 +1577,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                 page=""
               >
                 <div
-                  className="sc-AxjAm cCHODA"
+                  className="sc-AxjAm kCRiCA"
                 >
                   <div
                     className="burger-bg"
@@ -3819,9 +3819,11 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
               </styled.div>
             </SearchHeader>
             <main>
-              <styled.div>
+              <styled.div
+                className="page"
+              >
                 <div
-                  className="sc-AxhUy hlFdiv"
+                  className="sc-AxhUy hlFdiv page"
                 >
                   <p>
                     Loading...

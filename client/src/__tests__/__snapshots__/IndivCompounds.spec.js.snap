@@ -2819,7 +2819,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                 page=""
               >
                 <div
-                  className="sc-AxjAm cCHODA"
+                  className="sc-AxjAm kCRiCA"
                 >
                   <div
                     className="burger-bg"
@@ -5061,9 +5061,11 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
               </styled.div>
             </SearchHeader>
             <main>
-              <styled.div>
+              <styled.div
+                className="page"
+              >
                 <div
-                  className="sc-AxhUy hlFdiv"
+                  className="sc-AxhUy hlFdiv page"
                 >
                   <p>
                     Loading...
@@ -8094,7 +8096,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                 page=""
               >
                 <div
-                  className="sc-AxjAm cCHODA"
+                  className="sc-AxjAm kCRiCA"
                 >
                   <div
                     className="burger-bg"
@@ -10336,9 +10338,11 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
               </styled.div>
             </SearchHeader>
             <main>
-              <styled.div>
+              <styled.div
+                className="page"
+              >
                 <div
-                  className="sc-AxhUy hlFdiv"
+                  className="sc-AxhUy hlFdiv page"
                 >
                   <p>
                     Loading...

@@ -632,7 +632,7 @@ exports[`renders Home correctly 1`] = `
             page="home"
           >
             <div
-              className="sc-AxirZ dJmKiS"
+              className="sc-AxirZ lphIJC"
             >
               <div
                 className="burger-bg"

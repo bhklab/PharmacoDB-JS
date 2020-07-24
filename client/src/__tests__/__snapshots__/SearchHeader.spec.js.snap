@@ -30,7 +30,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
         page=""
       >
         <div
-          className="sc-AxjAm cCHODA"
+          className="sc-AxjAm kCRiCA"
         >
           <div
             className="burger-bg"
@@ -2305,7 +2305,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
         page="home"
       >
         <div
-          className="sc-AxjAm cwgPTx"
+          className="sc-AxjAm lixZvl"
         >
           <div
             className="burger-bg"

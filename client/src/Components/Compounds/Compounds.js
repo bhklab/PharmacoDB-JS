@@ -21,7 +21,7 @@ const Compounds = () => {
 
   return (
     <Layout>
-      <StyledWrapper>
+      <StyledWrapper className="page">
         {loading ? (<p>Loading...</p>)
           : (error ? (<p>Error!</p>)
             : data.compounds.map(({ id, name }) => (
