@@ -23,6 +23,22 @@ const mountSearchHeader = (page) => mount(
   </PageContext.Provider>,
 );
 
+/**
+ * Util function to click the search button.
+ *
+ * @param {ReactWrapper} component The parent component (SearchHeader)
+ *
+ */
+const clickSearchButton = (component) => {
+  // use act because the method being called uses hooks
+  act(() => {
+    component.find('button.search-button').props().onClick();
+  });
+
+  // update the root wrapper
+  component.update();
+};
+
 // Catch-all snapshot tests for entire rendering of the search header
 describe('Search Header renders correctly on', () => {
   test('the home page', () => {
@@ -52,13 +68,7 @@ describe('SearchHeader visibility', () => {
     // so you just have to find the component again.
 
     // click search button
-    // use act because the method being called uses hooks
-    act(() => {
-      component.find('button.search-button').props().onClick();
-    });
-
-    // update the root wrapper
-    component.update();
+    clickSearchButton(component);
 
     // make sure button is the close button.
     // method mutates the root wrapper but doesn't mutate any
@@ -66,10 +76,7 @@ describe('SearchHeader visibility', () => {
     expect(component.find('button.search-button').children().props().alt).toBe('close');
 
     // click close button
-    act(() => {
-      component.find('button.search-button').props().onClick();
-    });
-    component.update();
+    clickSearchButton(component);
 
     // make sure the button is the search button
     expect(component.find('button.search-button').children().props().alt).toBe('magnifying glass');
@@ -78,19 +85,13 @@ describe('SearchHeader visibility', () => {
   test('Search Container becomes visible/hidden on search button click', () => {
     // like above, click the search button
     const component = mountSearchHeader('');
-    act(() => {
-      component.find('button.search-button').props().onClick();
-    });
-    component.update();
+    clickSearchButton(component);
 
     // determine if the search container is visible
     expect(component.find('.search-container').hasClass('visible')).toBeTruthy();
 
     // click close button, determine if search container hidden
-    act(() => {
-      component.find('button.search-button').props().onClick();
-    });
-    component.update();
+    clickSearchButton(component);
     expect(component.find('.search-container').hasClass('hidden')).toBeTruthy();
   });
 });
