@@ -29,12 +29,18 @@ const StyledSearchHeader = styled.div`
             margin-bottom: 20px;
         }
 
-        span {
+        .example {
             font-family: 'Overpass', sans-serif;
             font-weight: 400;
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
             font-size: calc(0.3vw + 0.8em);
+        }
+        
+        // Search bar placeholder
+        .placeholder {
+          color: ${colors.dark_gray_text} !important;
+          font-family: 'Rubik', sans-serif !important;
         }
     }
 
@@ -187,9 +193,85 @@ const StyledSearchButton = styled.button`
   
 `;
 
+/**
+ * Styles for the search bar.
+ */
+const SearchBarStyles = {
+  control: (provided) => ({
+    ...provided,
+    background: 'rgb(233, 245, 255, 0.8)',
+    borderRadius: '35px',
+    height: '5.5vh',
+    fontFamily: '\'Rubik\', sans-serif',
+    fontSize: 'calc(0.8vw + 0.6em)',
+    color: colors.dark_teal_heading,
+    padding: '0 1.5%',
+    marginBottom: '20px',
+    border: 'none',
+    '&:hover': {
+      cursor: 'text',
+    },
+    '&:focus': {
+      outline: '0',
+      border: 'none',
+      boxShadow: 'none',
+    },
+  }),
+  input: (provided) => ({
+    ...provided,
+    padding: '0 0px',
+    color: colors.blue_header,
+  }),
+  clearIndicator: (provided) => ({
+    ...provided,
+    color: `${colors.blue_header}`,
+    '&:hover': {
+      color: `${colors.blue_header}`,
+      cursor: 'pointer',
+    },
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: `${colors.blue_header}`,
+    '&:hover': {
+      color: `${colors.blue_header}`,
+      cursor: 'pointer',
+    },
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    background: `${colors.blue_header}`,
+    '&:hover': {
+      background: `${colors.blue_header}`,
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: `${colors.blue_header}`,
+  }),
+  multiValue: (provided) => ({
+    ...provided,
+    color: `${colors.blue_header}`,
+    background: '#fff',
+    marginRight: '10px',
+  }),
+  multiValueLabel: (provided) => ({
+    ...provided,
+    color: `${colors.blue_header}`,
+  }),
+  option: (provided) => ({
+    ...provided,
+    textAlign: 'left',
+    fontWeight: '400',
+    background: 'white',
+    color: colors.blue_header,
+  }),
+};
+
 export {
   StyledSearchHeader,
   StyledSearchButton,
   StyledNavBar,
   StyledLinkDropdowns,
+  SearchBarStyles,
 };
