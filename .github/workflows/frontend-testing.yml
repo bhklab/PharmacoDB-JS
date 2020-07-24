@@ -10,17 +10,16 @@ on:
     branches:
       - master
       - development
+defaults:
+  run:
+    working-directory: client
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Change directory to client
-      run: pushd ./client
     - name: Install modules
       run: npm install
     - name: Run tests
       run: npm test
-    - name: Pop directory
-      run: popd
