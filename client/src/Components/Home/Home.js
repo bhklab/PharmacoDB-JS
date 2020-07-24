@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ScrollToTop from 'react-scroll-to-top';
 import Description from './Description';
-import Layout from '../Layout/Layout';
+import Layout from '../Utils/Layout';
 import Stats from './Stats';
 import 'react-scroll-to-top/lib/index.css';
 

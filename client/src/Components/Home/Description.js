@@ -8,9 +8,10 @@ const StyledDescription = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-height:370px;
 
     width: 70%;
-    margin-top: 15vh;
+    margin-top: 8vh;
 
     .text-container {
         width: 65%;
@@ -26,15 +27,25 @@ const StyledDescription = styled.div`
         h1 {
             color: ${colors.dark_teal_heading};
             font-family: 'Roboto Slab', serif;
-            font-size: calc(2vw + 1em) !important;
+            font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
         }
     }
 
     .dose-img {
-        width: 30%;
-        max-width: 400px;
+        width: 25%;
+        max-width: 370px;
     }
+
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .dose-img {
+            display: none;
+        }
+        .text-container{
+          width:100%;
+        }
+    } 
 `;
 
 /**
@@ -65,7 +76,7 @@ const Description = () => (
         from any of the studies included in the database.
       </span>
     </div>
-    <img className="dose-img" src={doseImg} />
+    <img alt="dose-response curves" className="dose-img" src={doseImg} />
   </StyledDescription>
 );
 

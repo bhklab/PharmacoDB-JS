@@ -1,94 +1,24 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Layout from '../Layout/Layout';
+import Layout from '../Utils/Layout';
 import { getCompoundQuery } from '../../queries/queries';
-import colors from '../../styles/colors';
+import { NotFoundContent } from '../Utils/NotFoundPage';
 
-import StyledWrapper from '../../styles/IndivPageStyles';
-
-const StyledIndivCompounds = styled.div`
-  h1 {
-    color: ${colors.dark_teal_heading};
-    font-family: 'Roboto Slab', serif;
-    font-size: calc(2vw + 1.5em);
-    text-align:center;
-    width:100%;
-  }
-  .container {
-    width: 100%;
-    margin-top: 5vh;
-    
-    display:flex;
-    align-items: flex-end;
-    flex-direction: column;
-    
-    .content{
-      width: calc(100% - (5vw + 4em) - 2em);
-    }
-  }
-  .temp {
-    width: 100%;
-    height: 400px;
-    background: ${colors.light_blue_bg};
-    margin-bottom:100px;
-  }
-
-  // full size container when too small
-  @media only screen and (max-width: 765px) {
-    .content {
-      width: 100% !important;
-    }
-  }
-
-`;
-
-const StyledSidebar = styled.div`
-  width: calc(5vw + 4em);
-  margin-top: 5vh;
-  padding: 5px 0px;
-  position:fixed;
-
-  .link {
-    display:block;
-    color: ${colors.dark_teal_heading};
-    border-right: 5px solid ${colors.light_blue_header};
-    font-size: calc(0.4vw + 0.7em);
-    font-family: 'Overpass', sans-serif;
-    text-align: right;
-    padding:20px 20px 20px 0px;
-    transition: all 0.25s ease-out 0s;
-    cursor: pointer;
-  }
-  .link:hover {
-    color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
-    transition: all 0.25s ease-out 0s;
-  }
-  .selected {
-    color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
-  }
-
-  // hide sidebar when too small
-  @media only screen and (max-width: 765px) {
-    display:none;
-  }
-
-`;
+import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
+import StyledWrapper from '../../styles/utils';
 
 /**
- * Parent component for the individual compounds page.
+ * Parent component for the individual compound page.
  *
  * @component
  * @example
  *
  * return (
- *   <Compounds/>
+ *   <IndivCompounds/>
  * )
  */
 const IndivCompounds = (props) => {
@@ -102,7 +32,7 @@ const IndivCompounds = (props) => {
   const [compound, setCompound] = useState({});
   useEffect(() => {
     if (data !== undefined) {
-      setCompound(data.compound);
+      setCompound(data.compound.compound);
     }
   }, [data]);
 
@@ -110,9 +40,9 @@ const IndivCompounds = (props) => {
     <Layout>
       <StyledWrapper>
         {loading ? (<p>Loading...</p>)
-          : (error ? (<p>Error!</p>)
+          : (error ? (<NotFoundContent />)
             : (
-              <StyledIndivCompounds>
+              <StyledIndivPage className="indiv-compounds">
                 <h1>{compound.name}</h1>
                 <StyledSidebar>
                   <Link className="link" activeClass="selected" to="synonyms" spy smooth duration={200} offset={-400}>Synonyms</Link>
@@ -127,7 +57,7 @@ const IndivCompounds = (props) => {
                   </div>
 
                 </div>
-              </StyledIndivCompounds>
+              </StyledIndivPage>
             ))}
       </StyledWrapper>
     </Layout>
@@ -140,17 +70,9 @@ IndivCompounds.propTypes = {
   */
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }),
-};
-
-IndivCompounds.defaultProps = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: '1',
-    }),
-  }),
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default IndivCompounds;

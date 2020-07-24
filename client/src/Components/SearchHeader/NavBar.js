@@ -1,72 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Dropdown } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 import PropTypes from 'prop-types';
+import PageContext from '../../context/PageContext';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
 import logoLight from '../../images/pharmacodb-logo.png';
 import magnifImg from '../../images/magnif-glass.png';
 import closeSearchImg from '../../images/close.png';
-import colors from '../../styles/colors';
-
-const StyledNavBar = styled.div`
-    position: static;
-    width: 100%;
-    padding-top: 40px;
-    height: 70px;
-    
-    display: flex;
-    justify-content: center;
-
-    .container {
-        width: 70%;
-        padding-bottom: 30px;
-        border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .logo {
-        width: 200px;
-    }
-`;
-
-const StyledLinks = styled.div`
-    width: ${(props) => (props.page === 'home' ? '30%' : '40%')};
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    a {
-        color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
-        font-family: 'Rubik', sans-serif;
-        font-weight: 400;
-        font-size: calc(0.4vw + 0.9em);
-        letter-spacing: 0.5px;
-    }
-`;
-
-const StyledSearchButton = styled.button`
-    border-radius:50%;
-    width: 40px;
-    height: 40px;
-    background: ${colors.light_blue_bg};
-    display:flex;
-    justify-content: center;
-    align-items:center;
-    cursor: pointer;
-    border: none;
-
-    img {
-      width:15px;
-    }
-    
-    &:focus {
-      outline:0;
-    }
-  
-`;
+import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../styles/SearchHeaderStyles';
 
 /**
  * Component for the navigation with links and logo.
@@ -75,14 +18,15 @@ const StyledSearchButton = styled.button`
  * @component
  * @example
  *
- * const page = "home"
  * const onClick = (e) => {};
  * return (
- *   <NavBar page={page} onClick={onClick}/>
+ *   <NavBar onClick={onClick}/>
  * )
  */
 const NavBar = (props) => {
-  const { page, onClick } = props;
+  const { onClick } = props;
+  const page = useContext(PageContext);
+
   const [isOpen, setIsOpen] = useState(false);
 
   /**
@@ -100,14 +44,52 @@ const NavBar = (props) => {
     onClick(isOpen);
   };
 
+  /**
+   * Returns the dropdown items to be rendered.
+   *
+   * @param {Object} e  On click event
+   * @returns {JSX} JSX to be rendered
+   */
+
+  const dropdownItems = (data) => data.map((x) => (
+    <Dropdown.Item key={x.name}><Link to={x.url}>{x.name}</Link></Dropdown.Item>
+  ));
+
+  // for about menu dropdown
+  const aboutLinks = [
+    { url: '/about', name: 'About Us' },
+    { url: '/documentation', name: 'Documentation' },
+    { url: '/cite', name: 'Cite Us' },
+  ];
+
+  // for data menu dropdown
+  const dataLinks = [
+    { url: '/datasets', name: 'Datasets' },
+    { url: '/cell_lines', name: 'Cell Lines' },
+    { url: '/tissues', name: 'Tissues' },
+    { url: '/compounds', name: 'Compounds' },
+    { url: '/genes', name: 'Genes' },
+    { url: '/experiments', name: 'Experiments' },
+  ];
+
   return (
-    <StyledNavBar page={page}>
+    <StyledNavBar className="header" page={page}>
       <div className="container">
         <Link to="/"><img alt="logo" className="logo" src={page === 'home' ? logoDark : logoLight} /></Link>
-        <StyledLinks page={page}>
-          <Link to="/">About</Link>
-          <Link to="/">Tools</Link>
-          <Link to="/compounds">Datatypes</Link>
+        <StyledLinkDropdowns page={page}>
+          <Dropdown className="header-links link-dropdown" text="About" simple>
+            <Dropdown.Menu className="link-menu">
+              {dropdownItems(aboutLinks)}
+              <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Link className="header-links link" to="/explore">Explore</Link>
+          <Dropdown className="header-links link-dropdown" text="Data" simple>
+            <Dropdown.Menu className="link-menu">
+              {dropdownItems(dataLinks)}
+            </Dropdown.Menu>
+          </Dropdown>
+
           {page === 'home' ? null : (
             <StyledSearchButton className="search-button" onClick={handleClick}>
               {isOpen ? (
@@ -117,8 +99,7 @@ const NavBar = (props) => {
               )}
             </StyledSearchButton>
           )}
-        </StyledLinks>
-
+        </StyledLinkDropdowns>
       </div>
     </StyledNavBar>
   );
@@ -126,13 +107,9 @@ const NavBar = (props) => {
 
 NavBar.propTypes = {
   /**
-   * NavBar's page name
+   * NavBar' onClick handler for search
   */
-  page: PropTypes.string,
-};
-
-NavBar.defaultProps = {
-  page: '',
+  onClick: PropTypes.func.isRequired,
 };
 
 export default NavBar;
