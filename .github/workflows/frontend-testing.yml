@@ -4,8 +4,8 @@ name: Github Actions
 on:
   push:
     branches: 
-      - testing
       - master
+      - development
   pull_request:
     branches:
       - master
