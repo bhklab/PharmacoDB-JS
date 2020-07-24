@@ -71,8 +71,8 @@ const getTableData = (data) => {
 				'name' : name,
 				'smiles' : annotation['smiles'],
 				'inchikey' : annotation['inchikey'],
-				'pubchme' : annotation['pubchem'],
-				'fad_status' : annotation['fda_status']
+				'pubchem' : annotation['pubchem'],
+				'fda_status' : annotation['fda_status']
 			}
 		})
 		return table_data;
