@@ -1,0 +1,24 @@
+name: Github Actions
+
+# Define an event (or events) that triggers this workflow.
+on:
+  push:
+    branches: 
+      - testing
+      - master
+  pull_request:
+    branches:
+      - master
+      - development
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: npm install
+    - name: Run tests
+      run: npm test
