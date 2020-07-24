@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly on pages other than home 1`] = `
+exports[`Search Header renders correctly on pages other than home 1`] = `
 <BrowserRouter>
   <Router
     history={
@@ -815,7 +815,7 @@ exports[`renders correctly on pages other than home 1`] = `
 </BrowserRouter>
 `;
 
-exports[`renders correctly on the home page 1`] = `
+exports[`Search Header renders correctly on the home page 1`] = `
 <BrowserRouter>
   <Router
     history={
