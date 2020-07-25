@@ -18,5 +18,14 @@
         "react"
     ],
     "rules": {
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-console": "off",
+        "no-tabs": 0,
+        "react/jsx-filename-extension": "off",
+        "function-paren-newline": ["error", "never"],
+        "object-property-newline": ["error", {
+            "allowAllPropertiesOnSameLine": true
+        }]
     }
 }
