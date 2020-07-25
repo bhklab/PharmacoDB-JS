@@ -39,7 +39,7 @@ const StyledSearchHeader = styled.div`
         
         // Search bar placeholder
         .placeholder {
-          color: ${colors.dark_gray_text} !important;
+          color: #868d8f !important;
           font-family: 'Rubik', sans-serif !important;
         }
     }
@@ -220,51 +220,57 @@ const SearchBarStyles = {
   input: (provided) => ({
     ...provided,
     padding: '0 0px',
-    color: colors.blue_header,
+    color: colors.dark_gray_text,
   }),
   clearIndicator: (provided) => ({
     ...provided,
-    color: `${colors.blue_header}`,
+    color: `${colors.dark_gray_text}`,
     '&:hover': {
-      color: `${colors.blue_header}`,
+      color: `${colors.dark_gray_text}`,
       cursor: 'pointer',
     },
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: `${colors.blue_header}`,
+    color: `${colors.dark_gray_text}`,
     '&:hover': {
-      color: `${colors.blue_header}`,
+      color: `${colors.dark_gray_text}`,
       cursor: 'pointer',
     },
   }),
   indicatorSeparator: (provided) => ({
     ...provided,
-    background: `${colors.blue_header}`,
+    background: `${colors.dark_gray_text}`,
     '&:hover': {
-      background: `${colors.blue_header}`,
+      background: `${colors.dark_gray_text}`,
     },
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: `${colors.blue_header}`,
+    color: `${colors.dark_gray_text}`,
   }),
   multiValue: (provided) => ({
     ...provided,
-    color: `${colors.blue_header}`,
+    color: `${colors.dark_gray_text}`,
     background: '#fff',
     marginRight: '10px',
   }),
   multiValueLabel: (provided) => ({
     ...provided,
-    color: `${colors.blue_header}`,
+    color: `${colors.dark_gray_text}`,
   }),
   option: (provided) => ({
     ...provided,
     textAlign: 'left',
     fontWeight: '400',
     background: 'white',
-    color: colors.blue_header,
+    color: colors.dark_gray_text,
+    cursor: 'pointer',
+    padding: '15px 25px',
+    fontSize: '1em',
+    '&:hover': {
+      background: `${colors.light_blue_bg}`,
+    },
   }),
 };
 

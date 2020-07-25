@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
+import { useQuery } from '@apollo/react-hooks';
+import { getCompoundsQuery } from '../../queries/queries';
 
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 
-const CustomOption = (innerProps) => (
-  <components.Option {...innerProps}>
-    <div
-      style={{
-        backgroundColor: innerProps.isFocused ? colors.lightblue_bg : 'inherit',
-        height: 40,
-        padding: '13px 20px',
-        '&:hover': {
-          background: colors.lightblue_bg,
-        },
-      }}
-    >
-      <span>{innerProps.label}</span>
-    </div>
-  </components.Option>
-);
-
+/**
+ * React-select filter option
+ */
 const customFilterOption = (option, rawInput) => {
   const words = rawInput.split(' ');
   return words.reduce(
@@ -29,6 +17,20 @@ const customFilterOption = (option, rawInput) => {
     true,
   );
 };
+
+/**
+ * Format the group header label
+ */
+const groupStyles = {
+  fontSize: '1.5em',
+  padding: '5px',
+};
+
+const formatGroupLabel = (data) => (
+  <div style={groupStyles}>
+    <span>{data.label}</span>
+  </div>
+);
 
 /**
  * Component for the search bar.
@@ -47,30 +49,59 @@ const SearchBar = () => {
     'Tissue vs Drug (eg. breast paclitaxel)', 'Cell line vs Drug (eg. 22rv1 paclitaxel)',
     'Multiple datasets (eg. ccle, ctrpv2)'];
 
+  const [options, setOptions] = useState({
+    list: [],
+    loaded: {
+      compounds: false,
+    },
+  });
+
+  // Get compounds data
+  const compoundsData = useQuery(getCompoundsQuery).data;
+
+  /**
+   * On every update of each query returning data,
+   * add all data that has returned to options.
+   */
+  useEffect(() => {
+    if (compoundsData !== undefined) {
+      const { compounds } = compoundsData;
+      if (!options.loaded.compounds) {
+        setOptions((prevOptions) => {
+          prevOptions.list.push({
+            label: 'Compounds',
+            options: compounds.map((x) => ({ value: x.id, label: x.name })),
+          });
+          prevOptions.loaded.compounds = true;
+          return prevOptions;
+        });
+      }
+    }
+  }, [compoundsData]);
+
   return (
-    <Select
-      isMulti
-      filterOption={customFilterOption}
-      // options={options}
-      components={{
-        // MenuList: (props) => (<MenuList {...props} />),
-        Option: CustomOption,
-      }}
-      placeholder={(
-        <ReactTypingEffect
-          speed="100"
-          typingDelay="200"
-          eraseDelay="1000"
-          className="placeholder"
-          text={placeholders}
-        />
-      )}
-      styles={SearchBarStyles}
-      // onChange={handleChange}
-      // onKeyDown={handleKeyDown}
-      // onMenuOpen={handleMenuOpen}
-      // onMenuClose={handleMenuClose}
-    />
+    <>
+      <Select
+        isMulti
+        filterOption={customFilterOption}
+        options={Object.values(options.loaded) ? options.list : null}
+        // components={{
+        // // MenuList: (props) => (<MenuList {...props} />),
+        //   Option: CustomOption,
+        // }}
+        placeholder={(
+          <ReactTypingEffect
+            speed="100"
+            typingDelay="200"
+            eraseDelay="1000"
+            className="placeholder"
+            text={placeholders}
+          />
+       )}
+        formatGroupLabel={formatGroupLabel}
+        styles={SearchBarStyles}
+      />
+    </>
   );
 };
 
