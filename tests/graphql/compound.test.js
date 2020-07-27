@@ -15,7 +15,7 @@ describe('Tests: Compound API', () => {
         this.failures = [];
         this.successes = [];
         
-    })
+    });
 
     // Terminate the server after all the tests are done.
     after(function(done) {
@@ -43,7 +43,7 @@ describe('Tests: Compound API', () => {
             delete require.cache[require.resolve('../../app')];
             knex = require('../../db/knex');
             server = require('../../app');
-        })
+        });
 
         // Log test result after each test.
         afterEach(function(done) {
@@ -69,12 +69,11 @@ describe('Tests: Compound API', () => {
                 .end((err, res) => {
                     if (err) return done(err);
                     res.body.data.compounds.every(compound =>
-                        expect(compound).to.have.all.keys('id', 'name')
-                    );
+                        expect(compound).to.have.all.keys('id', 'name'));
                     return done();
                 });
         });
     });
-})
+});
 
 
