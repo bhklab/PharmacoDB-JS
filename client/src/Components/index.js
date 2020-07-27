@@ -4,5 +4,5 @@ import Home from './Home/Home';
 import NotFoundPage from './Utils/NotFoundPage';
 
 export {
- Compounds, IndivCompounds, Home, NotFoundPage 
+    Compounds, IndivCompounds, Home, NotFoundPage 
 };
