@@ -24,6 +24,8 @@
                     ".jsx"
                 ]
             }
-        ]
+        ],
+       "camelcase": "off",
+       "no-console": "off"
     }
 }
