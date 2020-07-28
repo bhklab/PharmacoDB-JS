@@ -5,40 +5,19 @@ import React from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
-import Layout from '../Utils/Layout';
-import { getCompoundsQuery } from '../../queries/queries';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import MaUTable from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import StyledWrapper from '../../styles/utils';
+import { getCompoundsQuery } from '../../queries/queries';
+import Layout from '../Utils/Layout';
 
 const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-
   .pagination {
-    padding: 0.5rem;
+    padding: 1.0rem;
   }
 `;
 
@@ -113,15 +92,15 @@ const Table = (props) => {
   // Render the UI for your table
   return (
     <>
-      <table {...getTableProps()}>
-        <thead>
+      <MaUTable {...getTableProps()}>
+        <TableHead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
               {
                 headerGroup.headers.map((column) => (
                 // Add the sorting props to control sorting. For this example
                 // we can add them into the header props
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <TableCell {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render('Header')}
                     {/* Add a sort direction indicator */}
                     <span>
@@ -131,23 +110,23 @@ const Table = (props) => {
                           : ' 🔼'
                         : ''}
                     </span>
-                  </th>
+                  </TableCell>
                 ))
               }
-            </tr>
+            </TableRow>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </TableHead>
+        <TableBody {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => <td {...cell.getCellProps()}>{cell.render('Cell')}</td>)}
-              </tr>
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map((cell) => <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>)}
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </MaUTable>
       <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
@@ -207,7 +186,6 @@ const Table = (props) => {
         </select>
       </div>
     </>
-
   );
 };
 
@@ -233,11 +211,12 @@ const Compounds = () => {
           loading ? (<p>Loading...</p>)
             : (
               error ? (<p>Error!</p>) : (
-                <Styles>
-                  {' '}
-                  <Table columns={columns} data={data} />
-                  {' '}
-                </Styles>
+                <div>
+                  <CssBaseline />
+                  <Styles>
+                    <Table columns={columns} data={data} />
+                  </Styles>
+                </div>
               )
             )
         }
