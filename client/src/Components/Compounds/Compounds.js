@@ -1,5 +1,7 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useTable, useSortBy, usePagination } from 'react-table';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
@@ -82,13 +84,13 @@ const getTableData = (data) => {
   }
 };
 
-const Table = ({ columns, data }) => {
+const Table = (props) => {
+  const { columns, data } = props;
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
     page,
     canPreviousPage,
@@ -116,27 +118,27 @@ const Table = ({ columns, data }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {
-                                headerGroup.headers.map((column) => (
-                                // Add the sorting props to control sorting. For this example
-                                // we can add them into the header props
-                                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                    {column.render('Header')}
-                                    {/* Add a sort direction indicator */}
-                                    <span>
-                                      {column.isSorted
-                                        ? column.isSortedDesc
-                                          ? ' 🔽'
-                                          : ' 🔼'
-                                        : ''}
-                                    </span>
-                                  </th>
-                                ))
-                            }
+                headerGroup.headers.map((column) => (
+                // Add the sorting props to control sorting. For this example
+                // we can add them into the header props
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render('Header')}
+                    {/* Add a sort direction indicator */}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽'
+                          : ' 🔼'
+                        : ''}
+                    </span>
+                  </th>
+                ))
+              }
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -228,17 +230,17 @@ const Compounds = () => {
     <Layout>
       <StyledWrapper>
         {
-                    loading ? (<p>Loading...</p>)
-                      : (
-                        error ? (<p>Error!</p>) : (
-                          <Styles>
-                            {' '}
-                            <Table columns={columns} data={data} />
-                            {' '}
-                          </Styles>
-                        )
-                      )
-                }
+          loading ? (<p>Loading...</p>)
+            : (
+              error ? (<p>Error!</p>) : (
+                <Styles>
+                  {' '}
+                  <Table columns={columns} data={data} />
+                  {' '}
+                </Styles>
+              )
+            )
+        }
       </StyledWrapper>
     </Layout>
   );
