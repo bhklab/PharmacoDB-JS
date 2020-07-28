@@ -79,25 +79,25 @@ const NavBar = (props) => {
         <StyledLinkDropdowns page={page}>
           <Dropdown className="header-links link-dropdown" text="About" simple>
             <Dropdown.Menu className="link-menu">
-                {dropdownItems(aboutLinks)}
-                <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
-              </Dropdown.Menu>
+              {dropdownItems(aboutLinks)}
+              <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
+            </Dropdown.Menu>
           </Dropdown>
           <Link className="header-links link" to="/explore">Explore</Link>
           <Dropdown className="header-links link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
-                {dropdownItems(dataLinks)}
-              </Dropdown.Menu>
+              {dropdownItems(dataLinks)}
+            </Dropdown.Menu>
           </Dropdown>
 
           {page === 'home' ? null : (
             <StyledSearchButton className="search-button" onClick={handleClick}>
-                {isOpen ? (
-                    <img alt="close" src={closeSearchImg} />
-                  ) : (
-                    <img alt="magnifying glass" src={magnifImg} />
-                  )}
-              </StyledSearchButton>
+              {isOpen ? (
+                <img alt="close" src={closeSearchImg} />
+              ) : (
+                <img alt="magnifying glass" src={magnifImg} />
+              )}
+            </StyledSearchButton>
           )}
         </StyledLinkDropdowns>
       </div>
