@@ -4,13 +4,14 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const queries = require('./queries/compound_queries');
+const comoundQueries = require('./queries/compound_queries');
+const cellQueries = require('./queries/cells_queries');
 
 /**
- * This describe block encompasses tests for the Compound API.
- * Individual test cases for each function within the compound is organized under a nested describe block.
+ * This describe block encompasses tests for the GrahQL API.
+ * Individual test cases for each API is organized under a nested describe block.
  */
-describe('Tests: Compound API', () => {
+describe('Tests: GraphQL API', () => {
     let server = null;
     let knex = null;
     // declare variables used in this test block.
@@ -20,7 +21,7 @@ describe('Tests: Compound API', () => {
         delete require.cache[require.resolve('../../app')];
         knex = require('../../db/knex');
         server = require('../../app');
-    })
+    });
 
     // Terminate the server after all the tests are done.
     after(function(done) {
@@ -42,16 +43,7 @@ describe('Tests: Compound API', () => {
      * Each describe block should have an "afterEach" hook which resets database connection and server instance, and logs a test result to 
      * "successes" or "failures" array.
      */
-    describe('Compound API', () => {
-        // let server = null;
-        // let knex = null;
-        // load a brandnew server and db instances before each test.
-        beforeEach(function(){
-            // delete require.cache[require.resolve('../../app')];
-            // knex = require('../../db/knex');
-            // server = require('../../app');
-        })
-
+    describe('compound.js', () => {
         // Log test result after each test.
         afterEach(function(done) {
             if (this.currentTest.state === 'passed') {
@@ -65,14 +57,10 @@ describe('Tests: Compound API', () => {
             done();
         });
     
-        /**
-         * compounds query
-         * Returns "id" and "name" properties of all compounds in the database
-         */
         it('Returns "id" and "name" properties of all compounds in the database', done => {
             request(server)
                 .post('/graphql')
-                .send({ query: queries.compoundsKeysTestQuery })
+                .send({ query: comoundQueries.compoundsKeysTestQuery })
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);
@@ -83,14 +71,10 @@ describe('Tests: Compound API', () => {
                 });
         });
 
-        /**
-         * compound query
-         * Returns a compound object based on a compound ID.
-         */
         it('Returns a compound object based on a compound ID input.', done => {
             request(server)
                 .post('/graphql')
-                .send({ query: queries.compoundKeysTestQuery })
+                .send({ query: comoundQueries.compoundKeysTestQuery })
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);
@@ -101,14 +85,10 @@ describe('Tests: Compound API', () => {
                 });
         });
 
-        /**
-         * compound query
-         * Returns a compound object for paclitaxel.
-         */
         it('Returns a compound object for paclitaxel.', done => {
             request(server)
                 .post('/graphql')
-                .send({ query: queries.compoundQueryPaclitaxel })
+                .send({ query: comoundQueries.compoundQueryPaclitaxel })
                 .expect(200)
                 .end((err, res) => {
                     if (err) return done(err);
@@ -120,6 +100,47 @@ describe('Tests: Compound API', () => {
         });
 
     });
-})
 
+    describe('cell.js', () => {
 
+        // Log test result after each test.
+        afterEach(function(done) {
+            if (this.currentTest.state === 'passed') {
+                this.successes.push(this.currentTest.title);
+            } else if (this.currentTest.state === 'failed') {
+                this.failures.push(this.currentTest.title);
+            }
+            done();
+        });
+    
+        it('Returns "id" and "name" properties of all cell lines in the database', done => {
+            request(server)
+                .post('/graphql')
+                .send({ query: cellQueries.cellsKeysTestQuery })
+                .expect(200)
+                .end((err, res) => {
+                    if (err) return done(err);
+                    res.body.data.cell_lines.every(cell =>
+                        expect(cell).to.have.all.keys('id', 'name')
+                    );
+                    return done();
+                });
+        });
+
+        // it('Returns a cell_line object based on the id input', done => {
+        //     request(server)
+        //         .post('/graphql')
+        //         .send({ query: cellQueries.cellKeysTestQuery })
+        //         .expect(200)
+        //         .end((err, res) => {
+        //             if (err) return done(err);
+        //             const cell_line = res.body.data.cell_line.cell_line;
+        //             expect(cell_line).to.have.keys('id', 'name', 'tissue');
+        //             expect(cell_line.tissue).to.have.keys('id', 'name');
+        //             return done();
+        //         });
+        // });
+
+    });
+
+});
