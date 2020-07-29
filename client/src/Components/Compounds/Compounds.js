@@ -8,60 +8,73 @@ import styled from 'styled-components';
 import Layout from '../Utils/Layout';
 import { getCompoundsQuery } from '../../queries/queries';
 import StyledWrapper from '../../styles/utils';
+import colors from '../../styles/colors';
 
 const Styles = styled.div`
   padding: 1rem;
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border: 1px solid ${colors.light_teal};
     tr {
       :last-child {
         td {
-          border-bottom: 0;
+          border-bottom: 1px solid ${colors.light_teal};
         }
       }
     }
+
     th,
     td {
+      color: ${colors.dark_teal_heading};
+      font-size: 1.1rem;
+      min-width: 200px;
+      max-width: 200px;
       margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      padding: 1.0rem;
+      border-bottom: 1px solid ${colors.light_teal};
+      border-right: 1px solid ${colors.light_teal};
+      overflow-x: auto;
       :last-child {
         border-right: 0;
       }
     }
+
+    th {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
   }
   .pagination {
     padding: 1.0rem;
+    color: ${colors.dark_teal_heading};
+    input {
+      color: ${colors.dark_teal_heading};
+    }
   }
 `;
 
-const getTableColumns = () => {
-  const table_columns = [
-    {
-      Header: 'Name',
-      accessor: 'name',
-    },
-    {
-      Header: 'SMILES',
-      accessor: 'smiles',
-    },
-    {
-      Header: 'InChIKeys',
-      accessor: 'inchikey',
-    },
-    {
-      Header: 'PubChem',
-      accessor: 'pubchem',
-    },
-    {
-      Header: 'FDA Status',
-      accessor: 'fda_status',
-    },
-  ];
-  return table_columns;
-};
+const table_columns = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'SMILES',
+    accessor: 'smiles',
+  },
+  {
+    Header: 'InChIKeys',
+    accessor: 'inchikey',
+  },
+  {
+    Header: 'PubChem',
+    accessor: 'pubchem',
+  },
+  {
+    Header: 'FDA Status',
+    accessor: 'fda_status',
+  },
+];
 
 const getTableData = (data) => {
   if (data) {
@@ -79,8 +92,7 @@ const getTableData = (data) => {
   }
 };
 
-const Table = (props) => {
-  const { columns, data } = props;
+const Table = ({ columns, data }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -218,7 +230,7 @@ const Table = (props) => {
  */
 const Compounds = () => {
   const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
-  const columns = React.useMemo(() => getTableColumns());
+  const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data));
   console.log(columns, data, loading);
   return (
