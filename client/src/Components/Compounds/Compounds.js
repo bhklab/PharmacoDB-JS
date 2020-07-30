@@ -15,7 +15,7 @@ const Styles = styled.div`
   padding-bottom: 5rem;
   table {
     border-spacing: 0;
-    border: 1px solid ${colors.light_teal};
+    border: 1px solid ${colors.white_smoke};
     margin-top: 2rem;
 
     th,
@@ -26,8 +26,8 @@ const Styles = styled.div`
       max-width: 200px;
       margin: 0;
       padding: 0.75rem;
-      border-bottom: 1px solid ${colors.light_teal};
-      border-right: 1px solid ${colors.light_teal};
+      border-bottom: 1px solid ${colors.white_smoke};
+      border-right: 1px solid ${colors.white_smoke};
       overflow-x: auto;
       // hiding the scrollbar but still able to scroll.
       ::-webkit-scrollbar {
@@ -46,27 +46,27 @@ const Styles = styled.div`
       //   background: ${colors.dark_teal_heading};
       // }
       // ::-webkit-scrollbar-track {
-      //   background: ${colors.light_teal};
+      //   background: ${colors.white_smoke};
       // }
       :last-child {
         border-right: 0;
       }
     }
-  }
 
-  tr {
-    :last-child {
-      td {
-        border-bottom: 0px solid ${colors.light_teal};
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0px solid ${colors.white_smoke};
+        }
       }
     }
-  }
-
-  th {
-    font-size: 1.4rem !important;
-    font-weight: 700;
-    background-color: ${colors.light_teal};
-    border: 1px solid ${colors.pale_teal} !important;
+  
+    th {
+      font-size: 1.4rem !important;
+      font-weight: 700;
+      background-color: ${colors.pale_teal};
+      border: 1px solid ${colors.white_smoke} !important;
+    }
   }
 
   .pagination {
@@ -74,7 +74,7 @@ const Styles = styled.div`
     color: ${colors.dark_teal_heading};
     input, select, option, button {
       color: ${colors.dark_teal_heading};
-      border: 1px solid ${colors.light_teal};
+      border: 1px solid ${colors.white_smoke};
     }
     font-size: 1.25rem;
   }
