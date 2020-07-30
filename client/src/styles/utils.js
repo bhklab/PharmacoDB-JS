@@ -13,21 +13,25 @@ const StyledWrapper = styled.div`
         }
     `}
 
-    h1 {
+    h1, h2, h3 {
         color: ${colors.dark_teal_heading};
         font-family: 'Roboto Slab', serif;
-        font-size: calc(2vw + 1.5em);
         text-align: center;
         width: 100%;
     }
 
+    h1 {
+        font-size: calc(2vw + 1.5em);
+    }
+
     h2 {
-        color: ${colors.dark_teal_heading};
-        font-family: 'Roboto Slab', serif;
+        font-size: calc(1vw + 1.5em);
+        margin-top: 2rem;
+    }
+
+    h3 {
         font-size: calc(0.25vw + 1.5em);
-        text-align: center;
-        width: 100%;
-        margin-top: 5rem;
+        margin-top: 2rem;
     }
 `;
 

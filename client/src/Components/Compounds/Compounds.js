@@ -266,10 +266,10 @@ const Compounds = () => {
             : (
               error ? (<p>Error!</p>) : (
                 <>
-                  <h2> Number of Compounds Tested in Each Dataset </h2>
+                  <h3> Number of Compounds Tested in Each Dataset </h3>
                   <BarPlot />
                   <Styles>
-                    <h1> Compounds </h1>
+                    <h2> Compounds </h2>
                     <Table columns={columns} data={data} />
                   </Styles>
                 </>
