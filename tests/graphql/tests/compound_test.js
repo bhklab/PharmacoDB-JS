@@ -11,19 +11,7 @@ const comoundQueries = require('../queries/compound_queries');
  * A function that contains tests for compound.js.
  * This function is exported, and called in graphql.test.js.
  */
-const test = () => {
-    let server = null;
-
-    // load a brandnew server instance before each test.
-    beforeEach(function(){
-        delete require.cache[require.resolve('../../../app')];
-        server = require('../../../app');
-    });
-
-    // close the server and db instances after each test.
-    afterEach(async function() {
-        await server.close();
-    });
+const test = (server) => {
     
     it('Returns "id" and "name" properties of all compounds in the database', done => {
         request(server)

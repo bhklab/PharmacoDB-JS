@@ -16,26 +16,25 @@
  * but called under one describe block using shared knex connection pool.
  */
 describe('Tests: GraphQL API', () => {
-    let knex = null;
+    // Initialize knex connction pool and a server instance.
+    let knex = require('../../db/knex');
+    delete require.cache[require.resolve('../../app')];
+    let server = require('../../app');
 
-    // Initialize knex connction pool ebfore the tests.
-    before(function(){
-        knex = require('../../db/knex');
-    });
-
-    // Destroy knex connection pool after all the API tests are done.
+    // Close the server instance and estroy knex connection pool after all the API tests are done.
     after(async function() {
+        server.close();
         await knex.destroy();
     });
 
     // tests for compound.js
     describe('compound.js', () => {
-        require('./tests/compound_test').test();
+        require('./tests/compound_test').test(server);
     });
 
     // tests for cell.js
     describe('cell.js', () => {
-        require('./tests/cell_test').test();
+        require('./tests/cell_test').test(server);
     });
 
 });
