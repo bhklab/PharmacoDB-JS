@@ -12,7 +12,7 @@ import colors from '../../styles/colors';
 import BarPlot from '../Plots/BarPlot';
 
 const Styles = styled.div`
-  padding: 5rem;
+  padding-bottom: 5rem;
   table {
     border-spacing: 0;
     border: 1px solid ${colors.light_teal};
@@ -270,7 +270,7 @@ const Compounds = () => {
                   <h3> Number of Compounds Tested in Each Dataset </h3>
                   <BarPlot />
                   <Styles>
-                    <h2> Compounds </h2>
+                    <h2> List of Compounds </h2>
                     <Table columns={columns} data={data} />
                   </Styles>
                 </>
