@@ -9,15 +9,15 @@ import Layout from '../Utils/Layout';
 import { getCompoundsQuery } from '../../queries/queries';
 import StyledWrapper from '../../styles/utils';
 import colors from '../../styles/colors';
+import BarPlot from '../Plots/BarPlot';
 
 const Styles = styled.div`
-  padding: 1rem;
-  margin: 2rem;
-
+  padding: 5rem;
   table {
     border-spacing: 0;
     border: 1px solid ${colors.light_teal};
-
+    margin-top: 2rem;
+    
     tr {
       :last-child {
         td {
@@ -258,7 +258,6 @@ const Compounds = () => {
   const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
   const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data));
-  console.log(columns, data, loading);
   return (
     <Layout>
       <StyledWrapper>
@@ -267,8 +266,10 @@ const Compounds = () => {
             : (
               error ? (<p>Error!</p>) : (
                 <>
-                  <h1> Compounds </h1>
+                  <h2> Number of Compounds Tested in Each Dataset </h2>
+                  <BarPlot />
                   <Styles>
+                    <h1> Compounds </h1>
                     <Table columns={columns} data={data} />
                   </Styles>
                 </>
