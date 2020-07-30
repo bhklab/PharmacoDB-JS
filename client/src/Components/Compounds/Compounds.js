@@ -36,7 +36,7 @@ const Styles = styled.div`
     th,
     td {
       color: ${colors.dark_teal_heading};
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       min-width: 200px;
       max-width: 200px;
       margin: 0;

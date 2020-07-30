@@ -37,7 +37,7 @@ const IndivCompounds = (props) => {
 
   return (
     <Layout>
-      <StyledWrapper>
+      <StyledWrapper individual>
         {loading ? (<p>Loading...</p>)
           : (error ? (<p>Error!</p>)
             : (
