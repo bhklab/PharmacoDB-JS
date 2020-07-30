@@ -12,15 +12,24 @@ import colors from '../../styles/colors';
 
 const Styles = styled.div`
   padding: 1rem;
+
   table {
     border-spacing: 0;
     border: 1px solid ${colors.light_teal};
+
     tr {
       :last-child {
         td {
-          border-bottom: 1px solid ${colors.light_teal};
+          border-bottom: 0px solid ${colors.light_teal};
         }
       }
+    }
+
+    th {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background-color: ${colors.light_teal};
+      border: 1px solid ${colors.pale_teal} !important;
     }
 
     th,
@@ -30,25 +39,35 @@ const Styles = styled.div`
       min-width: 200px;
       max-width: 200px;
       margin: 0;
-      padding: 1.0rem;
+      padding: 0.75rem;
       border-bottom: 1px solid ${colors.light_teal};
       border-right: 1px solid ${colors.light_teal};
       overflow-x: auto;
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: ${colors.teal};
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: ${colors.dark_teal_heading};
+      }
+      ::-webkit-scrollbar-track {
+        background: ${colors.light_teal};
+      }
       :last-child {
         border-right: 0;
       }
     }
-
-    th {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
   }
+
   .pagination {
     padding: 1.0rem;
     color: ${colors.dark_teal_heading};
-    input {
+    input, select, option, button {
       color: ${colors.dark_teal_heading};
+      border: 1px solid ${colors.light_teal};
     }
   }
 `;

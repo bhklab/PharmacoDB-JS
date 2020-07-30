@@ -7,9 +7,9 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    & > * {
-        width: 70%;
-    }
+    // & > * {
+    //     width: 70%;
+    // }
 
     h1 {
         color: ${colors.dark_teal_heading};

@@ -8,4 +8,5 @@ export default {
   white_smoke: '#EEEEEE',
   teal: '#008080',
   light_teal: '#dbe9e9',
+  pale_teal: '#b2d8d8',
 };
