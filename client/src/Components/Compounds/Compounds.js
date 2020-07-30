@@ -17,26 +17,11 @@ const Styles = styled.div`
     border-spacing: 0;
     border: 1px solid ${colors.light_teal};
     margin-top: 2rem;
-    
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0px solid ${colors.light_teal};
-        }
-      }
-    }
-
-    th {
-      font-size: 1.4rem;
-      font-weight: 700;
-      background-color: ${colors.light_teal};
-      border: 1px solid ${colors.pale_teal} !important;
-    }
 
     th,
     td {
       color: ${colors.dark_teal_heading};
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       min-width: 200px;
       max-width: 200px;
       margin: 0;
@@ -69,6 +54,21 @@ const Styles = styled.div`
     }
   }
 
+  tr {
+    :last-child {
+      td {
+        border-bottom: 0px solid ${colors.light_teal};
+      }
+    }
+  }
+
+  th {
+    font-size: 1.4rem !important;
+    font-weight: 700;
+    background-color: ${colors.light_teal};
+    border: 1px solid ${colors.pale_teal} !important;
+  }
+
   .pagination {
     padding: 1.0rem;
     color: ${colors.dark_teal_heading};
@@ -76,6 +76,7 @@ const Styles = styled.div`
       color: ${colors.dark_teal_heading};
       border: 1px solid ${colors.light_teal};
     }
+    font-size: 1.25rem;
   }
 `;
 
