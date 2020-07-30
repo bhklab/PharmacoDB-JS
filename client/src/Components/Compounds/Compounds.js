@@ -12,6 +12,7 @@ import colors from '../../styles/colors';
 
 const Styles = styled.div`
   padding: 1rem;
+  margin: 2rem;
 
   table {
     border-spacing: 0;
@@ -259,11 +260,12 @@ const Compounds = () => {
           loading ? (<p>Loading...</p>)
             : (
               error ? (<p>Error!</p>) : (
-                <Styles>
-                  {' '}
-                  <Table columns={columns} data={data} />
-                  {' '}
-                </Styles>
+                <>
+                  <h1> Compounds </h1>
+                  <Styles>
+                    <Table columns={columns} data={data} />
+                  </Styles>
+                </>
               )
             )
         }
