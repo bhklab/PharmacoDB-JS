@@ -9,7 +9,7 @@ const compoundsKeysTestQuery = `
             name 
         } 
     }
-`
+`;
 
 const compoundKeysTestQuery = `
     { 
@@ -25,7 +25,7 @@ const compoundKeysTestQuery = `
             } 
         } 
     }
-`
+`;
 
 const compoundQueryPaclitaxel = `
     {
@@ -41,10 +41,10 @@ const compoundQueryPaclitaxel = `
             } 
         }
     }
-`
+`;
 
 module.exports = {
     compoundsKeysTestQuery,
     compoundKeysTestQuery,
     compoundQueryPaclitaxel
-}
+};
