@@ -17,6 +17,15 @@ const Styles = styled.div`
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
     margin-top: 2rem;
+    width: 1100px;
+
+    @media only screen and (min-width: 1600px) {
+      width: 1200px;
+    }
+
+    @media only screen and (min-width: 1900px) {
+      width: 1300px;
+    }
 
     th,
     td {
