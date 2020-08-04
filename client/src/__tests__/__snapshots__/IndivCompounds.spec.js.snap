@@ -126,6 +126,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                         },
                                         "selectionSet": undefined,
                                       },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "fda_status",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
                                     ],
                                   },
                                 },
@@ -165,7 +176,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 230,
+              "end": 219,
               "start": 0,
             },
           },
@@ -414,6 +425,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                             },
                                             "selectionSet": undefined,
                                           },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "fda_status",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
                                         ],
                                       },
                                     },
@@ -453,7 +475,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 230,
+                  "end": 219,
                   "start": 0,
                 },
               },
@@ -469,7 +491,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
         "link": MockLink {
           "addTypename": false,
           "mockedResponsesByKey": Object {
-            "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+            "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
           },
         },
         "localState": LocalState {
@@ -692,6 +714,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                               },
                                               "selectionSet": undefined,
                                             },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "fda_status",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
                                           ],
                                         },
                                       },
@@ -731,7 +764,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 230,
+                    "end": 219,
                     "start": 0,
                   },
                 },
@@ -972,6 +1005,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                                 },
                                                 "selectionSet": undefined,
                                               },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "fda_status",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
                                             ],
                                           },
                                         },
@@ -1011,7 +1055,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 230,
+                      "end": 219,
                       "start": 0,
                     },
                   },
@@ -1028,7 +1072,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
           "link": MockLink {
             "addTypename": false,
             "mockedResponsesByKey": Object {
-              "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+              "{\\"query\\":\\"query getCompound($compoundId: Int!) {\\\\n  compound(compoundId: $compoundId) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
             },
           },
           "localState": LocalState {
@@ -1251,6 +1295,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                                 },
                                                 "selectionSet": undefined,
                                               },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "fda_status",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
                                             ],
                                           },
                                         },
@@ -1290,7 +1345,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 230,
+                      "end": 219,
                       "start": 0,
                     },
                   },
@@ -1429,6 +1484,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                             },
                                             "selectionSet": undefined,
                                           },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "fda_status",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
                                         ],
                                       },
                                     },
@@ -1468,7 +1534,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 230,
+                  "end": 219,
                   "start": 0,
                 },
               },
@@ -1482,40 +1548,16 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                 "_subscriber": [Function],
                 "isTornDown": false,
                 "lastResult": Object {
-                  "data": Object {
-                    "compound": Object {
-                      "compound": Object {
-                        "annotation": Object {
-                          "inchikey": "0",
-                          "pubchem": "0",
-                          "smiles": "OCO",
-                        },
-                        "id": "1",
-                        "name": "testDrug",
-                      },
-                    },
-                  },
+                  "data": undefined,
                   "loading": false,
                   "networkStatus": 7,
-                  "stale": false,
+                  "stale": true,
                 },
                 "lastResultSnapshot": Object {
-                  "data": Object {
-                    "compound": Object {
-                      "compound": Object {
-                        "annotation": Object {
-                          "inchikey": "0",
-                          "pubchem": "0",
-                          "smiles": "OCO",
-                        },
-                        "id": "1",
-                        "name": "testDrug",
-                      },
-                    },
-                  },
+                  "data": undefined,
                   "loading": false,
                   "networkStatus": 7,
-                  "stale": false,
+                  "stale": true,
                 },
                 "observers": Set {
                   SubscriptionObserver {
@@ -1658,6 +1700,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                                 },
                                                 "selectionSet": undefined,
                                               },
+                                              Object {
+                                                "alias": undefined,
+                                                "arguments": Array [],
+                                                "directives": Array [],
+                                                "kind": "Field",
+                                                "name": Object {
+                                                  "kind": "Name",
+                                                  "value": "fda_status",
+                                                },
+                                                "selectionSet": undefined,
+                                              },
                                             ],
                                           },
                                         },
@@ -1697,7 +1750,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 230,
+                      "end": 219,
                       "start": 0,
                     },
                   },
@@ -1840,6 +1893,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                               },
                                               "selectionSet": undefined,
                                             },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "fda_status",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
                                           ],
                                         },
                                       },
@@ -1879,7 +1943,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 230,
+                    "end": 219,
                     "start": 0,
                   },
                 },
@@ -2124,6 +2188,17 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                                               },
                                               "selectionSet": undefined,
                                             },
+                                            Object {
+                                              "alias": undefined,
+                                              "arguments": Array [],
+                                              "directives": Array [],
+                                              "kind": "Field",
+                                              "name": Object {
+                                                "kind": "Name",
+                                                "value": "fda_status",
+                                              },
+                                              "selectionSet": undefined,
+                                            },
                                           ],
                                         },
                                       },
@@ -2163,7 +2238,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 230,
+                    "end": 219,
                     "start": 0,
                   },
                 },
@@ -2832,7 +2907,7 @@ exports[`renders correctly with a mocked query and id prop 1`] = `
                       page=""
                     >
                       <div
-                        className="sc-AxirZ tpVmv header"
+                        className="sc-AxirZ kBNdYf header"
                       >
                         <div
                           className="container"

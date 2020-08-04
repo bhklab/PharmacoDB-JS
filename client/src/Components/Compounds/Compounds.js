@@ -8,65 +8,109 @@ import styled from 'styled-components';
 import Layout from '../Utils/Layout';
 import { getCompoundsQuery } from '../../queries/queries';
 import StyledWrapper from '../../styles/utils';
+import colors from '../../styles/colors';
+import BarPlot from '../Plots/BarPlot';
 
 const Styles = styled.div`
-  padding: 1rem;
-
+  padding-bottom: 5rem;
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    border: 1px solid ${colors.white_smoke};
+    margin-top: 2rem;
+    width: 1100px;
 
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
+    @media only screen and (min-width: 1600px) {
+      width: 1200px;
+    }
+
+    @media only screen and (min-width: 1900px) {
+      width: 1300px;
     }
 
     th,
     td {
+      color: ${colors.dark_teal_heading};
+      font-size: 1.2rem;
+      min-width: 200px;
+      max-width: 200px;
       margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
+      padding: 0.75rem;
+      border-bottom: 1px solid ${colors.white_smoke};
+      border-right: 1px solid ${colors.white_smoke};
+      overflow-x: auto;
+      // hiding the scrollbar but still able to scroll.
+      ::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+        background: transparent;
+      }
+      // ::-webkit-scrollbar {
+      //   width: 4px;
+      //   height: 4px;
+      // }
+      // ::-webkit-scrollbar-thumb {
+      //   background: ${colors.teal};
+      // }
+      // ::-webkit-scrollbar-thumb:hover {
+      //   background: ${colors.dark_teal_heading};
+      // }
+      // ::-webkit-scrollbar-track {
+      //   background: ${colors.white_smoke};
+      // }
       :last-child {
         border-right: 0;
       }
     }
+
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0px solid ${colors.white_smoke};
+        }
+      }
+    }
+  
+    th {
+      font-size: 1.4rem !important;
+      font-weight: 700;
+      background-color: ${colors.pale_teal};
+      border: 1px solid ${colors.white_smoke} !important;
+    }
   }
 
   .pagination {
-    padding: 0.5rem;
+    padding: 1.0rem;
+    color: ${colors.dark_teal_heading};
+    input, select, option, button {
+      color: ${colors.dark_teal_heading};
+      border: 1px solid ${colors.white_smoke};
+    }
+    font-size: 1.25rem;
   }
 `;
 
-const getTableColumns = () => {
-  const table_columns = [
-    {
-      Header: 'Name',
-      accessor: 'name',
-    },
-    {
-      Header: 'SMILES',
-      accessor: 'smiles',
-    },
-    {
-      Header: 'InChIKeys',
-      accessor: 'inchikey',
-    },
-    {
-      Header: 'PubChem',
-      accessor: 'pubchem',
-    },
-    {
-      Header: 'FDA Status',
-      accessor: 'fda_status',
-    },
-  ];
-  return table_columns;
-};
+const table_columns = [
+  {
+    Header: 'Name',
+    accessor: 'name',
+  },
+  {
+    Header: 'SMILES',
+    accessor: 'smiles',
+  },
+  {
+    Header: 'InChIKeys',
+    accessor: 'inchikey',
+  },
+  {
+    Header: 'PubChem',
+    accessor: 'pubchem',
+  },
+  {
+    Header: 'FDA Status',
+    accessor: 'fda_status',
+  },
+];
 
 const getTableData = (data) => {
   if (data) {
@@ -84,8 +128,7 @@ const getTableData = (data) => {
   }
 };
 
-const Table = (props) => {
-  const { columns, data } = props;
+const Table = ({ columns, data }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -223,9 +266,8 @@ const Table = (props) => {
  */
 const Compounds = () => {
   const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
-  const columns = React.useMemo(() => getTableColumns());
+  const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data));
-  console.log(columns, data, loading);
   return (
     <Layout>
       <StyledWrapper>
@@ -233,11 +275,14 @@ const Compounds = () => {
           loading ? (<p>Loading...</p>)
             : (
               error ? (<p>Error!</p>) : (
-                <Styles>
-                  {' '}
-                  <Table columns={columns} data={data} />
-                  {' '}
-                </Styles>
+                <>
+                  <h3> Number of Compounds Tested in Each Dataset </h3>
+                  <BarPlot />
+                  <Styles>
+                    <h2> List of Compounds </h2>
+                    <Table columns={columns} data={data} />
+                  </Styles>
+                </>
               )
             )
         }

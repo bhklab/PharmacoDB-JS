@@ -645,7 +645,7 @@ exports[`renders correctly 1`] = `
                   page="home"
                 >
                   <div
-                    className="sc-AxiKw eVTnVJ header"
+                    className="sc-AxiKw hqdVux header"
                   >
                     <div
                       className="container"
