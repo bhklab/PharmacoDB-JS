@@ -18,7 +18,7 @@ const mocks = [
   },
 ];
 
-it('renders correctly with a mocked query', () => {
+it('renders Compounds correctly with a mocked query', () => {
   // must use mount to access Compounds (because child component)
   const component = mount(
     <MockedProvider mocks={mocks} addTypename={false}>

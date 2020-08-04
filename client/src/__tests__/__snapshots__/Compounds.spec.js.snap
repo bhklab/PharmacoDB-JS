@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly with a mocked query 1`] = `
+exports[`renders Compounds correctly with a mocked query 1`] = `
 <MockedProvider
   addTypename={false}
   mocks={
