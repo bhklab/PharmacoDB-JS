@@ -93,7 +93,7 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 60px;
+    padding-top: 40px;
     height: 70px;
     margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
     
@@ -101,7 +101,7 @@ const StyledNavBar = styled.div`
     justify-content: center;
 
     .container {
-        width: 70%;
+        width: 85%;
         padding-bottom: 30px;
         border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
 

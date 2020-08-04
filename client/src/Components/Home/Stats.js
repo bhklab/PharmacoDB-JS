@@ -97,6 +97,7 @@ const statistics = {
  * )
  */
 const Stats = () => (
+
   <StyledStats>
     {Object.keys(statistics).map((type) => (
       <div key={statistics[type].name} className="item-container">

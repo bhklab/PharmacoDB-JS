@@ -43,7 +43,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
               page=""
             >
               <div
-                className="sc-AxirZ tpVmv header"
+                className="sc-AxirZ kBNdYf header"
               >
                 <div
                   className="container"
@@ -2318,7 +2318,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
               page="home"
             >
               <div
-                className="sc-AxirZ ciHGgt header"
+                className="sc-AxirZ edrFAR header"
               >
                 <div
                   className="container"

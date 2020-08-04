@@ -19,7 +19,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                   "selections": Array [
                     Object {
                       "alias": undefined,
-                      "arguments": Array [],
+                      "arguments": Array [
+                        Object {
+                          "kind": "Argument",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "all",
+                          },
+                          "value": Object {
+                            "kind": "BooleanValue",
+                            "value": true,
+                          },
+                        },
+                      ],
                       "directives": Array [],
                       "kind": "Field",
                       "name": Object {
@@ -51,6 +63,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                             },
                             "selectionSet": undefined,
                           },
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "annotation",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "smiles",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "inchikey",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "pubchem",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "fda_status",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
                         ],
                       },
                     },
@@ -61,7 +132,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 75,
+              "end": 132,
               "start": 0,
             },
           },
@@ -129,7 +200,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -161,6 +244,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                 },
                                 "selectionSet": undefined,
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "annotation",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "smiles",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "inchikey",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "pubchem",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "fda_status",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -171,7 +313,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 75,
+                  "end": 132,
                   "start": 0,
                 },
               },
@@ -185,7 +327,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
         "link": MockLink {
           "addTypename": false,
           "mockedResponsesByKey": Object {
-            "{\\"query\\":\\"{\\\\n  compounds {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+            "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
           },
         },
         "localState": LocalState {
@@ -237,7 +379,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [],
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "all",
+                                },
+                                "value": Object {
+                                  "kind": "BooleanValue",
+                                  "value": true,
+                                },
+                              },
+                            ],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
@@ -269,6 +423,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                   },
                                   "selectionSet": undefined,
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "annotation",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "smiles",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "inchikey",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "pubchem",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "fda_status",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -279,7 +492,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 132,
                     "start": 0,
                   },
                 },
@@ -347,7 +560,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -379,6 +604,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                     },
                                     "selectionSet": undefined,
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "annotation",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "smiles",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "inchikey",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "pubchem",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "fda_status",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -389,7 +673,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -415,7 +699,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                     "selections": Array [
                       Object {
                         "alias": undefined,
-                        "arguments": Array [],
+                        "arguments": Array [
+                          Object {
+                            "kind": "Argument",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "all",
+                            },
+                            "value": Object {
+                              "kind": "BooleanValue",
+                              "value": true,
+                            },
+                          },
+                        ],
                         "directives": Array [],
                         "kind": "Field",
                         "name": Object {
@@ -447,6 +743,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                               },
                               "selectionSet": undefined,
                             },
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "annotation",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "smiles",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "inchikey",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "pubchem",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "fda_status",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -457,7 +812,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
               ],
               "kind": "Document",
               "loc": Object {
-                "end": 75,
+                "end": 132,
                 "start": 0,
               },
             } => Map {
@@ -469,7 +824,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
           "link": MockLink {
             "addTypename": false,
             "mockedResponsesByKey": Object {
-              "{\\"query\\":\\"{\\\\n  compounds {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+              "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
             },
           },
           "localState": LocalState {
@@ -521,7 +876,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -553,6 +920,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                     },
                                     "selectionSet": undefined,
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "annotation",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "smiles",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "inchikey",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "pubchem",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "fda_status",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -563,7 +989,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -593,7 +1019,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -625,6 +1063,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                 },
                                 "selectionSet": undefined,
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "annotation",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "smiles",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "inchikey",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "pubchem",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "fda_status",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -635,7 +1132,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 75,
+                  "end": 132,
                   "start": 0,
                 },
               },
@@ -682,7 +1179,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -714,6 +1223,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                     },
                                     "selectionSet": undefined,
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "annotation",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "smiles",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "inchikey",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "pubchem",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "fda_status",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -724,7 +1292,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 75,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -775,7 +1343,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [],
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "all",
+                                },
+                                "value": Object {
+                                  "kind": "BooleanValue",
+                                  "value": true,
+                                },
+                              },
+                            ],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
@@ -807,6 +1387,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                   },
                                   "selectionSet": undefined,
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "annotation",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "smiles",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "inchikey",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "pubchem",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "fda_status",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -817,7 +1456,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 132,
                     "start": 0,
                   },
                 },
@@ -889,7 +1528,19 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [],
+                            "arguments": Array [
+                              Object {
+                                "kind": "Argument",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "all",
+                                },
+                                "value": Object {
+                                  "kind": "BooleanValue",
+                                  "value": true,
+                                },
+                              },
+                            ],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
@@ -921,6 +1572,65 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                                   },
                                   "selectionSet": undefined,
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "annotation",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "smiles",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "inchikey",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "pubchem",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "fda_status",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -931,7 +1641,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 75,
+                    "end": 132,
                     "start": 0,
                   },
                 },
@@ -1590,7 +2300,7 @@ exports[`renders Compounds correctly with a mocked query 1`] = `
                       page=""
                     >
                       <div
-                        className="sc-AxirZ tpVmv header"
+                        className="sc-AxirZ kBNdYf header"
                       >
                         <div
                           className="container"

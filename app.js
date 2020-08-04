@@ -26,14 +26,12 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // setting up the graphql end points.
 // passing in the graphql schema and resolver functions.
-app.use(
-    '/graphql',
+app.use('/graphql',
     graphqlHttp({
         schema: graphQlSchema,
         rootValue: graphQlResolvers,
         graphiql: true
-    })
-);
+    }));
 
 // renders react files if request doesn't go to api
 app.get('/*', (req, res) => {
