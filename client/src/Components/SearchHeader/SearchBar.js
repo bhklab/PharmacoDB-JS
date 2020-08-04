@@ -19,6 +19,20 @@ const customFilterOption = (option, rawInput) => {
 };
 
 /**
+ * Reduce lag in react-select
+ */
+const CustomOption = (props) => {
+  const { innerProps, isFocused, ...otherProps } = props;
+  const { onMouseMove, onMouseOver, ...otherInnerProps } = innerProps;
+  const newProps = { innerProps: { ...otherInnerProps }, ...otherProps };
+  return (
+    <components.Option {...newProps} className="your-option-css-class">
+      {props.children}
+    </components.Option>
+  );
+};
+
+/**
  * Format the group header label
  */
 const groupStyles = {
@@ -57,7 +71,9 @@ const SearchBar = () => {
   });
 
   // Get compounds data
-  const compoundsData = useQuery(getCompoundsQuery).data;
+  const compoundsData = useQuery(getCompoundsQuery, {
+    variables: { per_page: 10 },
+  }).data;
 
   /**
    * On every update of each query returning data,
@@ -85,10 +101,10 @@ const SearchBar = () => {
         isMulti
         filterOption={customFilterOption}
         options={Object.values(options.loaded) ? options.list : null}
-        // components={{
-        // // MenuList: (props) => (<MenuList {...props} />),
-        //   Option: CustomOption,
-        // }}
+        components={{
+        // MenuList: (props) => (<MenuList {...props} />),
+          Option: CustomOption,
+        }}
         placeholder={(
           <ReactTypingEffect
             speed="100"
