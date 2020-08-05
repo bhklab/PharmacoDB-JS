@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost';
  * Query returns the list of compounds with the id and name.
  */
 const getCompoundsQuery = gql`
-{
+query getAllCompounds {
   compounds(all: true) {
     id
     name
@@ -22,7 +22,7 @@ const getCompoundsQuery = gql`
  * Query returns info of compound given the id.
  */
 const getCompoundQuery = gql`
-query getCompound($compoundId: Int!) {
+query getSingleCompound($compoundId: Int!) {
   compound(compoundId: $compoundId) {
     compound {
       id

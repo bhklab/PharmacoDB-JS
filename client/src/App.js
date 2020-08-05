@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 import {
   IndivCompounds, Compounds, Home, NotFoundPage,
+  Tissues, Genes,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -20,6 +21,8 @@ const App = () => (
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/compounds" exact component={Compounds} />
+        <Route path="/tissues" exact component={Tissues} />
+        <Route path="/genes" exact component={Genes} />
         <Route path="/compounds/:id" component={IndivCompounds} />
         <Route path="*" component={NotFoundPage} />
       </Switch>
