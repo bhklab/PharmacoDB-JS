@@ -3,6 +3,8 @@ import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
 import { getCompoundsQuery } from '../../queries/compound';
+import { getTissuesQuery } from '../../queries/tissue';
+import MenuList from './MenuList';
 
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
@@ -48,6 +50,7 @@ const CustomOption = (props) => {
 const groupStyles = {
   fontSize: '1.5em',
   padding: '5px',
+  textTransform: 'capitalize',
 };
 
 /**
@@ -74,11 +77,15 @@ const formatGroupLabel = (data) => (
 const SearchBar = () => {
   /** SETTING STATE */
   // all options available - sent to react-select
-  const [options, setOptions] = useState({
-    list: [],
-    loaded: {
-      compounds: false,
-    },
+  const [options, setOptions] = useState([]);
+  // entirety of data
+  const [data, setData] = useState({
+    compounds: [],
+    tissues: [],
+  });
+  const [dataLoaded, setDataLoaded] = useState({
+    compounds: false,
+    tissues: false,
   });
 
   // input being entered - for determining the opening of option menu
@@ -104,39 +111,69 @@ const SearchBar = () => {
     setInput(event);
   };
 
-  // Get compounds data
-  const compoundsData = useQuery(getCompoundsQuery, {
-    variables: { per_page: 10 },
-  }).data;
+  /** Can't run hooks in a loop, so must do manually */
+  const compoundsData = useQuery(getCompoundsQuery).data;
+  const tissuesData = useQuery(getTissuesQuery).data;
 
   /**
-   * On every update of each query returning data,
-   * add all data that has returned to options.
+   * Load data in
    */
   useEffect(() => {
-    if (compoundsData !== undefined) {
-      const { compounds } = compoundsData;
-      if (!options.loaded.compounds) {
+    setData({
+      ...data,
+      compounds: compoundsData ? compoundsData.compounds : [],
+      tissues: tissuesData ? tissuesData.tissues : [],
+    });
+    setDataLoaded({
+      compounds: !!compoundsData,
+      tissues: !!tissuesData,
+    });
+  }, [compoundsData, tissuesData]);
+
+  useEffect(() => {
+    // if all values of loaded are true
+    if (Object.values(dataLoaded).every((x) => x)) {
+      // for every datatype, push the options
+      Object.keys(data).forEach((d) => {
         setOptions((prevOptions) => {
-          prevOptions.list.push({
-            label: 'Compounds',
-            options: compounds.map((x) => ({ value: x.id, label: x.name })),
+          prevOptions.push({
+            label: d,
+            options: data[d].map((x) => ({ value: x.id, label: x.name })),
           });
-          prevOptions.loaded.compounds = true;
           return prevOptions;
         });
-      }
+      });
     }
-  }, [compoundsData]);
+  }, [data]);
+
+  // /**
+  //  * On every update of each query returning data,
+  //  * add all data that has returned to options.
+  //  */
+  // useEffect(() => {
+  //   if (compoundsData !== undefined) {
+  //     const { compounds } = compoundsData;
+  //     if (!options.loaded.compounds) {
+  //       setOptions((prevOptions) => {
+  //         prevOptions.list.push({
+  //           label: 'Compounds',
+  //           options: compounds.map((x) => ({ value: x.id, label: x.name })),
+  //         });
+  //         prevOptions.loaded.compounds = true;
+  //         return prevOptions;
+  //       });
+  //     }
+  //   }
+  // }, [compoundsData]);
 
   return (
     <>
       <Select
         isMulti
         filterOption={customFilterOption}
-        options={Object.values(options.loaded) ? options.list : null}
+        options={options.length === 0 ? null : options}
         components={{
-        // MenuList: (props) => (<MenuList {...props} />),
+          // MenuList: (props) => (<MenuList {...props} />),
           Option: CustomOption,
         }}
         placeholder={(
