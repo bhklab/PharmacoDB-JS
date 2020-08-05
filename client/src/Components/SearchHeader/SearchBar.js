@@ -143,7 +143,7 @@ const SearchBar = () => {
           <ReactTypingEffect
             speed="100"
             typingDelay="200"
-            eraseDelay="1000"
+            eraseDelay="1500"
             className="placeholder"
             text={placeholders}
           />
