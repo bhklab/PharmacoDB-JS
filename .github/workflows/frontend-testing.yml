@@ -1,0 +1,25 @@
+name: Front-end testing
+
+# Define an event (or events) that triggers this workflow.
+on:
+  push:
+    branches: 
+      - master
+      - development
+  pull_request:
+    branches:
+      - master
+      - development
+defaults:
+  run:
+    working-directory: client
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: npm install
+    - name: Run tests
+      run: npm test
