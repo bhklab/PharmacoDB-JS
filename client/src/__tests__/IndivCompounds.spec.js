@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 // for async tests - DO NOT REMOVE
 import regeneratorRuntime from 'regenerator-runtime';
 import IndivCompounds from '../Components/IndivCompounds/IndivCompounds';
-import { getCompoundQuery } from '../queries/queries';
+import { getCompoundQuery } from '../queries/compound';
 
 const mocks = [
   {

@@ -35,7 +35,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   Object {
                     "directives": Array [],
                     "kind": "OperationDefinition",
-                    "name": undefined,
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllCompounds",
+                    },
                     "operation": "query",
                     "selectionSet": Object {
                       "kind": "SelectionSet",
@@ -155,7 +158,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 132,
+                  "end": 178,
                   "start": 0,
                 },
               },
@@ -216,7 +219,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllCompounds",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
@@ -336,7 +342,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 132,
+                      "end": 178,
                       "start": 0,
                     },
                   },
@@ -352,7 +358,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
                   Object {
                     "request": Object {
                       "query": Object {
@@ -360,7 +366,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -480,7 +489,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -539,7 +548,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -659,7 +671,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },
@@ -722,7 +734,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -842,7 +857,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -861,7 +876,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     Object {
                       "directives": Array [],
                       "kind": "OperationDefinition",
-                      "name": undefined,
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllCompounds",
+                      },
                       "operation": "query",
                       "selectionSet": Object {
                         "kind": "SelectionSet",
@@ -981,7 +999,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 132,
+                    "end": 178,
                     "start": 0,
                   },
                 } => Map {},
@@ -989,7 +1007,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
                     Object {
                       "request": Object {
                         "query": Object {
@@ -997,7 +1015,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             Object {
                               "directives": Array [],
                               "kind": "OperationDefinition",
-                              "name": undefined,
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "getAllCompounds",
+                              },
                               "operation": "query",
                               "selectionSet": Object {
                                 "kind": "SelectionSet",
@@ -1117,7 +1138,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           ],
                           "kind": "Document",
                           "loc": Object {
-                            "end": 132,
+                            "end": 178,
                             "start": 0,
                           },
                         },
@@ -1176,7 +1197,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -1296,7 +1320,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -1321,7 +1345,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllCompounds",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
@@ -1441,7 +1468,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 132,
+                      "end": 178,
                       "start": 0,
                     },
                   },
@@ -1454,7 +1481,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   "observableQuery": ObservableQuery {
                     "_subscriber": [Function],
                     "isTornDown": false,
-                    "lastError": [Error: Network error: No more mocked responses for the query: {
+                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllCompounds {
   compounds(all: true) {
     id
     name
@@ -1499,7 +1526,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -1619,7 +1649,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -1629,7 +1659,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     },
                     "queryId": "1",
                     "queryManager": [Circular],
-                    "queryName": undefined,
+                    "queryName": "getAllCompounds",
                     "shouldSubscribe": true,
                     "subscriptions": Set {},
                     "variables": Object {
@@ -1648,7 +1678,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -1768,7 +1801,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },
@@ -1835,7 +1868,10 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -1955,7 +1991,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },
@@ -4262,7 +4298,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                   Object {
                     "directives": Array [],
                     "kind": "OperationDefinition",
-                    "name": undefined,
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllCompounds",
+                    },
                     "operation": "query",
                     "selectionSet": Object {
                       "kind": "SelectionSet",
@@ -4382,7 +4421,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 132,
+                  "end": 178,
                   "start": 0,
                 },
               },
@@ -4443,7 +4482,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllCompounds",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
@@ -4563,7 +4605,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 132,
+                      "end": 178,
                       "start": 0,
                     },
                   },
@@ -4579,7 +4621,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
                   Object {
                     "request": Object {
                       "query": Object {
@@ -4587,7 +4629,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -4707,7 +4752,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -4766,7 +4811,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -4886,7 +4934,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },
@@ -4949,7 +4997,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -5069,7 +5120,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -5088,7 +5139,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     Object {
                       "directives": Array [],
                       "kind": "OperationDefinition",
-                      "name": undefined,
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllCompounds",
+                      },
                       "operation": "query",
                       "selectionSet": Object {
                         "kind": "SelectionSet",
@@ -5208,7 +5262,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 132,
+                    "end": 178,
                     "start": 0,
                   },
                 } => Map {},
@@ -5216,7 +5270,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"{\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
                     Object {
                       "request": Object {
                         "query": Object {
@@ -5224,7 +5278,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             Object {
                               "directives": Array [],
                               "kind": "OperationDefinition",
-                              "name": undefined,
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "getAllCompounds",
+                              },
                               "operation": "query",
                               "selectionSet": Object {
                                 "kind": "SelectionSet",
@@ -5344,7 +5401,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           ],
                           "kind": "Document",
                           "loc": Object {
-                            "end": 132,
+                            "end": 178,
                             "start": 0,
                           },
                         },
@@ -5403,7 +5460,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -5523,7 +5583,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -5548,7 +5608,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       Object {
                         "directives": Array [],
                         "kind": "OperationDefinition",
-                        "name": undefined,
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllCompounds",
+                        },
                         "operation": "query",
                         "selectionSet": Object {
                           "kind": "SelectionSet",
@@ -5668,7 +5731,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 132,
+                      "end": 178,
                       "start": 0,
                     },
                   },
@@ -5681,7 +5744,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                   "observableQuery": ObservableQuery {
                     "_subscriber": [Function],
                     "isTornDown": false,
-                    "lastError": [Error: Network error: No more mocked responses for the query: {
+                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllCompounds {
   compounds(all: true) {
     id
     name
@@ -5726,7 +5789,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           Object {
                             "directives": Array [],
                             "kind": "OperationDefinition",
-                            "name": undefined,
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllCompounds",
+                            },
                             "operation": "query",
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -5846,7 +5912,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 132,
+                          "end": 178,
                           "start": 0,
                         },
                       },
@@ -5856,7 +5922,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     },
                     "queryId": "1",
                     "queryManager": [Circular],
-                    "queryName": undefined,
+                    "queryName": "getAllCompounds",
                     "shouldSubscribe": true,
                     "subscriptions": Set {},
                     "variables": Object {
@@ -5875,7 +5941,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -5995,7 +6064,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },
@@ -6062,7 +6131,10 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         Object {
                           "directives": Array [],
                           "kind": "OperationDefinition",
-                          "name": undefined,
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllCompounds",
+                          },
                           "operation": "query",
                           "selectionSet": Object {
                             "kind": "SelectionSet",
@@ -6182,7 +6254,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 132,
+                        "end": 178,
                         "start": 0,
                       },
                     },

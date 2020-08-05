@@ -9,7 +9,7 @@ import regeneratorRuntime from 'regenerator-runtime';
 import { MockedProvider } from '@apollo/react-testing';
 import SearchHeader from '../Components/SearchHeader/SearchHeader';
 import PageContext from '../context/PageContext';
-import { getCompoundsQuery } from '../queries/queries';
+import { getCompoundsQuery } from '../queries/compound';
 
 /**
  * Util function to return a component wrapped in given context.
