@@ -5,7 +5,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const comoundQueries = require('../queries/compound_queries');
+const compoundQueries = require('../queries/compound_queries');
 
 /**
  * A function that contains tests for compound.js.
@@ -16,7 +16,7 @@ const test = (server) => {
     it('Returns "id" and "name" properties of all compounds in the database', done => {
         request(server)
             .post('/graphql')
-            .send({ query: comoundQueries.compoundsKeysTestQuery })
+            .send({ query: compoundQueries.compoundsKeysTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -29,7 +29,7 @@ const test = (server) => {
     it('Returns a compound object based on a compound ID input.', done => {
         request(server)
             .post('/graphql')
-            .send({ query: comoundQueries.compoundKeysTestQuery })
+            .send({ query: compoundQueries.compoundKeysTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -43,7 +43,7 @@ const test = (server) => {
     it('Returns a compound object for paclitaxel.', done => {
         request(server)
             .post('/graphql')
-            .send({ query: comoundQueries.compoundQueryPaclitaxel })
+            .send({ query: compoundQueries.compoundQueryPaclitaxel })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
