@@ -31,7 +31,7 @@ const table_columns = [
 
 /**
  *
- * @param {Array} data - the compound data from the compounds API.
+ * @param {Array} data - compound data from the compounds API.
  */
 const getTableData = (data) => {
   let table_data = [];
@@ -58,7 +58,7 @@ const getTableData = (data) => {
  * @param {Array} data
  *
  * @returns - (
- *  <h3> Title for barplot </h3>
+ *  <h3> Title for the barplot </h3>
  *  <BarPlot/>
  *  <h2> Title for the table </h2>
  *  <Table/>
@@ -94,7 +94,7 @@ const renderComponent = (loading, error, columns, data) => {
 const Compounds = () => {
   const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
   const columns = React.useMemo(() => table_columns, []);
-  const data = React.useMemo(() => getTableData(compound_data));
+  const data = React.useMemo(() => getTableData(compound_data), [compound_data]);
   return (
     <Layout>
       <StyledWrapper>
