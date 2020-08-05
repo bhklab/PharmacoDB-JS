@@ -38,7 +38,8 @@
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
+      "<rootDir>/src/setupTests.js",
+      "jest-canvas-mock"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
@@ -67,11 +68,11 @@
     "@apollo/react-testing": "^3.1.4",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.1.0",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "core-js": "^3.6.5",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
@@ -85,6 +86,7 @@
     "eslint-plugin-react": "^7.20.4",
     "eslint-plugin-react-hooks": "^4.0.0",
     "jest": "^24.9.0",
+    "jest-canvas-mock": "^2.2.0",
     "react-hot-loader": "^4.12.21",
     "regenerator-runtime": "^0.13.6"
   }
