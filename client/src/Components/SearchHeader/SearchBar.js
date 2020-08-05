@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
-import { getCompoundsQuery } from '../../queries/queries';
+import { getCompoundsQuery } from '../../queries/compound';
 
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
