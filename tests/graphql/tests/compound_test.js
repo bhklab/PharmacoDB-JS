@@ -33,7 +33,7 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                const compound = res.body.data.compound.compound;
+                const { compound } = res.body.data.compound;
                 expect(compound).to.have.keys('id', 'name', 'annotation');
                 expect(compound.annotation).to.have.keys('smiles', 'inchikey', 'pubchem');
                 return done();

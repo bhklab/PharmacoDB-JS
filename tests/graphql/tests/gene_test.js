@@ -12,7 +12,9 @@ const geneQueries = require('../queries/gene_queries');
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {
-    it('Returns "id", "name" properties of all genes in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', done => {
+
+    // test for all genes route
+    it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', done => {
         request(server)
             .post('/graphql')
             .send({ query: geneQueries.genesKeysTestQuery })
@@ -21,8 +23,23 @@ const test = (server) => {
                 if (err) return done(err);
                 res.body.data.genes.every(gene => {
                     expect(gene).to.have.all.keys('id', 'name', 'annotation');
-                    expect(gene.annotation).to.have.all.keys('gene_id', 'ensg', 'gene_seq_start', 'gene_seq_end');
+                    expect(gene.annotation).to.have.property('gene_id');
                 });
+                return done();
+            });
+    });
+
+    // test for a single gene route
+    it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', done => {
+        request(server)
+            .post('/graphql')
+            .send({ query: geneQueries.geneKeysTestQuery })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                const { gene } = res.body.data;
+                expect(gene).to.have.all.keys('id', 'name', 'annotation');
+                expect(gene.annotation).to.have.property('gene_id');
                 return done();
             });
     });
