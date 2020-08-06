@@ -192,7 +192,6 @@ const experiment = async args => {
                 '=',
                 'drug_annots.drug_id')
             .where('experiments.experiment_id', experimentId);
-        console.log(experiment);
         const output = transformExperiments(experiment);
         return output[0];
     } catch (err) {
