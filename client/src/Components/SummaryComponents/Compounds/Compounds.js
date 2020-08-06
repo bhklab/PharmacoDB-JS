@@ -5,6 +5,7 @@ import Layout from '../../Utils/Layout';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
 import BarPlot from '../../Plots/BarPlot';
+import Loading from '../../Utils/Loading';
 
 const table_columns = [
   {
@@ -66,7 +67,7 @@ const getTableData = (data) => {
  */
 const renderComponent = (loading, error, columns, data) => {
   if (loading) {
-    return <p> Loading... </p>;
+    return <Loading />;
   }
   if (error) {
     return <p> Error! </p>;

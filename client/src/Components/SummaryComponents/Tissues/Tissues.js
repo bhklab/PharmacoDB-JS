@@ -6,6 +6,7 @@ import Layout from '../../Utils/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getTissuesQuery } from '../../../queries/tissue';
 import { getCellLinesQuery } from '../../../queries/cell';
+import Loading from '../../Utils/Loading';
 
 const tableColumns = [
   {
@@ -110,7 +111,7 @@ const pieChartDataObject = (data) => {
  */
 const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData) => {
   if (tissueQueryLoading || cellLineQueryLoading) {
-    return <p> Loading.... </p>;
+    return <Loading />;
   }
   if (cellLineQueryError || tissuesQueryError) {
     return <p> Error! </p>;
