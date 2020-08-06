@@ -8,7 +8,7 @@ const request = require('supertest');
 const experimentQueries = require('../queries/experiment_queries');
 
 /**
- * A function that contains tests for gene.js.
+ * A function that contains tests for experiment API.
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {

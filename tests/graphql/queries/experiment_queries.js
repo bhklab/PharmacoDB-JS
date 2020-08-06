@@ -9,6 +9,10 @@ const singleExperimentKeysTestQuery = `
       cell_line {
         id
         name
+        tissue {
+          id
+          name
+        }
       },
       compound {
         id,
@@ -34,6 +38,10 @@ const singleExperimentKeysTestQuery = `
       }
     }
   }
+`;
+
+const experimentsKeysTestQuery = `
+
 `;
 
 module.exports = {

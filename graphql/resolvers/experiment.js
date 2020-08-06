@@ -11,7 +11,6 @@ const {
  */
 const transformExperiments = data => {
     const responseObj = {};
-
     // populates the response object to change data structure and accomodata one-to-many relations
     data.forEach(row => {
         const {
@@ -43,7 +42,11 @@ const transformExperiments = data => {
                 },
                 cell_line: {
                     id: cell_id,
-                    name: cell_name
+                    name: cell_name,
+                    tissue: {
+                        id: tissue_id,
+                        name: tissue_name
+                    }
                 },
                 compound: {
                     id: drug_id,
@@ -105,7 +108,11 @@ const experiments = async ({
                 'experiments.dataset_id as dataset_id',
                 'tissue_name',
                 'drug_name',
-                'dataset_name')
+                'dataset_name',
+                'fda_status',
+                'smiles',
+                'inchikey',
+                'pubchem')
                 .from('experiments')
                 .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
                 .join('tissues',
@@ -117,6 +124,10 @@ const experiments = async ({
                     'datasets.dataset_id',
                     '=',
                     'experiments.dataset_id')
+                .join('drug_annots',
+                    'experiments.drug_id',
+                    '=',
+                    'drug_annots.drug_id')
                 .limit(all ? '*' : limit)
                 .offset(all ? '*' : offset)
                 .as('SE');
@@ -134,7 +145,11 @@ const experiments = async ({
                 'drug_name',
                 'dataset_name',
                 'dose',
-                'response')
+                'response',
+                'fda_status',
+                'smiles',
+                'inchikey',
+                'pubchem')
             .from(subqueryExperiments)
             .join('dose_responses',
                 'SE.experiment_id',
