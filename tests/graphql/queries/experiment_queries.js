@@ -41,7 +41,7 @@ const singleExperimentKeysTestQuery = `
 `;
 
 const experimentsKeysTestQuery = `
-
+  
 `;
 
 module.exports = {
