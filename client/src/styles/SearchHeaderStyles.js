@@ -29,21 +29,27 @@ const StyledSearchHeader = styled.div`
             margin-bottom: 20px;
         }
 
-        span {
+        .example {
             font-family: 'Overpass', sans-serif;
             font-weight: 400;
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
             font-size: calc(0.3vw + 0.8em);
         }
+        
+        // Search bar placeholder
+        .placeholder {
+          color: #868d8f !important;
+          font-family: 'Rubik', sans-serif !important;
+        }
     }
 
     .popup {
         position:absolute;
         margin-top:100px; // height + padding of navbar
-        background: rgb(255,255,255,0.8);
+        background: rgb(255,255,255,0.7);
         z-index:999;
-        height:100%;
+        height:100vh;
         padding-top:50px;
     }
 
@@ -87,7 +93,7 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 60px;
+    padding-top: 40px;
     height: 70px;
     margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
     
@@ -95,7 +101,7 @@ const StyledNavBar = styled.div`
     justify-content: center;
 
     .container {
-        width: 70%;
+        width: 85%;
         padding-bottom: 30px;
         border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
 
@@ -187,9 +193,91 @@ const StyledSearchButton = styled.button`
   
 `;
 
+/**
+ * Styles for the search bar.
+ */
+const SearchBarStyles = {
+  control: (provided) => ({
+    ...provided,
+    background: 'rgb(233, 245, 255, 0.8)',
+    borderRadius: '35px',
+    height: '5.5vh',
+    fontFamily: '\'Rubik\', sans-serif',
+    fontSize: 'calc(0.8vw + 0.6em)',
+    color: colors.dark_teal_heading,
+    padding: '0 1.5%',
+    marginBottom: '20px',
+    border: 'none',
+    '&:hover': {
+      cursor: 'text',
+    },
+    '&:focus': {
+      outline: '0',
+      border: 'none',
+      boxShadow: 'none',
+    },
+  }),
+  input: (provided) => ({
+    ...provided,
+    padding: '0 0px',
+    color: colors.dark_gray_text,
+  }),
+  clearIndicator: (provided) => ({
+    ...provided,
+    color: `${colors.dark_gray_text}`,
+    '&:hover': {
+      color: `${colors.dark_gray_text}`,
+      cursor: 'pointer',
+    },
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: `${colors.dark_gray_text}`,
+    '&:hover': {
+      color: `${colors.dark_gray_text}`,
+      cursor: 'pointer',
+    },
+  }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    background: `${colors.dark_gray_text}`,
+    '&:hover': {
+      background: `${colors.dark_gray_text}`,
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: `${colors.dark_gray_text}`,
+  }),
+  multiValue: (provided) => ({
+    ...provided,
+    color: `${colors.dark_gray_text}`,
+    background: '#fff',
+    marginRight: '10px',
+  }),
+  multiValueLabel: (provided) => ({
+    ...provided,
+    color: `${colors.dark_gray_text}`,
+  }),
+  option: (provided) => ({
+    ...provided,
+    textAlign: 'left',
+    fontWeight: '400',
+    background: 'white',
+    color: colors.dark_gray_text,
+    cursor: 'pointer',
+    padding: '15px 25px',
+    fontSize: '1em',
+    '&:hover': {
+      background: `${colors.light_blue_bg}`,
+    },
+  }),
+};
+
 export {
   StyledSearchHeader,
   StyledSearchButton,
   StyledNavBar,
   StyledLinkDropdowns,
+  SearchBarStyles,
 };

@@ -3,11 +3,13 @@ import { mount } from 'enzyme';
 // wrap in browserrouter or it produces an error that
 // says you can't use link outside a router
 import { BrowserRouter } from 'react-router-dom';
-import { act, wait } from '@testing-library/react';
+import { act } from '@testing-library/react';
 // for async tests - DO NOT REMOVE
 import regeneratorRuntime from 'regenerator-runtime';
+import { MockedProvider } from '@apollo/react-testing';
 import SearchHeader from '../Components/SearchHeader/SearchHeader';
 import PageContext from '../context/PageContext';
+import { getCompoundsQuery } from '../queries/compound';
 
 /**
  * Util function to return a component wrapped in given context.
@@ -15,13 +17,23 @@ import PageContext from '../context/PageContext';
  * @param {String} page The current page (home or empty str)
  * @returns {ReactWrapper} the component mounted
  */
-const mountSearchHeader = (page) => mount(
-  <PageContext.Provider value={page}>
-    <BrowserRouter>
-      <SearchHeader />
-    </BrowserRouter>
-  </PageContext.Provider>,
-);
+const mountSearchHeader = async (page) => {
+  let component;
+  // async act so that options data can be set in the SearchBar useEffect
+  await act(async () => {
+    component = mount(
+      <PageContext.Provider value={page}>
+        <BrowserRouter>
+          <MockedProvider mocks={mocks} addTypename={false}>
+            <SearchHeader />
+          </MockedProvider>
+        </BrowserRouter>
+      </PageContext.Provider>,
+    );
+  });
+  component.update();
+  return component;
+};
 
 /**
  * Util function to click the search button.
@@ -39,17 +51,31 @@ const clickSearchButton = (component) => {
   component.update();
 };
 
+// mocked request data from compounds query
+const mocks = [
+  {
+    request: {
+      query: getCompoundsQuery,
+    },
+    result: {
+      data: {
+        compounds: { id: 1, name: 'testDrug' },
+      },
+    },
+  },
+];
+
 // Catch-all snapshot tests for entire rendering of the search header
 describe('Search Header renders correctly on', () => {
-  test('the home page', () => {
-    const component = mountSearchHeader('home');
+  test('the home page', async () => {
+    const component = await mountSearchHeader('home');
     expect(component).toMatchSnapshot();
   });
 
-  test('pages other than home', () => {
+  test('pages other than home', async () => {
     // in other pages, the page prop simply isn't passed because
     // it doesn't matter what the page is, as long as it's not home.
-    const component = mountSearchHeader('');
+    const component = await mountSearchHeader('');
     expect(component).toMatchSnapshot();
   });
 });
@@ -57,9 +83,9 @@ describe('Search Header renders correctly on', () => {
 // Integration test: visibility
 // must mount entire search header because it's... ~integration~ :)
 describe('SearchHeader visibility', () => {
-  test('Navbar search button changes on click', () => {
+  test('Navbar search button changes on click', async () => {
     // mount search header on page other than home
-    const component = mountSearchHeader('');
+    const component = await mountSearchHeader('');
 
     // IMPORTANT: you might be tempted to have
     // const searchButton = component.find('button.search-button');
@@ -82,9 +108,9 @@ describe('SearchHeader visibility', () => {
     expect(component.find('button.search-button').children().props().alt).toBe('magnifying glass');
   });
 
-  test('Search Container becomes visible/hidden on search button click', () => {
+  test('Search Container becomes visible/hidden on search button click', async () => {
     // like above, click the search button
-    const component = mountSearchHeader('');
+    const component = await mountSearchHeader('');
     clickSearchButton(component);
 
     // determine if the search container is visible

@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../Utils/Layout';
-import { getCompoundQuery } from '../../queries/queries';
+import { getCompoundQuery } from '../../queries/compound';
 import { NotFoundContent } from '../Utils/NotFoundPage';
 
 import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
@@ -38,7 +38,7 @@ const IndivCompounds = (props) => {
 
   return (
     <Layout>
-      <StyledWrapper>
+      <StyledWrapper individual>
         {loading ? (<p>Loading...</p>)
           : (error ? (<NotFoundContent />)
             : (
