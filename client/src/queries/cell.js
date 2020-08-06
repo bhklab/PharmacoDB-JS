@@ -9,10 +9,10 @@ const getCellLinesQuery = gql`
     cell_lines {
       id
       name
-    }
-    tissue {
-      id
-      name
+      tissue {
+        id
+        name
+      }
     }
   }
 `;
