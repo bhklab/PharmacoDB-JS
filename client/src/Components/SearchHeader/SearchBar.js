@@ -4,6 +4,7 @@ import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
 import { getCompoundsQuery } from '../../queries/compound';
 import { getTissuesQuery } from '../../queries/tissue';
+import { getCellLinesQuery } from '../../queries/cell';
 import MenuList from './MenuList';
 
 import colors from '../../styles/colors';
@@ -12,7 +13,7 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 /** CONSTANTS */
 // input must be greater than this length to
 // display option menu
-const INPUT_LENGTH_FOR_MENU = 2;
+const INPUT_LENGTH_FOR_MENU = 1;
 // placeholders for react-select
 const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
   'Drug (eg. paclitaxel)', 'Dataset (eg. ccle)',
@@ -41,6 +42,8 @@ const groupStyles = {
   fontSize: '1.5em',
   padding: '5px',
   textTransform: 'capitalize',
+  color: colors.dark_teal_heading,
+  fontWeight: 600,
 };
 
 /**
@@ -73,10 +76,12 @@ const SearchBar = () => {
   const [data, setData] = useState({
     compounds: [],
     tissues: [],
+    'cell lines': [],
   });
   const [dataLoaded, setDataLoaded] = useState({
     compounds: false,
     tissues: false,
+    'cell lines': false,
   });
 
   // input being entered - for determining the opening of option menu
@@ -124,6 +129,7 @@ const SearchBar = () => {
   /** Can't run hooks in a loop, so must do manually */
   const compoundsData = useQuery(getCompoundsQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
+  const cellsData = useQuery(getCellLinesQuery).data;
 
   /**
    * Load data in
@@ -133,12 +139,14 @@ const SearchBar = () => {
       ...data,
       compounds: compoundsData ? compoundsData.compounds : [],
       tissues: tissuesData ? tissuesData.tissues : [],
+      'cell lines': cellsData ? cellsData.cell_lines : [],
     });
     setDataLoaded({
       compounds: !!compoundsData,
       tissues: !!tissuesData,
+      'cell lines': !!cellsData,
     });
-  }, [compoundsData, tissuesData]);
+  }, [compoundsData, tissuesData, cellsData]);
 
   useEffect(() => {
     // if all values of loaded are true
