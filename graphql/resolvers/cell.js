@@ -32,8 +32,6 @@ const transformCellLines = data => {
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
 const transformSingleCellLine = data => {
-    
-    
     let returnObject = {};
     const source_cell_name_list = [];
     data.forEach((row, i) => {
@@ -86,8 +84,8 @@ const cell_lines = async () => {
     try {
         const cell_lines = await knex
             .select()
-            .from('cells')
-            .join('tissues', 'cells.tissue_id', 'tissues.tissue_id');
+            .from('cells as c')
+            .join('tissues as t', 'c.tissue_id', 't.tissue_id');
         // return the transformed data.
         return transformCellLines(cell_lines);
     } catch (err) {
