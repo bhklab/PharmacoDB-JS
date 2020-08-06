@@ -21,16 +21,6 @@ const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
 ];
 
 /**
- * React-select filter option that filters based on
- * what the input starts with. Hopefully this will reduce the
- * amount of options returned
- *
- * @param {Object} option react-select option
- * @param {Str} rawInput input from the search bar
- */
-const customFilterOption = (option, rawInput) => option.label.toLowerCase().startsWith(rawInput.toLowerCase());
-
-/**
  * Custom options to reduce lag in react-select
  */
 const CustomOption = (props) => {
@@ -78,6 +68,7 @@ const SearchBar = () => {
   /** SETTING STATE */
   // all options available - sent to react-select
   const [options, setOptions] = useState([]);
+
   // entirety of data
   const [data, setData] = useState({
     compounds: [],
@@ -91,6 +82,9 @@ const SearchBar = () => {
   // input being entered - for determining the opening of option menu
   // only open option menu if input is a certain length
   const [input, setInput] = useState('');
+
+  // Determine if select is done filtering to show/unshow loading
+  const [selectLoading, setSelectLoading] = useState(false);
 
   /** HANDLERS */
   /**
@@ -111,6 +105,22 @@ const SearchBar = () => {
     setInput(event);
   };
 
+  /**
+   * React-select filter option that filters based on
+   * what the input starts with. Hopefully this will reduce the
+   * amount of options returned
+   *
+   * @param {Object} option react-select option
+   * @param {Str} rawInput input from the search bar
+   */
+  const customFilterOption = (option, rawInput) => {
+    setSelectLoading(true);
+    const filtered = option.label.toLowerCase().startsWith(rawInput.toLowerCase());
+    setSelectLoading(false);
+    return filtered;
+  };
+
+  /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
   const compoundsData = useQuery(getCompoundsQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
@@ -146,32 +156,12 @@ const SearchBar = () => {
     }
   }, [data]);
 
-  // /**
-  //  * On every update of each query returning data,
-  //  * add all data that has returned to options.
-  //  */
-  // useEffect(() => {
-  //   if (compoundsData !== undefined) {
-  //     const { compounds } = compoundsData;
-  //     if (!options.loaded.compounds) {
-  //       setOptions((prevOptions) => {
-  //         prevOptions.list.push({
-  //           label: 'Compounds',
-  //           options: compounds.map((x) => ({ value: x.id, label: x.name })),
-  //         });
-  //         prevOptions.loaded.compounds = true;
-  //         return prevOptions;
-  //       });
-  //     }
-  //   }
-  // }, [compoundsData]);
-
   return (
     <>
       <Select
         isMulti
         filterOption={customFilterOption}
-        options={options.length === 0 ? null : options}
+        options={options}
         components={{
           // MenuList: (props) => (<MenuList {...props} />),
           Option: CustomOption,
@@ -189,6 +179,7 @@ const SearchBar = () => {
         styles={SearchBarStyles}
         onChange={handleChange}
         onInputChange={handleInputChange}
+        isLoading={selectLoading}
         menuIsOpen={input.length >= INPUT_LENGTH_FOR_MENU}
       />
     </>
