@@ -37,4 +37,8 @@ describe('Tests: GraphQL API', () => {
         require('./tests/cell_test').test(server);
     });
 
+    // tests for gene.js
+    describe('gene.js', () => {
+        require('./tests/gene_test').test(server);
+    });
 });

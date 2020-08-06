@@ -5,7 +5,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const cellQueries = require('../queries/cells_queries');
+const cellQueries = require('../queries/cell_queries');
 
 /**
  * A function that contains tests for compound.js.
