@@ -22,18 +22,26 @@ const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
 ];
 
 /**
- * Custom options to reduce lag in react-select
+ * Custom options for scrolling with keyboard
  */
-const CustomOption = (props) => {
-  const { innerProps, isFocused, ...otherProps } = props;
-  const { onMouseMove, onMouseOver, ...otherInnerProps } = innerProps;
-  const newProps = { innerProps: { ...otherInnerProps }, ...otherProps };
-  return (
-    <components.Option {...newProps} className="your-option-css-class">
-      {props.children}
-    </components.Option>
-  );
-};
+const CustomOption = (innerProps) => (
+  <components.Option {...innerProps}>
+    <div
+      style={{
+        textAlign: 'left',
+        fontWeight: '400',
+        color: colors.dark_gray_text,
+        cursor: 'pointer',
+        padding: '15px 25px',
+        fontSize: '1em',
+        fontFamily: "'Open Sans', sans-serif",
+        backgroundColor: innerProps.isFocused ? colors.light_blue_bg : 'inherit',
+      }}
+    >
+      {innerProps.label}
+    </div>
+  </components.Option>
+);
 
 /**
  * Styles for formatting the group header label
