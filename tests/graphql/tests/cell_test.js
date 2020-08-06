@@ -20,7 +20,8 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.cell_lines.every(cell =>
+                const { cell_lines } = res.body.data;
+                cell_lines.every(cell =>
                     expect(cell).to.have.all.keys('id', 'name'));
                 return done();
             });

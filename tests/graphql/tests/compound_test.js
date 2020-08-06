@@ -20,7 +20,8 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.compounds.every(compound =>
+                const { compounds } = res.body.data;
+                compounds.every(compound =>
                     expect(compound).to.have.all.keys('id', 'name'));
                 return done();
             });
