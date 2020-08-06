@@ -13,17 +13,17 @@ const experimentQueries = require('../queries/experiment_queries');
  */
 const test = (server) => {
     // test for a single experiment
-    it('Single experiment data contains all necessary information about "cell_line", "compound" and its anootation, "tissue", "dataset" and an array of "dose_reponses"', done => {
+    it('Data coming from single experiment API route contains all necessary information about "cell_line", "compound" and its anootation, "tissue", "dataset" and an array of "dose_reponses"', done => {
         request(server)
             .post('/graphql')
-            .send({ query: experimentQueries.singleExperimentKeysTestQuery })
+            .send({ query: experimentQueries.singleExperimentTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const { experiment } = res.body.data;
                 const { cell_line, compound, tissue, dataset, dose_responses } = experiment;
                 expect(experiment).to.have.all.keys('id', 'cell_line', 'compound', 'tissue', 'dataset', 'dose_responses');
-                
+
                 // checks cell line data
                 expect(cell_line).to.have.all.keys('id', 'name', 'tissue');
                 expect(cell_line.id).to.be.a('number');
@@ -53,8 +53,33 @@ const test = (server) => {
                 expect(compound.annotation.fda_status).to.be.oneOf(['Approved', 'Not Approved']);
 
                 // checks the list of dose response
-                expect(dose_responses).to.be.an('array');
+                expect(dose_responses).to.be.an('array').that.have.lengthOf.above(0);
                 dose_responses.every(dose_reponse => expect(dose_reponse).to.have.all.keys('dose', 'response'));
+                return done();
+            });
+    });
+
+    // test for multiple experiments (validates subset of first 50 entries)
+    it('Data coming from multiple experiments API route contains all necessary information about "cell_line", "compound" and its anootation, "tissue", "dataset" and an array of "dose_reponses"', done => {
+        request(server)
+            .post('/graphql')
+            .send({ query: experimentQueries.multipleExperimentsTestQuery })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                res.body.data.experiments.every(experiment => {
+                    expect(experiment).to.have.all.keys('id', 'cell_line', 'compound', 'tissue', 'dataset', 'dose_responses');
+                    const { cell_line, compound, tissue, dataset, dose_responses } = experiment;
+                    // checks if relationship with cell_line, tissue, dataset, compound and dose_response are present and data has correct format
+                    expect(cell_line).to.have.all.keys('id', 'name', 'tissue');
+                    expect(cell_line.tissue).to.have.all.keys('id', 'name');
+                    expect(tissue).to.have.all.keys('id', 'name');
+                    expect(dataset).to.have.all.keys('id', 'name');
+                    expect(compound).to.have.all.keys('id', 'name', 'annotation');
+                    expect(compound.annotation).to.have.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
+                    expect(dose_responses).to.be.an('array').that.have.lengthOf.above(0);
+                    dose_responses.every(dose_reponse => expect(dose_reponse).to.have.all.keys('dose', 'response'));
+                });
                 return done();
             });
     });

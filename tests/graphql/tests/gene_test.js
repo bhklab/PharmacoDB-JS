@@ -17,7 +17,7 @@ const test = (server) => {
     it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', done => {
         request(server)
             .post('/graphql')
-            .send({ query: geneQueries.genesKeysTestQuery })
+            .send({ query: geneQueries.multipleGenesTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -36,7 +36,7 @@ const test = (server) => {
     it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', done => {
         request(server)
             .post('/graphql')
-            .send({ query: geneQueries.geneKeysTestQuery })
+            .send({ query: geneQueries.singleGeneTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);

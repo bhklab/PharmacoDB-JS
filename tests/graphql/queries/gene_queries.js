@@ -2,7 +2,7 @@
  * Gene Queries to be used for graphql.test.js
  */
 
-const geneKeysTestQuery = `
+const singleGeneTestQuery = `
   {
     gene(geneId: 1) {
       id,
@@ -17,7 +17,7 @@ const geneKeysTestQuery = `
   }
 `;
 
-const genesKeysTestQuery = `
+const multipleGenesTestQuery = `
     {
       genes {
         id,
@@ -33,6 +33,6 @@ const genesKeysTestQuery = `
 `;
 
 module.exports = {
-    geneKeysTestQuery,
-    genesKeysTestQuery,
+    singleGeneTestQuery,
+    multipleGenesTestQuery,
 };
