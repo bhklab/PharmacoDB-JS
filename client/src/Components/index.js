@@ -1,7 +1,7 @@
-import Compounds from './Compounds/Compounds';
-import Genes from './Genes/Genes';
-import Tissues from './Tissues/Tissues';
-import IndivCompounds from './IndivCompounds/IndivCompounds';
+import Compounds from './SummaryComponents/Compounds/Compounds';
+import Genes from './SummaryComponents/Genes/Genes';
+import Tissues from './SummaryComponents/Tissues/Tissues';
+import IndivCompounds from './IndividualComponents/IndivCompounds/IndivCompounds';
 import Home from './Home/Home';
 import NotFoundPage from './Utils/NotFoundPage';
 

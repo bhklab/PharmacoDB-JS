@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { act } from '@testing-library/react';
 // for async tests - DO NOT REMOVE
 import regeneratorRuntime from 'regenerator-runtime';
-import Compounds from '../Components/Compounds/Compounds';
+import Compounds from '../Components/SummaryComponents/Compounds/Compounds';
 import { getCompoundsQuery } from '../queries/compound';
 
 const mocks = [
