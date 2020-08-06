@@ -82,8 +82,8 @@ const pieChartDataObject = (data) => {
     type: 'pie',
     marker: {
       colors: [
-        '#67001f', '#b2182b', '#d6604d', '#7f3b08', '#f4a582', '#fddbc7',
-        '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#053061',
+        '#053061', '#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#878787',
+        '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#67001f',
       ],
     },
   }];
@@ -135,7 +135,6 @@ const Tissues = () => {
   // data for pie chart.
   const groupedData = cellLinesGroupedByTissue(cells);
   const pieData = pieChartDataObject(groupedData);
-  console.log(pieData);
   return (
     <Layout>
       <StyledWrapper>
