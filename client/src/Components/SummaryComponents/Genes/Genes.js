@@ -1,6 +1,6 @@
 import React from 'react';
-import StyledWrapper from '../../styles/utils';
-import Layout from '../Utils/Layout';
+import StyledWrapper from '../../../styles/utils';
+import Layout from '../../Utils/Layout';
 
 const Genes = () => (
   <Layout>
