@@ -1,0 +1,32 @@
+/* eslint-disable no-undef */
+/**
+ * Unit test code for testing GraphQL Dataset API endpoints.
+ */
+const chai = require('chai');
+const expect = chai.expect;
+const request = require('supertest');
+const datasetQueries = require('../queries/dataset_queries');
+
+/**
+ * A function that contains tests for datasets.
+ * This function is exported, and called in graphql.test.js.
+ */
+
+const test = (server) => {
+    it('Returns "id" and "name" properties of all the datasets in the database', done => {
+        request(server)
+            .post('/graphql')
+            .send({ query: datasetQueries.datasetsKeysTestQuery })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                res.body.data.datasets.every(dataset =>
+                    expect(dataset).to.have.all.keys('id', 'name'));
+                return done();
+            });
+    });
+};
+
+module.exports= {
+    test
+};

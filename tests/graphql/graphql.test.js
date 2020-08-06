@@ -37,4 +37,9 @@ describe('Tests: GraphQL API', () => {
         require('./tests/cell_test').test(server);
     });
 
+    // tests for dataset
+    describe('dataset.js', () => {
+        require('./tests/dataset_test').test(server);
+    });
+
 });
