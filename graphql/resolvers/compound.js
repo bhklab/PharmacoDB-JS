@@ -136,12 +136,15 @@ const compounds = async ({ page = 1, per_page = 20, all = false }) => {
     // try catch block and the query to get the data for all the compounds based on the arguments.
     try {
         // query to get the data for all the compounds.
-        const compounds = await knex
+        const query = knex
             .select()
             .from('drugs')
-            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id')
-            .limit(all ? '*' : limit)
-            .offset(all ? '*' : offset);
+            .join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
+
+        if (!all) {
+            query.limit(limit).offset(offset);
+        }
+        const compounds = await query;
         // return the transformed data.
         return transformCompounds(compounds);
     } catch (err) {
