@@ -68,6 +68,10 @@ const cellLinesGroupedByTissue = (data) => {
   return returnData;
 };
 
+/**
+ *
+ * @param {Object} data
+ */
 const pieChartDataObject = (data) => {
   const threshold = 50;
   const returnData = [{
@@ -76,6 +80,12 @@ const pieChartDataObject = (data) => {
     hoverinfo: 'label+percent',
     hole: 0.55,
     type: 'pie',
+    marker: {
+      colors: [
+        '#67001f', '#b2182b', '#d6604d', '#7f3b08', '#f4a582', '#fddbc7',
+        '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#053061',
+      ],
+    },
   }];
   Object.keys(data).forEach((key) => {
     if (data[key].total > threshold) {
@@ -98,11 +108,11 @@ const pieChartDataObject = (data) => {
  *  <Table/>
  * )
  */
-const renderComponent = (loading, error, columns, data, pieData) => {
-  if (loading) {
+const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData) => {
+  if (tissueQueryLoading || cellLineQueryLoading) {
     return <p> Loading.... </p>;
   }
-  if (error) {
+  if (cellLineQueryError || tissuesQueryError) {
     return <p> Error! </p>;
   }
   return (
@@ -130,7 +140,7 @@ const Tissues = () => {
     <Layout>
       <StyledWrapper>
         {
-          renderComponent(tissueQueryLoading, tissuesQueryError, columns, data, pieData)
+          renderComponent(tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData)
         }
       </StyledWrapper>
     </Layout>

@@ -3,19 +3,14 @@ import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
 
 const layout = {
-  annotations: [
-    {
-      font: {
-        size: 20,
-      },
-      showarrow: false,
-      x: 0.17,
-      y: 0.5,
-    },
-  ],
   height: 700,
   width: 900,
   showlegend: true,
+  legend: {
+    font: {
+      size: 13,
+    },
+  },
 };
 
 const config = {
