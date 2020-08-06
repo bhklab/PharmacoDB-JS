@@ -39,7 +39,7 @@ const test = (server) => {
                 if (err) return done(err);
                 const { gene } = res.body.data;
                 expect(gene).to.have.all.keys('id', 'name', 'annotation');
-                expect(gene.annotation).to.have.property('gene_id');
+                expect(gene.annotation).to.have.all.keys('gene_id', 'ensg', 'gene_seq_start', 'gene_seq_end');
                 return done();
             });
     });

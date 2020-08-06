@@ -25,7 +25,11 @@ const transformExperiments = data => {
             drug_name,
             dataset_name,
             dose,
-            response
+            response,
+            fda_status,
+            smiles,
+            inchikey,
+            pubchem
         } = row;
         if (!responseObj[experiment_id]) {
             responseObj[experiment_id] = {
@@ -43,7 +47,13 @@ const transformExperiments = data => {
                 },
                 compound: {
                     id: drug_id,
-                    name: drug_name
+                    name: drug_name,
+                    annotation: {
+                        fda_status: fda_status ? 'Approved' : 'Not Approved',
+                        smiles,
+                        inchikey,
+                        pubchem
+                    }
                 },
                 dataset: {
                     id: dataset_id,
@@ -160,7 +170,11 @@ const experiment = async args => {
                 'drug_name',
                 'dataset_name',
                 'dose',
-                'response')
+                'response',
+                'fda_status',
+                'smiles',
+                'inchikey',
+                'pubchem')
             .from('experiments')
             .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
             .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
@@ -173,8 +187,12 @@ const experiment = async args => {
                 'dose_responses.experiment_id',
                 '=',
                 'experiments.experiment_id')
+            .join('drug_annots',
+                'experiments.drug_id',
+                '=',
+                'drug_annots.drug_id')
             .where('experiments.experiment_id', experimentId);
-
+        console.log(experiment);
         const output = transformExperiments(experiment);
         return output[0];
     } catch (err) {
