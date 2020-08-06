@@ -1,11 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import StyledWrapper from '../../styles/utils';
-import Table from '../Table/Table';
-import Layout from '../Utils/Layout';
-import PieChart from '../Plots/PieChart';
-import { getTissuesQuery } from '../../queries/tissue';
-import { getCellLinesQuery } from '../../queries/cell';
+import StyledWrapper from '../../../styles/utils';
+import Table from '../../Table/Table';
+import Layout from '../../Utils/Layout';
+import PieChart from '../../Plots/PieChart';
+import { getTissuesQuery } from '../../../queries/tissue';
+import { getCellLinesQuery } from '../../../queries/cell';
 
 const tableColumns = [
   {
@@ -42,7 +42,7 @@ const getTableData = (data) => {
  * @returns {Object} - returns an object of multiple objects,
  * where each object is represented as follows -
  * tissue_name: {
- *  cells: [Array],
+ *  cells: {Array},
  *  total: Number
  * }
  *
@@ -125,6 +125,14 @@ const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQuery
   );
 };
 
+/**
+ * Parent component for the tissues page.
+ *
+ * @component
+ * @example
+ *
+ * @returns ( <Tissues/> )
+*/
 const Tissues = () => {
   // queries to get the cell line and tissue data.
   const { loading: tissueQueryLoading, error: tissuesQueryError, data: tissues } = useQuery(getTissuesQuery);
