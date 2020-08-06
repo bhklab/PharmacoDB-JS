@@ -192,12 +192,38 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                 "resultCaching": true,
               },
               "data": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                    "id": 1,
+                    "name": "testDrug",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compounds({\\"all\\":true})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "maybeBroadcastWatch": [Function],
               "optimisticData": DepTrackingCache {
-                "data": Object {},
+                "data": Object {
+                  "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                    "id": 1,
+                    "name": "testDrug",
+                  },
+                  "ROOT_QUERY": Object {
+                    "compounds({\\"all\\":true})": Object {
+                      "generated": true,
+                      "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                      "type": "id",
+                      "typename": undefined,
+                    },
+                  },
+                },
                 "depend": [Function],
               },
               "silenceBroadcast": false,
@@ -346,9 +372,74 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       "start": 0,
                     },
                   },
-                  "variables": Object {
-                    "per_page": 10,
+                  "variables": Object {},
+                },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllTissues",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "tissues",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 69,
+                      "start": 0,
+                    },
                   },
+                  "variables": Object {},
                 },
               },
             },
@@ -358,152 +449,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
-                  Object {
-                    "request": Object {
-                      "query": Object {
-                        "definitions": Array [
-                          Object {
-                            "directives": Array [],
-                            "kind": "OperationDefinition",
-                            "name": Object {
-                              "kind": "Name",
-                              "value": "getAllCompounds",
-                            },
-                            "operation": "query",
-                            "selectionSet": Object {
-                              "kind": "SelectionSet",
-                              "selections": Array [
-                                Object {
-                                  "alias": undefined,
-                                  "arguments": Array [
-                                    Object {
-                                      "kind": "Argument",
-                                      "name": Object {
-                                        "kind": "Name",
-                                        "value": "all",
-                                      },
-                                      "value": Object {
-                                        "kind": "BooleanValue",
-                                        "value": true,
-                                      },
-                                    },
-                                  ],
-                                  "directives": Array [],
-                                  "kind": "Field",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "compounds",
-                                  },
-                                  "selectionSet": Object {
-                                    "kind": "SelectionSet",
-                                    "selections": Array [
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "id",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "name",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "annotation",
-                                        },
-                                        "selectionSet": Object {
-                                          "kind": "SelectionSet",
-                                          "selections": Array [
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "smiles",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "inchikey",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "pubchem",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "fda_status",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                            "variableDefinitions": Array [],
-                          },
-                        ],
-                        "kind": "Document",
-                        "loc": Object {
-                          "end": 178,
-                          "start": 0,
-                        },
-                      },
-                    },
-                    "result": Object {
-                      "data": Object {
-                        "compounds": Object {
-                          "id": 1,
-                          "name": "testDrug",
-                        },
-                      },
-                    },
-                  },
-                ],
+                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
               },
             },
             "localState": LocalState {
@@ -521,12 +467,38 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   "resultCaching": true,
                 },
                 "data": DepTrackingCache {
-                  "data": Object {},
+                  "data": Object {
+                    "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                      "id": 1,
+                      "name": "testDrug",
+                    },
+                    "ROOT_QUERY": Object {
+                      "compounds({\\"all\\":true})": Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    },
+                  },
                   "depend": [Function],
                 },
                 "maybeBroadcastWatch": [Function],
                 "optimisticData": DepTrackingCache {
-                  "data": Object {},
+                  "data": Object {
+                    "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                      "id": 1,
+                      "name": "testDrug",
+                    },
+                    "ROOT_QUERY": Object {
+                      "compounds({\\"all\\":true})": Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    },
+                  },
                   "depend": [Function],
                 },
                 "silenceBroadcast": false,
@@ -675,9 +647,74 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         "start": 0,
                       },
                     },
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  Object {
+                    "callback": [Function],
+                    "optimistic": true,
+                    "previousResult": [Function],
+                    "query": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
                     },
+                    "variables": Object {},
                   },
                 },
               },
@@ -707,12 +744,38 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     "resultCaching": true,
                   },
                   "data": DepTrackingCache {
-                    "data": Object {},
+                    "data": Object {
+                      "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                        "id": 1,
+                        "name": "testDrug",
+                      },
+                      "ROOT_QUERY": Object {
+                        "compounds({\\"all\\":true})": Object {
+                          "generated": true,
+                          "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                          "type": "id",
+                          "typename": undefined,
+                        },
+                      },
+                    },
                     "depend": [Function],
                   },
                   "maybeBroadcastWatch": [Function],
                   "optimisticData": DepTrackingCache {
-                    "data": Object {},
+                    "data": Object {
+                      "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                        "id": 1,
+                        "name": "testDrug",
+                      },
+                      "ROOT_QUERY": Object {
+                        "compounds({\\"all\\":true})": Object {
+                          "generated": true,
+                          "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                          "type": "id",
+                          "typename": undefined,
+                        },
+                      },
+                    },
                     "depend": [Function],
                   },
                   "silenceBroadcast": false,
@@ -861,15 +924,80 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
+                      "variables": Object {},
+                    },
+                    Object {
+                      "callback": [Function],
+                      "optimistic": true,
+                      "previousResult": [Function],
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
                       },
+                      "variables": Object {},
                     },
                   },
                 },
               },
               "fetchQueryRejectFns": Map {},
-              "idCounter": 3,
+              "idCounter": 5,
               "inFlightLinkObservables": Map {
                 Object {
                   "definitions": Array [
@@ -878,7 +1006,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       "kind": "OperationDefinition",
                       "name": Object {
                         "kind": "Name",
-                        "value": "getAllCompounds",
+                        "value": "getAllTissues",
                       },
                       "operation": "query",
                       "selectionSet": Object {
@@ -886,24 +1014,12 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         "selections": Array [
                           Object {
                             "alias": undefined,
-                            "arguments": Array [
-                              Object {
-                                "kind": "Argument",
-                                "name": Object {
-                                  "kind": "Name",
-                                  "value": "all",
-                                },
-                                "value": Object {
-                                  "kind": "BooleanValue",
-                                  "value": true,
-                                },
-                              },
-                            ],
+                            "arguments": Array [],
                             "directives": Array [],
                             "kind": "Field",
                             "name": Object {
                               "kind": "Name",
-                              "value": "compounds",
+                              "value": "tissues",
                             },
                             "selectionSet": Object {
                               "kind": "SelectionSet",
@@ -930,65 +1046,6 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                   },
                                   "selectionSet": undefined,
                                 },
-                                Object {
-                                  "alias": undefined,
-                                  "arguments": Array [],
-                                  "directives": Array [],
-                                  "kind": "Field",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "annotation",
-                                  },
-                                  "selectionSet": Object {
-                                    "kind": "SelectionSet",
-                                    "selections": Array [
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "smiles",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "inchikey",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "pubchem",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "fda_status",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                    ],
-                                  },
-                                },
                               ],
                             },
                           },
@@ -999,7 +1056,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 178,
+                    "end": 69,
                     "start": 0,
                   },
                 } => Map {},
@@ -1007,152 +1064,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
-                    Object {
-                      "request": Object {
-                        "query": Object {
-                          "definitions": Array [
-                            Object {
-                              "directives": Array [],
-                              "kind": "OperationDefinition",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "getAllCompounds",
-                              },
-                              "operation": "query",
-                              "selectionSet": Object {
-                                "kind": "SelectionSet",
-                                "selections": Array [
-                                  Object {
-                                    "alias": undefined,
-                                    "arguments": Array [
-                                      Object {
-                                        "kind": "Argument",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "all",
-                                        },
-                                        "value": Object {
-                                          "kind": "BooleanValue",
-                                          "value": true,
-                                        },
-                                      },
-                                    ],
-                                    "directives": Array [],
-                                    "kind": "Field",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "compounds",
-                                    },
-                                    "selectionSet": Object {
-                                      "kind": "SelectionSet",
-                                      "selections": Array [
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "id",
-                                          },
-                                          "selectionSet": undefined,
-                                        },
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "name",
-                                          },
-                                          "selectionSet": undefined,
-                                        },
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "annotation",
-                                          },
-                                          "selectionSet": Object {
-                                            "kind": "SelectionSet",
-                                            "selections": Array [
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "smiles",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "inchikey",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "pubchem",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "fda_status",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  },
-                                ],
-                              },
-                              "variableDefinitions": Array [],
-                            },
-                          ],
-                          "kind": "Document",
-                          "loc": Object {
-                            "end": 178,
-                            "start": 0,
-                          },
-                        },
-                      },
-                      "result": Object {
-                        "data": Object {
-                          "compounds": Object {
-                            "id": 1,
-                            "name": "testDrug",
-                          },
-                        },
-                      },
-                    },
-                  ],
+                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 },
               },
               "localState": LocalState {
@@ -1170,12 +1082,38 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     "resultCaching": true,
                   },
                   "data": DepTrackingCache {
-                    "data": Object {},
+                    "data": Object {
+                      "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                        "id": 1,
+                        "name": "testDrug",
+                      },
+                      "ROOT_QUERY": Object {
+                        "compounds({\\"all\\":true})": Object {
+                          "generated": true,
+                          "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                          "type": "id",
+                          "typename": undefined,
+                        },
+                      },
+                    },
                     "depend": [Function],
                   },
                   "maybeBroadcastWatch": [Function],
                   "optimisticData": DepTrackingCache {
-                    "data": Object {},
+                    "data": Object {
+                      "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                        "id": 1,
+                        "name": "testDrug",
+                      },
+                      "ROOT_QUERY": Object {
+                        "compounds({\\"all\\":true})": Object {
+                          "generated": true,
+                          "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                          "type": "id",
+                          "typename": undefined,
+                        },
+                      },
+                    },
                     "depend": [Function],
                   },
                   "silenceBroadcast": false,
@@ -1324,9 +1262,74 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
+                      "variables": Object {},
+                    },
+                    Object {
+                      "callback": [Function],
+                      "optimistic": true,
+                      "previousResult": [Function],
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
                       },
+                      "variables": Object {},
                     },
                   },
                 },
@@ -1481,23 +1484,17 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   "observableQuery": ObservableQuery {
                     "_subscriber": [Function],
                     "isTornDown": false,
-                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllCompounds {
-  compounds(all: true) {
-    id
-    name
-    annotation {
-      smiles
-      inchikey
-      pubchem
-      fda_status
-    }
-  }
-}
-, variables: {"per_page":10}],
                     "lastResult": Object {
-                      "errors": Array [],
+                      "data": undefined,
                       "loading": false,
-                      "networkStatus": 8,
+                      "networkStatus": 7,
+                      "stale": true,
+                    },
+                    "lastResultSnapshot": Object {
+                      "data": undefined,
+                      "loading": false,
+                      "networkStatus": 7,
+                      "stale": true,
                     },
                     "observers": Set {
                       SubscriptionObserver {
@@ -1653,18 +1650,199 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
-                      },
+                      "variables": Object {},
                     },
                     "queryId": "1",
                     "queryManager": [Circular],
                     "queryName": "getAllCompounds",
                     "shouldSubscribe": true,
                     "subscriptions": Set {},
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  "subscriptions": Set {},
+                },
+                "3" => Object {
+                  "cancel": [Function],
+                  "document": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllTissues",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "tissues",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 69,
+                      "start": 0,
                     },
+                  },
+                  "invalidated": false,
+                  "lastRequestId": 4,
+                  "listeners": Set {
+                    [Function],
+                  },
+                  "newData": null,
+                  "observableQuery": ObservableQuery {
+                    "_subscriber": [Function],
+                    "isTornDown": false,
+                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllTissues {
+  tissues {
+    id
+    name
+  }
+}
+, variables: {}],
+                    "lastResult": Object {
+                      "data": undefined,
+                      "loading": false,
+                      "networkStatus": 8,
+                      "stale": true,
+                    },
+                    "lastResultSnapshot": Object {
+                      "data": undefined,
+                      "loading": false,
+                      "networkStatus": 8,
+                      "stale": true,
+                    },
+                    "observers": Set {
+                      SubscriptionObserver {
+                        "_subscription": Subscription {
+                          "_cleanup": [Function],
+                          "_observer": Object {
+                            "error": [Function],
+                            "next": [Function],
+                          },
+                          "_queue": undefined,
+                          "_state": "ready",
+                        },
+                      },
+                    },
+                    "options": Object {
+                      "context": undefined,
+                      "displayName": "Query",
+                      "metadata": Object {
+                        "reactComponent": Object {
+                          "displayName": "Query",
+                        },
+                      },
+                      "notifyOnNetworkStatusChange": false,
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
+                      },
+                      "variables": Object {},
+                    },
+                    "queryId": "3",
+                    "queryManager": [Circular],
+                    "queryName": "getAllTissues",
+                    "shouldSubscribe": true,
+                    "subscriptions": Set {},
+                    "variables": Object {},
                   },
                   "subscriptions": Set {},
                 },
@@ -1812,11 +1990,82 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       },
                     },
                     "networkError": null,
+                    "networkStatus": 7,
+                    "previousVariables": null,
+                    "variables": Object {},
+                  },
+                  "3": Object {
+                    "document": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
+                    },
+                    "graphQLErrors": Array [],
+                    "metadata": Object {
+                      "reactComponent": Object {
+                        "displayName": "Query",
+                      },
+                    },
+                    "networkError": null,
                     "networkStatus": 8,
                     "previousVariables": null,
-                    "variables": Object {
-                      "per_page": 10,
-                    },
+                    "variables": Object {},
                   },
                 },
               },
@@ -1841,12 +2090,38 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   "resultCaching": true,
                 },
                 "data": DepTrackingCache {
-                  "data": Object {},
+                  "data": Object {
+                    "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                      "id": 1,
+                      "name": "testDrug",
+                    },
+                    "ROOT_QUERY": Object {
+                      "compounds({\\"all\\":true})": Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    },
+                  },
                   "depend": [Function],
                 },
                 "maybeBroadcastWatch": [Function],
                 "optimisticData": DepTrackingCache {
-                  "data": Object {},
+                  "data": Object {
+                    "$ROOT_QUERY.compounds({\\"all\\":true})": Object {
+                      "id": 1,
+                      "name": "testDrug",
+                    },
+                    "ROOT_QUERY": Object {
+                      "compounds({\\"all\\":true})": Object {
+                        "generated": true,
+                        "id": "$ROOT_QUERY.compounds({\\"all\\":true})",
+                        "type": "id",
+                        "typename": undefined,
+                      },
+                    },
+                  },
                   "depend": [Function],
                 },
                 "silenceBroadcast": false,
@@ -1995,9 +2270,74 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         "start": 0,
                       },
                     },
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  Object {
+                    "callback": [Function],
+                    "optimistic": true,
+                    "previousResult": [Function],
+                    "query": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
                     },
+                    "variables": Object {},
                   },
                 },
               },
@@ -2791,12 +3131,16 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     defaultValue={null}
                     filterOption={[Function]}
                     formatGroupLabel={[Function]}
+                    isLoading={false}
                     isMulti={true}
+                    menuIsOpen={false}
+                    onChange={[Function]}
+                    onInputChange={[Function]}
                     options={Array []}
                     placeholder={
                       <t
                         className="placeholder"
-                        eraseDelay="1000"
+                        eraseDelay="1500"
                         speed="100"
                         text={
                           Array [
@@ -2870,7 +3214,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       placeholder={
                         <t
                           className="placeholder"
-                          eraseDelay="1000"
+                          eraseDelay="1500"
                           speed="100"
                           text={
                             Array [
@@ -2964,7 +3308,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "pageSize": 5,
                             "placeholder": <t
                               className="placeholder"
-                              eraseDelay="1000"
+                              eraseDelay="1500"
                               speed="100"
                               text={
                                 Array [
@@ -3108,7 +3452,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                   "pageSize": 5,
                                   "placeholder": <t
                                     className="placeholder"
-                                    eraseDelay="1000"
+                                    eraseDelay="1500"
                                     speed="100"
                                     text={
                                       Array [
@@ -3273,7 +3617,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                         "pageSize": 5,
                                         "placeholder": <t
                                           className="placeholder"
-                                          eraseDelay="1000"
+                                          eraseDelay="1500"
                                           speed="100"
                                           text={
                                             Array [
@@ -3412,7 +3756,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -3497,7 +3841,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                             >
                                               <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -3595,7 +3939,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -3821,7 +4165,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                         "pageSize": 5,
                                         "placeholder": <t
                                           className="placeholder"
-                                          eraseDelay="1000"
+                                          eraseDelay="1500"
                                           speed="100"
                                           text={
                                             Array [
@@ -3955,7 +4299,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -4104,7 +4448,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -4609,9 +4953,74 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       "start": 0,
                     },
                   },
-                  "variables": Object {
-                    "per_page": 10,
+                  "variables": Object {},
+                },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllTissues",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "tissues",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 69,
+                      "start": 0,
+                    },
                   },
+                  "variables": Object {},
                 },
               },
             },
@@ -4621,152 +5030,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
-                  Object {
-                    "request": Object {
-                      "query": Object {
-                        "definitions": Array [
-                          Object {
-                            "directives": Array [],
-                            "kind": "OperationDefinition",
-                            "name": Object {
-                              "kind": "Name",
-                              "value": "getAllCompounds",
-                            },
-                            "operation": "query",
-                            "selectionSet": Object {
-                              "kind": "SelectionSet",
-                              "selections": Array [
-                                Object {
-                                  "alias": undefined,
-                                  "arguments": Array [
-                                    Object {
-                                      "kind": "Argument",
-                                      "name": Object {
-                                        "kind": "Name",
-                                        "value": "all",
-                                      },
-                                      "value": Object {
-                                        "kind": "BooleanValue",
-                                        "value": true,
-                                      },
-                                    },
-                                  ],
-                                  "directives": Array [],
-                                  "kind": "Field",
-                                  "name": Object {
-                                    "kind": "Name",
-                                    "value": "compounds",
-                                  },
-                                  "selectionSet": Object {
-                                    "kind": "SelectionSet",
-                                    "selections": Array [
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "id",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "name",
-                                        },
-                                        "selectionSet": undefined,
-                                      },
-                                      Object {
-                                        "alias": undefined,
-                                        "arguments": Array [],
-                                        "directives": Array [],
-                                        "kind": "Field",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "annotation",
-                                        },
-                                        "selectionSet": Object {
-                                          "kind": "SelectionSet",
-                                          "selections": Array [
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "smiles",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "inchikey",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "pubchem",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                            Object {
-                                              "alias": undefined,
-                                              "arguments": Array [],
-                                              "directives": Array [],
-                                              "kind": "Field",
-                                              "name": Object {
-                                                "kind": "Name",
-                                                "value": "fda_status",
-                                              },
-                                              "selectionSet": undefined,
-                                            },
-                                          ],
-                                        },
-                                      },
-                                    ],
-                                  },
-                                },
-                              ],
-                            },
-                            "variableDefinitions": Array [],
-                          },
-                        ],
-                        "kind": "Document",
-                        "loc": Object {
-                          "end": 178,
-                          "start": 0,
-                        },
-                      },
-                    },
-                    "result": Object {
-                      "data": Object {
-                        "compounds": Object {
-                          "id": 1,
-                          "name": "testDrug",
-                        },
-                      },
-                    },
-                  },
-                ],
+                "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
               },
             },
             "localState": LocalState {
@@ -4938,9 +5202,74 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         "start": 0,
                       },
                     },
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  Object {
+                    "callback": [Function],
+                    "optimistic": true,
+                    "previousResult": [Function],
+                    "query": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
                     },
+                    "variables": Object {},
                   },
                 },
               },
@@ -5124,15 +5453,82 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
+                      "variables": Object {},
+                    },
+                    Object {
+                      "callback": [Function],
+                      "optimistic": true,
+                      "previousResult": [Function],
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
                       },
+                      "variables": Object {},
                     },
                   },
                 },
               },
-              "fetchQueryRejectFns": Map {},
-              "idCounter": 3,
+              "fetchQueryRejectFns": Map {
+                "fetchRequest:1" => [Function],
+              },
+              "idCounter": 5,
               "inFlightLinkObservables": Map {
                 Object {
                   "definitions": Array [
@@ -5265,157 +5661,77 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     "end": 178,
                     "start": 0,
                   },
+                } => Map {
+                  "{}" => Observable {
+                    "_subscriber": [Function],
+                  },
+                },
+                Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllTissues",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "tissues",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 69,
+                    "start": 0,
+                  },
                 } => Map {},
               },
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
-                    Object {
-                      "request": Object {
-                        "query": Object {
-                          "definitions": Array [
-                            Object {
-                              "directives": Array [],
-                              "kind": "OperationDefinition",
-                              "name": Object {
-                                "kind": "Name",
-                                "value": "getAllCompounds",
-                              },
-                              "operation": "query",
-                              "selectionSet": Object {
-                                "kind": "SelectionSet",
-                                "selections": Array [
-                                  Object {
-                                    "alias": undefined,
-                                    "arguments": Array [
-                                      Object {
-                                        "kind": "Argument",
-                                        "name": Object {
-                                          "kind": "Name",
-                                          "value": "all",
-                                        },
-                                        "value": Object {
-                                          "kind": "BooleanValue",
-                                          "value": true,
-                                        },
-                                      },
-                                    ],
-                                    "directives": Array [],
-                                    "kind": "Field",
-                                    "name": Object {
-                                      "kind": "Name",
-                                      "value": "compounds",
-                                    },
-                                    "selectionSet": Object {
-                                      "kind": "SelectionSet",
-                                      "selections": Array [
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "id",
-                                          },
-                                          "selectionSet": undefined,
-                                        },
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "name",
-                                          },
-                                          "selectionSet": undefined,
-                                        },
-                                        Object {
-                                          "alias": undefined,
-                                          "arguments": Array [],
-                                          "directives": Array [],
-                                          "kind": "Field",
-                                          "name": Object {
-                                            "kind": "Name",
-                                            "value": "annotation",
-                                          },
-                                          "selectionSet": Object {
-                                            "kind": "SelectionSet",
-                                            "selections": Array [
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "smiles",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "inchikey",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "pubchem",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                              Object {
-                                                "alias": undefined,
-                                                "arguments": Array [],
-                                                "directives": Array [],
-                                                "kind": "Field",
-                                                "name": Object {
-                                                  "kind": "Name",
-                                                  "value": "fda_status",
-                                                },
-                                                "selectionSet": undefined,
-                                              },
-                                            ],
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  },
-                                ],
-                              },
-                              "variableDefinitions": Array [],
-                            },
-                          ],
-                          "kind": "Document",
-                          "loc": Object {
-                            "end": 178,
-                            "start": 0,
-                          },
-                        },
-                      },
-                      "result": Object {
-                        "data": Object {
-                          "compounds": Object {
-                            "id": 1,
-                            "name": "testDrug",
-                          },
-                        },
-                      },
-                    },
-                  ],
+                  "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 },
               },
               "localState": LocalState {
@@ -5587,9 +5903,74 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
+                      "variables": Object {},
+                    },
+                    Object {
+                      "callback": [Function],
+                      "optimistic": true,
+                      "previousResult": [Function],
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
                       },
+                      "variables": Object {},
                     },
                   },
                 },
@@ -5744,24 +6125,6 @@ exports[`Search Header renders correctly on the home page 1`] = `
                   "observableQuery": ObservableQuery {
                     "_subscriber": [Function],
                     "isTornDown": false,
-                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllCompounds {
-  compounds(all: true) {
-    id
-    name
-    annotation {
-      smiles
-      inchikey
-      pubchem
-      fda_status
-    }
-  }
-}
-, variables: {"per_page":10}],
-                    "lastResult": Object {
-                      "errors": Array [],
-                      "loading": false,
-                      "networkStatus": 8,
-                    },
                     "observers": Set {
                       SubscriptionObserver {
                         "_subscription": Subscription {
@@ -5916,18 +6279,211 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "start": 0,
                         },
                       },
-                      "variables": Object {
-                        "per_page": 10,
-                      },
+                      "variables": Object {},
                     },
                     "queryId": "1",
                     "queryManager": [Circular],
                     "queryName": "getAllCompounds",
                     "shouldSubscribe": true,
                     "subscriptions": Set {},
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  "subscriptions": Set {
+                    Subscription {
+                      "_cleanup": Subscription {
+                        "_cleanup": [Function],
+                        "_observer": Object {
+                          "complete": [Function],
+                          "error": [Function],
+                          "next": [Function],
+                        },
+                        "_queue": undefined,
+                        "_state": "ready",
+                      },
+                      "_observer": Object {
+                        "complete": [Function],
+                        "error": [Function],
+                      },
+                      "_queue": undefined,
+                      "_state": "ready",
                     },
+                  },
+                },
+                "3" => Object {
+                  "cancel": [Function],
+                  "document": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllTissues",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "tissues",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 69,
+                      "start": 0,
+                    },
+                  },
+                  "invalidated": false,
+                  "lastRequestId": 4,
+                  "listeners": Set {
+                    [Function],
+                  },
+                  "newData": null,
+                  "observableQuery": ObservableQuery {
+                    "_subscriber": [Function],
+                    "isTornDown": false,
+                    "lastError": [Error: Network error: No more mocked responses for the query: query getAllTissues {
+  tissues {
+    id
+    name
+  }
+}
+, variables: {}],
+                    "lastResult": Object {
+                      "errors": Array [],
+                      "loading": false,
+                      "networkStatus": 8,
+                    },
+                    "observers": Set {
+                      SubscriptionObserver {
+                        "_subscription": Subscription {
+                          "_cleanup": [Function],
+                          "_observer": Object {
+                            "error": [Function],
+                            "next": [Function],
+                          },
+                          "_queue": undefined,
+                          "_state": "ready",
+                        },
+                      },
+                    },
+                    "options": Object {
+                      "context": undefined,
+                      "displayName": "Query",
+                      "metadata": Object {
+                        "reactComponent": Object {
+                          "displayName": "Query",
+                        },
+                      },
+                      "notifyOnNetworkStatusChange": false,
+                      "query": Object {
+                        "definitions": Array [
+                          Object {
+                            "directives": Array [],
+                            "kind": "OperationDefinition",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "getAllTissues",
+                            },
+                            "operation": "query",
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "tissues",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                            "variableDefinitions": Array [],
+                          },
+                        ],
+                        "kind": "Document",
+                        "loc": Object {
+                          "end": 69,
+                          "start": 0,
+                        },
+                      },
+                      "variables": Object {},
+                    },
+                    "queryId": "3",
+                    "queryManager": [Circular],
+                    "queryName": "getAllTissues",
+                    "shouldSubscribe": true,
+                    "subscriptions": Set {},
+                    "variables": Object {},
                   },
                   "subscriptions": Set {},
                 },
@@ -6075,11 +6631,82 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       },
                     },
                     "networkError": null,
+                    "networkStatus": 1,
+                    "previousVariables": null,
+                    "variables": Object {},
+                  },
+                  "3": Object {
+                    "document": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
+                    },
+                    "graphQLErrors": Array [],
+                    "metadata": Object {
+                      "reactComponent": Object {
+                        "displayName": "Query",
+                      },
+                    },
+                    "networkError": null,
                     "networkStatus": 8,
                     "previousVariables": null,
-                    "variables": Object {
-                      "per_page": 10,
-                    },
+                    "variables": Object {},
                   },
                 },
               },
@@ -6258,9 +6885,74 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         "start": 0,
                       },
                     },
-                    "variables": Object {
-                      "per_page": 10,
+                    "variables": Object {},
+                  },
+                  Object {
+                    "callback": [Function],
+                    "optimistic": true,
+                    "previousResult": [Function],
+                    "query": Object {
+                      "definitions": Array [
+                        Object {
+                          "directives": Array [],
+                          "kind": "OperationDefinition",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "getAllTissues",
+                          },
+                          "operation": "query",
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "tissues",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          "variableDefinitions": Array [],
+                        },
+                      ],
+                      "kind": "Document",
+                      "loc": Object {
+                        "end": 69,
+                        "start": 0,
+                      },
                     },
+                    "variables": Object {},
                   },
                 },
               },
@@ -7040,12 +7732,16 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     defaultValue={null}
                     filterOption={[Function]}
                     formatGroupLabel={[Function]}
+                    isLoading={false}
                     isMulti={true}
+                    menuIsOpen={false}
+                    onChange={[Function]}
+                    onInputChange={[Function]}
                     options={Array []}
                     placeholder={
                       <t
                         className="placeholder"
-                        eraseDelay="1000"
+                        eraseDelay="1500"
                         speed="100"
                         text={
                           Array [
@@ -7119,7 +7815,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       placeholder={
                         <t
                           className="placeholder"
-                          eraseDelay="1000"
+                          eraseDelay="1500"
                           speed="100"
                           text={
                             Array [
@@ -7213,7 +7909,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "pageSize": 5,
                             "placeholder": <t
                               className="placeholder"
-                              eraseDelay="1000"
+                              eraseDelay="1500"
                               speed="100"
                               text={
                                 Array [
@@ -7357,7 +8053,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                   "pageSize": 5,
                                   "placeholder": <t
                                     className="placeholder"
-                                    eraseDelay="1000"
+                                    eraseDelay="1500"
                                     speed="100"
                                     text={
                                       Array [
@@ -7522,7 +8218,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                         "pageSize": 5,
                                         "placeholder": <t
                                           className="placeholder"
-                                          eraseDelay="1000"
+                                          eraseDelay="1500"
                                           speed="100"
                                           text={
                                             Array [
@@ -7661,7 +8357,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -7746,7 +8442,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                             >
                                               <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -7844,7 +8540,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -8070,7 +8766,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                         "pageSize": 5,
                                         "placeholder": <t
                                           className="placeholder"
-                                          eraseDelay="1000"
+                                          eraseDelay="1500"
                                           speed="100"
                                           text={
                                             Array [
@@ -8204,7 +8900,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
@@ -8353,7 +9049,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                               "pageSize": 5,
                                               "placeholder": <t
                                                 className="placeholder"
-                                                eraseDelay="1000"
+                                                eraseDelay="1500"
                                                 speed="100"
                                                 text={
                                                   Array [
