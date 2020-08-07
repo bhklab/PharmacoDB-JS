@@ -46,4 +46,9 @@ describe('Tests: GraphQL API', () => {
     describe('Tissue API Routes', () => {
         require('./tests/tissue_test').test(server);
     });
+
+    // tests for Target API Routes
+    describe('Target API Routes', () => {
+        require('./tests/target_test').test(server);
+    });
 });

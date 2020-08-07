@@ -8,7 +8,7 @@ const request = require('supertest');
 const tissueQueries = require('../queries/tissue_queries');
 
 /**
- * A function that contains tests for test.js.
+ * A function that contains tests for tissue.js.
  * This function is exported, and called in graphql.test.js.
  */
 
@@ -22,7 +22,6 @@ const checkCount = item => {
 };
 
 const test = (server) => {
-
     // test for all tissues route. Checks Tissue Graphql type
     it('Returns a list of all tissues with "id" and "name" properties', done => {
         request(server)
@@ -68,6 +67,7 @@ const test = (server) => {
                 expect(cell_count).to.be.an('array').that.have.lengthOf.above(0);
                 cell_count.every(cell => checkCount(cell));
 
+                // checks compounds_tested array format
                 expect(compounds_tested).to.be.an('array').that.have.lengthOf.above(0);
                 compounds_tested.every(compound => checkCount(compound));
                 return done();
