@@ -21,7 +21,9 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.genes.every(gene => {
+                const { genes } = res.body.data;
+                expect(genes).to.be.an('array').that.have.lengthOf.above(0);
+                genes.every(gene => {
                     expect(gene).to.have.all.keys('id', 'name', 'annotation');
                     expect(gene.id).to.be.a('number');
                     expect(gene.name).to.be.string;
