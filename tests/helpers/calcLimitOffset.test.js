@@ -7,14 +7,14 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Import the module to be tested.
-const calcLimitOffset = require('../../helpers/calcLimitOffset')
+const calcLimitOffset = require('../../helpers/calcLimitOffset');
 
 describe('Tests: calcLimitOffset module', () => {
     // declare variables used in this test block.
     before(function(){
         this.failures = [];
         this.successes = [];
-    })
+    });
 
     after(function() {
         if (this.failures.length) {
@@ -41,4 +41,4 @@ describe('Tests: calcLimitOffset module', () => {
             done();
         });
     });
-})
+});
