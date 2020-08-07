@@ -46,7 +46,7 @@ const test = (server) => {
                 const { cell_line } = res.body.data;
                 const { id, name, tissue, synonyms } = cell_line;
 
-                expect(cell_line).to.have.keys('id', 'name', 'tissue', 'synonyms');
+                expect(cell_line).to.have.all.keys('id', 'name', 'tissue', 'synonyms');
                 expect(id).to.be.a('number');
                 expect(name).to.be.string;
 
@@ -57,7 +57,9 @@ const test = (server) => {
 
                 // checks synonyms array
                 expect(synonyms).to.be.an('array').that.have.lengthOf.above(0);
-                synonyms.every(synonym => expect(synonym).to.be.string);
+                synonyms.every(synonym => {
+                    expect(synonym).to.be.string;
+                });
 
                 return done();
             });
