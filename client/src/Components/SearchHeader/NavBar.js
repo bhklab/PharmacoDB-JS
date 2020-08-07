@@ -37,7 +37,7 @@ const NavBar = (props) => {
    */
   const handleClick = (e) => {
     // StyledWrappers have className page.
-    const page = document.getElementsByClassName('page')[0];
+    const curPage = document.getElementsByClassName('page')[0];
 
     if (isOpen) {
       setIsOpen(false);
@@ -46,14 +46,14 @@ const NavBar = (props) => {
       // SearchHeader tests fails on this because it can't find page.
       // This is because the SearchHeader test's scope doesn't cover
       // the element with the className page.
-      if (page !== undefined) {
-        page.classList.remove('blur');
+      if (curPage !== undefined) {
+        curPage.classList.remove('blur');
       }
     } else {
       setIsOpen(true);
       document.body.style.overflow = 'hidden';
-      if (page !== undefined) {
-        page.classList.add('blur');
+      if (curPage !== undefined) {
+        curPage.classList.add('blur');
       }
     }
     onClick(isOpen);
