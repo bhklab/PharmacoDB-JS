@@ -2,7 +2,7 @@
  *  Dataset Queries to be used for graphql.test.js
  */
 
-const datasetsKeysTestQuery = `
+const allDatasetsTestQuery = `
   query allDatasets {
     datasets {
       id
@@ -11,8 +11,8 @@ const datasetsKeysTestQuery = `
   }
 `;
 
-const datasetKeysTestQuery = `
-query singleDataset() {
+const singleDatasetTestQuery = `
+query singleDataset {
   dataset(datasetId: 2) {
     id
     name
@@ -27,6 +27,6 @@ query singleDataset() {
 `;
 
 module.exports = {
-    datasetsKeysTestQuery,
-    datasetKeysTestQuery
+    allDatasetsTestQuery,
+    singleDatasetTestQuery
 };

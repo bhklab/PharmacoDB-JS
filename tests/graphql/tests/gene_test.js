@@ -33,7 +33,8 @@ const test = (server) => {
     });
 
     // test for a single gene route
-    it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', done => {
+    it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', function (done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: geneQueries.singleGeneTestQuery })
