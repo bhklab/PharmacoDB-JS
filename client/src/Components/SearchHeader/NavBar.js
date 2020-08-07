@@ -41,7 +41,7 @@ const NavBar = (props) => {
 
     if (isOpen) {
       setIsOpen(false);
-      document.body.style.overflow = 'scroll';
+      document.body.classList.remove('noscroll');
 
       // SearchHeader tests fails on this because it can't find page.
       // This is because the SearchHeader test's scope doesn't cover
@@ -51,7 +51,7 @@ const NavBar = (props) => {
       }
     } else {
       setIsOpen(true);
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('noscroll');
       if (curPage !== undefined) {
         curPage.classList.add('blur');
       }

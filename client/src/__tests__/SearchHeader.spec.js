@@ -121,52 +121,52 @@ describe('Search Header renders correctly on', () => {
     expect(component).toMatchSnapshot();
   });
 
-  // test('pages other than home', async () => {
-  //   // in other pages, the page prop simply isn't passed because
-  //   // it doesn't matter what the page is, as long as it's not home.
-  //   const component = await mountSearchHeader('');
-  //   expect(component).toMatchSnapshot();
-  // });
+  test('pages other than home', async () => {
+    // in other pages, the page prop simply isn't passed because
+    // it doesn't matter what the page is, as long as it's not home.
+    const component = await mountSearchHeader('');
+    expect(component).toMatchSnapshot();
+  });
 });
 
 // Integration test: visibility
 // must mount entire search header because it's... ~integration~ :)
-// describe('SearchHeader visibility', () => {
-//   test('Navbar search button changes on click', async () => {
-//     // mount search header on page other than home
-//     const component = await mountSearchHeader('');
+describe('SearchHeader visibility', () => {
+  test('Navbar search button changes on click', async () => {
+    // mount search header on page other than home
+    const component = await mountSearchHeader('');
 
-//     // IMPORTANT: you might be tempted to have
-//     // const searchButton = component.find('button.search-button');
-//     // However, there is no need to define a var for finding the search button.
-//     // After each component update, it doesn't mutate this child button wrapper
-//     // so you just have to find the component again.
+    // IMPORTANT: you might be tempted to have
+    // const searchButton = component.find('button.search-button');
+    // However, there is no need to define a var for finding the search button.
+    // After each component update, it doesn't mutate this child button wrapper
+    // so you just have to find the component again.
 
-//     // click search button
-//     clickSearchButton(component);
+    // click search button
+    clickSearchButton(component);
 
-//     // make sure button is the close button.
-//     // method mutates the root wrapper but doesn't mutate any
-//     // child wrapper so I have to find the button again
-//     expect(component.find('button.search-button').children().props().alt).toBe('close');
+    // make sure button is the close button.
+    // method mutates the root wrapper but doesn't mutate any
+    // child wrapper so I have to find the button again
+    expect(component.find('button.search-button').children().props().alt).toBe('close');
 
-//     // click close button
-//     clickSearchButton(component);
+    // click close button
+    clickSearchButton(component);
 
-//     // make sure the button is the search button
-//     expect(component.find('button.search-button').children().props().alt).toBe('magnifying glass');
-//   });
+    // make sure the button is the search button
+    expect(component.find('button.search-button').children().props().alt).toBe('magnifying glass');
+  });
 
-//   test('Search Container becomes visible/hidden on search button click', async () => {
-//     // like above, click the search button
-//     const component = await mountSearchHeader('');
-//     clickSearchButton(component);
+  test('Search Container becomes visible/hidden on search button click', async () => {
+    // like above, click the search button
+    const component = await mountSearchHeader('');
+    clickSearchButton(component);
 
-//     // determine if the search container is visible
-//     expect(component.find('.search-container').hasClass('visible')).toBeTruthy();
+    // determine if the search container is visible
+    expect(component.find('.search-container').hasClass('visible')).toBeTruthy();
 
-//     // click close button, determine if search container hidden
-//     clickSearchButton(component);
-//     expect(component.find('.search-container').hasClass('hidden')).toBeTruthy();
-//   });
-// });
+    // click close button, determine if search container hidden
+    clickSearchButton(component);
+    expect(component.find('.search-container').hasClass('hidden')).toBeTruthy();
+  });
+});

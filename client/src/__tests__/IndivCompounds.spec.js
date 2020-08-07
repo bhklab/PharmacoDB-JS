@@ -28,14 +28,14 @@ const mocks = [
               pubchem: '0',
               fda_status: '',
             },
-            synonyms: {
-              name: '',
-              source: '',
-            }
-            targets: {
-              id: 1,
-              name: ''
-            }
+          },
+          synonyms: {
+            name: '',
+            source: '',
+          },
+          targets: {
+            id: 1,
+            name: '',
           },
         },
       },

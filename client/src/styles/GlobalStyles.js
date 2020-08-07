@@ -9,6 +9,12 @@ const GlobalStyles = createGlobalStyle`
         font-weight: 400;
     }
 
+    .noscroll
+{
+    position: fixed; 
+    overflow-y: scroll;
+    width: 100%;
+}
     a {
         text-decoration: none;
         transition: all 0.25s ease-out 0s;
