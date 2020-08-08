@@ -225,14 +225,15 @@ const SearchBarStyles = {
   clearIndicator: (provided) => ({
     ...provided,
     color: `${colors.dark_gray_text}`,
+    cursor: 'pointer',
     '&:hover': {
       color: `${colors.dark_gray_text}`,
-      cursor: 'pointer',
     },
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
     color: `${colors.dark_gray_text}`,
+    display: 'none',
     '&:hover': {
       color: `${colors.dark_gray_text}`,
       cursor: 'pointer',
@@ -241,6 +242,7 @@ const SearchBarStyles = {
   indicatorSeparator: (provided) => ({
     ...provided,
     background: `${colors.dark_gray_text}`,
+    display: 'none',
     '&:hover': {
       background: `${colors.dark_gray_text}`,
     },
@@ -266,10 +268,11 @@ const SearchBarStyles = {
     background: 'white',
     color: colors.dark_gray_text,
     cursor: 'pointer',
-    padding: '15px 25px',
+    padding: '0',
+    margin: '0',
     fontSize: '1em',
     '&:hover': {
-      background: `${colors.light_blue_bg}`,
+      background: colors.light_blue_bg,
     },
   }),
 };

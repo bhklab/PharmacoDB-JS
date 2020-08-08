@@ -3,34 +3,97 @@ import { mount } from 'enzyme';
 // wrap in browserrouter or it produces an error that
 // says you can't use link outside a router
 import { BrowserRouter } from 'react-router-dom';
-import { act } from '@testing-library/react';
+import { act, wait } from '@testing-library/react';
 // for async tests - DO NOT REMOVE
 import regeneratorRuntime from 'regenerator-runtime';
 import { MockedProvider } from '@apollo/react-testing';
 import SearchHeader from '../Components/SearchHeader/SearchHeader';
 import PageContext from '../context/PageContext';
 import { getCompoundsQuery } from '../queries/compound';
+import { getTissuesQuery } from '../queries/tissue';
+import { getCellLinesQuery } from '../queries/cell';
 
+// mocked request data from queries
+const mocks = [
+  {
+    request: {
+      query: getCompoundsQuery,
+    },
+    result: {
+      compounds: {
+        id: 1,
+        name: 'testDrug',
+        annotation: {
+          smiles: '',
+          inchikey: '',
+          pubchem: '0',
+          fda_status: '',
+        },
+      },
+    },
+    error: new Error('compounds'),
+  },
+  {
+    request: {
+      query: getTissuesQuery,
+    },
+    result: {
+      tissues: {
+        id: 1,
+        name: 'testTissue',
+      },
+    },
+    error: new Error('tissues'),
+  },
+  {
+    request: {
+      query: getCellLinesQuery,
+    },
+    result: {
+      cell_lines: {
+        id: 1,
+        name: 'testCell',
+        tissue: {
+          id: 1,
+          name: 'testTissue',
+        },
+      },
+    },
+    error: new Error('cell lines'),
+  },
+];
+
+// // previous async act func
+// await act(async () => {
+//   component = mount(
+//     <PageContext.Provider value={page}>
+//       <BrowserRouter>
+//         <MockedProvider mocks={mocks} addTypename={false}>
+//           <SearchHeader />
+//         </MockedProvider>
+//       </BrowserRouter>
+//     </PageContext.Provider>,
+//   );
+// });
 /**
  * Util function to return a component wrapped in given context.
+ *
  *
  * @param {String} page The current page (home or empty str)
  * @returns {ReactWrapper} the component mounted
  */
 const mountSearchHeader = async (page) => {
-  let component;
   // async act so that options data can be set in the SearchBar useEffect
-  await act(async () => {
-    component = mount(
-      <PageContext.Provider value={page}>
-        <BrowserRouter>
-          <MockedProvider mocks={mocks} addTypename={false}>
-            <SearchHeader />
-          </MockedProvider>
-        </BrowserRouter>
-      </PageContext.Provider>,
-    );
-  });
+  const component = mount(
+    <PageContext.Provider value={page}>
+      <BrowserRouter>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <SearchHeader />
+        </MockedProvider>
+      </BrowserRouter>
+    </PageContext.Provider>,
+  );
+  await act(wait);
   component.update();
   return component;
 };
@@ -50,20 +113,6 @@ const clickSearchButton = (component) => {
   // update the root wrapper
   component.update();
 };
-
-// mocked request data from compounds query
-const mocks = [
-  {
-    request: {
-      query: getCompoundsQuery,
-    },
-    result: {
-      data: {
-        compounds: { id: 1, name: 'testDrug' },
-      },
-    },
-  },
-];
 
 // Catch-all snapshot tests for entire rendering of the search header
 describe('Search Header renders correctly on', () => {

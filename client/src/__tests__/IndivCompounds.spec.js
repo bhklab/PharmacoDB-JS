@@ -29,6 +29,14 @@ const mocks = [
               fda_status: '',
             },
           },
+          synonyms: {
+            name: '',
+            source: '',
+          },
+          targets: {
+            id: 1,
+            name: '',
+          },
         },
       },
     },

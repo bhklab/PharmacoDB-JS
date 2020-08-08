@@ -8,6 +8,7 @@
     "better-docs": "^2.0.1",
     "graphql": "^15.0.0",
     "jsdoc": "^3.6.4",
+    "lodash": "^4.17.19",
     "plotly.js": "^1.54.7",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
