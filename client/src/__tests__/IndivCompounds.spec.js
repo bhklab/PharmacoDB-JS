@@ -5,7 +5,7 @@ import { act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 // for async tests - DO NOT REMOVE
 import regeneratorRuntime from 'regenerator-runtime';
-import IndivCompounds from '../Components/IndivCompounds/IndivCompounds';
+import IndivCompounds from '../Components/IndividualComponents/IndivCompounds/IndivCompounds';
 import { getCompoundQuery } from '../queries/compound';
 
 const mocks = [
@@ -28,6 +28,14 @@ const mocks = [
               pubchem: '0',
               fda_status: '',
             },
+          },
+          synonyms: {
+            name: '',
+            source: '',
+          },
+          targets: {
+            id: 1,
+            name: '',
           },
         },
       },

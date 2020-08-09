@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { getCompoundsQuery } from '../../queries/compound';
 import { getTissuesQuery } from '../../queries/tissue';
+import { getCellLinesQuery } from '../../queries/cell';
 import MenuList from './MenuList';
 
 import colors from '../../styles/colors';
@@ -12,7 +15,7 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 /** CONSTANTS */
 // input must be greater than this length to
 // display option menu
-const INPUT_LENGTH_FOR_MENU = 2;
+const INPUT_LENGTH_FOR_MENU = 1;
 // placeholders for react-select
 const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
   'Drug (eg. paclitaxel)', 'Dataset (eg. ccle)',
@@ -21,18 +24,26 @@ const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
 ];
 
 /**
- * Custom options to reduce lag in react-select
+ * Custom options for scrolling with keyboard
  */
-const CustomOption = (props) => {
-  const { innerProps, isFocused, ...otherProps } = props;
-  const { onMouseMove, onMouseOver, ...otherInnerProps } = innerProps;
-  const newProps = { innerProps: { ...otherInnerProps }, ...otherProps };
-  return (
-    <components.Option {...newProps} className="your-option-css-class">
-      {props.children}
-    </components.Option>
-  );
-};
+const CustomOption = (innerProps) => (
+  <components.Option {...innerProps}>
+    <div
+      style={{
+        textAlign: 'left',
+        fontWeight: '400',
+        color: colors.dark_gray_text,
+        cursor: 'pointer',
+        padding: '15px 25px',
+        fontSize: '1em',
+        fontFamily: "'Open Sans', sans-serif",
+        backgroundColor: innerProps.isFocused ? colors.light_blue_bg : 'inherit',
+      }}
+    >
+      {innerProps.label}
+    </div>
+  </components.Option>
+);
 
 /**
  * Styles for formatting the group header label
@@ -41,6 +52,8 @@ const groupStyles = {
   fontSize: '1.5em',
   padding: '5px',
   textTransform: 'capitalize',
+  color: colors.dark_teal_heading,
+  fontWeight: 600,
 };
 
 /**
@@ -64,7 +77,7 @@ const formatGroupLabel = (data) => (
  *   <SearchBar />
  * )
  */
-const SearchBar = () => {
+const SearchBar = (props) => {
   /** SETTING STATE */
   // all options available - sent to react-select
   const [options, setOptions] = useState([]);
@@ -73,18 +86,26 @@ const SearchBar = () => {
   const [data, setData] = useState({
     compounds: [],
     tissues: [],
+    'cell lines': [],
   });
   const [dataLoaded, setDataLoaded] = useState({
     compounds: false,
     tissues: false,
+    'cell lines': false,
   });
 
-  // input being entered - for determining the opening of option menu
-  // only open option menu if input is a certain length
-  const [input, setInput] = useState('');
+  // various states for select:
+  // keyboard input in search bar, selected in search bar
+  const [selectState, setSelectState] = useState({
+    input: '',
+    selected: [],
+  });
 
-  // Determine if select is done filtering to show/unshow loading
-  const [selectLoading, setSelectLoading] = useState(false);
+  // for menu being open or closed
+  // IMPORTANT: don't merge into above state, because
+  // above state cannot have multiple properties changed
+  // at the same time
+  const [menuOpen, setMenuOpen] = useState(false);
 
   /** HANDLERS */
   /**
@@ -93,7 +114,9 @@ const SearchBar = () => {
    * @param {Object} event the option selected
    */
   const handleChange = (event) => {
-    console.log(event);
+    setSelectState({ ...selectState, selected: event });
+    // also revert open menu to false because option selected
+    setMenuOpen(false);
   };
 
   /**
@@ -102,7 +125,49 @@ const SearchBar = () => {
    * @param {Object} event the current value of the input
   */
   const handleInputChange = (event) => {
-    setInput(event);
+    setSelectState({
+      ...selectState,
+      input: event,
+    });
+    // also make sure menu doesn't open on click until type
+    setMenuOpen(event.length >= INPUT_LENGTH_FOR_MENU);
+  };
+
+  /**
+   * Handles on enter button press to go to search results
+   *
+   * @param {Object} event key pressed
+   */
+  const handleKeyDown = (event) => {
+    const { history } = props;
+    const { selected } = selectState;
+    if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
+      console.log(selected);
+      let queryParams = '/';
+      if (selected.length === 1) {
+        queryParams = `/${selected[0].type}/${selected[0].value}`;
+      } else {
+        // TODO: multiple queries
+        for (let i = 1; i < selected.length; i += 1) {
+          queryParams = queryParams.concat();
+        }
+      }
+      history.push(queryParams);
+    }
+  };
+
+  /**
+   * Handles menu open
+   */
+  const handleMenuOpen = () => {
+    setMenuOpen(true);
+  };
+
+  /**
+   * Handles menu close
+   */
+  const handleMenuClose = () => {
+    setMenuOpen(false);
   };
 
   /**
@@ -113,17 +178,13 @@ const SearchBar = () => {
    * @param {Object} option react-select option
    * @param {Str} rawInput input from the search bar
    */
-  const customFilterOption = (option, rawInput) => {
-    setSelectLoading(true);
-    const filtered = option.label.toLowerCase().startsWith(rawInput.toLowerCase());
-    setSelectLoading(false);
-    return filtered;
-  };
+  const customFilterOption = (option, rawInput) => option.label.toLowerCase().startsWith(rawInput.toLowerCase());
 
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
   const compoundsData = useQuery(getCompoundsQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
+  const cellsData = useQuery(getCellLinesQuery).data;
 
   /**
    * Load data in
@@ -133,22 +194,24 @@ const SearchBar = () => {
       ...data,
       compounds: compoundsData ? compoundsData.compounds : [],
       tissues: tissuesData ? tissuesData.tissues : [],
+      'cell lines': cellsData ? cellsData.cell_lines : [],
     });
     setDataLoaded({
       compounds: !!compoundsData,
       tissues: !!tissuesData,
+      'cell lines': !!cellsData,
     });
-  }, [compoundsData, tissuesData]);
+  }, [compoundsData, tissuesData, cellsData]);
 
   useEffect(() => {
     // if all values of loaded are true
     if (Object.values(dataLoaded).every((x) => x)) {
-      // for every datatype, push the options
+      // for every datatype, push the options into groups
       Object.keys(data).forEach((d) => {
         setOptions((prevOptions) => {
           prevOptions.push({
             label: d,
-            options: data[d].map((x) => ({ value: x.id, label: x.name })),
+            options: data[d].map((x) => ({ value: x.id, label: x.name, type: d })),
           });
           return prevOptions;
         });
@@ -179,11 +242,19 @@ const SearchBar = () => {
         styles={SearchBarStyles}
         onChange={handleChange}
         onInputChange={handleInputChange}
-        isLoading={selectLoading}
-        menuIsOpen={input.length >= INPUT_LENGTH_FOR_MENU}
+        onKeyDown={handleKeyDown}
+        onMenuClose={handleMenuClose}
+        onMenuOpen={handleMenuOpen}
+        menuIsOpen={menuOpen}
       />
     </>
   );
 };
 
-export default SearchBar;
+SearchBar.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+export default withRouter(SearchBar);

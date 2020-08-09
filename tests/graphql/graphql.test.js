@@ -27,14 +27,27 @@ describe('Tests: GraphQL API', () => {
         await knex.destroy();
     });
 
-    // tests for compound.js
-    describe('compound.js', () => {
+    // tests for Compound API Routes
+    describe('Compound API Routes', () => {
         require('./tests/compound_test').test(server);
     });
 
-    // tests for cell.js
-    describe('cell.js', () => {
+    // tests for Cell API Routes
+    describe('Cell API Routes', () => {
         require('./tests/cell_test').test(server);
     });
 
+    // tests for dataset
+    describe('dataset.js', () => {
+        require('./tests/dataset_test').test(server);
+    });
+
+    // tests for Gene API Routes
+    describe('Gene API Routes', () => {
+        require('./tests/gene_test').test(server);
+    });
+
+    describe('Experiment API Routes', () => {
+        require('./tests/experiment_test').test(server);
+    });
 });
