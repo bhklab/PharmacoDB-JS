@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
@@ -24,10 +24,28 @@ import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../sty
  * )
  */
 const NavBar = (props) => {
-  const { onClick } = props;
+  const { onClick, popupVisible } = props;
   const page = useContext(PageContext);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  // If popup not visible, reset search header styles
+  useEffect(() => {
+    const curPage = document.getElementsByClassName('page')[0];
+    if (popupVisible) {
+      setIsOpen(true);
+      document.body.classList.add('noscroll');
+      if (curPage !== undefined) {
+        curPage.classList.add('blur');
+      }
+    } else {
+      setIsOpen(false);
+      document.body.classList.remove('noscroll');
+      if (curPage !== undefined) {
+        curPage.classList.remove('blur');
+      }
+    }
+  }, [popupVisible]);
 
   /**
    * Handles click of search button. Sends props to parent
@@ -46,6 +64,7 @@ const NavBar = (props) => {
       // SearchHeader tests fails on this because it can't find page.
       // This is because the SearchHeader test's scope doesn't cover
       // the element with the className page.
+      // Therefore, make sure to have the if undefined condition
       if (curPage !== undefined) {
         curPage.classList.remove('blur');
       }
