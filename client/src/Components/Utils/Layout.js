@@ -1,8 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import PageContext from '../../context/PageContext';
 import BurgerMenu from '../SearchHeader/BurgerMenu';
+
+/**
+ * Capitalize first letter
+ */
+const capitalize = (s) => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
 
 /**
  * Wrapper for every page - includes the SearchHeader,
@@ -21,6 +30,9 @@ const Layout = (props) => {
   const { children, page } = props;
   return (
     <PageContext.Provider value={page}>
+      <Helmet>
+        <title>{`PharmacoDB | ${capitalize(page)}`}</title>
+      </Helmet>
       <BurgerMenu />
       <SearchHeader />
       <main>{children}</main>

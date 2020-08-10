@@ -37,7 +37,7 @@ const IndivCompounds = (props) => {
   }, [data]);
 
   return (
-    <Layout>
+    <Layout page={compound.name}>
       <StyledWrapper individual>
         {loading ? (<p>Loading...</p>)
           : (error ? (<NotFoundContent />)

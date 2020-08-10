@@ -145,7 +145,7 @@ const Tissues = () => {
   const groupedData = cellLinesGroupedByTissue(cells);
   const pieData = pieChartDataObject(groupedData);
   return (
-    <Layout>
+    <Layout page="tissues">
       <StyledWrapper>
         {
           renderComponent(tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData)

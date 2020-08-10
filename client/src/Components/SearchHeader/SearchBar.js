@@ -157,13 +157,6 @@ const SearchBar = (props) => {
   };
 
   /**
-   * Handles menu open
-   */
-  const handleMenuOpen = () => {
-    setMenuOpen(true);
-  };
-
-  /**
    * Handles menu close
    */
   const handleMenuClose = () => {
@@ -244,7 +237,6 @@ const SearchBar = (props) => {
         onInputChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onMenuClose={handleMenuClose}
-        onMenuOpen={handleMenuOpen}
         menuIsOpen={menuOpen}
       />
     </>

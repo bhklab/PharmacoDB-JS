@@ -93,7 +93,7 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 40px;
+    padding-top: 50px;
     height: 70px;
     margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
     
