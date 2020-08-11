@@ -71,7 +71,7 @@ const StyledSearchHeader = styled.div`
         height: 46px;
         right: 0;
         top: 36px;
-        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : 'white')};
+        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : colors.light_blue_bg)};
         display:none;
         opacity:0.7;
         z-index:999;
@@ -113,6 +113,12 @@ const StyledNavBar = styled.div`
         width: calc(5vw + 150px);
         max-width: 200px;
     }
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .container {
+          width: 70%;
+        }
+    } 
 `;
 
 /**

@@ -3209,24 +3209,24 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
       >
         <SearchHeader>
           <styled.div
-            isOpen={false}
             page=""
           >
             <div
-              className="sc-AxjAm iBsLzE"
+              className="sc-AxjAm btvCdu"
             >
               <div
                 className="burger-bg"
               />
               <NavBar
                 onClick={[Function]}
+                popupVisible={false}
               >
                 <styled.div
                   className="header"
                   page=""
                 >
                   <div
-                    className="sc-AxirZ kBNdYf header"
+                    className="sc-AxirZ jXwMxx header"
                   >
                     <div
                       className="container"
@@ -3978,7 +3978,9 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                 <h1>
                   Try searching for a...
                 </h1>
-                <withRouter(SearchBar)>
+                <withRouter(SearchBar)
+                  onClick={[Function]}
+                >
                   <SearchBar
                     history={
                       Object {
@@ -4016,6 +4018,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         "url": "/",
                       }
                     }
+                    onClick={[Function]}
                   >
                     <StateManager
                       components={
@@ -4034,7 +4037,6 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       onInputChange={[Function]}
                       onKeyDown={[Function]}
                       onMenuClose={[Function]}
-                      onMenuOpen={[Function]}
                       options={Array []}
                       placeholder={
                         <t
@@ -4068,6 +4070,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "singleValue": [Function],
                         }
                       }
+                      value={Array []}
                     >
                       <Select
                         backspaceRemovesValue={true}
@@ -4146,7 +4149,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         }
                         tabIndex="0"
                         tabSelectsValue={true}
-                        value={null}
+                        value={Array []}
                       >
                         <SelectContainer
                           clearValue={[Function]}
@@ -4238,7 +4241,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               },
                               "tabIndex": "0",
                               "tabSelectsValue": true,
-                              "value": null,
+                              "value": Array [],
                             }
                           }
                           setValue={[Function]}
@@ -4383,7 +4386,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                     },
                                     "tabIndex": "0",
                                     "tabSelectsValue": true,
-                                    "value": null,
+                                    "value": Array [],
                                   }
                                 }
                                 setValue={[Function]}
@@ -4549,7 +4552,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                           },
                                           "tabIndex": "0",
                                           "tabSelectsValue": true,
-                                          "value": null,
+                                          "value": Array [],
                                         }
                                       }
                                       setValue={[Function]}
@@ -4689,7 +4692,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
@@ -4873,7 +4876,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             spellCheck="false"
@@ -5100,7 +5103,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                           },
                                           "tabIndex": "0",
                                           "tabSelectsValue": true,
-                                          "value": null,
+                                          "value": Array [],
                                         }
                                       }
                                       setValue={[Function]}
@@ -5235,7 +5238,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
@@ -5386,7 +5389,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
@@ -8726,7 +8729,6 @@ exports[`Search Header renders correctly on the home page 1`] = `
       >
         <SearchHeader>
           <styled.div
-            isOpen={false}
             page="home"
           >
             <div
@@ -8737,13 +8739,14 @@ exports[`Search Header renders correctly on the home page 1`] = `
               />
               <NavBar
                 onClick={[Function]}
+                popupVisible={false}
               >
                 <styled.div
                   className="header"
                   page="home"
                 >
                   <div
-                    className="sc-AxirZ edrFAR header"
+                    className="sc-AxirZ kvuTtX header"
                   >
                     <div
                       className="container"
@@ -9481,7 +9484,9 @@ exports[`Search Header renders correctly on the home page 1`] = `
                 <h1>
                   Try searching for a...
                 </h1>
-                <withRouter(SearchBar)>
+                <withRouter(SearchBar)
+                  onClick={[Function]}
+                >
                   <SearchBar
                     history={
                       Object {
@@ -9519,6 +9524,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         "url": "/",
                       }
                     }
+                    onClick={[Function]}
                   >
                     <StateManager
                       components={
@@ -9537,7 +9543,6 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       onInputChange={[Function]}
                       onKeyDown={[Function]}
                       onMenuClose={[Function]}
-                      onMenuOpen={[Function]}
                       options={Array []}
                       placeholder={
                         <t
@@ -9571,6 +9576,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "singleValue": [Function],
                         }
                       }
+                      value={Array []}
                     >
                       <Select
                         backspaceRemovesValue={true}
@@ -9649,7 +9655,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         }
                         tabIndex="0"
                         tabSelectsValue={true}
-                        value={null}
+                        value={Array []}
                       >
                         <SelectContainer
                           clearValue={[Function]}
@@ -9741,7 +9747,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               },
                               "tabIndex": "0",
                               "tabSelectsValue": true,
-                              "value": null,
+                              "value": Array [],
                             }
                           }
                           setValue={[Function]}
@@ -9886,7 +9892,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                     },
                                     "tabIndex": "0",
                                     "tabSelectsValue": true,
-                                    "value": null,
+                                    "value": Array [],
                                   }
                                 }
                                 setValue={[Function]}
@@ -10052,7 +10058,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                           },
                                           "tabIndex": "0",
                                           "tabSelectsValue": true,
-                                          "value": null,
+                                          "value": Array [],
                                         }
                                       }
                                       setValue={[Function]}
@@ -10192,7 +10198,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
@@ -10376,7 +10382,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             spellCheck="false"
@@ -10603,7 +10609,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                           },
                                           "tabIndex": "0",
                                           "tabSelectsValue": true,
-                                          "value": null,
+                                          "value": Array [],
                                         }
                                       }
                                       setValue={[Function]}
@@ -10738,7 +10744,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
@@ -10889,7 +10895,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                                                 },
                                                 "tabIndex": "0",
                                                 "tabSelectsValue": true,
-                                                "value": null,
+                                                "value": Array [],
                                               }
                                             }
                                             setValue={[Function]}
