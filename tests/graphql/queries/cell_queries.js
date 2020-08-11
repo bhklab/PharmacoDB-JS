@@ -15,7 +15,6 @@ const cellsKeysTestQuery = `
     }
 `;
 
-// this query does not seem to work...
 const cellKeysTestQuery = `
     {
         cell_line(cellId: 1) {

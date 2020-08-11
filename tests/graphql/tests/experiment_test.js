@@ -67,7 +67,9 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.experiments.every(experiment => {
+                const { experiments } = res.body.data;
+                expect(experiments).to.be.an('array').that.have.lengthOf.above(0);
+                experiments.every(experiment => {
                     expect(experiment).to.have.all.keys('id', 'cell_line', 'compound', 'tissue', 'dataset', 'dose_responses');
                     const { cell_line, compound, tissue, dataset, dose_responses } = experiment;
                     // checks if relationship with cell_line, tissue, dataset, compound and dose_response are present and data has correct format
