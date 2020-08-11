@@ -73,7 +73,6 @@ const tissueSourceQuery = async tissueId => {
  * @returns {Object} - transformed object.
  */
 const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
-    console.log(compound_tested);
     // return object interface.
     let returnObject = {
         id: 0,
