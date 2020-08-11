@@ -8,9 +8,13 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    ${(props) => props.individual && css`
+    ${(props) => (props.individual || props.summary) && css`
         & > * {
             width: 70%;
+
+            @media only screen and (max-width: 1081px) { 
+                width: 85%;
+            }
         }
     `}
 
@@ -18,7 +22,6 @@ const StyledWrapper = styled.div`
         color: ${colors.dark_teal_heading};
         font-family: 'Roboto Slab', serif;
         text-align: center;
-        width: 100%;
     }
 
     h1 {
@@ -26,25 +29,24 @@ const StyledWrapper = styled.div`
     }
 
     h2 {
-        font-size: calc(1vw + 1.5em);
+        font-size: calc(1vw + 1.2em);
         margin-top: 2rem;
     }
 
     h3 {
-        font-size: calc(0.25vw + 1.5em);
+        font-size: calc(0.5vw + 0.8em);
         margin-top: 2rem;
     }
 `;
 
-// StyledWrapper.propTypes = {
-//   /**
-//      * StyledWrapper's classname,
-//      * IMPORTANT for SearchHeader blur on open
-//     */
-//   className: PropTypes.string,
-// };
-
+StyledWrapper.propTypes = {
+  individual: PropTypes.bool,
+  summary: PropTypes.bool,
+};
 StyledWrapper.defaultProps = {
+  /**
+ * important for searchheader blur
+ */
   className: 'page',
 };
 

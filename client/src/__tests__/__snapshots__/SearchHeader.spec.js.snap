@@ -3212,7 +3212,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
             page=""
           >
             <div
-              className="sc-AxjAm btvCdu"
+              className="sc-AxjAm awKSx"
             >
               <div
                 className="burger-bg"
@@ -3226,7 +3226,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                   page=""
                 >
                   <div
-                    className="sc-AxirZ jXwMxx header"
+                    className="sc-AxirZ iGaWxx header"
                   >
                     <div
                       className="container"
@@ -8732,7 +8732,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
             page="home"
           >
             <div
-              className="sc-AxjAm llMtwp"
+              className="sc-AxjAm deAxRu"
             >
               <div
                 className="burger-bg"
@@ -8746,7 +8746,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                   page="home"
                 >
                   <div
-                    className="sc-AxirZ kvuTtX header"
+                    className="sc-AxirZ eEBGTz header"
                   >
                     <div
                       className="container"

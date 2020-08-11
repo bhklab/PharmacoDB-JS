@@ -4,7 +4,7 @@ import Layout from '../../Utils/Layout';
 
 const Genes = () => (
   <Layout page="genes">
-    <StyledWrapper>
+    <StyledWrapper summary>
       <div> Tissues Page! </div>
     </StyledWrapper>
   </Layout>

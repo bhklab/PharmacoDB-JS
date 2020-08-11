@@ -31,7 +31,7 @@ const Layout = (props) => {
   return (
     <PageContext.Provider value={page}>
       <Helmet>
-        <title>{`PharmacoDB | ${capitalize(page)}`}</title>
+        <title>{`${capitalize(page)} | PharmacoDB`}</title>
       </Helmet>
       <BurgerMenu />
       <SearchHeader />

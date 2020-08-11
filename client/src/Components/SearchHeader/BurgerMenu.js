@@ -19,10 +19,10 @@ const BurgerMenu = () => {
   const styles = {
     bmBurgerButton: {
       position: 'fixed',
-      width: '34px',
-      height: '30px',
+      width: '27px',
+      height: '23px',
       right: '10px',
-      top: '45px',
+      top: '40px',
     },
     bmBurgerBars: {
       background: page === 'home' ? 'white' : colors.dark_teal_heading,
@@ -91,8 +91,8 @@ const BurgerMenu = () => {
 
   return (
     <Menu className="burger-menu" styles={styles} noOverlay right disableAutoFocus isOpen={false}>
-      <h2>About</h2>
       <>
+        <h2>About</h2>
         {dropdownItems(aboutLinks)}
         <p />
         <h2>Data</h2>

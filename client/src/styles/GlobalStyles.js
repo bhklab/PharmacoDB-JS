@@ -7,14 +7,15 @@ const GlobalStyles = createGlobalStyle`
         color: ${colors.dark_gray_text};
         font-family: 'Open Sans', sans-serif;
         font-weight: 400;
+        font-size: calc(0.2vw + 11px);
     }
 
     .noscroll
-{
-    position: fixed; 
-    overflow-y: scroll;
-    width: 100%;
-}
+    {
+        position: fixed; 
+        overflow-y: scroll;
+        width: 100%;
+    }
     a {
         text-decoration: none;
         transition: all 0.25s ease-out 0s;
