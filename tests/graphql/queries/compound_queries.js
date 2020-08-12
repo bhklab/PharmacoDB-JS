@@ -4,16 +4,23 @@
 
 const compoundsKeysTestQuery = `
     { 
-        compounds { 
+        compounds(all: true) { 
             id 
-            name 
+            name
+            annotation {
+                smiles
+                inchikey
+                pubchem
+                fda_status
+            }
         } 
     }
 `;
 
+// using compoundId 13 since it has all annotation fields present and has at least one target
 const compoundKeysTestQuery = `
     { 
-        compound(compoundId: 1) {
+        compound(compoundId: 13) {
             compound {
                 id 
                 name 
@@ -21,8 +28,18 @@ const compoundKeysTestQuery = `
                     smiles
                     inchikey
                     pubchem
+                  	fda_status
                 }
-            } 
+            }
+    		synonyms {
+              name
+              source
+            }
+    		targets {
+              id
+              name
+            }
+    
         } 
     }
 `;

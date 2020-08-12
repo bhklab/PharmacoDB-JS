@@ -20,7 +20,9 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.cell_lines.every(cell => {
+                const { cell_lines } = res.body.data;
+                expect(cell_lines).to.be.an('array').that.have.lengthOf.above(0);
+                cell_lines.every(cell => {
                     expect(cell).to.have.all.keys('id', 'name', 'tissue');
                     const { id, name, tissue } = cell;
                     expect(id).to.be.a('number');
@@ -44,7 +46,7 @@ const test = (server) => {
                 const { cell_line } = res.body.data;
                 const { id, name, tissue, synonyms } = cell_line;
 
-                expect(cell_line).to.have.keys('id', 'name', 'tissue', 'synonyms');
+                expect(cell_line).to.have.all.keys('id', 'name', 'tissue', 'synonyms');
                 expect(id).to.be.a('number');
                 expect(name).to.be.string;
 
@@ -55,7 +57,9 @@ const test = (server) => {
 
                 // checks synonyms array
                 expect(synonyms).to.be.an('array').that.have.lengthOf.above(0);
-                synonyms.every(synonym => expect(synonym).to.be.string);
+                synonyms.every(synonym => {
+                    expect(synonym).to.be.string;
+                });
 
                 return done();
             });

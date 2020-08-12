@@ -24,7 +24,7 @@ const test = (server) => {
                     // expect to have all the data.
                     expect(dataset).to.have.all.keys('id', 'name');
                     // expect id to be a number.
-                    expect(dataset.id).to.be.a('number'),
+                    expect(dataset.id).to.be.a('number');
                     // expect name to be a string.
                     expect(dataset.name).to.be.a('string');
                 });
