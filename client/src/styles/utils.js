@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import PropTypes from 'prop-types';
 import colors from './colors';
 
 const StyledWrapper = styled.div`
@@ -34,5 +35,17 @@ const StyledWrapper = styled.div`
         margin-top: 2rem;
     }
 `;
+
+// StyledWrapper.propTypes = {
+//   /**
+//      * StyledWrapper's classname,
+//      * IMPORTANT for SearchHeader blur on open
+//     */
+//   className: PropTypes.string,
+// };
+
+StyledWrapper.defaultProps = {
+  className: 'page',
+};
 
 export default StyledWrapper;

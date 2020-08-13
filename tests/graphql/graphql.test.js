@@ -27,14 +27,43 @@ describe('Tests: GraphQL API', () => {
         await knex.destroy();
     });
 
-    // tests for compound.js
-    describe('compound.js', () => {
+    // tests for Compound API Routes
+    describe('Compound API Routes', () => {
         require('./tests/compound_test').test(server);
     });
 
-    // tests for cell.js
-    describe('cell.js', () => {
+    // tests for Cell API Routes
+    describe('Cell API Routes', () => {
         require('./tests/cell_test').test(server);
     });
 
+    // tests for Dataset API routes
+    describe('Dataset API Routes', () => {
+        require('./tests/dataset_test').test(server);
+    });
+
+    // tests for Gene API Routes
+    describe('Gene API Routes', () => {
+        require('./tests/gene_test').test(server);
+    });
+
+    // tests for Tissue API Routes
+    describe('Tissue API Routes', () => {
+        require('./tests/tissue_test').test(server);
+    });
+
+    // tests for Target API Routes
+    describe('Target API Routes', () => {
+        require('./tests/target_test').test(server);
+    });
+    
+    // tests for Experiment API routes
+    describe('Experiment API Routes', () => {
+        require('./tests/experiment_test').test(server);
+    });
+
+    // tests for Source API routes
+    describe('Source API Routes', () => {
+        require('./tests/source_test').test(server);
+    });
 });
