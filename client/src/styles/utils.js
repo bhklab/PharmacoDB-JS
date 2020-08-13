@@ -8,15 +8,13 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
 
-    ${(props) => (props.individual || props.summary) && css`
-        & > * {
-            width: 70%;
+    & > * {
+        width: 70%;
 
-            @media only screen and (max-width: 1081px) { 
-                width: 85%;
-            }
+        @media only screen and (max-width: 1081px) { 
+            width: 85%;
         }
-    `}
+    }
 
     h1, h2, h3 {
         color: ${colors.dark_teal_heading};

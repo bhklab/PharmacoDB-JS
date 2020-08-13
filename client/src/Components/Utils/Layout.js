@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import PageContext from '../../context/PageContext';
+import SearchContext from '../../context/SearchContext';
 import BurgerMenu from '../SearchHeader/BurgerMenu';
 
 /**
@@ -28,6 +29,7 @@ const capitalize = (s) => {
  */
 const Layout = (props) => {
   const { children, page } = props;
+  const { blur } = useContext(SearchContext);
   return (
     <PageContext.Provider value={page}>
       <Helmet>
@@ -35,7 +37,9 @@ const Layout = (props) => {
       </Helmet>
       <BurgerMenu />
       <SearchHeader />
-      <main>{children}</main>
+      <main className={blur ? 'blur' : null}>
+        {children}
+      </main>
     </PageContext.Provider>
   );
 };

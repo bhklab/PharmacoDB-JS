@@ -98,7 +98,7 @@ const Compounds = () => {
   const data = React.useMemo(() => getTableData(compound_data), [compound_data]);
   return (
     <Layout page="compounds">
-      <StyledWrapper summary>
+      <StyledWrapper>
         {
           renderComponent(loading, error, columns, data)
         }
