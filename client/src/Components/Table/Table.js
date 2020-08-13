@@ -8,29 +8,21 @@ import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
 
 const Styles = styled.div`
-  padding-bottom: 5rem;
+  margin-bottom: 5rem;
+  font-size: calc(0.3vw + 8px);
+  overflow-x: auto;
   table {
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
     margin-top: 2rem;
-    width: 1100px;
-
-    @media only screen and (min-width: 1600px) {
-      width: 1200px;
-    }
-
-    @media only screen and (min-width: 1900px) {
-      width: 1300px;
-    }
+    width: 100%;
 
     th,
     td {
       color: ${colors.dark_teal_heading};
-      font-size: 1.2rem;
-      min-width: 200px;
       max-width: 200px;
       margin: 0;
-      padding: 0.75rem;
+      padding: calc(0.3vw + 0.3em);
       border-bottom: 1px solid ${colors.white_smoke};
       border-right: 1px solid ${colors.white_smoke};
       overflow-x: auto;
@@ -40,21 +32,12 @@ const Styles = styled.div`
         height: 0px;
         background: transparent;
       }
-      // ::-webkit-scrollbar {
-      //   width: 4px;
-      //   height: 4px;
-      // }
-      // ::-webkit-scrollbar-thumb {
-      //   background: ${colors.teal};
-      // }
-      // ::-webkit-scrollbar-thumb:hover {
-      //   background: ${colors.dark_teal_heading};
-      // }
-      // ::-webkit-scrollbar-track {
-      //   background: ${colors.white_smoke};
-      // }
       :last-child {
         border-right: 0;
+      }
+
+      @media only screen and (max-width: 1082px) { 
+        max-width:100px;
       }
     }
 
@@ -67,7 +50,6 @@ const Styles = styled.div`
     }
   
     th {
-      font-size: 1.4rem !important;
       font-weight: 700;
       background-color: ${colors.pale_teal};
       border: 1px solid ${colors.white_smoke} !important;
@@ -81,7 +63,6 @@ const Styles = styled.div`
       color: ${colors.dark_teal_heading};
       border: 1px solid ${colors.white_smoke};
     }
-    font-size: 1.25rem;
   }
 `;
 

@@ -122,7 +122,7 @@ const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQuery
   }
   return (
     <>
-      <h3> Relative Percentage of Cell lines per Tissue in PharmacoDB </h3>
+      <h2> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
       <h2> List of Tissues </h2>
       <Table columns={columns} data={data} />
@@ -149,7 +149,7 @@ const Tissues = () => {
   const groupedData = cellLinesGroupedByTissue(cells);
   const pieData = pieChartDataObject(groupedData);
   return (
-    <Layout>
+    <Layout page="tissues">
       <StyledWrapper>
         {
           renderComponent(tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData)
