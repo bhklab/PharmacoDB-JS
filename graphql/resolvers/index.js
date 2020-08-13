@@ -6,6 +6,7 @@ const geneResolver = require('./gene');
 const sourceResolver = require('./source');
 const targetResolver = require('./target');
 const tissueResolver = require('./tissue');
+const geneDrugResolver = require('./gene_drug');
 
 const rootResolver = {
     ...compoundResolver,
@@ -15,7 +16,8 @@ const rootResolver = {
     ...geneResolver,
     ...sourceResolver,
     ...targetResolver,
-    ...tissueResolver
+    ...tissueResolver,
+    ...geneDrugResolver
 };
 
 module.exports = rootResolver;
