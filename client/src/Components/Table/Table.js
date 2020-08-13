@@ -26,6 +26,7 @@ const Styles = styled.div`
       border-bottom: 1px solid ${colors.white_smoke};
       border-right: 1px solid ${colors.white_smoke};
       overflow-x: auto;
+      font-size: calc(0.18vw + 1em);
       // hiding the scrollbar but still able to scroll.
       ::-webkit-scrollbar {
         width: 0px;
@@ -63,6 +64,7 @@ const Styles = styled.div`
       color: ${colors.dark_teal_heading};
       border: 1px solid ${colors.white_smoke};
     }
+    font-size: calc(0.15vw + 1em);
   }
 `;
 
