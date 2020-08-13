@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import PropTypes from 'prop-types';
 import PageContext from '../../context/PageContext';
+import SearchContext from '../../context/SearchContext';
 
 import logoDark from '../../images/pharmacodb-logo-dark.png';
 import logoLight from '../../images/pharmacodb-logo.png';
@@ -24,10 +25,26 @@ import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../sty
  * )
  */
 const NavBar = (props) => {
-  const { onClick } = props;
+  const { onClick, popupVisible } = props;
   const page = useContext(PageContext);
 
   const [isOpen, setIsOpen] = useState(false);
+  const { setBlur, setNoscroll } = useContext(SearchContext);
+
+  // If popup not visible, reset search header styles
+  useEffect(() => {
+    if (popupVisible) {
+      setIsOpen(true);
+      // add no scroll and blur
+      setBlur(true);
+      setNoscroll(true);
+    } else {
+      setIsOpen(false);
+      // remove no scroll and blur
+      setBlur(false);
+      setNoscroll(false);
+    }
+  }, [popupVisible]);
 
   /**
    * Handles click of search button. Sends props to parent
@@ -35,26 +52,17 @@ const NavBar = (props) => {
    *
    * @param {Object} e  On click event
    */
-  const handleClick = (e) => {
-    // StyledWrappers have className page.
-    const curPage = document.getElementsByClassName('page')[0];
-
+  const handleClick = () => {
     if (isOpen) {
       setIsOpen(false);
-      document.body.classList.remove('noscroll');
-
-      // SearchHeader tests fails on this because it can't find page.
-      // This is because the SearchHeader test's scope doesn't cover
-      // the element with the className page.
-      if (curPage !== undefined) {
-        curPage.classList.remove('blur');
-      }
+      // remove no scroll and blur
+      setBlur(false);
+      setNoscroll(false);
     } else {
       setIsOpen(true);
-      document.body.classList.add('noscroll');
-      if (curPage !== undefined) {
-        curPage.classList.add('blur');
-      }
+      // add no scroll and blur
+      setBlur(true);
+      setNoscroll(true);
     }
     onClick(isOpen);
   };

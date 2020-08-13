@@ -17,10 +17,14 @@ const StyledSearchHeader = styled.div`
     flex-direction:column;
 
     .search-container {
-        width: 70%;
+        width: 80%;
         margin-top: 4vh;
         padding-bottom: 5vh;
         align-self:center;
+
+        @media only screen and (max-width: 1081px) {
+          width: 90%;
+        }
 
         h1 {
             font-family: 'Overpass', sans-serif;
@@ -67,11 +71,11 @@ const StyledSearchHeader = styled.div`
     /* Burger */
     .burger-bg {
         position: fixed;
-        width: 53px;
-        height: 46px;
+        width: 45px;
+        height: 35px;
         right: 0;
-        top: 36px;
-        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : 'white')};
+        top: 33px;
+        background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : colors.light_blue_bg)};
         display:none;
         opacity:0.7;
         z-index:999;
@@ -93,7 +97,7 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 40px;
+    padding-top: 50px;
     height: 70px;
     margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
     
@@ -113,6 +117,16 @@ const StyledNavBar = styled.div`
         width: calc(5vw + 150px);
         max-width: 200px;
     }
+    /* mobile */
+    @media only screen and (max-width: 1081px) {
+        .container {
+          width: 80%;
+          justify-content: flex-start;
+        }
+        .search-button {
+          margin-left: 20px;
+        }
+    } 
 `;
 
 /**

@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import SearchHeader from '../SearchHeader/SearchHeader';
 import PageContext from '../../context/PageContext';
+import SearchContext from '../../context/SearchContext';
 import BurgerMenu from '../SearchHeader/BurgerMenu';
+
+/**
+ * Capitalize first letter
+ */
+const capitalize = (s) => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
 
 /**
  * Wrapper for every page - includes the SearchHeader,
@@ -19,11 +29,17 @@ import BurgerMenu from '../SearchHeader/BurgerMenu';
  */
 const Layout = (props) => {
   const { children, page } = props;
+  const { blur } = useContext(SearchContext);
   return (
     <PageContext.Provider value={page}>
+      <Helmet>
+        <title>{`${capitalize(page)} | PharmacoDB`}</title>
+      </Helmet>
       <BurgerMenu />
       <SearchHeader />
-      <main>{children}</main>
+      <main className={blur ? 'blur' : null}>
+        {children}
+      </main>
     </PageContext.Provider>
   );
 };
