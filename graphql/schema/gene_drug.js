@@ -1,7 +1,7 @@
 const geneDrugType = `
     type GeneDrug {
         id: Int!
-        geneId: Int!
+        gene: Gene!
         compound: Compound!
         dataset: Dataset!
         tissue: Tissue!
@@ -16,7 +16,7 @@ const geneDrugType = `
         FWER_genes: Float!
         FWER_drugs: Float!
         FWER_all: Float!
-        BF_p_all: Int
+        BF_p_all: Float!
         sens_stat: String
         mDataType: String!
         level: Int

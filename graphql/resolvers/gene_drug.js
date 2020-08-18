@@ -10,7 +10,6 @@ const transformGeneDrugs = data => {
     return data.map(gene_drug => {
         const {
             id,
-            gene_id,
             drug_id,
             estimate,
             se,
@@ -37,10 +36,14 @@ const transformGeneDrugs = data => {
             fda_status,
             tissue_id,
             tissue_name,
+            gene_id,
+            gene_name,
+            ensg,
+            gene_seq_start,
+            gene_seq_end
         } = gene_drug;
         return {
             id,
-            geneId: gene_id,
             estimate,
             se,
             n,
@@ -57,6 +60,16 @@ const transformGeneDrugs = data => {
             level,
             drug_like_molecule,
             in_clinical_trials,
+            gene: {
+                id: gene_id,
+                name: gene_name,
+                annotation: {
+                    gene_id,
+                    ensg,
+                    gene_seq_start,
+                    gene_seq_end
+                }
+            },
             dataset: {
                 id: dataset_id,
                 name: dataset_name
@@ -93,7 +106,10 @@ const gene_drug = async ({ geneId, compoundId, page = 1, per_page = 20, all = fa
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
         let baseQuery = knex.select('id',
-            'gene_id',
+            'gene_name',
+            'ensg',
+            'gene_seq_start',
+            'gene_seq_end',
             'estimate',
             'se',
             'n',
@@ -119,10 +135,11 @@ const gene_drug = async ({ geneId, compoundId, page = 1, per_page = 20, all = fa
             'in_clinical_trials',
             'datasets.dataset_id as dataset_id',
             'drugs.drug_id as drug_id',
-            'tissues.tissue_id as tissue_id')
+            'tissues.tissue_id as tissue_id',
+            'genes.gene_id as gene_id',)
             .from('gene_drugs');
 
-        if (geneId) baseQuery = baseQuery.where({ gene_id: geneId });
+        if (geneId) baseQuery = baseQuery.where({ 'gene_drugs.gene_id': geneId });
         if (compoundId) baseQuery = geneId 
             ? baseQuery.andWhere({ 'gene_drugs.drug_id': compoundId }) 
             : baseQuery.where({ 'gene_drugs.drug_id': compoundId });
@@ -132,7 +149,9 @@ const gene_drug = async ({ geneId, compoundId, page = 1, per_page = 20, all = fa
             .join('datasets', 'datasets.dataset_id', 'gene_drugs.dataset_id')
             .join('drugs', 'drugs.drug_id', 'gene_drugs.drug_id')
             .join('drug_annots', 'drug_annots.drug_id', 'gene_drugs.drug_id')
-            .join('tissues', 'tissues.tissue_id', 'gene_drugs.tissue_id');
+            .join('tissues', 'tissues.tissue_id', 'gene_drugs.tissue_id')
+            .join('genes', 'genes.gene_id', 'gene_drugs.gene_id');
+        
         return transformGeneDrugs(geneDrugs);
     } catch (err) {
         console.log(err);
