@@ -101,7 +101,7 @@ const transformGeneDrugs = data => {
  * @param {number} [data.per_page = 20] - Total values per page.
  * @param {boolean} [data.all = false] - Boolean value whether to show all the data or not.
  */
-const gene_drug = async ({ geneId, compoundId, page = 1, per_page = 20, all = false}) => {
+const gene_drugs = async ({ geneId, compoundId, page = 1, per_page = 20, all = false}) => {
     if (!geneId && !compoundId) throw new Error('Ivalid input! Query must include geneId or compoundId'); 
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
@@ -160,5 +160,5 @@ const gene_drug = async ({ geneId, compoundId, page = 1, per_page = 20, all = fa
 };
 
 module.exports = {
-    gene_drug
+    gene_drugs
 };
