@@ -14,7 +14,8 @@ const geneQueries = require('../queries/gene_queries');
 const test = (server) => {
 
     // test for all genes route
-    it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', done => {
+    it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', function (done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: geneQueries.multipleGenesTestQuery })
