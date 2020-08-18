@@ -33,7 +33,7 @@ const test = (server) => {
     });
 
     it('Test to validate data from a single dataset with Compound Id 2 ie "CTRPv2" as the argument', function(done) {
-        this.timeout(10000);
+        this.timeout(30000);
         request(server)
             .post('/graphql')
             .send({ query: datasetQueries.singleDatasetTestQuery })

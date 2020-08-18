@@ -12,7 +12,7 @@ import GlobalStyles from './styles/GlobalStyles';
 
 // apollo client setup.
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql', // making requests to this endpoint.
+  uri: '/graphql', // making requests to this endpoint.
 });
 
 const App = () => {

@@ -45,7 +45,6 @@ const test = (server) => {
                 expect(compound).to.have.all.keys('id', 'name', 'annotation');
                 expect(compound.id).to.be.a('number');
                 expect(compound.name).to.be.string;
-
                 // checks compound annotations
                 expect(compound.annotation).to.be.an('object');
                 expect(compound.annotation).to.have.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
