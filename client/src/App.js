@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
+import SearchContext from './context/SearchContext';
 
 import {
   IndivCompounds, Compounds, Home, NotFoundPage,
@@ -11,23 +12,28 @@ import GlobalStyles from './styles/GlobalStyles';
 
 // apollo client setup.
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql', // making requests to this endpoint.
+  uri: '/graphql', // making requests to this endpoint.
 });
 
-const App = () => (
-  <ApolloProvider client={client}>
-    <GlobalStyles />
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/compounds" exact component={Compounds} />
-        <Route path="/tissues" exact component={Tissues} />
-        <Route path="/genes" exact component={Genes} />
-        <Route path="/compounds/:id" component={IndivCompounds} />
-        <Route path="*" component={NotFoundPage} />
-      </Switch>
-    </Router>
-  </ApolloProvider>
-);
+const App = () => {
+  const { noscroll } = useContext(SearchContext);
+  return (
+    <div className={`app ${noscroll ? 'noscroll' : null}`}>
+      <ApolloProvider client={client}>
+        <GlobalStyles />
+        <Router>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/compounds" exact component={Compounds} />
+            <Route path="/tissues" exact component={Tissues} />
+            <Route path="/genes" exact component={Genes} />
+            <Route path="/compounds/:id" component={IndivCompounds} />
+            <Route path="*" component={NotFoundPage} />
+          </Switch>
+        </Router>
+      </ApolloProvider>
+    </div>
+  );
+};
 
 export default App;

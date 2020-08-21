@@ -36,6 +36,9 @@ const RootQuery = `type RootQuery {
     "Root Queries for tissues."
     tissues: [Tissue!]!
     tissue(tissueId: Int!): TissueAnnotation!
+
+    "Root Queries for gene_drugs."
+    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!
 }`;
 
 module.exports = {

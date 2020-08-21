@@ -1,13 +1,7 @@
 const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const { compound_target } = require('./target');
-
-/**
- * 
- * @param {Number} - value which is either 1 or 0.
- * @returns {String}
- */
-const transformFdaStatus = value => (value ? 'Approved' : 'Not Approved');
+const { transformFdaStatus } = require('../../helpers/dataHelpers');
 
 /**
  * 

@@ -14,14 +14,17 @@ const geneQueries = require('../queries/gene_queries');
 const test = (server) => {
 
     // test for all genes route
-    it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', done => {
+    it('Returns list of all genes with "id", "name" and "annotation" properties. Annotation object must contain required "gene_id" property', function (done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: geneQueries.multipleGenesTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.genes.every(gene => {
+                const { genes } = res.body.data;
+                expect(genes).to.be.an('array').that.have.lengthOf.above(0);
+                genes.every(gene => {
                     expect(gene).to.have.all.keys('id', 'name', 'annotation');
                     expect(gene.id).to.be.a('number');
                     expect(gene.name).to.be.string;

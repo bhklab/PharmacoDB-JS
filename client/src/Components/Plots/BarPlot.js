@@ -14,14 +14,16 @@ const data = [
 ];
 
 const layout = {
-  width: 800,
+  // width: 800,
+  autosize: true,
   height: 530,
   margin: {
-    t: 30,
+    t: 50,
   },
 };
 
 const config = {
+  responsive: true,
   displayModeBar: false,
 };
 

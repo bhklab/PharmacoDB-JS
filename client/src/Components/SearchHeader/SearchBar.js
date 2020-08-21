@@ -72,12 +72,13 @@ const formatGroupLabel = (data) => (
  * @component
  * @example
  *
- *
+ * const onClick = (e) => {};
  * return (
- *   <SearchBar />
+ *   <SearchBar onClick={onClick} />
  * )
  */
 const SearchBar = (props) => {
+  const { onClick } = props;
   /** SETTING STATE */
   // all options available - sent to react-select
   const [options, setOptions] = useState([]);
@@ -142,7 +143,6 @@ const SearchBar = (props) => {
     const { history } = props;
     const { selected } = selectState;
     if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
-      console.log(selected);
       let queryParams = '/';
       if (selected.length === 1) {
         queryParams = `/${selected[0].type}/${selected[0].value}`;
@@ -152,15 +152,15 @@ const SearchBar = (props) => {
           queryParams = queryParams.concat();
         }
       }
+      // calls callback to hide popup in searchheader
+      onClick(false);
+
+      // reset react-select
+      setSelectState({ ...selectState, selected: null });
+
+      // go to endpoint
       history.push(queryParams);
     }
-  };
-
-  /**
-   * Handles menu open
-   */
-  const handleMenuOpen = () => {
-    setMenuOpen(true);
   };
 
   /**
@@ -238,13 +238,13 @@ const SearchBar = (props) => {
             text={placeholders}
           />
        )}
+        value={selectState.selected}
         formatGroupLabel={formatGroupLabel}
         styles={SearchBarStyles}
         onChange={handleChange}
         onInputChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onMenuClose={handleMenuClose}
-        onMenuOpen={handleMenuOpen}
         menuIsOpen={menuOpen}
       />
     </>
@@ -252,9 +252,16 @@ const SearchBar = (props) => {
 };
 
 SearchBar.propTypes = {
+  /**
+   * for going to endpoint
+   */
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  /**
+   * onClick handler for closing and opening search
+  */
+  onClick: PropTypes.func.isRequired,
 };
 
 export default withRouter(SearchBar);

@@ -74,9 +74,9 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <h3> Number of Compounds Tested in Each Dataset </h3>
+      <h2> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
-      <h2> List of Compounds </h2>
+      <h2>List of Compounds</h2>
       <Table columns={columns} data={data} />
     </>
   );
@@ -97,7 +97,7 @@ const Compounds = () => {
   const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data), [compound_data]);
   return (
-    <Layout>
+    <Layout page="compounds">
       <StyledWrapper>
         {
           renderComponent(loading, error, columns, data)

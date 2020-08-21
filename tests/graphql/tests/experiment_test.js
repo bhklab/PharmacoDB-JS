@@ -45,7 +45,6 @@ const test = (server) => {
                 expect(compound).to.have.all.keys('id', 'name', 'annotation');
                 expect(compound.id).to.be.a('number');
                 expect(compound.name).to.be.string;
-
                 // checks compound annotations
                 expect(compound.annotation).to.be.an('object');
                 expect(compound.annotation).to.have.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
@@ -67,7 +66,9 @@ const test = (server) => {
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.data.experiments.every(experiment => {
+                const { experiments } = res.body.data;
+                expect(experiments).to.be.an('array').that.have.lengthOf.above(0);
+                experiments.every(experiment => {
                     expect(experiment).to.have.all.keys('id', 'cell_line', 'compound', 'tissue', 'dataset', 'dose_responses');
                     const { cell_line, compound, tissue, dataset, dose_responses } = experiment;
                     // checks if relationship with cell_line, tissue, dataset, compound and dose_response are present and data has correct format
