@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../../Utils/Layout';
 import StyledWrapper from '../../../styles/utils';
+import PlotsWrapper from '../../../styles/PlotsWrapper';
 
 /**
  * Parent component for the experiments page.
@@ -13,14 +14,19 @@ import StyledWrapper from '../../../styles/utils';
  *   <Experiments/>
  * )
  */
-const Experiments = () => {
-  return (
+const Experiments = () => (
   <Layout page="experiments">
     <StyledWrapper>
-      <h2>Experiments page</h2>
+      <PlotsWrapper>
+        <div className="plot">
+          <h3>Average experiments per cell line in each data set</h3>
+        </div>
+        <div className="plot">
+          <h3>Average experiments per compound in each dataset</h3>
+        </div>
+      </PlotsWrapper>
     </StyledWrapper>
   </Layout>
-  )
-}
+);
 
 export default Experiments;
