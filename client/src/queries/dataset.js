@@ -18,5 +18,6 @@ const getDatasetCountsQuery = gql`
 `;
 
 export {
+  // eslint-disable-next-line import/prefer-default-export
   getDatasetCountsQuery,
 };

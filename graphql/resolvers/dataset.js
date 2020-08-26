@@ -1,5 +1,6 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
+const { retrieveFields } = require('../../helpers/queryHelpers');
 
 
 /**
@@ -111,8 +112,10 @@ const summaryQuery = async (type, datasetId) => {
  *      name: 'name of the dataset'
  *  }
  */
-const datasets = async () => {
+const datasets = async (args, parent, info) => {
     try {
+        const listOfFields = retrieveFields(info);
+        console.log(listOfFields);
         // grab the datasets {id, name}.
         const datasets = await datasetQuery();
         // return the transformed data for this function.
@@ -149,8 +152,9 @@ const datasets = async () => {
  *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
  *  }
  */
-const dataset = async args => {
+const dataset = async (args) => {
     // dataset id ie 1 or 2 or...
+
     const {
         datasetId
     } = args;
