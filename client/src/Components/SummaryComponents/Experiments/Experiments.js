@@ -5,31 +5,56 @@ import StyledWrapper from '../../../styles/utils';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 import { getDatasetCountsQuery } from '../../../queries/dataset';
 import Loading from '../../Utils/Loading';
+import AverageDatasetBarPlot from './AverageDatasetBarPlot';
+import dataset_colors from '../../../styles/dataset_colors';
 
 /**
  *
  * @param {Boolean} loading
  * @param {Boolean} error
- * @param {Array} columns
  * @param {Array} data
  *
  * @returns - (
- *  <h3> Title for the barplot </h3>
- *  <BarPlot/>
- *  <h2> Title for the table </h2>
- *  <Table/>
+ *  <div className="plot">
+        <h3>Average experiments per cell line in each data set</h3>
+        <AverageDatasetBarPlot />
+      </div>
+      <div className="plot">
+        <h3>Average experiments per compound in each dataset</h3>
+        <AverageDatasetBarPlot />
+      </div>
  * )
  */
-const renderComponent = (loading, error, columns, data) => {
+const renderComponent = (loading, error, data) => {
   if (loading) {
     return <Loading />;
   }
   if (error) {
     return <p> Error! </p>;
   }
+  const experimentsPerCell = [];
+  const experimentsPerCompound = [];
+  if (data.datasets) {
+    data.datasets.forEach((el, i) => {
+      const { id, name } = el;
+      experimentsPerCell.push({
+        id, name, count: el.experiment_count / el.cell_count, color: dataset_colors[i],
+      });
+      experimentsPerCompound.push({
+        id, name, count: el.experiment_count / el.compound_tested_count, color: dataset_colors[i],
+      });
+    });
+  }
   return (
     <>
-      Plots
+      <div className="plot">
+        <h3>Average experiments per cell line in each data set</h3>
+        <AverageDatasetBarPlot data={experimentsPerCell} />
+      </div>
+      <div className="plot">
+        <h3>Average experiments per compound in each dataset</h3>
+        <AverageDatasetBarPlot data={experimentsPerCompound} />
+      </div>
     </>
   );
 };
@@ -45,18 +70,12 @@ const renderComponent = (loading, error, columns, data) => {
  * )
  */
 const Experiments = () => {
-  const { loading, error, data: dataset } = useQuery(getDatasetCountsQuery);
-  console.log(loading, error, dataset);
+  const { loading, error, data } = useQuery(getDatasetCountsQuery);
   return (
     <Layout page="experiments">
       <StyledWrapper>
         <PlotsWrapper>
-          <div className="plot">
-            <h3>Average experiments per cell line in each data set</h3>
-          </div>
-          <div className="plot">
-            <h3>Average experiments per compound in each dataset</h3>
-          </div>
+          {renderComponent(loading, error, data)}
         </PlotsWrapper>
       </StyledWrapper>
     </Layout>
