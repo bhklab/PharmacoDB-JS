@@ -22,16 +22,48 @@ const SYNONYM_COLUMNS = [
   },
 ];
 
+const ANNOTATION_COLUMNS = [
+  {
+    Header: 'Database',
+    accessor: 'db',
+  }, {
+    Header: 'Identifier',
+    accessor: 'identifier',
+  },
+];
+
 /**
  * Format data for the synonyms table
  * @param {Array} data synonym data from the compound API
  */
-const formatTableData = (data) => {
+const formatSynonymData = (data) => {
   if (data) {
     return data.map((x) => ({
       name: x.name,
       sources: x.source.join(', '),
     }));
+  }
+};
+
+/**
+ * Format data for the external ids annotation table
+ * @param {Array} data annotation data from the compound API
+ */
+const formatAnnotationData = (data) => {
+  if (data) {
+    const { annotation } = data;
+    return [
+      {
+        db: 'SMILES',
+        identifier: annotation.smiles,
+      }, {
+        db: 'InChiKey',
+        identifier: annotation.inchikey,
+      }, {
+        db: 'PubChem ID',
+        identifier: annotation.pubchem,
+      },
+    ];
   }
 };
 
@@ -60,7 +92,11 @@ const IndivCompounds = (props) => {
 
   // formatted data for synonyms annotation table
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatTableData(compound.data.synonyms), [compound.data.synonyms]);
+  const synonymData = React.useMemo(() => formatSynonymData(compound.data.synonyms), [compound.data.synonyms]);
+
+  // formatted data for external ids annotation table
+  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
+  const annotationData = React.useMemo(() => formatAnnotationData(compound.data.compound), [compound.data.compound]);
 
   useEffect(() => {
     if (data !== undefined) {
@@ -90,7 +126,10 @@ const IndivCompounds = (props) => {
                       <h3>Synonyms</h3>
                       <Table columns={synonymColumns} data={synonymData} disablePagination />
                     </Element>
-                    <Element name="external_ids" className="temp">External ids</Element>
+                    <Element name="external_ids">
+                      <h3>External IDs</h3>
+                      <Table columns={annotationColumns} data={annotationData} disablePagination />
+                    </Element>
                     <Element name="plots" className="temp">plots</Element>
                   </div>
 
