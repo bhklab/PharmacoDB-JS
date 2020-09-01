@@ -9,12 +9,12 @@ import colors from '../../styles/colors';
 
 const Styles = styled.div`
   margin-bottom: 5rem;
+  margin-top: 2rem;
   font-size: calc(0.3vw + 8px);
   overflow-x: auto;
   table {
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
-    margin-top: 2rem;
     width: 100%;
 
     th,
@@ -52,16 +52,48 @@ const Styles = styled.div`
     th {
       font-weight: 700;
       background-color: ${colors.pale_teal};
-      border: 1px solid ${colors.white_smoke} !important;
+      border: 1px solid white !important;
     }
   }
 
   .pagination {
-    padding: 1.0rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1.0rem 0;
     color: ${colors.dark_teal_heading};
-    input, select, option, button {
+
+    
+    input, select, option {
       color: ${colors.dark_teal_heading};
       border: 1px solid ${colors.white_smoke};
+    }
+    button {
+      cursor: pointer;
+      background:${colors.dark_teal_heading};
+      color: white;
+      border: none;
+      padding: 3px 10px;
+      border-radius: 5px;
+
+      &:disabled {
+        background: ${colors.white_smoke};
+        color: ${colors.dark_gray_text};
+      }
+    }
+    .next {
+      margin-left: 1rem;
+    }
+    .prev {
+      margin-right: 1rem;
+    }
+  }
+  .show-page {
+    padding-bottom: 1rem;
+    color: ${colors.dark_teal_heading};
+    select {
+      border: 1px solid ${colors.white_smoke};
+      color: ${colors.dark_teal_heading};
     }
   }
 `;
@@ -94,6 +126,24 @@ const Table = ({ columns, data }) => {
   // Render the UI for your table
   return (
     <Styles>
+      <div className="show-page">
+        Show
+        {' '}
+        {' '}
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -130,27 +180,23 @@ const Table = ({ columns, data }) => {
         </tbody>
       </table>
       <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
+        <button className="prev" onClick={() => previousPage()} disabled={!canPreviousPage}>
+          Prev
         </button>
-        {' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>
-        {' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>
-        {' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>
-        {' '}
         <span>
           Page
           {' '}
           <strong>
-            {pageIndex + 1}
+            <input
+              type="number"
+              defaultValue={pageIndex + 1}
+              value={pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                gotoPage(page);
+              }}
+              style={{ width: '40px' }}
+            />
             {' '}
             of
             {' '}
@@ -158,34 +204,9 @@ const Table = ({ columns, data }) => {
           </strong>
           {' '}
         </span>
-        <span>
-          | Go to page:
-          {' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>
-        {' '}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show
-              {' '}
-              {pageSize}
-            </option>
-          ))}
-        </select>
+        <button className="next" onClick={() => nextPage()} disabled={!canNextPage}>
+          Next
+        </button>
       </div>
     </Styles>
   );
