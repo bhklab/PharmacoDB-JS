@@ -98,7 +98,7 @@ const Styles = styled.div`
   }
 `;
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, disablePagination = false }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -126,23 +126,25 @@ const Table = ({ columns, data }) => {
   // Render the UI for your table
   return (
     <Styles>
-      <div className="show-page">
-        Show
-        {' '}
-        {' '}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      {!disablePagination ? (
+        <div className="show-page">
+          Show
+          {' '}
+          {' '}
+          <select
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : null}
 
       <table {...getTableProps()}>
         <thead>
@@ -179,35 +181,37 @@ const Table = ({ columns, data }) => {
           })}
         </tbody>
       </table>
-      <div className="pagination">
-        <button className="prev" onClick={() => previousPage()} disabled={!canPreviousPage}>
-          Prev
-        </button>
-        <span>
-          Page
-          {' '}
-          <strong>
-            <input
-              type="number"
-              defaultValue={pageIndex + 1}
-              value={pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-              }}
-              style={{ width: '40px' }}
-            />
+      {!disablePagination ? (
+        <div className="pagination">
+          <button className="prev" onClick={() => previousPage()} disabled={!canPreviousPage}>
+            Prev
+          </button>
+          <span>
+            Page
             {' '}
-            of
+            <strong>
+              <input
+                type="number"
+                defaultValue={pageIndex + 1}
+                value={pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  gotoPage(page);
+                }}
+                style={{ width: '40px' }}
+              />
+              {' '}
+              of
+              {' '}
+              {pageOptions.length}
+            </strong>
             {' '}
-            {pageOptions.length}
-          </strong>
-          {' '}
-        </span>
-        <button className="next" onClick={() => nextPage()} disabled={!canNextPage}>
-          Next
-        </button>
-      </div>
+          </span>
+          <button className="next" onClick={() => nextPage()} disabled={!canNextPage}>
+            Next
+          </button>
+        </div>
+      ) : null}
     </Styles>
   );
 };
@@ -215,6 +219,11 @@ const Table = ({ columns, data }) => {
 Table.propTypes = {
   columns: PropTypes.arrayOf(Object).isRequired,
   data: PropTypes.arrayOf(Object).isRequired,
+  disablePagination: PropTypes.bool,
+};
+
+Table.defaultProps = {
+  disablePagination: false,
 };
 
 export default Table;

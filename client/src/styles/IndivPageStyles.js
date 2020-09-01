@@ -22,6 +22,10 @@ const StyledIndivPage = styled.div`
     margin-bottom:100px;
   }
 
+  h3 {
+    text-align: left;
+  }
+
   // full size container when too small
   @media only screen and (max-width: 765px) {
     .content {
