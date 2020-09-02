@@ -5,7 +5,8 @@ const StyledIndivPage = styled.div`
   .container {
     width: 100%;
     margin-top: 5vh;
-    font-size: calc(0.4vw + 0.7em);
+    color: ${colors.dark_gray_text};
+    font-size: calc(0.4vw + 9px);
     
     display:flex;
     align-items: flex-end;
@@ -15,14 +16,19 @@ const StyledIndivPage = styled.div`
       width: calc(100% - (5vw + 4em) - 2em);
     }
   }
-  .temp {
+  .section {
     width: 100%;
-    height: 400px;
-    background: ${colors.light_blue_bg};
-    margin-bottom:100px;
+    margin-bottom: 5rem;
+    .text {
+      margin-top: 1rem;
+    }
+  }
+  .temp {
+    height: 500px;
   }
 
-  h3 {
+  
+  h3, h4 {
     text-align: left;
   }
 

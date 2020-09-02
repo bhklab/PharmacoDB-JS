@@ -118,19 +118,29 @@ const IndivCompounds = (props) => {
                 <StyledSidebar>
                   <Link className="link" activeClass="selected" to="synonyms" spy smooth duration={200} offset={-400}>Synonyms</Link>
                   <Link className="link" activeClass="selected" to="external_ids" spy smooth duration={200} offset={-400}>External IDs</Link>
+                  <Link className="link" activeClass="selected" to="annotated_targets" spy smooth duration={200} offset={-400}>Annotated Targets</Link>
+                  <Link className="link" activeClass="selected" to="fda_status" spy smooth duration={200} offset={-400}>FDA status</Link>
                   <Link className="link" activeClass="selected" to="plots" spy smooth duration={200} offset={-400}>Plots</Link>
                 </StyledSidebar>
                 <div className="container">
                   <div className="content">
-                    <Element name="synonyms">
+                    <Element className="section" name="synonyms">
                       <h3>Synonyms</h3>
                       <Table columns={synonymColumns} data={synonymData} disablePagination />
                     </Element>
-                    <Element name="external_ids">
+                    <Element className="section" name="external_ids">
                       <h3>External IDs</h3>
                       <Table columns={annotationColumns} data={annotationData} disablePagination />
                     </Element>
-                    <Element name="plots" className="temp">plots</Element>
+                    <Element className="section" name="annotated_targets">
+                      <h3>Annotated Targets</h3>
+                      <div className="text">{compound.data.targets.map((x) => x.name).join(', ')}</div>
+                    </Element>
+                    <Element className="section" name="fda_status">
+                      <h3>FDA Approval Status</h3>
+                      <div className="text">{compound.data.compound.annotation.fda_status}</div>
+                    </Element>
+                    <Element name="plots" className="section temp">plots</Element>
                   </div>
 
                 </div>

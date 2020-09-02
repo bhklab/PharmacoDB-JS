@@ -16,7 +16,7 @@ const StyledWrapper = styled.div`
         }
     }
 
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
         color: ${colors.dark_teal_heading};
         font-family: 'Roboto Slab', serif;
         text-align: center;
@@ -36,6 +36,10 @@ const StyledWrapper = styled.div`
 
     h3 {
         font-size: calc(0.6vw + 0.9em);
+    }
+
+    h4 {
+        font-size: calc(0.5vw + 0.7em);
     }
 `;
 

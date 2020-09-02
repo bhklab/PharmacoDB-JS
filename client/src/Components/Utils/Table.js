@@ -19,7 +19,7 @@ const Styles = styled.div`
 
     th,
     td {
-      color: ${colors.dark_teal_heading};
+      color: ${colors.dark_gray_text};
       max-width: 200px;
       margin: 0;
       padding: calc(0.3vw + 0.3em);
@@ -52,6 +52,7 @@ const Styles = styled.div`
     th {
       font-weight: 700;
       background-color: ${colors.pale_teal};
+      color: ${colors.dark_teal_heading};
       border: 1px solid white !important;
     }
   }
@@ -143,6 +144,9 @@ const Table = ({ columns, data, disablePagination = false }) => {
               </option>
             ))}
           </select>
+          {' '}
+          {' '}
+          entries per page
         </div>
       ) : null}
 
