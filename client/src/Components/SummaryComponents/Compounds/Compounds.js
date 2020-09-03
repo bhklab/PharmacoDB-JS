@@ -32,19 +32,22 @@ const table_columns = [
 
 /**
  *
- * @param {Array} data - compound data from the compounds API.
+ * @param {Array} data - compound data from the compounds API call.
  */
 const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
       const { name, annotation } = value;
+      const {
+        smiles, inchikey, pubchem, fda_status,
+      } = annotation;
       return {
         name,
-        smiles: annotation.smiles,
-        inchikey: annotation.inchikey,
-        pubchem: annotation.pubchem,
-        fda_status: annotation.fda_status,
+        smiles,
+        inchikey,
+        pubchem,
+        fda_status,
       };
     });
   }

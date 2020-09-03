@@ -1,21 +1,21 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-import Table from '../../Utils/Table';
+import Table from '../../Table/Table';
 import Layout from '../../Utils/Layout';
 import PieChart from '../../Plots/PieChart';
-import { getTissuesQuery } from '../../../queries/tissue';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../Utils/Loading';
+import TitleCase from '../../Utils/TitleCase';
 
 const tableColumns = [
   {
-    Header: 'Id',
-    accessor: 'id',
-  },
-  {
     Header: 'Name',
     accessor: 'name',
+  },
+  {
+    Header: 'Tissue',
+    accessor: 'tissue',
   },
 ];
 
@@ -26,11 +26,11 @@ const tableColumns = [
 const getTableData = (data) => {
   let tableData = [];
   if (data) {
-    tableData = data.tissues.map((value) => {
-      const { id, name } = value;
+    tableData = data.cell_lines.map((value) => {
+      const { name, tissue } = value;
       return {
-        id,
         name: name.replace(/_/g, ' '),
+        tissue: TitleCase(tissue.name.replace(/_/g, ' ')),
       };
     });
   }
@@ -82,10 +82,6 @@ const pieChartDataObject = (data) => {
     hole: 0.55,
     type: 'pie',
     marker: {
-      // colors: [
-      //   '#053061', '#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#878787',
-      //   '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#67001f',
-      // ],
       colors: [
         '#CAD2C5', '#84a98c', '#52796F', '#354F52', '#2F3E46', '#284B63',
         '#2F4858', '#1B263B', '#415A77', '#778DA9', '#E0E1DD', '#6F523B',
@@ -113,18 +109,18 @@ const pieChartDataObject = (data) => {
  *  <Table/>
  * )
  */
-const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData) => {
-  if (tissueQueryLoading || cellLineQueryLoading) {
+const renderComponent = (loading, error, columns, data, pieData) => {
+  if (loading) {
     return <Loading />;
   }
-  if (cellLineQueryError || tissuesQueryError) {
+  if (error) {
     return <p> Error! </p>;
   }
   return (
     <>
-      <h2 className="new-section"> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
+      <h2> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
-      <h2 className="new-section"> List of Tissues </h2>
+      <h2> List of Cell Lines </h2>
       <Table columns={columns} data={data} />
     </>
   );
@@ -136,27 +132,26 @@ const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQuery
  * @component
  * @example
  *
- * @returns ( <Tissues/> )
+ * @returns ( <Cells/> )
 */
-const Tissues = () => {
-  // queries to get the cell line and tissue data.
-  const { loading: tissueQueryLoading, error: tissuesQueryError, data: tissues } = useQuery(getTissuesQuery);
-  const { loading: cellLineQueryLoading, error: cellLineQueryError, data: cells } = useQuery(getCellLinesQuery);
+const CellLines = () => {
+  // queries to get the cell line data.
+  const { loading, error, data } = useQuery(getCellLinesQuery);
   // setting data for the table.
   const columns = React.useMemo(() => tableColumns, []);
-  const data = React.useMemo(() => getTableData(tissues), [tissues]);
+  const cell_data = React.useMemo(() => getTableData(data), [data]);
   // data for pie chart.
-  const groupedData = cellLinesGroupedByTissue(cells);
+  const groupedData = cellLinesGroupedByTissue(data);
   const pieData = pieChartDataObject(groupedData);
   return (
-    <Layout page="tissues">
+    <Layout page="cells">
       <StyledWrapper>
         {
-          renderComponent(tissueQueryLoading, cellLineQueryLoading, cellLineQueryError, tissuesQueryError, columns, data, pieData)
+          renderComponent(loading, error, columns, cell_data, pieData)
         }
       </StyledWrapper>
     </Layout>
   );
 };
 
-export default Tissues;
+export default CellLines;
