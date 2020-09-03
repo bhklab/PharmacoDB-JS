@@ -5,8 +5,8 @@ export default {
   dark_gray_text: '#454d4f',
   dark_pink_highlight: '#d94262',
   dark_yellow_highlight: '#e39e25',
-  white_smoke: '#EEEEEE',
+  white_smoke: '#E8e8e8',
   teal: '#008080',
   light_teal: '#dbe9e9',
-  pale_teal: '#b2d8d8',
+  pale_teal: '#ddeded',
 };
