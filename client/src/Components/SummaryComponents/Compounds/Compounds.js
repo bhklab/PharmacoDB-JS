@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../Table/Table';
+import Table from '../../Utils/Table';
 import Layout from '../../Utils/Layout';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
@@ -77,9 +77,9 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <h2> Number of Compounds Tested in Each Dataset </h2>
+      <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
-      <h2>List of Compounds</h2>
+      <h2 className="new-section">List of Compounds</h2>
       <Table columns={columns} data={data} />
     </>
   );

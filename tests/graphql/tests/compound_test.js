@@ -14,7 +14,8 @@ const compoundQueries = require('../queries/compound_queries');
 const test = (server) => {
     
     // test for all compound route. Checks Compound Graphql type
-    it('Returns "id" and "name" properties of all compounds in the database', done => {
+    it('Returns "id" and "name" properties of all compounds in the database', function(done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: compoundQueries.compoundsKeysTestQuery })
