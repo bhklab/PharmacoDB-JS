@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -6,7 +6,7 @@ import SearchContext from './context/SearchContext';
 
 import {
   IndivCompounds, Compounds, Home, NotFoundPage,
-  Tissues, Genes, Experiments,
+  Tissues, Genes, CellLines, Datasets, Experiments,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -28,6 +28,8 @@ const App = () => {
             <Route path="/tissues" exact component={Tissues} />
             <Route path="/genes" exact component={Genes} />
             <Route path="/experiments" exact component={Experiments} />
+            <Route path="/cell_lines" exact component={CellLines} />
+            <Route path="/datasets" exact component={Datasets} />
             <Route path="/compounds/:id" component={IndivCompounds} />
             <Route path="*" component={NotFoundPage} />
           </Switch>

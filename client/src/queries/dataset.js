@@ -16,7 +16,19 @@ const getDatasetCountsQuery = gql`
   }
 `;
 
+/**
+ * @returns - Query returns the list of datasets with the id and name of the dataset.
+ */
+const getDatasetsQuery = gql`
+  query getAllDatasets {
+    datasets {
+      id
+      name
+    }
+  }
+`;
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   getDatasetCountsQuery,
+  getDatasetsQuery,
 };

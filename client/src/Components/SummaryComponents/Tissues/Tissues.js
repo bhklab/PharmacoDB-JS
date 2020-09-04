@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-import Table from '../../Table/Table';
+import Table from '../../Utils/Table';
 import Layout from '../../Utils/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getTissuesQuery } from '../../../queries/tissue';
@@ -82,9 +82,13 @@ const pieChartDataObject = (data) => {
     hole: 0.55,
     type: 'pie',
     marker: {
+      // colors: [
+      //   '#053061', '#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#878787',
+      //   '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#67001f',
+      // ],
       colors: [
-        '#053061', '#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#878787',
-        '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#67001f',
+        '#CAD2C5', '#84a98c', '#52796F', '#354F52', '#2F3E46', '#284B63',
+        '#2F4858', '#1B263B', '#415A77', '#778DA9', '#E0E1DD', '#6F523B',
       ],
     },
   }];
@@ -118,9 +122,9 @@ const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQuery
   }
   return (
     <>
-      <h2> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
+      <h2 className="new-section"> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
-      <h2> List of Tissues </h2>
+      <h2 className="new-section"> List of Tissues </h2>
       <Table columns={columns} data={data} />
     </>
   );
