@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2020": true
+        "es2020": true,
+        "jest": true
     },
     "extends": [
         "plugin:react/recommended",
@@ -25,8 +26,8 @@
                 ]
             }
         ],
-       "camelcase": "off",
-       "no-console": "off",
-       "max-len": "off"
+        "camelcase": "off",
+        "no-console": "off",
+        "max-len": "off"
     }
 }

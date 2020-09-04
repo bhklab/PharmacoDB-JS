@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import colors from './colors';
 
@@ -7,6 +7,7 @@ const StyledWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 85%;
 
     & > * {
         width: 70%;
@@ -16,7 +17,7 @@ const StyledWrapper = styled.div`
         }
     }
 
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
         color: ${colors.dark_teal_heading};
         font-family: 'Roboto Slab', serif;
         text-align: center;
@@ -28,12 +29,18 @@ const StyledWrapper = styled.div`
 
     h2 {
         font-size: calc(1vw + 1.2em);
-        margin-top: 2rem;
+    }
+
+    .new-section {
+        margin-top: 3rem;
     }
 
     h3 {
-        font-size: calc(0.5vw + 0.8em);
-        margin-top: 2rem;
+        font-size: calc(0.6vw + 0.9em);
+    }
+
+    h4 {
+        font-size: calc(0.5vw + 0.7em);
     }
 `;
 

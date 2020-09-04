@@ -7,6 +7,9 @@ const allDatasetsTestQuery = `
     datasets {
       id
       name
+      compound_tested_count
+      cell_count
+      experiment_count
     }
   }
 `;

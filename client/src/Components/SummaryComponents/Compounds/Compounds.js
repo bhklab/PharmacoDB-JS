@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../Table/Table';
+import Table from '../../Utils/Table';
 import Layout from '../../Utils/Layout';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
@@ -32,19 +32,22 @@ const table_columns = [
 
 /**
  *
- * @param {Array} data - compound data from the compounds API.
+ * @param {Array} data - compound data from the compounds API call.
  */
 const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
       const { name, annotation } = value;
+      const {
+        smiles, inchikey, pubchem, fda_status,
+      } = annotation;
       return {
         name,
-        smiles: annotation.smiles,
-        inchikey: annotation.inchikey,
-        pubchem: annotation.pubchem,
-        fda_status: annotation.fda_status,
+        smiles,
+        inchikey,
+        pubchem,
+        fda_status,
       };
     });
   }
@@ -74,9 +77,9 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <h2> Number of Compounds Tested in Each Dataset </h2>
+      <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
-      <h2>List of Compounds</h2>
+      <h2 className="new-section">List of Compounds</h2>
       <Table columns={columns} data={data} />
     </>
   );

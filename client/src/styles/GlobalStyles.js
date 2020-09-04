@@ -10,6 +10,12 @@ const GlobalStyles = createGlobalStyle`
         font-size: calc(0.2vw + 11px);
     }
 
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .noscroll
     {
         position: fixed; 
