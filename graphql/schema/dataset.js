@@ -3,7 +3,13 @@ const datasetType = `
         "id of the dataset in the database"
         id: Int!
         "name of the dataset"
-        name: String!  
+        name: String!
+        "number of compounds tested in the dataset"
+        compound_tested_count: Int!
+        "number of cell lines used in the dataset"
+        cell_count: Int!
+        "number of experiments in the dataset"
+        experiment_count: Int!  
     }
 `;
 

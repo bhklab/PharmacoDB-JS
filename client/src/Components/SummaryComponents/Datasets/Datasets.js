@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../Table/Table';
+// import Table from '../../Table/Table';
 import Layout from '../../Utils/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
@@ -27,7 +27,7 @@ const renderComponent = (loading, error, columns, data) => {
   return (
     <>
       <h2>List of Datasets</h2>
-      <Table columns={columns} data={data} />
+      {/* <Table columns={columns} data={data} /> */}
     </>
   );
 };

@@ -65,6 +65,7 @@ const formatAnnotationData = (data) => {
       },
     ];
   }
+  return null;
 };
 
 /**
