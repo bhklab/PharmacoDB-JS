@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-import Table from '../../Table/Table';
+import Table from '../../Utils/Table';
 import Layout from '../../Utils/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getCellLinesQuery } from '../../../queries/cell';
