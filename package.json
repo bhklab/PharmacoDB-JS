@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha tests/**/*.test.js",
     "start": "node app.js",
-    "devstart": "nodemon app.js"
+    "devstart": "nodemon app.js",
+    "client": "cd client && npm start"
   },
   "author": "",
   "license": "ISC",
