@@ -109,41 +109,36 @@ const gene_drugs = async (args, context, info) => {
     if (!geneId && !compoundId) throw new Error('Ivalid input! Query must include geneId or compoundId'); 
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
-        console.log(info.fieldNodes[0].selectionSet.selections);
         const listOfFields = retrieveFields(info);
         console.log(listOfFields);
-        let baseQuery = knex.select('id',
-            'gene_name',
-            'ensg',
-            'gene_seq_start',
-            'gene_seq_end',
-            'estimate',
-            'se',
-            'n',
-            'tstat',
-            'fstat',
-            'pvalue',
-            'dataset_name',
-            'drug_name',
-            'smiles',
-            'inchikey',
-            'pubchem',
-            'fda_status',
-            'tissue_name',
-            'df',
-            'fdr',
-            'FWER_genes',
-            'FWER_drugs',
-            'FWER_all',
-            'BF_p_all',
-            'mDataType',
-            'level',
-            'drug_like_molecule',
-            'in_clinical_trials',
-            'datasets.dataset_id as dataset_id',
-            'drugs.drug_id as drug_id',
-            'tissues.tissue_id as tissue_id',
-            'genes.gene_id as gene_id',)
+        // creates list of columns for the knex query based on listOfFileds requested by graphQL client
+        // doesn't include any nested subtypes
+        const columns = listOfFields.reduce(function (filtered, column) {
+            if (!column.fields) filtered.push(column.name);
+            return filtered;
+        }, []);
+        // adds columns for nested subtypes if client requested them
+        listOfFields.forEach(el => {
+            if (el.fields) {
+                // add fields for respective tables
+                switch (el.name) {
+                case 'dataset':
+                    columns.push(...['datasets.dataset_id as dataset_id', 'dataset_name']);
+                    break;
+                case 'gene':
+                    columns.push(...['genes.gene_id as gene_id', 'gene_name', 'ensg','gene_seq_start',
+                        'gene_seq_end']);
+                    break;
+                case 'compound':
+                    columns.push(...['drugs.drug_id as drug_id', 'drug_name', 'smiles', 'inchikey','pubchem', 'fda_status']);
+                    break;
+                case 'tissue':
+                    columns.push(...['tissues.tissue_id as tissue_id', 'tissue_name']);
+                    break;
+                }
+            }
+        });
+        let baseQuery = knex.select(columns)
             .from('gene_drugs');
 
         if (geneId) baseQuery = baseQuery.where({ 'gene_drugs.gene_id': geneId });
