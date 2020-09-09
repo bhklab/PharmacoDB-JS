@@ -138,7 +138,7 @@ const gene_drugs = async (args, context, info) => {
             }
         });
         let query = knex.select(columns);
-        // selects table to select from
+        // chooses table to select from
         query = geneId ? query.from('gene_drugs as GD') : query.from('drug_genes as GD');
         if (geneId) query = query.where({ 'GD.gene_id': geneId });
         if (compoundId) query = geneId
