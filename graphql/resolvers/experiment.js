@@ -166,7 +166,7 @@ const experiments = async (args, context, info) => {
         function subqueryExperiments() {
             let subquery = this.select(subqueryColumns)
                 .from('experiments');
-            if (compoundId) subquery = subquery.where({ drug_id: compoundId });
+            if (compoundId) subquery = subquery.where({ 'experiments.drug_id': compoundId });
             subtypes.forEach(subtype => {
                 switch (subtype) {
                 case 'cell_line':
