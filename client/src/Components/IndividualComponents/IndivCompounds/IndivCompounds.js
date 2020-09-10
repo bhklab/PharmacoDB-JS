@@ -141,7 +141,9 @@ const IndivCompounds = (props) => {
                       <h3>FDA Approval Status</h3>
                       <div className="text">{compound.data.compound.annotation.fda_status}</div>
                     </Element>
-                    <Element name="plots" className="section temp">plots</Element>
+                    <Element name="plots" className="section temp">
+                      <h3>Plots</h3>
+                    </Element>
                   </div>
 
                 </div>

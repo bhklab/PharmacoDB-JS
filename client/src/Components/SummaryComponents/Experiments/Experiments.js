@@ -5,7 +5,7 @@ import StyledWrapper from '../../../styles/utils';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 import { getDatasetCountsQuery } from '../../../queries/dataset';
 import Loading from '../../Utils/Loading';
-import AverageDatasetBarPlot from './AverageDatasetBarPlot';
+import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
 import dataset_colors from '../../../styles/dataset_colors';
 
 /**
@@ -49,11 +49,11 @@ const renderComponent = (loading, error, data) => {
     <>
       <div className="plot">
         <h3>Average experiments per cell line in each data set</h3>
-        <AverageDatasetBarPlot data={experimentsPerCell} />
+        <AverageDatasetBarPlot data={experimentsPerCell} xaxis="Experiments" />
       </div>
       <div className="plot">
         <h3>Average experiments per compound in each dataset</h3>
-        <AverageDatasetBarPlot data={experimentsPerCompound} />
+        <AverageDatasetBarPlot data={experimentsPerCompound} xaxis="Experiments" />
       </div>
     </>
   );
