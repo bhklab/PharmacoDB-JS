@@ -9,7 +9,7 @@ const datasetType = `
         "number of cell lines used in the dataset"
         cell_count: Int
         "number of experiments in the dataset"
-        experiment_count: Int! 
+        experiment_count: Int 
     }
 `;
 

@@ -2,8 +2,66 @@
 /* eslint-disable no-case-declarations */
 const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { retrieveFields } = require('../../helpers/queryHelpers');
+const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 // const { transformObject } = require('../../helpers/transformObject');
+
+/**
+ * a helper function for experiments route that generates 2 arrays of columns names based on requested fields
+ * @param {Array} listOfFields - an output from the retrieveFields helper function
+ * @returns {Array} - Returns an array of two. First element of the array is a list of column names for the main query. Second element represent list of columns for the subquery
+        * [[ 'experiment_id',
+        'cell_id',
+        'cell_name',
+        'tissue_id',
+        'tissue_name',
+        'drug_id',
+        'drug_name',
+        'fda_status',
+        'smiles',
+        'inchikey',
+        'pubchem',
+        'dataset_id',
+        'dataset_name' ], ...]
+ */
+const generateExperimentsColumns = listOfFields => {
+    // array of columns for the knex main query and subquery
+    const columns = ['experiment_id'];
+    const subqueryColumns = ['experiment_id'];
+    // boolean that tracks if tissue information has already been requested
+    // tissue can be used as a type in experiments and/or as a type in cell_line
+    let tissueRequested = false;
+    // adds columns based on client GraphQL query
+    listOfFields.forEach(field => {
+        switch (field.name) {
+        case 'cell_line':
+            columns.push(...['cell_id', 'cell_name']);
+            subqueryColumns.push(...['experiments.cell_id as cell_id', 'cell_name']);
+            // adds tissue columns if they are in the subfields of cell_line type and have been already added
+            if (field.fields.some(subfield => subfield.name === 'tissue') && !tissueRequested) {
+                tissueRequested = true;
+                columns.push(...['tissue_id', 'tissue_name']);
+                subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
+            }
+            break;
+        case 'tissue':
+            if (!tissueRequested) {
+                columns.push(...['tissue_id', 'tissue_name']);
+                subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
+            }
+            break;
+        case 'compound':
+            const compoundColumns = ['drug_name', 'fda_status', 'smiles', 'inchikey', 'pubchem'];
+            columns.push('drug_id', ...compoundColumns);
+            subqueryColumns.push('experiments.drug_id as drug_id', ...compoundColumns);
+            break;
+        case 'dataset':
+            columns.push(...['dataset_id', 'dataset_name']);
+            subqueryColumns.push(...['experiments.dataset_id as dataset_id', 'dataset_name']);
+            break;
+        }
+    });
+    return [columns, subqueryColumns];
+};
 
 /**
  * @param {Array} data
@@ -90,48 +148,15 @@ const transformExperiments = data => {
  * @returns {Array} - Returns the transformed data for all the experiments in the database.
  */
 const experiments = async (args, context, info) => {
-    // setting limitt and offset
+    // setting limit and offset
     const { page = 1, per_page = 30, all = false } = args;
     const { limit, offset } = calcLimitOffset(page, per_page);
-    const listOfFields = retrieveFields(info);
-    console.log(listOfFields);
     try {
-        // array of columns for the knex main query and subquery
-        const columns = ['experiment_id'];
-        const subqueryColumns = ['experiment_id'];
-        // boolean that tracks if tissue information has already been requested
-        // tissue can be used as a type in experiments and/or as a type in cell_line
-        let tissueRequested = false;
-        // adds columns based on client GraphQL query
-        listOfFields.forEach(field => {
-            switch (field.name) {
-            case 'cell_line':
-                columns.push(...['cell_id', 'cell_name']);
-                subqueryColumns.push(...['experiments.cell_id as cell_id', 'cell_name']);
-                // adds tissue columns if they are in the subfields of cell_line type and have been already added
-                if (field.fields.some(subfield => subfield.name === 'tissue') && !tissueRequested) {
-                    tissueRequested = true;
-                    columns.push(...['tissue_id', 'tissue_name']);
-                    subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
-                }
-                break;
-            case 'tissue':
-                if (!tissueRequested) {
-                    columns.push(...['tissue_id', 'tissue_name']);
-                    subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
-                } 
-                break;
-            case 'compound':
-                const compoundColumns = ['drug_name', 'fda_status', 'smiles', 'inchikey', 'pubchem'];
-                columns.push('drug_id', ...[compoundColumns]);
-                subqueryColumns.push('experiments.drug_id as drug_id', ...[compoundColumns]);
-                break;
-            case 'dataset':
-                columns.push(...['dataset_id', 'dataset_name']);
-                subqueryColumns.push(...['experiments.dataset_id as dataset_id', 'dataset_name']);
-                break;
-            }
-        });
+        const listOfFields = retrieveFields(info);
+        const subtypes = retrieveSubtypes(listOfFields);
+        console.log(subtypes);
+        const [columns, subqueryColumns] = generateExperimentsColumns(listOfFields);
+        console.log(subqueryColumns);
         // gets experiments metadata. Needed as a subquery because user-specified limit and offset values
         // has to be applied on the experiment level and not be based on the total number of rows
         function subqueryExperiments() {
