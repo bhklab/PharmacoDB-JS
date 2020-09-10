@@ -25,7 +25,7 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  */
 const generateExperimentsColumns = listOfFields => {
     // array of columns for the knex main query and subquery
-    const columns = ['experiment_id'];
+    const columns = ['SE.experiment_id as experiment_id'];
     const subqueryColumns = ['experiment_id'];
     // boolean that tracks if tissue information has already been requested
     // tissue can be used as a type in experiments and/or as a type in cell_line
@@ -58,7 +58,12 @@ const generateExperimentsColumns = listOfFields => {
             columns.push(...['dataset_id', 'dataset_name']);
             subqueryColumns.push(...['experiments.dataset_id as dataset_id', 'dataset_name']);
             break;
+        case 'dose_responses':
+            columns.push(...['dose','response']);
+            break;
         }
+        
+
     });
     return [columns, subqueryColumns];
 };
@@ -154,55 +159,39 @@ const experiments = async (args, context, info) => {
     try {
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
-        console.log(subtypes);
         const [columns, subqueryColumns] = generateExperimentsColumns(listOfFields);
-        console.log(subqueryColumns);
         // gets experiments metadata. Needed as a subquery because user-specified limit and offset values
         // has to be applied on the experiment level and not be based on the total number of rows
         function subqueryExperiments() {
-            return this.select('experiment_id',
-                'cell_name',
-                'experiments.tissue_id as tissue_id',
-                'experiments.cell_id as cell_id',
-                'experiments.drug_id as drug_id',
-                'experiments.dataset_id as dataset_id',
-                'tissue_name',
-                'drug_name',
-                'dataset_name',
-                'fda_status',
-                'smiles',
-                'inchikey',
-                'pubchem')
-                .from('experiments')
-                .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
-                .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
-                .join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
-                .join('datasets', 'datasets.dataset_id', '=', 'experiments.dataset_id')
-                .join('drug_annots', 'experiments.drug_id', '=', 'drug_annots.drug_id')
-                .limit(all ? '*' : limit)
+            let subquery = this.select(subqueryColumns)
+                .from('experiments');
+            subtypes.forEach(subtype => {
+                switch (subtype) {
+                case 'cell_line':
+                    subquery = subquery.join('cells', 'cells.cell_id', '=', 'experiments.cell_id');
+                    break;
+                case 'tissue':
+                    subquery = subquery.join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id');
+                    break;
+                case 'compound':
+                    subquery = subquery.join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
+                        .join('drug_annots', 'experiments.drug_id', '=', 'drug_annots.drug_id');
+                    break;
+                case 'dataset':
+                    subquery = subquery.join('datasets', 'datasets.dataset_id', '=', 'experiments.dataset_id');
+                    break;
+                }
+            });
+            return subquery.limit(all ? '*' : limit)
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
-
-        // adds dose responses for all experiments
-        const experiments = await knex
-            .select('SE.experiment_id as experiment_id',
-                'cell_name',
-                'tissue_id',
-                'cell_id',
-                'drug_id',
-                'dataset_id',
-                'tissue_name',
-                'drug_name',
-                'dataset_name',
-                'dose',
-                'response',
-                'fda_status',
-                'smiles',
-                'inchikey',
-                'pubchem')
-            .from(subqueryExperiments)
-            .join('dose_responses', 'SE.experiment_id','=', 'dose_responses.experiment_id');
+        let query = knex
+            .select(columns)
+            .from(subqueryExperiments);
+        // joins drug_responses table if needed
+        if (subtypes.includes('dose_responses')) query = query.join('dose_responses', 'SE.experiment_id', '=', 'dose_responses.experiment_id');
+        const experiments = await query;
         return transformExperiments(experiments);
     } catch (err) {
         console.log(err);
