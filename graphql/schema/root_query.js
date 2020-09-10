@@ -19,7 +19,7 @@ const RootQuery = `type RootQuery {
     'page' is the page number for output (default value is 1)'.
     'per_page' is the number of items returned per page (default value is 30)'.
     If 'all' flag set to true, the API return all available data (default value is false)"""
-    experiments(page: Int, per_page: Int, all: Boolean): [Experiment!]!
+    experiments(compoundId: Int, page: Int, per_page: Int, all: Boolean): [Experiment!]!
     experiment(experimentId: Int!): Experiment!
 
     "Root Queries for genes."
