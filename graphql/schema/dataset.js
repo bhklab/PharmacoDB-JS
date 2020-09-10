@@ -5,11 +5,11 @@ const datasetType = `
         "name of the dataset"
         name: String!
         "number of compounds tested in the dataset"
-        compound_tested_count: Int!
+        compound_tested_count: Int
         "number of cell lines used in the dataset"
-        cell_count: Int!
+        cell_count: Int
         "number of experiments in the dataset"
-        experiment_count: Int!  
+        experiment_count: Int! 
     }
 `;
 
