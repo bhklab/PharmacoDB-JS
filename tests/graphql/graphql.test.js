@@ -66,4 +66,9 @@ describe('Tests: GraphQL API', () => {
     describe('Source API Routes', () => {
         require('./tests/source_test').test(server);
     });
+
+    // tests for GeneDrug API routes
+    describe('GeneDrug API Routes', () => {
+        require('./tests/gene_drug_test').test(server);
+    });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * Unit tests for functions in calclimitOffset module.
  * An example test file for non-API unit tests.

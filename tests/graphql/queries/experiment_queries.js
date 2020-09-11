@@ -39,7 +39,6 @@ const singleExperimentTestQuery = `
     }
   }
 `;
-
 const multipleExperimentsTestQuery = `
   {
     experiments(page:1, per_page: 50) {
@@ -77,8 +76,42 @@ const multipleExperimentsTestQuery = `
     }
   }
 `;
+const singleCompoundExperimentsTestQuery = `
+  {
+    experiments(compoundId: 1) {
+      id
+      cell_line {
+        id
+        name
+        tissue {
+          id
+          name
+        }
+      }
+      tissue {
+        id,
+        name
+      }
+      dataset {
+        id,
+        name
+      }
+    	compound {
+        id
+        name
+        annotation {
+          pubchem
+          smiles
+          fda_status
+          inchikey
+        }
+      }
+    }
+  }
+`;
 
 module.exports = {
     singleExperimentTestQuery,
-    multipleExperimentsTestQuery
+    multipleExperimentsTestQuery,
+    singleCompoundExperimentsTestQuery
 };
