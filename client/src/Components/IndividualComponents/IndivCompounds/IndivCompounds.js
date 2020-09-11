@@ -8,6 +8,7 @@ import Layout from '../../Utils/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../Utils/NotFoundPage';
 import Table from '../../Utils/Table';
+import PlotSection from './PlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
@@ -80,10 +81,11 @@ const formatAnnotationData = (data) => {
  */
 const IndivCompounds = (props) => {
   const { match: { params } } = props;
+  const compoundId = parseInt(params.id);
 
   // query
   const { loading, error, data } = useQuery(getCompoundQuery, {
-    variables: { compoundId: parseInt(params.id) },
+    variables: { compoundId },
   });
   // load data from query into state
   const [compound, setCompound] = useState({
@@ -143,6 +145,7 @@ const IndivCompounds = (props) => {
                     </Element>
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
+                      <PlotSection compoundId={compoundId} />
                     </Element>
                   </div>
 

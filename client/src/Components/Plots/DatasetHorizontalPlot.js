@@ -92,6 +92,9 @@ const DatasetHorizontalPlot = (props) => {
 };
 
 DatasetHorizontalPlot.propTypes = {
+  /**
+   * [{id: 5, name: "GDSC1000", count: 901.92, color: "#a8ddb5"}, ...]
+   */
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   xaxis: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
