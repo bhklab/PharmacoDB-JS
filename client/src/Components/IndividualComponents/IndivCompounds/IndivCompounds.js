@@ -2,7 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element, animateScroll as scroll } from 'react-scroll';
+import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../Utils/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
@@ -44,6 +44,7 @@ const formatSynonymData = (data) => {
       sources: x.source.join(', '),
     }));
   }
+  return null;
 };
 
 /**

@@ -85,7 +85,7 @@ const DatasetHorizontalPlot = (props) => {
   };
   return (
     <div className="plot">
-      <h3>{title}</h3>
+      <h4>{title}</h4>
       <Plot data={[plotlyData]} layout={layout} config={config} />
     </div>
   );
@@ -93,7 +93,7 @@ const DatasetHorizontalPlot = (props) => {
 
 DatasetHorizontalPlot.propTypes = {
   /**
-   * [{id: 5, name: "GDSC1000", count: 901.92, color: "#a8ddb5"}, ...]
+   * [{name: "GDSC1000", count: 901.92, color: "#a8ddb5"}, ...]
    */
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   xaxis: PropTypes.string.isRequired,

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Layout from '../../Utils/Layout';
+import dataset_colors from '../../../styles/dataset_colors';
 import StyledWrapper from '../../../styles/utils';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
+import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
 import { getDatasetCountsQuery } from '../../../queries/dataset';
 import Loading from '../../Utils/Loading';
-import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
-import dataset_colors from '../../../styles/dataset_colors';
 
 /**
  *
