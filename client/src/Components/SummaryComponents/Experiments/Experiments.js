@@ -47,14 +47,16 @@ const renderComponent = (loading, error, data) => {
   }
   return (
     <>
-      <div className="plot">
-        <h3>Average experiments per cell line in each data set</h3>
-        <AverageDatasetBarPlot data={experimentsPerCell} xaxis="Experiments" />
-      </div>
-      <div className="plot">
-        <h3>Average experiments per compound in each dataset</h3>
-        <AverageDatasetBarPlot data={experimentsPerCompound} xaxis="Experiments" />
-      </div>
+      <AverageDatasetBarPlot
+        data={experimentsPerCell}
+        xaxis="Experiments"
+        title="Average experiments per cell line in each data set"
+      />
+      <AverageDatasetBarPlot
+        data={experimentsPerCompound}
+        xaxis="Experiments"
+        title="Average experiments per compound in each dataset"
+      />
     </>
   );
 };

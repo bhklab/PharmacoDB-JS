@@ -53,16 +53,19 @@ const generatePlotlyData = (data) => {
  * )
  */
 const DatasetHorizontalPlot = (props) => {
-  const { data, xaxis } = props;
+  const { data, xaxis, title } = props;
   // sorts data by count values
   data.sort((dataset1, dataset2) => dataset2.count - dataset1.count);
   const plotlyData = generatePlotlyData(data);
 
   const layout = {
-    autosize: true,
+    autoresize: true,
     height: 530,
     margin: {
-      t: 50,
+      t: 20,
+      b: 50,
+      l: 65,
+      r: 0,
     },
     xaxis: {
       color: colors.dark_teal_heading,
@@ -81,13 +84,17 @@ const DatasetHorizontalPlot = (props) => {
     },
   };
   return (
-    <Plot data={[plotlyData]} layout={layout} config={config} />
+    <div className="plot">
+      <h3>{title}</h3>
+      <Plot data={[plotlyData]} layout={layout} config={config} />
+    </div>
   );
 };
 
 DatasetHorizontalPlot.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   xaxis: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default DatasetHorizontalPlot;

@@ -15,7 +15,9 @@ const GlobalStyles = createGlobalStyle`
         flex-direction: column;
         align-items: center;
     }
-
+    .js-plotly-plot {
+        width: 100%;
+    }
     .noscroll
     {
         position: fixed; 
