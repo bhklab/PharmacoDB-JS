@@ -121,7 +121,7 @@ const renderComponent = (loading, error, columns, data, pieData) => {
       <h2> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
       <h2> List of Cell Lines </h2>
-      {/* <Table columns={columns} data={data} /> */}
+      <Table columns={columns} data={data} />
     </>
   );
 };

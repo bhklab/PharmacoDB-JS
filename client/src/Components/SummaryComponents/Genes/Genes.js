@@ -68,7 +68,7 @@ const renderComponent = (loading, error, columns, data) => {
   return (
     <>
       <h2>List of Genes</h2>
-      {/* <Table columns={columns} data={data} /> */}
+      <Table columns={columns} data={data} />
     </>
   );
 };
