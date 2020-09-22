@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Layout from '../../Utils/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../Utils/NotFoundPage';
+import SnakeCase from '../../Utils/SnakeCase';
 import Table from '../../Utils/Table';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
@@ -32,6 +33,8 @@ const ANNOTATION_COLUMNS = [
   },
 ];
 
+const SIDE_LINKS = ['Synonyms', 'External IDs', 'Annotated Targets', 'FDA Approval Status', 'Plots'];
+
 /**
  * Format data for the synonyms table
  * @param {Array} data synonym data from the compound API
@@ -50,23 +53,28 @@ const formatSynonymData = (data) => {
  * @param {Array} data annotation data from the compound API
  */
 const formatAnnotationData = (data) => {
+  const modifiedData = [];
   if (data) {
     const { annotation } = data;
-    return [
-      {
-        db: 'SMILES',
-        identifier: annotation.smiles,
-      }, {
-        db: 'InChiKey',
-        identifier: annotation.inchikey,
-      }, {
-        db: 'PubChem ID',
-        identifier: annotation.pubchem,
-      },
-    ];
+    modifiedData.push({
+      db: 'SMILES',
+      identifier: annotation.smiles,
+    }, {
+      db: 'InChiKey',
+      identifier: annotation.inchikey,
+    }, {
+      db: 'PubChem ID',
+      identifier: annotation.pubchem,
+    });
   }
-  return null;
+  return modifiedData;
 };
+
+/**
+ *
+ * @param {String} link
+ */
+const createSideLink = (link) => <Link key={link} className="link" activeClass="selected" to={`${SnakeCase(link)}`} spy smooth duration={200} offset={-400}>{link}</Link>;
 
 /**
  * Parent component for the individual compound page.
@@ -79,49 +87,53 @@ const formatAnnotationData = (data) => {
  * )
  */
 const IndivCompounds = (props) => {
+  // parameter.
   const { match: { params } } = props;
 
-  // query
-  const { loading, error, data } = useQuery(getCompoundQuery, {
+  // query to get the data for the single compound.
+  const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
     variables: { compoundId: parseInt(params.id) },
   });
+
   // load data from query into state
   const [compound, setCompound] = useState({
     data: {},
     loaded: false,
   });
 
-  // formatted data for synonyms annotation table
-  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(compound.data.synonyms), [compound.data.synonyms]);
-
-  // formatted data for external ids annotation table
-  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
-  const annotationData = React.useMemo(() => formatAnnotationData(compound.data.compound), [compound.data.compound]);
-
+  // to set the state on the change of the data.
   useEffect(() => {
-    if (data !== undefined) {
+    if (queryData !== undefined) {
       setCompound({
-        data: data.compound,
+        data: queryData.singleCompound,
         loaded: true,
       });
     }
-  }, [data]);
+  }, [queryData]);
+
+  // destructuring the compound object.
+  const { data } = compound;
+
+  // formatted data for synonyms annotation table
+  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
+  const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [data.synonyms]);
+
+  // formatted data for external ids annotation table
+  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
+  const annotationData = React.useMemo(() => formatAnnotationData(data.compound), [data.compound]);
 
   return (compound.loaded ? (
-    <Layout page={compound.data.compound.name}>
+    <Layout page={data.compound.name}>
       <StyledWrapper>
         {loading ? (<p>Loading...</p>)
           : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-compounds">
-                <h1>{compound.data.compound.name}</h1>
+                <h1>{data.compound.name}</h1>
                 <StyledSidebar>
-                  <Link className="link" activeClass="selected" to="synonyms" spy smooth duration={200} offset={-400}>Synonyms</Link>
-                  <Link className="link" activeClass="selected" to="external_ids" spy smooth duration={200} offset={-400}>External IDs</Link>
-                  <Link className="link" activeClass="selected" to="annotated_targets" spy smooth duration={200} offset={-400}>Annotated Targets</Link>
-                  <Link className="link" activeClass="selected" to="fda_status" spy smooth duration={200} offset={-400}>FDA status</Link>
-                  <Link className="link" activeClass="selected" to="plots" spy smooth duration={200} offset={-400}>Plots</Link>
+                  {
+                    SIDE_LINKS.map((link) => createSideLink(link))
+                  }
                 </StyledSidebar>
                 <div className="container">
                   <div className="content">
@@ -135,15 +147,16 @@ const IndivCompounds = (props) => {
                     </Element>
                     <Element className="section" name="annotated_targets">
                       <h3>Annotated Targets</h3>
-                      <div className="text">{compound.data.targets.map((x) => x.name).join(', ')}</div>
+                      <div className="text">{data.targets ? data.targets.map((x) => x.name).join(', ') : ''}</div>
                     </Element>
-                    <Element className="section" name="fda_status">
+                    <Element className="section" name="fda_approval_status">
                       <h3>FDA Approval Status</h3>
-                      <div className="text">{compound.data.compound.annotation.fda_status}</div>
+                      <div className="text">{data.compound.annotation.fda_status}</div>
                     </Element>
-                    <Element name="plots" className="section temp">plots</Element>
+                    <Element name="plots" className="section temp">
+                      <h3>Plots</h3>
+                    </Element>
                   </div>
-
                 </div>
               </StyledIndivPage>
             ))}
