@@ -7,7 +7,8 @@ const Container = styled.div`
   margin-top: 250px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center !important;
+  justify-content: center !important;
 `;
 
 const Loading = () => (
