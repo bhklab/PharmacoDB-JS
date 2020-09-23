@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 import compoundsImg from '../../images/compounds.png';
 import cellsImg from '../../images/cells.png';
 import datasetsImg from '../../images/datasets.png';
@@ -74,16 +74,17 @@ const StyledStats = styled.div`
  * @returns {Object} - returns an Object of different types with name and value.
  */
 const statistics = {
-  datasets: { name: 'datasets', value: '7', image: datasetsImg },
-  tissues: { name: 'tissues', value: '41', image: tissuesImg },
-  cells: { name: 'cell-lines', value: '1,691', image: cellsImg },
+  datasets: { name: 'datasets', value: '7', image: datasetsImg, link: '/datasets' },
+  tissues: { name: 'tissues', value: '41', image: tissuesImg, link: '/tissues' },
+  cells: { name: 'cell-lines', value: '1,691', image: cellsImg, link: '/cell_lines' },
   experiments: {
     name: 'experiments',
     value: '650,894',
     image: experimentsImg,
+    link: '/experiments'
   },
-  genes: { name: 'genes', value: '19,933', image: genesImg },
-  compounds: { name: 'compounds', value: '759', image: compoundsImg },
+  genes: { name: 'genes', value: '19,933', image: genesImg, link: '/genes' },
+  compounds: { name: 'compounds', value: '759', image: compoundsImg, link: '/compounds' },
 };
 
 /**
@@ -101,7 +102,9 @@ const Stats = () => (
   <StyledStats>
     {Object.keys(statistics).map((type) => (
       <div key={statistics[type].name} className="item-container">
-        <img alt={statistics[type].value} src={`${statistics[type].image}`} />
+        <Link to={statistics[type].link}>
+          <img alt={statistics[type].value} src={`${statistics[type].image}`} />
+        </Link>
         <div className="text">
           <span className="big">
             {`${statistics[type].value}`}

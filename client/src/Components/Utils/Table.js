@@ -93,13 +93,16 @@ const Styles = styled.div`
   }
   .top-settings {
     color: ${colors.dark_teal_heading};
+    min-height: 40px;
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
-    width: 60%;
+    width: 100%;
     align-items: center;
     .show-page {
-      width: 35%;
+      width: 30%;
+      text-align: right;
+      margin-right: 10px;
       select {
         border: 1px solid ${colors.white_smoke};
         color: ${colors.dark_teal_heading};
@@ -110,13 +113,14 @@ const Styles = styled.div`
       border: 1px solid ${colors.white_smoke};
       border-radius: 20px;
       padding: 5px 20px 5px 25px;
-      width: 60%;
+      width: 40%;
+      margin-left: 10px;
     }
 
     .search-icon {
       position: absolute;
       width: 10px;
-      margin-left: 10px;
+      margin-left: 20px;
       opacity: 0.8;
     }
 
@@ -126,8 +130,11 @@ const Styles = styled.div`
       align-items: flex-start;
       margin-bottom: 0;
       .search, .show-page {
-        width: 100%;
+        width: 90%;
         margin-bottom: 1rem;
+      }
+      .search-icon {
+        margin-top: 5px;
       }
     }
   }
