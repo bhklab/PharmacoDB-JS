@@ -118,7 +118,7 @@ const summaryQuery = async (type, datasetId) => {
 const datasets = async (args, parent, info) => {
     try {
         // extracts list of fields requested by the client
-        const listOfFields = retrieveFields(info);
+        const listOfFields = retrieveFields(info).map(el => el.name);
         // grab the datasets {id, name}.
         const datasets = await datasetQuery();
         // retrieves data if it was requested
