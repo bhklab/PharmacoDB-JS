@@ -91,7 +91,7 @@ const createSideLink = (link) => <Link key={link} className="link" activeClass="
 const IndivCompounds = (props) => {
   // parameter.
   const { match: { params } } = props;
-  const compoundId = parseInt(params.id);
+  // const compoundId = parseInt(params.id);
 
   // query to get the data for the single compound.
   const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
@@ -158,7 +158,7 @@ const IndivCompounds = (props) => {
                     </Element>
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
-                      <PlotSection compoundId={compoundId} />
+                      <PlotSection compound={({ id: data.compound.id, name: data.compound.name })} />
                     </Element>
                   </div>
                 </div>

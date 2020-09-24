@@ -1,13 +1,12 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCompoundExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../Utils/Loading';
-import PlotsWrapper from '../../../styles/PlotsWrapper';
-import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
+import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 
 const generateCountPlotData = (experiments) => {
   const tissueObj = {};
@@ -47,10 +46,11 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotsData = (props) => {
-  const { compoundId } = props;
+  const { compound } = props;
+  const { id, name } = compound;
 
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
-    variables: { compoundId },
+    variables: { compoundId: id },
   });
   console.log(loading, error, data);
   if (loading) {
@@ -64,22 +64,25 @@ const PlotsData = (props) => {
   console.log(tissuesData, cellLinesData);
   return (
     <>
-      <AverageDatasetBarPlot
+      <DatasetHorizontalPlot
         data={cellLinesData}
         xaxis="# of cell lines"
-        title={`Number of cell lines tested with ${compoundId} (per dataset)`}
+        title={`Number of cell lines tested with ${name} (per dataset)`}
       />
-      <AverageDatasetBarPlot
+      <DatasetHorizontalPlot
         data={tissuesData}
         xaxis="# of tissues"
-        title={`Number of tissues tested with ${compoundId} (per dataset)`}
+        title={`Number of tissues tested with ${name} (per dataset)`}
       />
     </>
   );
 };
 
 PlotsData.propTypes = {
-  compoundId: PropTypes.number.isRequired,
+  compound: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  }).isRequired,
 };
 
 export default PlotsData;
