@@ -27,7 +27,7 @@ const getCompoundsQuery = gql`
  */
 const getCompoundQuery = gql`
   query getSingleCompound($compoundId: Int!) {
-    compound(compoundId: $compoundId) {
+    singleCompound: compound(compoundId: $compoundId) {
       compound {
         id
         name

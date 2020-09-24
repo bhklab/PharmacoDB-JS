@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-// import Table from '../../Table/Table';
+import Table from '../../Utils/Table';
 import Layout from '../../Utils/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getCellLinesQuery } from '../../../queries/cell';
@@ -121,7 +121,7 @@ const renderComponent = (loading, error, columns, data, pieData) => {
       <h2> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
       <h2> List of Cell Lines </h2>
-      {/* <Table columns={columns} data={data} /> */}
+      <Table columns={columns} data={data} />
     </>
   );
 };
