@@ -7,6 +7,7 @@ import { getSingleCompoundExperimentsQuery } from '../../../queries/experiments'
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../Utils/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
+import ProfileCellLine from '../../Plots/ProfileCellLine';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
@@ -43,7 +44,7 @@ const generateCountPlotData = (experiments) => {
     count: [...new Set(dataset[1])].length,
     color: dataset_colors[i],
   }));
-  console.log([tissueData, cellLineData]);
+
   return [tissueData, cellLineData];
 };
 /**
@@ -63,15 +64,12 @@ const CountPlotSection = (props) => {
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
     variables: { compoundId: id },
   });
-  console.log(data);
-  console.log(loading, error, data);
   if (loading) {
     return <Loading />;
   }
   if (error) {
     return <p> Error! </p>;
   }
-  console.log(data);
   const [tissuesData, cellLinesData] = generateCountPlotData(data.experiments);
   return (
     <>
@@ -85,6 +83,7 @@ const CountPlotSection = (props) => {
         xaxis="# of tissues"
         title={`Number of tissues tested with ${name} (per dataset)`}
       />
+      <ProfileCellLine data={data.experiments} />
     </>
   );
 };
