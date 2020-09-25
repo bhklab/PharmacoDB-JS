@@ -24,6 +24,7 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
         'dataset_name' ], ...]
  */
 const generateExperimentsColumns = listOfFields => {
+    console.log(listOfFields);
     // array of columns for the knex main query and subquery
     const columns = ['SE.experiment_id as experiment_id'];
     const subqueryColumns = ['experiment_id'];
@@ -65,8 +66,6 @@ const generateExperimentsColumns = listOfFields => {
             columns.push(...field.fields.map(el => el.name));
             break;
         }
-        
-
     });
     return [columns, subqueryColumns];
 };
@@ -210,6 +209,7 @@ const experiments = async (args, context, info) => {
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
+        console.log(columns);
         let query = knex
             .select(columns)
             .from(subqueryExperiments);

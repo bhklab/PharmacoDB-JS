@@ -18,12 +18,16 @@ const getSingleCompoundExperimentsQuery = gql`
         }
       }
       tissue {
-        id,
+        id
         name
       }
       dataset {
-        id,
+        id
         name
+      }
+      profile {
+        AAC
+        IC50
       }
     }
   }
