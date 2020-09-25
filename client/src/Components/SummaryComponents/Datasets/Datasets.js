@@ -5,6 +5,7 @@ import Layout from '../../Utils/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../Utils/Loading';
+import UpsetPlot from '../../Plots/UpsetPlot';
 
 const table_columns = [
   {
@@ -17,6 +18,13 @@ const table_columns = [
   },
 ];
 
+/**
+ * 
+ * @param {boolean} loading 
+ * @param {Error} error - takes the error as a param that is returned by the useQuery in case there is one.
+ * @param {Array} columns 
+ * @param {Array} data 
+ */
 const renderComponent = (loading, error, columns, data) => {
   if (loading) {
     return <Loading />;
@@ -26,6 +34,7 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
+      <UpsetPlot/>
       <h2>List of Datasets</h2>
       <Table columns={columns} data={data} />
     </>
@@ -38,7 +47,7 @@ const renderComponent = (loading, error, columns, data) => {
  * @component
  * @example
  *
- * return (
+ * returns (
  *   <Datasets/>
  * )
 */
