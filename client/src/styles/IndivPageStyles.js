@@ -39,6 +39,10 @@ const StyledIndivPage = styled.div`
     }
   }
 
+  .fda_approval_status .text {
+    font-weight: bold
+  }
+
   .plot {
     h4 {
       text-align: center;

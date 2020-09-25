@@ -8,6 +8,15 @@ import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../Utils/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 
+/**
+ * A helper function that processes data from the API to be subsequently loaded it into
+ * cell line and tissue dataset horizontal plots
+ * @param {Array} experiments - list of experiments for a given drug returned by the API
+ * @returns - array of two items. Elements of the array are a list of data points for tissue and cell line plots respectively
+ * Each data point contains name, count and color properties
+ * @example
+ * [[{name: "CTRPv2", count: 25, color: "#ccebc5"}], ... ]
+ */
 const generateCountPlotData = (experiments) => {
   const tissueObj = {};
   const cellLineObj = {};
@@ -17,6 +26,7 @@ const generateCountPlotData = (experiments) => {
     } else {
       cellLineObj[experiment.dataset.name] = [experiment.cell_line.id];
     }
+
     if (tissueObj[experiment.dataset.name]) {
       tissueObj[experiment.dataset.name].push(experiment.tissue.id);
     } else {
@@ -33,25 +43,27 @@ const generateCountPlotData = (experiments) => {
     count: [...new Set(dataset[1])].length,
     color: dataset_colors[i],
   }));
+  console.log([tissueData, cellLineData]);
   return [tissueData, cellLineData];
 };
 /**
- * Plot section of the individula compound page.
+ * Section that display count plots for the individula compound page.
  *
  * @component
  * @example
  *
  * return (
- *   <PlotsData/>
+ *   <CountPlotSection/>
  * )
  */
-const PlotsData = (props) => {
+const CountPlotSection = (props) => {
   const { compound } = props;
   const { id, name } = compound;
 
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
     variables: { compoundId: id },
   });
+  console.log(data);
   console.log(loading, error, data);
   if (loading) {
     return <Loading />;
@@ -61,7 +73,6 @@ const PlotsData = (props) => {
   }
   console.log(data);
   const [tissuesData, cellLinesData] = generateCountPlotData(data.experiments);
-  console.log(tissuesData, cellLinesData);
   return (
     <>
       <DatasetHorizontalPlot
@@ -78,11 +89,11 @@ const PlotsData = (props) => {
   );
 };
 
-PlotsData.propTypes = {
+CountPlotSection.propTypes = {
   compound: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,
 };
 
-export default PlotsData;
+export default CountPlotSection;

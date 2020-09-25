@@ -9,7 +9,8 @@ import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../Utils/NotFoundPage';
 import SnakeCase from '../../Utils/SnakeCase';
 import Table from '../../Utils/Table';
-import PlotSection from './PlotSection';
+import CountPlotSection from './CountPlotSection';
+import ProfilePlotSection from './ProfilePlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
@@ -158,7 +159,8 @@ const IndivCompounds = (props) => {
                     </Element>
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
-                      <PlotSection compound={({ id: data.compound.id, name: data.compound.name })} />
+                      <CountPlotSection compound={({ id: data.compound.id, name: data.compound.name })} />
+                      <ProfilePlotSection compound={({ id: data.compound.id, name: data.compound.name })} />
                     </Element>
                   </div>
                 </div>
