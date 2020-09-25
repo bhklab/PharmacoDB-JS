@@ -61,6 +61,9 @@ const generateExperimentsColumns = listOfFields => {
         case 'dose_responses':
             columns.push(...['dose','response']);
             break;
+        case 'profile':
+            columns.push(...field.fields.map(el => el.name));
+            break;
         }
         
 
@@ -91,7 +94,15 @@ const transformExperiments = data => {
             fda_status,
             smiles,
             inchikey,
-            pubchem
+            pubchem,
+            HS,
+            Einf,
+            EC50,
+            AAC,
+            IC50,
+            DSS1,
+            DSS2,
+            DSS3
         } = row;
         if (!responseObj[experiment_id]) {
             responseObj[experiment_id] = {
@@ -124,6 +135,16 @@ const transformExperiments = data => {
                 dataset: {
                     id: dataset_id,
                     name: dataset_name
+                },
+                profile: {
+                    HS,
+                    Einf,
+                    EC50,
+                    AAC,
+                    IC50,
+                    DSS1,
+                    DSS2,
+                    DSS3
                 },
                 dose_responses: [{
                     dose,
@@ -194,6 +215,7 @@ const experiments = async (args, context, info) => {
             .from(subqueryExperiments);
         // joins drug_responses table if needed
         if (subtypes.includes('dose_responses')) query = query.join('dose_responses', 'SE.experiment_id', '=', 'dose_responses.experiment_id');
+        if (subtypes.includes('profile')) query = query.join('profiles', 'SE.experiment_id', '=', 'profiles.experiment_id');
         const experiments = await query;
         return transformExperiments(experiments);
     } catch (err) {
@@ -229,7 +251,15 @@ const experiment = async args => {
                 'fda_status',
                 'smiles',
                 'inchikey',
-                'pubchem')
+                'pubchem',
+                'HS',
+                'Einf',
+                'EC50',
+                'AAC',
+                'IC50',
+                'DSS1',
+                'DSS2',
+                'DSS3')
             .from('experiments')
             .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
             .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
@@ -237,6 +267,7 @@ const experiment = async args => {
             .join('datasets', 'datasets.dataset_id', '=','experiments.dataset_id')
             .join('dose_responses', 'dose_responses.experiment_id', '=', 'experiments.experiment_id')
             .join('drug_annots', 'experiments.drug_id', '=', 'drug_annots.drug_id')
+            .join('profiles', 'experiments.experiment_id', '=', 'profiles.experiment_id')
             .where('experiments.experiment_id', experimentId);
         const output = transformExperiments(experiment);
         return output[0];
