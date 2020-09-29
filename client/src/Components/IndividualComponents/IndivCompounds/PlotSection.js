@@ -48,16 +48,16 @@ const generateCountPlotData = (experiments) => {
   return [tissueData, cellLineData];
 };
 /**
- * Section that display count plots for the individula compound page.
+ * Section that display plots for the individula compound page.
  *
  * @component
  * @example
  *
  * return (
- *   <CountPlotSection/>
+ *   <PlotSection/>
  * )
  */
-const CountPlotSection = (props) => {
+const PlotSection = (props) => {
   const { compound } = props;
   const { id, name } = compound;
 
@@ -88,11 +88,11 @@ const CountPlotSection = (props) => {
   );
 };
 
-CountPlotSection.propTypes = {
+PlotSection.propTypes = {
   compound: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,
 };
 
-export default CountPlotSection;
+export default PlotSection;

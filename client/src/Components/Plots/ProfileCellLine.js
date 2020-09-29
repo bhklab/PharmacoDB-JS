@@ -4,7 +4,7 @@ import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import generateSelectOptions from '../../utils/generateSelectOptions';
-import calculateMedian from '../../utils/calculateMedian';
+import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
 import colors from '../../styles/colors';
 
 const config = {
@@ -12,23 +12,24 @@ const config = {
   displayModeBar: false,
 };
 
+const retrieveProfiles = (dataObj, profile) => Object.keys(dataObj).map((datasetProfile) => dataObj[datasetProfile][profile]).filter((value) => value !== null);
+
 const formatCellData = (experiments) => {
-  console.log(experiments);
-  const output = {};
+  const cellObj = {};
   experiments.forEach((experiment) => {
     const { __typename, ...profile } = experiment.profile;
     const { cell_line, dataset } = experiment;
-    if (!output[cell_line.name]) {
-      output[cell_line.name] = {
+    if (!cellObj[cell_line.name]) {
+      cellObj[cell_line.name] = {
         id: cell_line.id,
         name: cell_line.name,
         profiles: { [dataset.name]: profile },
       };
     } else {
-      output[experiment.cell_line.name].profiles[experiment.dataset.name] = profile;
+      cellObj[experiment.cell_line.name].profiles[experiment.dataset.name] = profile;
     }
   });
-  return output;
+  return cellObj;
 };
 
 /**
@@ -46,29 +47,38 @@ const generateOptions = (data) => {
 
 const generatePlotData = (data, dataset, profile) => {
   console.log(data, dataset, profile);
-  const plotData = [];
-  data.forEach((el) => ({
-    x: el.cell_line.name,
-    // y:
-  }));
-  return {
-    x: ['Trial 1', 'Trial 2', 'Trial 3'],
-    y: [3, 6, 4],
-    name: 'Control',
+
+  const plotData = {
+    x: [],
+    y: [],
+    name: 'Cell Line',
     error_y: {
       type: 'data',
-      array: [1, null, 1.5],
-      visible: [true, false, true],
+      array: [],
+      visible: true,
     },
     type: 'bar',
   };
+  Object.values(data).forEach((el) => {
+    const profiles = retrieveProfiles(el.profiles, profile);
+    const median = calculateMedian(profiles);
+    const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, median));
+    plotData.x.push(el.name);
+    plotData.y.push(median);
+    plotData.error_y.array.push(deviation);
+  });
+  return plotData;
 };
 
 const ProfileCellLine = (props) => {
   const { data, compound } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
-  const [plotData, setPlotData] = useState(generatePlotData(data, selectedDataset, selectedProfile));
+
+  const formattedData = useMemo(() => formatCellData(data), [data]);
+  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
+
+  const [plotData, setPlotData] = useState(generatePlotData(formattedData, selectedDataset, selectedProfile));
   const [layout, setLayout] = useState({
     autoresize: true,
     height: 530,
@@ -85,14 +95,11 @@ const ProfileCellLine = (props) => {
       color: colors.dark_teal_heading,
     },
   });
+  console.log(plotData);
 
   useEffect(() => {
     // changes layout when profile updates
   }, [selectedProfile]);
-  const formattedData = useMemo(() => formatCellData(data), [data]);
-  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
-  console.log(profileOptions, datasetOptions);
-  console.log(formattedData);
 
   return (
     <div className="plot">
