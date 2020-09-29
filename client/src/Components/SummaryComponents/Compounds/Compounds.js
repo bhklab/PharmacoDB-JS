@@ -1,11 +1,11 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../Utils/Table';
-import Layout from '../../Utils/Layout';
+import Table from '../../UtilComponents/Table';
+import Layout from '../../UtilComponents/Layout';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
 import BarPlot from '../../Plots/BarPlot';
-import Loading from '../../Utils/Loading';
+import Loading from '../../UtilComponents/Loading';
 
 const table_columns = [
   {

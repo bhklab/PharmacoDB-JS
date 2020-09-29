@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Layout from '../../Utils/Layout';
+import Layout from '../../UtilComponents/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
-import { NotFoundContent } from '../../Utils/NotFoundPage';
-import SnakeCase from '../../Utils/SnakeCase';
-import Table from '../../Utils/Table';
+import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
+import SnakeCase from '../../../utils/convertToSnakeCase';
+import Table from '../../UtilComponents/Table';
 import CountPlotSection from './CountPlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';

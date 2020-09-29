@@ -4,7 +4,7 @@
  * @param {String} splitBy - second agrument is to split the string by. (eg '_', adernal_gland)
  * @returns {String} - returns a transformed string with the first letter capitalized for each word in the string(Title Case, eg. Adrenal Gland).
  */
-const TitleCase = (string, splitBy = ' ') => {
+const convertToTitleCase = (string, splitBy = ' ') => {
   const capitalString = string.split(splitBy).map((str) => {
     if (str === 'and') {
       return str;
@@ -14,4 +14,4 @@ const TitleCase = (string, splitBy = ' ') => {
   return capitalString.join(' ');
 };
 
-export default TitleCase;
+export default convertToTitleCase;

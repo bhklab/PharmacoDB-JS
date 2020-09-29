@@ -3,8 +3,8 @@ import Plot from 'react-plotly.js';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import SelectOptions from '../Utils/SelectOptions';
-import calculateMedian from '../Utils/calculateMedian';
+import generateSelectOptions from '../../utils/generateSelectOptions';
+import calculateMedian from '../../utils/calculateMedian';
 import colors from '../../styles/colors';
 
 const config = {
@@ -38,21 +38,19 @@ const formatCellData = (experiments) => {
  * @example
  * return [[{value: 'CCLE', label: 'CCLE'}, ...],[...]]
  */
-const generateSelectOptions = (data) => {
+const generateOptions = (data) => {
   const profileOptions = Object.keys(data[0].profile);
   const datasetOptions = [...new Set(data.map((el) => el.dataset.name)), 'All'];
-  return [SelectOptions(profileOptions), SelectOptions(datasetOptions)];
+  return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
 };
 
 const generatePlotData = (data, dataset, profile) => {
   console.log(data, dataset, profile);
-  const plotData = []
-  data.forEach(el => {
-    return {
-      x: el.cell_line.name
-      y: 
-    }
-  })
+  const plotData = [];
+  data.forEach((el) => ({
+    x: el.cell_line.name,
+    // y:
+  }));
   return {
     x: ['Trial 1', 'Trial 2', 'Trial 3'],
     y: [3, 6, 4],
@@ -92,7 +90,7 @@ const ProfileCellLine = (props) => {
     // changes layout when profile updates
   }, [selectedProfile]);
   const formattedData = useMemo(() => formatCellData(data), [data]);
-  const [profileOptions, datasetOptions] = useMemo(() => generateSelectOptions(data), [data]);
+  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
   console.log(profileOptions, datasetOptions);
   console.log(formattedData);
 

@@ -74,17 +74,27 @@ const StyledStats = styled.div`
  * @returns {Object} - returns an Object of different types with name and value.
  */
 const statistics = {
-  datasets: { name: 'datasets', value: '7', image: datasetsImg, link: '/datasets' },
-  tissues: { name: 'tissues', value: '41', image: tissuesImg, link: '/tissues' },
-  cells: { name: 'cell-lines', value: '1,691', image: cellsImg, link: '/cell_lines' },
+  datasets: {
+    name: 'datasets', value: '7', image: datasetsImg, link: '/datasets',
+  },
+  tissues: {
+    name: 'tissues', value: '41', image: tissuesImg, link: '/tissues',
+  },
+  cells: {
+    name: 'cell-lines', value: '1,691', image: cellsImg, link: '/cell_lines',
+  },
   experiments: {
     name: 'experiments',
     value: '650,894',
     image: experimentsImg,
-    link: '/experiments'
+    link: '/experiments',
   },
-  genes: { name: 'genes', value: '19,933', image: genesImg, link: '/genes' },
-  compounds: { name: 'compounds', value: '759', image: compoundsImg, link: '/compounds' },
+  genes: {
+    name: 'genes', value: '19,933', image: genesImg, link: '/genes',
+  },
+  compounds: {
+    name: 'compounds', value: '759', image: compoundsImg, link: '/compounds',
+  },
 };
 
 /**
