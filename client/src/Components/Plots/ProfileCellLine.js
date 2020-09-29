@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
 
+const formatCellData = (experiments) => {
+  console.log(experiments);
+  const output = {};
+  experiments.forEach((experiment) => {
+    const { __typename, ...profile } = experiment.profile;
+    const { cell_line, dataset } = experiment;
+    if (!output[cell_line.name]) {
+      output[cell_line.name] = {
+        id: cell_line.id,
+        name: cell_line.name,
+        profiles: { [dataset.name]: profile },
+      };
+    } else {
+      output[experiment.cell_line.name].profiles[experiment.dataset.name] = profile;
+    }
+  });
+  return output;
+};
+
 const ProfileCellLine = (props) => {
   const { data } = props;
-  console.log(data);
+
+  const formattedData = useMemo(() => formatCellData(data), [data]);
+  console.log(formattedData);
   return (<div>Profile Cell Line Plot</div>);
 };
 
