@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 20px;
     }
     .js-plotly-plot {
         width: 100%;
@@ -79,6 +80,10 @@ const GlobalStyles = createGlobalStyle`
         p {
             margin: 2em;
         }
+    }
+
+    .plot {
+        margin-bottom: 20px;
     }
     /* desktop */
     @media only screen and (min-width: 1082px) { 

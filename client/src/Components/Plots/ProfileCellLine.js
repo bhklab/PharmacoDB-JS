@@ -1,6 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useQuery } from 'react';
 import Plot from 'react-plotly.js';
+import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
+import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
+import { getDatasetsQuery } from '../../queries/dataset';
+import SelectOptions from '../Utils/SelectOptions';
 
 const formatCellData = (experiments) => {
   console.log(experiments);
@@ -21,12 +25,52 @@ const formatCellData = (experiments) => {
   return output;
 };
 
+/**
+ *
+ * @param {Array} data - experiments data from the API call
+ * @returns {Array} - returns an array of profile and dataset options respectively that can be used by react-select
+ * @example
+ * return [[{value: 'CCLE', label: 'CCLE'}, ...],[...]]
+ */
+const generateSelectOptions = (data) => {
+  const profileOptions = Object.keys(data[0].profile);
+  const datasetOptions = [...new Set(data.map((el) => el.dataset.name)), 'All'];
+  return [SelectOptions(profileOptions), SelectOptions(datasetOptions)];
+};
+
 const ProfileCellLine = (props) => {
   const { data } = props;
+  const [selectedProfile, setSelectedProfile] = useState('AAC');
+  const [selectedDataset, setSelectedDataset] = useState('All');
 
   const formattedData = useMemo(() => formatCellData(data), [data]);
+  const [profileOptions, datasetOptions] = useMemo(() => generateSelectOptions(data), [data]);
+  console.log(profileOptions, datasetOptions);
   console.log(formattedData);
-  return (<div>Profile Cell Line Plot</div>);
+  return (
+    <div className="plot">
+      <StyledSelectorContainer>
+        <div className="selector-container">
+          <h3>Select Dataset </h3>
+          <Select
+            defaultValue={{ value: selectedDataset, label: selectedDataset }}
+            options={datasetOptions}
+            // components={{ Option: CustomOption }}
+            // styles={customStyles}
+            // onChange={handleDoseChange}
+          />
+        </div>
+        <div className="selector-container">
+          <h3>Select Profile </h3>
+          <Select
+            defaultValue={{ value: selectedProfile, label: selectedProfile }}
+            options={profileOptions}
+          />
+        </div>
+      </StyledSelectorContainer>
+      <div>Profile Plot</div>
+    </div>
+  );
 };
 
 ProfileCellLine.propTypes = {
