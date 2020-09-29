@@ -1,10 +1,16 @@
-import React, { useState, useMemo, useQuery } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import Select, { components } from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import { getDatasetsQuery } from '../../queries/dataset';
 import SelectOptions from '../Utils/SelectOptions';
+import calculateMedian from '../Utils/calculateMedian';
+import colors from '../../styles/colors';
+
+const config = {
+  responsive: true,
+  displayModeBar: false,
+};
 
 const formatCellData = (experiments) => {
   console.log(experiments);
@@ -38,15 +44,58 @@ const generateSelectOptions = (data) => {
   return [SelectOptions(profileOptions), SelectOptions(datasetOptions)];
 };
 
+const generatePlotData = (data, dataset, profile) => {
+  console.log(data, dataset, profile);
+  const plotData = []
+  data.forEach(el => {
+    return {
+      x: el.cell_line.name
+      y: 
+    }
+  })
+  return {
+    x: ['Trial 1', 'Trial 2', 'Trial 3'],
+    y: [3, 6, 4],
+    name: 'Control',
+    error_y: {
+      type: 'data',
+      array: [1, null, 1.5],
+      visible: [true, false, true],
+    },
+    type: 'bar',
+  };
+};
+
 const ProfileCellLine = (props) => {
-  const { data } = props;
+  const { data, compound } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
+  const [plotData, setPlotData] = useState(generatePlotData(data, selectedDataset, selectedProfile));
+  const [layout, setLayout] = useState({
+    autoresize: true,
+    height: 530,
+    margin: {
+      t: 20,
+      b: 50,
+      l: 65,
+      r: 0,
+    },
+    xaxis: {
+      color: colors.dark_teal_heading,
+    },
+    yaxis: {
+      color: colors.dark_teal_heading,
+    },
+  });
 
+  useEffect(() => {
+    // changes layout when profile updates
+  }, [selectedProfile]);
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateSelectOptions(data), [data]);
   console.log(profileOptions, datasetOptions);
   console.log(formattedData);
+
   return (
     <div className="plot">
       <StyledSelectorContainer>
@@ -55,9 +104,7 @@ const ProfileCellLine = (props) => {
           <Select
             defaultValue={{ value: selectedDataset, label: selectedDataset }}
             options={datasetOptions}
-            // components={{ Option: CustomOption }}
-            // styles={customStyles}
-            // onChange={handleDoseChange}
+            onChange={(e) => setSelectedDataset(e.value)}
           />
         </div>
         <div className="selector-container">
@@ -65,10 +112,19 @@ const ProfileCellLine = (props) => {
           <Select
             defaultValue={{ value: selectedProfile, label: selectedProfile }}
             options={profileOptions}
+            onChange={(e) => setSelectedProfile(e.value)}
           />
         </div>
       </StyledSelectorContainer>
-      <div>Profile Plot</div>
+      <h4>
+        {compound}
+        ,
+        {' '}
+        {selectedProfile}
+        {' '}
+        {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
+      </h4>
+      <Plot data={[plotData]} layout={layout} config={config} />
     </div>
   );
 };
@@ -99,6 +155,7 @@ ProfileCellLine.propTypes = {
       }).isRequired,
     }),
   ).isRequired,
+  compound: PropTypes.string.isRequired,
 };
 
 export default ProfileCellLine;

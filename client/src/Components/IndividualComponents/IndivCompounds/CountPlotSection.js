@@ -83,7 +83,7 @@ const CountPlotSection = (props) => {
         xaxis="# of tissues"
         title={`Number of tissues tested with ${name} (per dataset)`}
       />
-      <ProfileCellLine data={data.experiments} />
+      <ProfileCellLine compound={name} data={data.experiments} />
     </>
   );
 };
