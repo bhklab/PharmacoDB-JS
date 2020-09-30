@@ -46,19 +46,7 @@ const generateOptions = (data) => {
 };
 
 const generatePlotData = (data, dataset, profile) => {
-  console.log(data, dataset, profile);
-
-  const plotData = {
-    x: [],
-    y: [],
-    name: 'Cell Line',
-    error_y: {
-      type: 'data',
-      array: [],
-      visible: true,
-    },
-    type: 'bar',
-  };
+  const plotData = [];
   const calculatedData = Object.values(data).map((el) => {
     const profiles = retrieveProfiles(el.profiles, profile);
     const median = calculateMedian(profiles);
@@ -67,20 +55,58 @@ const generatePlotData = (data, dataset, profile) => {
   }).sort((a, b) => b.median - a.median);
   for (let i = 0; i < 30; i += 1) {
     const { name, median, deviation } = calculatedData[i];
-    plotData.x.push(name);
-    plotData.y.push(median);
-    plotData.error_y.array.push(deviation);
+    const trace = {
+      type: 'bar',
+      marker: {
+        color: colors.blue,
+      },
+      name,
+      x: [name],
+      y: [median],
+    };
+    if (deviation) {
+      trace.error_y = {
+        type: 'data',
+        array: [deviation],
+        visible: true,
+      };
+    }
+    plotData.push(trace);
   }
-  plotData.x.push(...Array(3).fill(''));
-  plotData.y.push(...Array(3).fill(0));
-  plotData.error_y.array.push(...Array(3).fill(0));
+  for (let i = 0; i < 3; i += 1) {
+    const trace = {
+      type: 'bar',
+      text: '',
+      name: 'empty',
+      hoverinfo: 'skip',
+      marker: {
+        color: colors.blue,
+      },
+      x: [i],
+      y: [0],
+    };
+    plotData.push(trace);
+  }
   for (let i = calculatedData.length - 30; i < calculatedData.length; i += 1) {
     const { name, median, deviation } = calculatedData[i];
-    plotData.x.push(name);
-    plotData.y.push(median);
-    plotData.error_y.array.push(deviation);
+    const trace = {
+      type: 'bar',
+      marker: {
+        color: colors.blue,
+      },
+      name,
+      x: [name],
+      y: [median],
+    };
+    if (deviation) {
+      trace.error_y = {
+        type: 'data',
+        array: [deviation],
+        visible: true,
+      };
+    }
+    plotData.push(trace);
   }
-  console.log(plotData);
   return plotData;
 };
 
@@ -104,16 +130,21 @@ const ProfileCellLine = (props) => {
     },
     xaxis: {
       color: colors.dark_teal_heading,
+      tickfont: {
+        size: 9,
+      },
     },
     yaxis: {
       color: colors.dark_teal_heading,
     },
+    bargap: 0,
+    showlegend: false,
   });
   console.log(plotData);
 
   useEffect(() => {
-    // changes layout when profile updates
-  }, [selectedProfile]);
+    setPlotData(generatePlotData(formattedData, selectedDataset, selectedProfile));
+  }, [selectedProfile, selectedDataset]);
 
   return (
     <div className="plot">
@@ -143,7 +174,7 @@ const ProfileCellLine = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot data={[plotData]} layout={layout} config={config} />
+      <Plot data={plotData} layout={layout} config={config} />
     </div>
   );
 };
