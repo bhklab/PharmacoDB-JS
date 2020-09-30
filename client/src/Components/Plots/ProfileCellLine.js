@@ -59,14 +59,28 @@ const generatePlotData = (data, dataset, profile) => {
     },
     type: 'bar',
   };
-  Object.values(data).forEach((el) => {
+  const calculatedData = Object.values(data).map((el) => {
     const profiles = retrieveProfiles(el.profiles, profile);
     const median = calculateMedian(profiles);
     const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, median));
-    plotData.x.push(el.name);
+    return { median, deviation, name: el.name };
+  }).sort((a, b) => b.median - a.median);
+  for (let i = 0; i < 30; i += 1) {
+    const { name, median, deviation } = calculatedData[i];
+    plotData.x.push(name);
     plotData.y.push(median);
     plotData.error_y.array.push(deviation);
-  });
+  }
+  plotData.x.push(...Array(3).fill(''));
+  plotData.y.push(...Array(3).fill(0));
+  plotData.error_y.array.push(...Array(3).fill(0));
+  for (let i = calculatedData.length - 30; i < calculatedData.length; i += 1) {
+    const { name, median, deviation } = calculatedData[i];
+    plotData.x.push(name);
+    plotData.y.push(median);
+    plotData.error_y.array.push(deviation);
+  }
+  console.log(plotData);
   return plotData;
 };
 
