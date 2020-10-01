@@ -12,8 +12,46 @@ const config = {
   displayModeBar: false,
 };
 
+const baseLayout = {
+  autoresize: true,
+  height: 530,
+  margin: {
+    t: 20,
+    b: 50,
+    l: 65,
+    r: 0,
+  },
+  xaxis: {
+    color: colors.dark_teal_heading,
+    tickfont: {
+      size: 9,
+    },
+    fixedrange: true,
+    tickmode: 'array',
+  },
+  yaxis: {
+    color: colors.dark_teal_heading,
+    fixedrange: true,
+  },
+  bargap: 0,
+  showlegend: false,
+};
+
+/**
+ * A helper function that creates an array of values out of profile object
+ * @param {Object} dataObj - profiles data object that has AAC and IC50 profiles for different datasets
+ * @param {String} profile - a selected profile, can be AAC or IC50
+ * @returns {Array} - returns array of numbers
+ */
 const retrieveProfiles = (dataObj, profile) => Object.keys(dataObj).map((datasetProfile) => dataObj[datasetProfile][profile]).filter((value) => value !== null);
 
+/**
+ * A helper function that formats raw experiment data to be subsequently processed be rendering functions
+ * @param {Array} experiments - experiments data from the API call
+ * @returns {Object} - returns an object with cell_names as keys. Every cell line has three subfields: id, name and profiles. Profiles is an object of datasets where each dataset has two fields, AAC and IC50
+ * @example
+ * return { '697': {id: 1, name: '697', profiles: {CCLE: { AAC:0.4732, IC50: 0.1278 }, ...}}, ...}
+ */
 const formatCellData = (experiments) => {
   const cellObj = {};
   experiments.forEach((experiment) => {
@@ -41,7 +79,7 @@ const formatCellData = (experiments) => {
  */
 const generateOptions = (data) => {
   const profileOptions = Object.keys(data[0].profile);
-  const datasetOptions = [...new Set(data.map((el) => el.dataset.name)), 'All'];
+  const datasetOptions = ['All', ...new Set(data.map((el) => el.dataset.name))];
   return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
 };
 
@@ -53,6 +91,14 @@ const generatePlotData = (data, dataset, profile) => {
     const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, median));
     return { median, deviation, name: el.name };
   }).sort((a, b) => b.median - a.median);
+  const layout = {
+    ...baseLayout,
+    xaxis: {
+      ...baseLayout.xaxis,
+      tickvals: [],
+      ticktext: [],
+    },
+  };
   for (let i = 0; i < 30; i += 1) {
     const { name, median, deviation } = calculatedData[i];
     const trace = {
@@ -64,6 +110,8 @@ const generatePlotData = (data, dataset, profile) => {
       x: [name],
       y: [median],
     };
+    layout.xaxis.tickvals.push(name);
+    layout.xaxis.ticktext.push(name);
     if (deviation) {
       trace.error_y = {
         type: 'data',
@@ -85,6 +133,8 @@ const generatePlotData = (data, dataset, profile) => {
       x: [i],
       y: [0],
     };
+    layout.xaxis.tickvals.push(i);
+    layout.xaxis.ticktext.push('');
     plotData.push(trace);
   }
   for (let i = calculatedData.length - 30; i < calculatedData.length; i += 1) {
@@ -105,9 +155,12 @@ const generatePlotData = (data, dataset, profile) => {
         visible: true,
       };
     }
+    layout.xaxis.tickvals.push(name);
+    layout.xaxis.ticktext.push(name);
     plotData.push(trace);
   }
-  return plotData;
+
+  return { plotData, layout };
 };
 
 const ProfileCellLine = (props) => {
@@ -118,29 +171,7 @@ const ProfileCellLine = (props) => {
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
 
-  const [plotData, setPlotData] = useState(generatePlotData(formattedData, selectedDataset, selectedProfile));
-  const [layout, setLayout] = useState({
-    autoresize: true,
-    height: 530,
-    margin: {
-      t: 20,
-      b: 50,
-      l: 65,
-      r: 0,
-    },
-    xaxis: {
-      color: colors.dark_teal_heading,
-      tickfont: {
-        size: 9,
-      },
-    },
-    yaxis: {
-      color: colors.dark_teal_heading,
-    },
-    bargap: 0,
-    showlegend: false,
-  });
-  console.log(plotData);
+  const [{ plotData, layout }, setPlotData] = useState(generatePlotData(formattedData, selectedDataset, selectedProfile));
 
   useEffect(() => {
     setPlotData(generatePlotData(formattedData, selectedDataset, selectedProfile));
