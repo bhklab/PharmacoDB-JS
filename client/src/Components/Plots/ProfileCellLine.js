@@ -7,11 +7,13 @@ import generateSelectOptions from '../../utils/generateSelectOptions';
 import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
 import colors from '../../styles/colors';
 
+// plotly config
 const config = {
   responsive: true,
   displayModeBar: false,
 };
 
+// reusable layout object
 const baseLayout = {
   autoresize: true,
   height: 530,
@@ -83,14 +85,21 @@ const generateOptions = (data) => {
   return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
 };
 
-const generatePlotData = (data, dataset, profile) => {
+/**
+ * Helper function that creates data for the gap between low and high values for the plot
+ * @param {Number} distance - sets how many empty bars should be in the gap
+ * @returns {Array} - returns an array of objects with value, name and label properties
+ */
+const generateEmptySpace = (distance) => {
+  const output = [];
+  for (let i = 0; i < distance; i += 1) {
+    output.push({ value: 0, name: i, label: '' });
+  }
+  return output;
+};
+
+const generateRenderData = (data) => {
   const plotData = [];
-  const calculatedData = Object.values(data).map((el) => {
-    const profiles = retrieveProfiles(el.profiles, profile);
-    const median = calculateMedian(profiles);
-    const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, median));
-    return { median, deviation, name: el.name };
-  }).sort((a, b) => b.median - a.median);
   const layout = {
     ...baseLayout,
     xaxis: {
@@ -99,8 +108,10 @@ const generatePlotData = (data, dataset, profile) => {
       ticktext: [],
     },
   };
-  for (let i = 0; i < 30; i += 1) {
-    const { name, median, deviation } = calculatedData[i];
+  data.forEach((el) => {
+    const {
+      name, value, deviation, label,
+    } = el;
     const trace = {
       type: 'bar',
       marker: {
@@ -108,46 +119,10 @@ const generatePlotData = (data, dataset, profile) => {
       },
       name,
       x: [name],
-      y: [median],
+      y: [value],
     };
-    layout.xaxis.tickvals.push(name);
-    layout.xaxis.ticktext.push(name);
-    if (deviation) {
-      trace.error_y = {
-        type: 'data',
-        array: [deviation],
-        visible: true,
-      };
-    }
-    plotData.push(trace);
-  }
-  for (let i = 0; i < 3; i += 1) {
-    const trace = {
-      type: 'bar',
-      text: '',
-      name: 'empty',
-      hoverinfo: 'skip',
-      marker: {
-        color: colors.blue,
-      },
-      x: [i],
-      y: [0],
-    };
-    layout.xaxis.tickvals.push(i);
-    layout.xaxis.ticktext.push('');
-    plotData.push(trace);
-  }
-  for (let i = calculatedData.length - 30; i < calculatedData.length; i += 1) {
-    const { name, median, deviation } = calculatedData[i];
-    const trace = {
-      type: 'bar',
-      marker: {
-        color: colors.blue,
-      },
-      name,
-      x: [name],
-      y: [median],
-    };
+    // skips hoverinfo for gap bars
+    if (!label) trace.hoverinfo = 'skip';
     if (deviation) {
       trace.error_y = {
         type: 'data',
@@ -156,11 +131,24 @@ const generatePlotData = (data, dataset, profile) => {
       };
     }
     layout.xaxis.tickvals.push(name);
-    layout.xaxis.ticktext.push(name);
+    layout.xaxis.ticktext.push(label);
     plotData.push(trace);
-  }
-
+  });
   return { plotData, layout };
+};
+
+const runDataAnalysis = (data, dataset, profile) => {
+  // calculates median and deviation values and sort cell lines based on median
+  const calculatedData = Object.values(data).map((el) => {
+    const profiles = retrieveProfiles(el.profiles, profile);
+    const value = calculateMedian(profiles);
+    const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
+    return {
+      value, deviation, name: el.name, label: el.name,
+    };
+  }).sort((a, b) => b.value - a.value);
+  // contains first and last 30 items from calculated data along with some few empty datapoints to create a gap
+  return [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)];
 };
 
 const ProfileCellLine = (props) => {
@@ -171,10 +159,11 @@ const ProfileCellLine = (props) => {
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
 
-  const [{ plotData, layout }, setPlotData] = useState(generatePlotData(formattedData, selectedDataset, selectedProfile));
+  const [{ plotData, layout }, setPlotData] = useState(runDataAnalysis(formattedData, selectedDataset, selectedProfile));
 
   useEffect(() => {
-    setPlotData(generatePlotData(formattedData, selectedDataset, selectedProfile));
+    const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
+    setPlotData(generateRenderData(values));
   }, [selectedProfile, selectedDataset]);
 
   return (
