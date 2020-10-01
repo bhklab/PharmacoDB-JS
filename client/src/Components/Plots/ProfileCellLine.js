@@ -45,7 +45,19 @@ const baseLayout = {
  * @param {String} profile - a selected profile, can be AAC or IC50
  * @returns {Array} - returns array of numbers
  */
-const retrieveProfiles = (dataObj, profile) => Object.keys(dataObj).map((datasetProfile) => dataObj[datasetProfile][profile]).filter((value) => value !== null);
+const retrieveProfiles = (dataObj, profile, dataset) => {
+  const output = [];
+  Object.keys(dataObj).forEach((datasetProfile) => {
+    console.log(dataset, datasetProfile);
+    // filters out null values
+    if (dataObj[datasetProfile][profile] === null) return;
+    // only populates output array if there is a matching dataset or dataset are acceptable
+    if (dataset === 'All' || dataset === datasetProfile) {
+      output.push(dataObj[datasetProfile][profile]);
+    }
+  });
+  return output;
+};
 
 /**
  * A helper function that formats raw experiment data to be subsequently processed be rendering functions
@@ -98,6 +110,11 @@ const generateEmptySpace = (distance) => {
   return output;
 };
 
+/**
+ * Function that creates final data and layout for plotly
+ * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
+ * @returns {Object} - returns object with plotData and layout properties
+ */
 const generateRenderData = (data) => {
   const plotData = [];
   const layout = {
@@ -108,14 +125,14 @@ const generateRenderData = (data) => {
       ticktext: [],
     },
   };
-  data.forEach((el) => {
+  data.forEach((el, i) => {
     const {
       name, value, deviation, label,
     } = el;
     const trace = {
       type: 'bar',
       marker: {
-        color: colors.blue,
+        color: i % 2 === 0 ? colors.blue : colors.green,
       },
       name,
       x: [name],
@@ -139,14 +156,22 @@ const generateRenderData = (data) => {
 
 const runDataAnalysis = (data, dataset, profile) => {
   // calculates median and deviation values and sort cell lines based on median
+  console.log(dataset, profile);
   const calculatedData = Object.values(data).map((el) => {
-    const profiles = retrieveProfiles(el.profiles, profile);
+    // if (dataset) {
+    //   const profiles = retrieveProfiles(el.profiles, profile, dataset);
+    //   const value = calculateMedian(profiles);
+    //   const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
+    // }
+
+    const profiles = retrieveProfiles(el.profiles, profile, dataset);
     const value = calculateMedian(profiles);
     const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
     return {
       value, deviation, name: el.name, label: el.name,
     };
   }).sort((a, b) => b.value - a.value);
+  console.log(calculatedData);
   // contains first and last 30 items from calculated data along with some few empty datapoints to create a gap
   return [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)];
 };
