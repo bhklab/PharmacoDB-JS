@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Plot from 'react-plotly.js';
-import Select, { components } from 'react-select';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import generateSelectOptions from '../../utils/generateSelectOptions';
@@ -19,7 +19,7 @@ const baseLayout = {
   height: 530,
   margin: {
     t: 20,
-    b: 50,
+    b: 60,
     l: 65,
     r: 0,
   },
@@ -114,7 +114,7 @@ const generateEmptySpace = (distance) => {
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
-const generateRenderData = (data) => {
+const generateRenderData = (data, dataset, profile) => {
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -123,8 +123,17 @@ const generateRenderData = (data) => {
       tickvals: [],
       ticktext: [],
     },
+    yaxis: {
+      ...baseLayout.yaxis,
+      title: {
+        text: profile,
+      },
+    },
   };
-  console.log(data);
+  const notifications = {
+    subset: data.length > 60 ? 'Plot represents the top and bottom 30 data points' : null,
+    errorBars: dataset === 'All' ? 'Error Bars represent the Median Absolute Deviation' : null,
+  };
   data.forEach((el, i) => {
     const {
       name, value, deviation, label,
@@ -151,13 +160,18 @@ const generateRenderData = (data) => {
     layout.xaxis.ticktext.push(label);
     plotData.push(trace);
   });
-  console.log(plotData, layout);
-  return { plotData, layout };
+  return { plotData, layout, notifications };
 };
 
+/**
+ * Function that calculates median, deviation values, sorts data and creates a subset that will be further rendered
+ * @param {Object} data - data object that has cell lines and their dataset profiles in it
+ * @param {String} dataset - selected dataset
+ * @param {String} profile - selected profile
+ * @returns {Object} - returns an array of objects (max length is 63) with value, deviation, name and label properties
+ */
 const runDataAnalysis = (data, dataset, profile) => {
   // calculates median and deviation values and sort cell lines based on median
-  console.log(dataset, profile);
   const calculatedData = [];
   Object.values(data).forEach((el) => {
     const profiles = retrieveProfiles(el.profiles, profile, dataset);
@@ -171,30 +185,38 @@ const runDataAnalysis = (data, dataset, profile) => {
     }
   });
   calculatedData.sort((a, b) => b.value - a.value);
-  // contains first and last 30 items from calculated data along with some few empty datapoints to create a gap
-  return [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)];
+  // returns calculatedData or a subset of first and last 30 items from calculated data along with some few empty datapoints to create a gap if there too many dataoints
+  return calculatedData.length > 60 ? [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)] : calculatedData;
 };
 
+/**
+ * Waterfall plot that shows cell line profiles (AAC or IC50) for different datasets
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <ProfileCellLine/>
+ * )
+ */
 const ProfileCellLine = (props) => {
   const { data, compound } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
-
+  const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
-
-  const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
-
+  // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
-    setPlotData(generateRenderData(values));
+    setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset]);
-
   return (
     <div className="plot">
       <StyledSelectorContainer>
         <div className="selector-container">
-          <h3>Select Dataset </h3>
+          <h4>Select Dataset </h4>
           <Select
             defaultValue={{ value: selectedDataset, label: selectedDataset }}
             options={datasetOptions}
@@ -202,7 +224,7 @@ const ProfileCellLine = (props) => {
           />
         </div>
         <div className="selector-container">
-          <h3>Select Profile </h3>
+          <h4>Select Profile </h4>
           <Select
             defaultValue={{ value: selectedProfile, label: selectedProfile }}
             options={profileOptions}
@@ -210,15 +232,29 @@ const ProfileCellLine = (props) => {
           />
         </div>
       </StyledSelectorContainer>
-      <h4>
+      <h3>
         {compound}
         ,
         {' '}
         {selectedProfile}
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
-      </h4>
+      </h3>
       <Plot data={plotData} layout={layout} config={config} />
+      <div className="notifications">
+        {notifications.subset ? (
+          <p>
+            <sup>* </sup>
+            {notifications.subset}
+          </p>
+        ) : null}
+        {notifications.errorBars ? (
+          <p>
+            <sup>** </sup>
+            {notifications.errorBars}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 };

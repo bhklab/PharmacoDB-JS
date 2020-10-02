@@ -84,6 +84,17 @@ const GlobalStyles = createGlobalStyle`
 
     .plot {
         margin-bottom: 20px;
+        h3 {
+            text-align: center;
+            margin: 15px 0;
+        }
+        .notifications {
+            margin-left: 65px;
+            P {
+                font-size: 10px;
+                color: ${colors.teal}
+            }
+        }
     }
     /* desktop */
     @media only screen and (min-width: 1082px) { 
