@@ -115,7 +115,6 @@ const generateEmptySpace = (distance) => {
  * @returns {Object} - returns object with plotData and layout properties
  */
 const generateRenderData = (data) => {
-  console.log(data);
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -125,6 +124,7 @@ const generateRenderData = (data) => {
       ticktext: [],
     },
   };
+  console.log(data);
   data.forEach((el, i) => {
     const {
       name, value, deviation, label,
@@ -135,7 +135,7 @@ const generateRenderData = (data) => {
         color: i % 2 === 0 ? colors.blue : colors.green,
       },
       name,
-      x: [name],
+      x: [`${name} cell line`],
       y: [value],
     };
     // skips hoverinfo for gap bars
@@ -147,10 +147,11 @@ const generateRenderData = (data) => {
         visible: true,
       };
     }
-    layout.xaxis.tickvals.push(name);
+    layout.xaxis.tickvals.push(`${name} cell line`);
     layout.xaxis.ticktext.push(label);
     plotData.push(trace);
   });
+  console.log(plotData, layout);
   return { plotData, layout };
 };
 
@@ -160,7 +161,7 @@ const runDataAnalysis = (data, dataset, profile) => {
   const calculatedData = [];
   Object.values(data).forEach((el) => {
     const profiles = retrieveProfiles(el.profiles, profile, dataset);
-    // updates calculated dat only if there is at list one profile
+    // updates calculated data only if there is at list one profile
     if (profiles.length > 0) {
       const value = calculateMedian(profiles);
       const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
@@ -169,7 +170,6 @@ const runDataAnalysis = (data, dataset, profile) => {
       });
     }
   });
-  console.log(calculatedData);
   calculatedData.sort((a, b) => b.value - a.value);
   // contains first and last 30 items from calculated data along with some few empty datapoints to create a gap
   return [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)];
