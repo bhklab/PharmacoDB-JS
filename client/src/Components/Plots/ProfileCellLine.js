@@ -48,7 +48,6 @@ const baseLayout = {
 const retrieveProfiles = (dataObj, profile, dataset) => {
   const output = [];
   Object.keys(dataObj).forEach((datasetProfile) => {
-    console.log(dataset, datasetProfile);
     // filters out null values
     if (dataObj[datasetProfile][profile] === null) return;
     // only populates output array if there is a matching dataset or dataset are acceptable
@@ -116,6 +115,7 @@ const generateEmptySpace = (distance) => {
  * @returns {Object} - returns object with plotData and layout properties
  */
 const generateRenderData = (data) => {
+  console.log(data);
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -157,21 +157,20 @@ const generateRenderData = (data) => {
 const runDataAnalysis = (data, dataset, profile) => {
   // calculates median and deviation values and sort cell lines based on median
   console.log(dataset, profile);
-  const calculatedData = Object.values(data).map((el) => {
-    // if (dataset) {
-    //   const profiles = retrieveProfiles(el.profiles, profile, dataset);
-    //   const value = calculateMedian(profiles);
-    //   const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
-    // }
-
+  const calculatedData = [];
+  Object.values(data).forEach((el) => {
     const profiles = retrieveProfiles(el.profiles, profile, dataset);
-    const value = calculateMedian(profiles);
-    const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
-    return {
-      value, deviation, name: el.name, label: el.name,
-    };
-  }).sort((a, b) => b.value - a.value);
+    // updates calculated dat only if there is at list one profile
+    if (profiles.length > 0) {
+      const value = calculateMedian(profiles);
+      const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
+      calculatedData.push({
+        value, deviation, name: el.name, label: el.name,
+      });
+    }
+  });
   console.log(calculatedData);
+  calculatedData.sort((a, b) => b.value - a.value);
   // contains first and last 30 items from calculated data along with some few empty datapoints to create a gap
   return [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)];
 };
@@ -184,7 +183,7 @@ const ProfileCellLine = (props) => {
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
 
-  const [{ plotData, layout }, setPlotData] = useState(runDataAnalysis(formattedData, selectedDataset, selectedProfile));
+  const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
 
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
