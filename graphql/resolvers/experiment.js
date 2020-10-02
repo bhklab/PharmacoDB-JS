@@ -209,7 +209,6 @@ const experiments = async (args, context, info) => {
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
-        console.log(columns);
         let query = knex
             .select(columns)
             .from(subqueryExperiments);
