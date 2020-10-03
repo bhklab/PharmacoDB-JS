@@ -1,14 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
-
-const layout = {
-  autosize: true,
-  height: 530,
-  margin: {
-    t: 50,
-  },
-};
+import colors from '../../styles/colors';
 
 const config = {
   responsive: true,
@@ -59,18 +52,52 @@ const generatePlotlyData = (data) => {
  *   <Plot data={[plotlyData]} layout={layout} config={config} />
  * )
  */
-const AverageDatasetBarPlot = (props) => {
-  const { data } = props;
+const DatasetHorizontalPlot = (props) => {
+  const { data, xaxis, title } = props;
   // sorts data by count values
   data.sort((dataset1, dataset2) => dataset2.count - dataset1.count);
   const plotlyData = generatePlotlyData(data);
+
+  const layout = {
+    autoresize: true,
+    height: 530,
+    margin: {
+      t: 20,
+      b: 50,
+      l: 65,
+      r: 0,
+    },
+    xaxis: {
+      color: colors.dark_teal_heading,
+      title: {
+        text: xaxis,
+        font: {
+          size: 16,
+          family: 'Robot Slab, serif',
+
+        },
+        standoff: 10,
+      },
+    },
+    yaxis: {
+      color: colors.dark_teal_heading,
+    },
+  };
   return (
-    <Plot data={[plotlyData]} layout={layout} config={config} />
+    <div className="plot">
+      <h4>{title}</h4>
+      <Plot data={[plotlyData]} layout={layout} config={config} />
+    </div>
   );
 };
 
-AverageDatasetBarPlot.propTypes = {
+DatasetHorizontalPlot.propTypes = {
+  /**
+   * [{name: "GDSC1000", count: 901.92, color: "#a8ddb5"}, ...]
+   */
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  xaxis: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
-export default AverageDatasetBarPlot;
+export default DatasetHorizontalPlot;

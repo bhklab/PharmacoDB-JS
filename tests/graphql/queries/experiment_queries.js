@@ -5,7 +5,7 @@
 const singleExperimentTestQuery = `
   {
     experiment(experimentId: 1) {
-      id,
+      id
       cell_line {
         id
         name
@@ -13,27 +13,37 @@ const singleExperimentTestQuery = `
           id
           name
         }
-      },
+      }
       compound {
-        id,
-        name,
+        id
+        name
         annotation {
-          smiles,
-          inchikey,
-          pubchem,
+          smiles
+          inchikey
+          pubchem
           fda_status
         }
       }
       tissue {
-        id,
+        id
         name
       },
       dataset {
-        id,
+        id
         name
-      },
+      }
+      profile {
+        HS
+        Einf
+        EC50
+        AAC
+        IC50
+        DSS1
+        DSS2
+        DSS3
+      }
       dose_responses {
-        dose,
+        dose
         response
       }
     }
@@ -42,7 +52,7 @@ const singleExperimentTestQuery = `
 const multipleExperimentsTestQuery = `
   {
     experiments(page:1, per_page: 50) {
-      id,
+      id
       cell_line {
         id
         name
@@ -50,27 +60,37 @@ const multipleExperimentsTestQuery = `
           id
           name
         }
-      },
+      }
       compound {
-        id,
-        name,
+        id
+        name
         annotation {
-            smiles,
-            inchikey,
-            pubchem,
+            smiles
+            inchikey
+            pubchem
             fda_status
           }
       }
       tissue {
-        id,
+        id
         name
-      },
+      }
       dataset {
-        id,
+        id
         name
-      },
+      }
+      profile {
+        HS
+        Einf
+        EC50
+        AAC
+        IC50
+        DSS1
+        DSS2
+        DSS3
+      }
       dose_responses {
-        dose,
+        dose
         response
       }
     }
@@ -89,11 +109,11 @@ const singleCompoundExperimentsTestQuery = `
         }
       }
       tissue {
-        id,
+        id
         name
       }
       dataset {
-        id,
+        id
         name
       }
     	compound {
@@ -105,6 +125,10 @@ const singleCompoundExperimentsTestQuery = `
           fda_status
           inchikey
         }
+      }
+      profile {
+        IC50
+        AAC
       }
     }
   }
