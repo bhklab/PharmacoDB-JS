@@ -1,4 +1,5 @@
 const knex = require('../../db/knex');
+const { retrieveFields } = require('../../helpers/queryHelpers');
 
 /**
  * Returns a transformed array of objects.
@@ -80,12 +81,22 @@ const transformSingleCellLine = data => {
 /**
  * Returns the transformed data for all the cell lines in the database.
  */
-const cell_lines = async () => {
+const cell_lines = async (args, parent, info) => {
     try {
-        const cell_lines = await knex
+        // cell_lines array.
+        let cell_lines = [];
+        // extracts list of fields requested by the client
+        const listOfFields = retrieveFields(info).map(el => el.name);
+        if (listOfFields.includes['tissue']) {
+            cell_lines = await knex
             .select()
             .from('cells as c')
             .join('tissues as t', 'c.tissue_id', 't.tissue_id');
+        } else {
+            cell_lines = await knex
+            .select()
+            .from('cells as c')
+        }
         // return the transformed data.
         return transformCellLines(cell_lines);
     } catch (err) {
