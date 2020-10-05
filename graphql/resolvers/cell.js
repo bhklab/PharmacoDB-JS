@@ -87,7 +87,7 @@ const cell_lines = async (args, parent, info) => {
         let cell_lines = [];
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
-        if (listOfFields.includes['tissue']) {
+        if (listOfFields.includes('tissue')) {
             cell_lines = await knex
             .select()
             .from('cells as c')
