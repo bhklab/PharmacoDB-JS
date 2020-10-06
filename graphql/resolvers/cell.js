@@ -83,20 +83,16 @@ const transformSingleCellLine = data => {
  */
 const cell_lines = async (args, parent, info) => {
     try {
-        // cell_lines array.
-        let cell_lines = [];
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+        // query to grab the cell line data.
+        let query = knex.select().from('cells as c');
+        // if the query containes the tissue field, then we will make a join.
         if (listOfFields.includes('tissue')) {
-            cell_lines = await knex
-            .select()
-            .from('cells as c')
-            .join('tissues as t', 'c.tissue_id', 't.tissue_id');
-        } else {
-            cell_lines = await knex
-            .select()
-            .from('cells as c')
+            query = query.join('tissues as t', 'c.tissue_id', 't.tissue_id');
         }
+        // call to grab the cell lines.
+        let cell_lines = await query;
         // return the transformed data.
         return transformCellLines(cell_lines);
     } catch (err) {
