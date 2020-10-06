@@ -1,7 +1,7 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
 const { cellLineType, cellAnnotationType } = require('./cell');
-const { compoundType, compoundAnnotationType, singleCompoundType } = require('./compound');
+const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
 const { countType, summaryType, genericType, enumAllowedType } = require('./count');
 const { datasetType, datasetInformationType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
@@ -10,7 +10,7 @@ const { geneType, geneAnnotationType } = require('./gene');
 const { RootQuery } = require('./root_query');
 const { sourceType, sourceAnnotationType, sourceStatsType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
-const { tissueType, tissueAnnotationType} = require('./tissue');
+const { tissueType, tissueAnnotationType } = require('./tissue');
 const { geneDrugType } = require('./gene_drug');
 
 
@@ -20,7 +20,7 @@ const schema = `
     ${compoundType}
     "Compound Annotation Type with drug id, smiles, inchikey and pubchem."
     ${compoundAnnotationType}
-    ${singleCompoundType}
+    ${compoundDetailType}
 
     "Cell Line Type with id and name of the cell lines."
     ${cellLineType}
