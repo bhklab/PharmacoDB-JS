@@ -198,7 +198,7 @@ const dataset = async (args, parent, info) => {
             if (listOfFields.includes('cell_count')) data['cell_count'] = cell_count[dataset_name].count;
             if (listOfFields.includes('tissue_tested_count')) data['tissue_tested_count'] = tissue_count[dataset_name].count;
             if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count[dataset_name].count;
-            if (listOfFields.includes('experiment')) data['experiment_count'] = experiment_count[dataset_name].count;
+            if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count[dataset_name].count;
 
             if (dataset_id === datasetId) {
                 if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => value['cell_name']);
