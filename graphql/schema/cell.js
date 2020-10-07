@@ -6,8 +6,8 @@ const cellLineType = `
     }
 `;
 
-const cellAnnotationType = `
-    type CellLineAnnotation {
+const cellLineDetailType = `
+    type CellLineDetail {
         id: Int!
         name: String!
         tissue: Tissue!
@@ -17,5 +17,5 @@ const cellAnnotationType = `
 
 module.exports = {
     cellLineType,
-    cellAnnotationType
+    cellLineDetailType
 };

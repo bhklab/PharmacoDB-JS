@@ -6,11 +6,11 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for cell lines."
     cell_lines: [CellLine!]!
-    cell_line(cellId: Int!): CellLineAnnotation!
+    cell_line(cellId: Int!): CellLineDetail!
 
     "Root Queries for datasets."
     datasets: [Dataset!]!
-    dataset(datasetId: Int!): [DatasetInformation!]!
+    dataset(datasetId: Int!): [DatasetDetail!]!
     cell_lines_per_dataset: [Count!]!
     "arguments that can be passed: 'cell', 'tissue', 'drug'"
     type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): Summary!
@@ -35,7 +35,7 @@ const RootQuery = `type RootQuery {
 
     "Root Queries for tissues."
     tissues: [Tissue!]!
-    tissue(tissueId: Int!): TissueAnnotation!
+    tissue(tissueId: Int!): TissueDetail!
 
     "Root Queries for gene_drugs."
     gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!

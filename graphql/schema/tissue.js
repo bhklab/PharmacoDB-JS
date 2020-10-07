@@ -9,11 +9,11 @@ const tissueType = `
 // we can also merge this to the tissue type itself and query based on it.
 // but for the simplicity sake I am not doing that with this type.
 // example: Compound Type.
-const tissueAnnotationType = `
-    type TissueAnnotation {
+const tissueDetailType = `
+    type TissueDetail {
         id: Int!
         name: String!
-        # annotations: [SourceAnnotation!]
+        # this list the synonyms for the tissue in different datasets.
         synonyms: [SourceAnnotation!]
         # number of cell lines of the tissue type per dataset.
         cell_count: [Count!]
@@ -25,5 +25,5 @@ const tissueAnnotationType = `
 
 module.exports = {
     tissueType,
-    tissueAnnotationType,
+    tissueDetailType,
 };

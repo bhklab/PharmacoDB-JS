@@ -14,8 +14,8 @@ const datasetType = `
 `;
 
 
-const datasetInformationType = `
-    type DatasetInformation {
+const datasetDetailType = `
+    type DatasetDetail {
         "id of the dataset"
         id: Int!
         "name of the dataset"
@@ -38,5 +38,5 @@ const datasetInformationType = `
 
 module.exports = {
     datasetType,
-    datasetInformationType,
+    datasetDetailType,
 };
