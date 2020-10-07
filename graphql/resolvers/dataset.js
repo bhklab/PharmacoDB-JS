@@ -31,7 +31,7 @@ const cellCountGroupByDatasetQuery = async () => {
         .from('dataset_cells as dc')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
         .groupBy('d.dataset_id');
-        // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
+    // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
     query.forEach(value => {
         const {
             dataset_name,
@@ -165,21 +165,24 @@ const datasets = async (args, parent, info) => {
  *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
  *  }
  */
-const dataset = async (args) => {
+const dataset = async (args, parent, info) => {
     // dataset id ie 1 or 2 or...
     const {
         datasetId
     } = args;
     try {
+        // extracts list of fields requested by the client
+        const listOfFields = retrieveFields(info).map(el => el.name);
         // data returned from the graphql API.
         const returnData = [];
+        let cell_count, compound_count, tissue_count, experiment_count, cells, compounds;
         const datasets = await datasetQuery();
-        const cell_count = await cellCountGroupByDatasetQuery();
-        const compound_count = await typeTestedCountGroupByDatasetQuery('drug');
-        const tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
-        const experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
-        const cells = await summaryQuery('cell', datasetId);
-        const compounds = await summaryQuery('drug', datasetId);
+        if (listOfFields.includes('cell_count')) cell_count = await cellCountGroupByDatasetQuery();
+        if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
+        if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
+        if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
+        if (listOfFields.includes('cells_tested')) cells = await summaryQuery('cell', datasetId);
+        if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('drug', datasetId);
 
         datasets.forEach(dataset => {
             // destructuring the dataset object.
@@ -192,14 +195,14 @@ const dataset = async (args) => {
 
             data['id'] = dataset_id;
             data['name'] = dataset_name;
-            data['cell_count'] = cell_count[dataset_name].count;
-            data['tissue_tested_count'] = tissue_count[dataset_name].count;
-            data['compound_tested_count'] = compound_count[dataset_name].count;
-            data['experiment_count'] = experiment_count[dataset_name].count;
+            if (listOfFields.includes('cell_count')) data['cell_count'] = cell_count[dataset_name].count;
+            if (listOfFields.includes('tissue_tested_count')) data['tissue_tested_count'] = tissue_count[dataset_name].count;
+            if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count[dataset_name].count;
+            if (listOfFields.includes('experiment')) data['experiment_count'] = experiment_count[dataset_name].count;
 
             if (dataset_id === datasetId) {
-                data['cells_tested'] = cells.map(value => value['cell_name']);
-                data['compounds_tested'] = compounds.map(value => value['drug_name']);
+                if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => value['cell_name']);
+                if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => value['drug_name']);
 
                 returnData.unshift(data);
             } else {
@@ -234,13 +237,13 @@ const cell_lines_per_dataset = async () => {
  *      list: {id: 'type id', name: 'type name' } 
  * }
  */
-const type_tested_on_dataset = async ({type, datasetId}) => {
+const type_tested_on_dataset = async ({ type, datasetId }) => {
     const type_list = await summaryQuery(type, datasetId);
     const count = type_list.length;
     const returnObject = {};
     type_list.forEach((value, i) => {
-        const {dataset_name, dataset_id} = value;
-        if(!i) {
+        const { dataset_name, dataset_id } = value;
+        if (!i) {
             returnObject['dataset'] = {
                 id: dataset_id,
                 name: dataset_name
