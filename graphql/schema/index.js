@@ -7,11 +7,12 @@ const { datasetType, datasetDetailType } = require('./dataset');
 const { drugResponseType } = require('./drug_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
+const { geneDrugType } = require('./gene_drug');
 const { RootQuery } = require('./root_query');
 const { sourceType, sourceAnnotationType, sourceStatsType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
-const { geneDrugType } = require('./gene_drug');
+const { stringType, unionType, intType, unionStringType } = require('./union');
 
 
 // schema definition.
@@ -69,6 +70,12 @@ const schema = `
     """Tissue Annotation type with id, name, annotations object 
      including the name of source and datasets it's present in"""
     ${tissueDetailType}
+
+    "Union Type"
+    ${stringType}
+    ${intType}
+    ${unionType}
+    ${unionStringType}
 
     "GeneDrug Type"
     ${geneDrugType}
