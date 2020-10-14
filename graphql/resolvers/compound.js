@@ -71,15 +71,17 @@ const transformCompounds = data => {
 
 /**
  * @param {number} compoundId
+ * @param {string} compoundName
  * @param {Array} compoundData 
  * @param {Array} compoundSynonyms 
  * @param {Array} subtypes
  */
-const transformSingleCompound = async (compoundId, compoundData, compoundSynonyms, subtypes) => {
+const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
     const transformedCompound = transformCompounds(compoundData);
     const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
     const targets = subtypes.includes('targets') ? await compound_target({
-        compoundId: compoundId
+        compoundId: compoundId,
+        compoundName: compoundName
     }) : '';
 
     return {
@@ -90,12 +92,13 @@ const transformSingleCompound = async (compoundId, compoundData, compoundSynonym
 };
 
 /**
- *  @param {Number} - compoundId.
- *
+ *  @param {number} - compoundId.
+ *  @param {string} - compoundName
  */
 // todo: change the query using `compound` based on the new database compound table.
-const compoundSourceSynonymQuery = async compoundId => {
-    return await knex
+const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
+    // main query to grab the required data.
+    const query = knex
         .select('drugs.drug_id as compound_id',
             'drugs.drug_name as compound_name',
             'source_drug_names.drug_name as source_compound_name',
@@ -103,21 +106,31 @@ const compoundSourceSynonymQuery = async compoundId => {
         .from('drugs')
         .join('source_drug_names', 'drugs.drug_id', 'source_drug_names.drug_id')
         .join('sources', 'sources.source_id', 'source_drug_names.source_id')
-        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-        .where('drugs.drug_id', compoundId);
+        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+    // return sub query based on the compoundId or compoundName.
+    if (compoundId) {
+        return await query.where('drugs.drug_id', compoundId);
+    } else if (compoundName) {
+        return await query.where('drugs.drug_name', compoundName);
+    }
 };
 
 /**
  * @param {number} - compoundId.
+ * @param {string} - compoundName.
  * @returns {Object} - compound object.
  */
-const compoundQuery = async (compoundId, subtypes) => {
+const compoundQuery = async (compoundId, compoundName, subtypes) => {
     // the base query.
     let baseQuery = knex.select().from('drugs');
     // if the subtypes contains annotation type
     if (subtypes.includes('annotation')) baseQuery = baseQuery.join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
     // return value.
-    return baseQuery.where('drugs.drug_id', compoundId);
+    if (compoundId) {
+        return baseQuery.where('drugs.drug_id', compoundId);
+    } else if (compoundName) {
+        return baseQuery.where('drugs.drug_name', compoundName);
+    }
 };
 
 /**
@@ -162,19 +175,24 @@ const compound = async (args, parent, info) => {
     try {
         // grabbing the compound id from the args.
         const {
-            compoundId
+            compoundId,
+            compoundName
         } = args;
+        // throw error if neither of the arguments are passed.
+        if (!compoundId && !compoundName) {
+            throw new Error('Please specify the Id or the Name of the compound you want to query!');
+        }
         // declaring variables.
         let compoundSynonyms;
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
         // query to get the data based on the compound id.
-        let compoundData = await compoundQuery(compoundId, subtypes);
+        let compoundData = await compoundQuery(compoundId, compoundName, subtypes);
         // query to get compound source synonyms.
-        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundId);
+        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundId, compoundName);
         // return the compound object.
-        return transformSingleCompound(compoundId, compoundData, compoundSynonyms, subtypes);
+        return transformSingleCompound(compoundId, compoundName, compoundData, compoundSynonyms, subtypes);
     } catch (err) {
         console.log(err);
         throw err;
