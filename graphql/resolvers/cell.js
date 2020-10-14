@@ -125,6 +125,10 @@ const cell_line = async args => {
             cellId,
             cellName
         } = args;
+        // throw error if neither of the arguments are passed.
+        if (!cellId && !cellName) {
+            throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
+        }
         // variable to store cell line data.
         let cell_line;
         // the base query

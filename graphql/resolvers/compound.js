@@ -180,7 +180,7 @@ const compound = async (args, parent, info) => {
         } = args;
         // throw error if neither of the arguments are passed.
         if (!compoundId && !compoundName) {
-            throw new Error('Please specify the Id or the Name of the compound you want to query!');
+            throw new Error('Please specify the ID or the Name of the compound you want to query!');
         }
         // declaring variables.
         let compoundSynonyms;
