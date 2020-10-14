@@ -2,6 +2,7 @@
  *
  * @param {number} page
  * @param {number} per_page
+ * @returns {Object} - {limit, offset}
  */
 const calcLimitOffset = (page, per_page) => {
     const limit = per_page;

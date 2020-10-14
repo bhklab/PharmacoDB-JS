@@ -168,8 +168,10 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
 };
 
 /**
- * Returns the transformed data for the queried compound in the database.
  * @param {Object} args
+ * @param {string} args.compoundName
+ * @param {number} args.compoundId
+ * @returns {Object} returns the transformed data for the queried compound in the database.
  */
 const compound = async (args, parent, info) => {
     try {
