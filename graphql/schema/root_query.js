@@ -10,8 +10,9 @@ const RootQuery = `type RootQuery {
     """Root Query to get a single compound detail.
         'compoundId' is the id of the compound in the database and is an optional field.
         'compoundName' is the name of the compound in the database and is also an optional field.
-        One of the parameters has to be passed either an Id or the compound Name"""
+        One of the parameters has to be passed either an ID or the compound Name"""
     compound(compoundId: Int, compoundName: String): CompoundDetail!
+
 
     """Root Query for cell lines.
         'page' is the page number for output (default value is 1)'.
@@ -22,12 +23,19 @@ const RootQuery = `type RootQuery {
     """Root Query to get a single cell detail.
         'cellId' is the id of the cell in the database and is an optional field.
         'cellName' is the name of the cell in the database and is also an optional field.
-        One of the parameters has to be passed either an Id or the cell Name"""
+        One of the parameters has to be passed either an ID or the cell Name"""
     cell_line(cellId: Int, cellName: String): CellLineDetail!
 
-    "Root Queries for datasets."
+    
+    "Root Query for datasets."
     datasets: [Dataset!]!
-    dataset(datasetId: Int!): [DatasetDetail!]!
+
+    """Root Query to get a single dataset detail.
+        'datasetId' is the id of the dataset in the database and is an optional field.
+        'datasetName' is the name of the dataset in the database and is also an optional field.
+        One of the parameters has to be passed either an ID or the dataset Name"""
+    dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
+
     cell_lines_per_dataset: [Count!]!
     "arguments that can be passed: 'cell', 'tissue', 'drug'"
     type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): Summary!

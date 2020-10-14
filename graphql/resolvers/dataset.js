@@ -4,7 +4,7 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
 
 
 /**
- * @param {Number} - datasetId (optional)
+ * @param {number} - datasetId (optional)
  * @returns {Object} - returns an array like this [{dataset_id: Number, dataset_name: String}]
  */
 const datasetQuery = async datasetId => {
@@ -52,7 +52,7 @@ const cellCountGroupByDatasetQuery = async () => {
 
 
 /**
- *  @param {String} - string for which we want to get the count, eg experiment, tissue etc.
+ *  @param {string} - string for which we want to get the count, eg experiment, tissue etc.
  *  @returns {Object} - return object {{dataset: {id: 'dataset id', name: 'dataset name'}, count: Number}, ....}
  */
 const typeTestedCountGroupByDatasetQuery = async (type) => {
@@ -86,20 +86,27 @@ const typeTestedCountGroupByDatasetQuery = async (type) => {
 
 /**
  *
- * @param {String} type - either 'cell' or 'compound'
- * @param {Number} datasetId
+ * @param {string} type - either 'cell' or 'compound'
+ * @param {number} datasetId
+ * @param {string} datasetName
  * @return {Array} - returns an array of cells tested or compounds tested on the dataset.
  */
-const summaryQuery = async (type, datasetId) => {
+const summaryQuery = async (type, datasetId, datasetName) => {
+    let datasets;
     // query to get the id and name for the type.
-    const query = await knex
+    const query = knex
         .select('d.dataset_name', 'd.dataset_id')
         .distinct(`e.${type}_id`, `t.${type}_name`)
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .join(`${type}s as t`, `t.${type}_id`, `e.${type}_id`)
-        .where('e.dataset_id', datasetId);
-    return transformObject(query);
+        .join(`${type}s as t`, `t.${type}_id`, `e.${type}_id`);
+    // based on the param datasetId and datasetName.
+    if (datasetId) {
+        datasets = await query.where('e.dataset_id', datasetId);
+    } else if (datasetName) {
+        datasets = await query.where('d.dataset_name', datasetName);
+    }
+    return transformObject(datasets);
 };
 
 
@@ -152,7 +159,7 @@ const datasets = async (args, parent, info) => {
 
 /**
  * @param {Object} args - arguments for the dataset function.
- * @param {Number} args.datasetId - datasetId passed as an argument to the function.
+ * @param {number} args.datasetId - datasetId passed as an argument to the function.
  * @returns {Array} - return an array of Object (defined below).
  *  Object = {
  *      id: 'id of the dataset',
@@ -167,9 +174,15 @@ const datasets = async (args, parent, info) => {
  */
 const dataset = async (args, parent, info) => {
     // dataset id ie 1 or 2 or...
+    // dataset name ie 'FIMM' ...
     const {
-        datasetId
+        datasetId,
+        datasetName
     } = args;
+    // throw error if neither of the arguments are passed.
+    if (!datasetId && !datasetName) {
+        throw new Error('Please aleast specify either the ID or the Name of the dataset you want to query!');
+    }
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -181,8 +194,8 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
         if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
-        if (listOfFields.includes('cells_tested')) cells = await summaryQuery('cell', datasetId);
-        if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('drug', datasetId);
+        if (listOfFields.includes('cells_tested')) cells = await summaryQuery('cell', datasetId, datasetName);
+        if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('drug', datasetId, datasetName);
 
         datasets.forEach(dataset => {
             // destructuring the dataset object.
@@ -200,7 +213,7 @@ const dataset = async (args, parent, info) => {
             if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count[dataset_name].count;
             if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count[dataset_name].count;
 
-            if (dataset_id === datasetId) {
+            if (dataset_id === datasetId || dataset_name === datasetName) {
                 if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => value['cell_name']);
                 if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => value['drug_name']);
 
