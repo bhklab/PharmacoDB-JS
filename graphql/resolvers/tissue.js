@@ -1,7 +1,6 @@
 const knex = require('../../db/knex');
-const {
-    transformObject
-} = require('../../helpers/transformObject');
+const { transformObject } = require('../../helpers/transformObject');
+const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
  * Number of cell lines of a particular tissue per dataset
@@ -12,36 +11,55 @@ const {
  *          total: 'number of cells of 'tissueId' tissue in the dataset'
  *      }
  */
-const cellCountQuery = async tissueId => {
-    const data = await knex
+const cellCountQuery = async (tissueId, tissueName) => {
+    // query variable.
+    let query;
+    const subQuery = knex
         .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .count('dc.cell_id as total')
         .from('dataset_cells as dc')
         .join('cells as c', 'c.cell_id', 'dc.cell_id')
         .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
-        .where('c.tissue_id', tissueId)
-        .groupBy('dc.dataset_id');
-    return transformObject(data);
+        .join('tissues as t', 't.tissue_id', 'c.tissue_id');
+
+    if (tissueId) {
+        query = await subQuery.where('t.tissue_id', tissueId)
+            .groupBy('dc.dataset_id');
+    } else if (tissueName) {
+        query = await subQuery.where('t.tissue_name', tissueName)
+            .groupBy('dc.dataset_id');
+    }
+    return transformObject(query);
 };
 
 /**
  * Number of compounds tested with a particular tissue cellline.
  * @param {Number} tissueId - the tissue id.
  */
-const compoundTestedQuery = async tissueId => {
-    const data = await knex
+const compoundTestedQuery = async (tissueId, tissueName) => {
+    // query variable.
+    let query;
+    const subQuery = knex
         .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
         .countDistinct('e.drug_id as total')
         .from('experiments as e')
         .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .where('tissue_id', tissueId)
-        .groupBy('d.dataset_id');
-    return transformObject(data);
+        .join('tissues as t', 't.tissue_id', 'e.tissue_id');
+
+    if (tissueId) {
+        query = await subQuery.where('t.tissue_id', tissueId)
+            .groupBy('d.dataset_id');
+    } else if (tissueName) {
+        query = await subQuery.where('t.tissue_name', tissueName)
+            .groupBy('d.dataset_id');
+    }
+
+    return transformObject(query);
 };
 
 /**
  * @param {Number} tissueId - the tissue id.
- *  {
+ * @returns - {
  *      id: 'tissue id',
  *      name: 'tissue name',
  *      synonyms: [
@@ -52,8 +70,8 @@ const compoundTestedQuery = async tissueId => {
  *      ]
  *  }
  */
-const tissueSourceQuery = async tissueId => {
-    return await knex
+const tissueSourceQuery = async (tissueId, tissueName) => {
+    const query = knex
         .select('tissues.tissue_id as tissue_id',
             'tissues.tissue_name as tissue_name',
             'source_tissue_names.tissue_name as source_tissue_name',
@@ -63,12 +81,18 @@ const tissueSourceQuery = async tissueId => {
             'tissues.tissue_id',
             'source_tissue_names.tissue_id')
         .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
-        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-        .where('tissues.tissue_id', tissueId);
+        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+
+    if (tissueId) {
+        return await query.where('tissues.tissue_id', tissueId);
+    } else if (tissueName) {
+        return await query.where('tissues.tissue_name', tissueName);
+    }
+
 };
 
 /**
- * Returns a transformed array of objects.
+ *
  * @param {Array} data
  * @returns {Object} - transformed object.
  */
@@ -141,11 +165,23 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
 };
 
 /**
- * @returns {Array} Returns the transformed data for all the datasets in the database.
+ * @param {Object} args - Parameters for the data.
+ * @param {number} [args.page = 1] - Current page number with a default value of 1.
+ * @param {number} [args.per_page = 20] - Total values per page with a default value of 20.
+ * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
+ * @returns {Array} - returns an array of the transformed data objects for all the tissues in the database.
  */
-const tissues = async () => {
+const tissues = async ({ page = 1, per_page = 20, all = false }) => {
+    // setting limit and offset.
+    const { limit, offset } = calcLimitOffset(page, per_page);
     try {
-        const tissues = await knex.select().from('tissues');
+        const query = knex.select().from('tissues');
+        // if the user has not queried to get all the compound, 
+        // then limit and offset will be used to give back the queried limit.
+        if (!all) {
+            query.limit(limit).offset(offset);
+        }
+        const tissues = await query;
         return tissues.map(tissue => {
             return {
                 id: tissue.tissue_id,
@@ -163,16 +199,17 @@ const tissues = async () => {
  */
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
-const tissue = async args => {
+const tissue = async (args) => {
     try {
         // grabbing the tissue line id from the args.
         const {
-            tissueId
+            tissueId,
+            tissueName
         } = args;
 
-        const tissue = await tissueSourceQuery(tissueId);
-        const cell_count = await cellCountQuery(tissueId);
-        const compound_tested = await compoundTestedQuery(tissueId);
+        const tissue = await tissueSourceQuery(tissueId, tissueName);
+        const cell_count = await cellCountQuery(tissueId, tissueName);
+        const compound_tested = await compoundTestedQuery(tissueId, tissueName);
 
         // return the transformed data.
         return transformTissueAnnotation(tissue, cell_count, compound_tested);

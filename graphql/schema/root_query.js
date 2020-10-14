@@ -26,7 +26,7 @@ const RootQuery = `type RootQuery {
         One of the parameters has to be passed either an ID or the cell Name"""
     cell_line(cellId: Int, cellName: String): CellLineDetail!
 
-    
+
     "Root Query for datasets."
     datasets: [Dataset!]!
 
@@ -37,8 +37,10 @@ const RootQuery = `type RootQuery {
     dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
 
     cell_lines_per_dataset: [Count!]!
+
     "arguments that can be passed: 'cell', 'tissue', 'drug'"
     type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): Summary!
+
 
     """Root Queries for experiments.
     'page' is the page number for output (default value is 1)'.
@@ -47,23 +49,44 @@ const RootQuery = `type RootQuery {
     experiments(compoundId: Int, page: Int, per_page: Int, all: Boolean): [Experiment!]!
     experiment(experimentId: Int!): Experiment!
 
-    "Root Queries for genes."
-    genes: [Gene!]!
-    gene(geneId: Int!): Gene!
+
+    """Root Query for genes.
+        'page' is the page number for output (default value is 1)'.
+        'per_page' is the number of items returned per page (default value is 30)'.
+        If 'all' flag set to true, the API return all available data (default value is false)"""
+    genes(page: Int, per_page: Int, all: Boolean): [Gene!]!
+
+    """Root Query to get a single gene detail.
+        'geneId' is the id of the gene in the database and is an optional field.
+        'geneName' is the name of the gene in the database and is also an optional field.
+        One of the parameters has to be passed either an ID or the gene Name"""
+    gene(geneId: Int, geneName: String): Gene!
+
+
+    "Root Queries for gene_drugs."
+    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!
+
 
     "Root Queries for sources"
     sources: [Source!]!
     source_stats: [SourceStats!]!
 
+
     "Root Queries for targets."
     compound_target(compoundId: Int!): CompoundTarget!
 
-    "Root Queries for tissues."
-    tissues: [Tissue!]!
-    tissue(tissueId: Int!): TissueDetail!
 
-    "Root Queries for gene_drugs."
-    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!
+    """Root Query for tissues.
+        'page' is the page number for output (default value is 1)'.
+        'per_page' is the number of items returned per page (default value is 30)'.
+        If 'all' flag set to true, the API return all available data (default value is false)"""
+    tissues(page: Int, per_page: Int, all: Boolean): [Tissue!]!
+
+    """Root Query to get a single tissue detail.
+        'tissueId' is the id of the tissue in the database and is an optional field.
+        'tissueName' is the name of the tissue in the database and is also an optional field.
+        One of the parameters has to be passed either an ID or the tissue Name"""
+    tissue(tissueId: Int, tissueName: String): TissueDetail!
 }`;
 
 module.exports = {
