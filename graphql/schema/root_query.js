@@ -1,12 +1,29 @@
 // root query for the schema definition.
 const RootQuery = `type RootQuery {
-    "Root Queries for compounds."
+
+    """Root Query for compounds.
+        'page' is the page number for output (default value is 1)'.
+        'per_page' is the number of items returned per page (default value is 30)'.
+        If 'all' flag set to true, the API return all available data (default value is false)"""
     compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
+
+    """Root Query to get a single compound detail.
+        'compoundId' is the id of the compound in the database and is an optional field.
+        'compoundName' is the name of the compound in the database and is also an optional field.
+        One of the parameters has to be passed either an Id or the compound Name"""
     compound(compoundId: Int, compoundName: String): CompoundDetail!
 
-    "Root Queries for cell lines."
-    cell_lines: [CellLine!]!
-    cell_line(cellId: Int!): CellLineDetail!
+    """Root Query for cell lines.
+        'page' is the page number for output (default value is 1)'.
+        'per_page' is the number of items returned per page (default value is 30)'.
+        If 'all' flag set to true, the API return all available data (default value is false)"""
+    cell_lines(page: Int, per_page: Int, all: Boolean): [CellLine!]!
+
+    """Root Query to get a single cell detail.
+        'cellId' is the id of the cell in the database and is an optional field.
+        'cellName' is the name of the cell in the database and is also an optional field.
+        One of the parameters has to be passed either an Id or the cell Name"""
+    cell_line(cellId: Int, cellName: String): CellLineDetail!
 
     "Root Queries for datasets."
     datasets: [Dataset!]!

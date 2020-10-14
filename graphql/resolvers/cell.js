@@ -1,5 +1,6 @@
 const knex = require('../../db/knex');
 const { retrieveFields } = require('../../helpers/queryHelpers');
+const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 
 /**
  * Returns a transformed array of objects.
@@ -80,8 +81,16 @@ const transformSingleCellLine = data => {
 
 /**
  * Returns the transformed data for all the cell lines in the database.
+ * @param {Object} data - Parameters for the data.
+ * @param {number} [data.page = 1] - Current page number with a default value of 1.
+ * @param {number} [data.per_page = 20] - Total values per page with a default value of 20.
+ * @param {boolean} [data.all = false] - Boolean value whether to show all the data or not with a default value of false.
+ * @param {Object} parent
+ * @param {Object} info
  */
-const cell_lines = async (args, parent, info) => {
+const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
+    // setting limit and offset.
+    const { limit, offset } = calcLimitOffset(page, per_page);
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -90,6 +99,11 @@ const cell_lines = async (args, parent, info) => {
         // if the query containes the tissue field, then we will make a join.
         if (listOfFields.includes('tissue')) {
             query = query.join('tissues as t', 'c.tissue_id', 't.tissue_id');
+        }
+        // if the user has not queried to get all the compound, 
+        // then limit and offset will be used to give back the queried limit.
+        if (!all) {
+            query.limit(limit).offset(offset);
         }
         // call to grab the cell lines.
         let cell_lines = await query;
@@ -108,10 +122,13 @@ const cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
         const {
-            cellId
+            cellId,
+            cellName
         } = args;
-        // query
-        let cell_line = await knex
+        // variable to store cell line data.
+        let cell_line;
+        // the base query
+        let query = knex
             .select('cells.cell_id as cell_id',
                 'cells.cell_name as cell_name',
                 'tissues.tissue_id as tissue_id',
@@ -124,8 +141,13 @@ const cell_line = async args => {
                 'cells.cell_id',
                 'source_cell_names.cell_id')
             .join('sources', 'sources.source_id', 'source_cell_names.source_id')
-            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-            .where('cells.cell_id', cellId);
+            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+        // based on the arguments passed to the function.
+        if (cellId) {
+            cell_line = await query.where('cells.cell_id', cellId);
+        } else if (cellName) {
+            cell_line = await query.where('cells.cell_name', cellName);
+        }
         // return the transformed data.
         return transformSingleCellLine(cell_line);
     } catch (err) {
