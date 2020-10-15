@@ -1,6 +1,7 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../../helpers/transformObject');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
  * Number of cell lines of a particular tissue per dataset
@@ -70,19 +71,25 @@ const compoundTestedQuery = async (tissueId, tissueName) => {
  *      ]
  *  }
  */
-const tissueSourceQuery = async (tissueId, tissueName) => {
-    const query = knex
-        .select('tissues.tissue_id as tissue_id',
-            'tissues.tissue_name as tissue_name',
-            'source_tissue_names.tissue_name as source_tissue_name',
-            'datasets.dataset_name as dataset_name')
-        .from('tissues')
-        .join('source_tissue_names',
-            'tissues.tissue_id',
-            'source_tissue_names.tissue_id')
-        .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
-        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
-
+const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
+    let query;
+    // if the subtypes contains 'synonyms'.
+    if (subtypes.includes('synonyms')) {
+        query = knex
+            .select('tissues.tissue_id as tissue_id',
+                'tissues.tissue_name as tissue_name',
+                'source_tissue_names.tissue_name as source_tissue_name',
+                'datasets.dataset_name as dataset_name')
+            .from('tissues')
+            .join('source_tissue_names',
+                'tissues.tissue_id',
+                'source_tissue_names.tissue_id')
+            .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
+            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+    } else {
+        query = knex.select().from('tissues');
+    }
+    // based on the tissueId passed or tissueName passed.
     if (tissueId) {
         return await query.where('tissues.tissue_id', tissueId);
     } else if (tissueName) {
@@ -212,10 +219,13 @@ const tissue = async (args, parent, info) => {
         if (!tissueId && !tissueName) {
             throw new Error('Please specify alteast one of the ID or the Name of the tissue you want to query!');
         }
+        // extracts list of fields requested by the client
+        const listOfFields = retrieveFields(info);
+        const subtypes = retrieveSubtypes(listOfFields);
 
-        const tissue = await tissueSourceQuery(tissueId, tissueName);
-        const cell_count = await cellCountQuery(tissueId, tissueName);
-        const compound_tested = await compoundTestedQuery(tissueId, tissueName);
+        const tissue = await tissueSourceQuery(tissueId, tissueName, subtypes);
+        const cell_count = subtypes.includes('cell_count') ? await cellCountQuery(tissueId, tissueName) : [];
+        const compound_tested = subtypes.includes('compounds_tested') ? await compoundTestedQuery(tissueId, tissueName) : [];
 
         // return the transformed data.
         return transformTissueAnnotation(tissue, cell_count, compound_tested);
