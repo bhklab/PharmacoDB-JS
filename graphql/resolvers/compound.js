@@ -135,10 +135,10 @@ const compoundQuery = async (compoundId, compoundName, subtypes) => {
 
 /**
  * Returns the transformed data for all the compounds in the database.
- * @param {Object} data - Parameters for the data.
- * @param {number} [data.page = 1] - Current page number with a default value of 1.
- * @param {number} [data.per_page = 20] - Total values per page with a default value of 20.
- * @param {boolean} [data.all = false] - Boolean value whether to show all the data or not with a default value of false.
+ * @param {Object} args - Parameters for the data.
+ * @param {number} [args.page = 1] - Current page number with a default value of 1.
+ * @param {number} [args.per_page = 20] - Total values per page with a default value of 20.
+ * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
  */
 const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
     // setting limit and offset.
@@ -158,6 +158,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         if (!all) {
             query.limit(limit).offset(offset);
         }
+        // execute the query.
         const compounds = await query;
         // return the transformed data.
         return transformCompounds(compounds);
@@ -182,7 +183,7 @@ const compound = async (args, parent, info) => {
         } = args;
         // throw error if neither of the arguments are passed.
         if (!compoundId && !compoundName) {
-            throw new Error('Please specify atleast one of the ID or the Name of the compound you want to query!');
+            throw new Error('Please specify atleast one of the ID or the Name of the Compound you want to query!');
         }
         // declaring variables.
         let compoundSynonyms;
