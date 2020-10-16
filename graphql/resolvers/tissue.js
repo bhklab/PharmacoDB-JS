@@ -100,10 +100,13 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
 
 /**
  *
- * @param {Array} data
+ * @param {Array} tissue
+ * @param {Array} cell_count
+ * @param {Array} compound_tested
+ * @param {Array} subtypes
  * @returns {Object} - transformed object.
  */
-const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
+const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes) => {
     // return object interface.
     let returnObject = {
         id: 0,
@@ -121,7 +124,8 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested) => {
         let {
             source_tissue_name
         } = row;
-        source_tissue_name = source_tissue_name.replace(' ', '');
+
+        if (subtypes.includes('synonyms')) source_tissue_name = source_tissue_name.replace(' ', '');
 
         // if it's the first element.
         if (!i) {
@@ -228,7 +232,7 @@ const tissue = async (args, parent, info) => {
         const compound_tested = subtypes.includes('compounds_tested') ? await compoundTestedQuery(tissueId, tissueName) : [];
 
         // return the transformed data.
-        return transformTissueAnnotation(tissue, cell_count, compound_tested);
+        return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
     } catch (err) {
         console.log(err);
         return err;
