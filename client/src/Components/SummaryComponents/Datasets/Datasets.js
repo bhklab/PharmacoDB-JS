@@ -34,7 +34,7 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <UpsetPlot/>
+      {/* <UpsetPlot/> */}
       <h2>List of Datasets</h2>
       <Table columns={columns} data={data} />
     </>
