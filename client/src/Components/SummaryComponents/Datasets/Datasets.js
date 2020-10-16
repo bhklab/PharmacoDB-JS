@@ -4,7 +4,7 @@ import Table from '../../UtilComponents/Table';
 import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
-import Loading from '../../Utils/Loading';
+import Loading from '../../UtilComponents/Loading';
 import UpsetPlot from '../../Plots/UpsetPlot';
 
 const table_columns = [
@@ -34,7 +34,7 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      {/* <UpsetPlot/> */}
+      {/* <UpsetPlot /> */}
       <h2>List of Datasets</h2>
       <Table columns={columns} data={data} />
     </>
