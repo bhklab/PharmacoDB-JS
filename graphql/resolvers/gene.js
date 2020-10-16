@@ -1,7 +1,6 @@
 const knex = require('../../db/knex');
-const {
-    transformObject
-} = require('../../helpers/transformObject');
+const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { transformObject } = require('../../helpers/transformObject');
 
 /**
  * @param {Array} data
@@ -31,11 +30,25 @@ const transformGene = data => {
 
 /**
  * Returns the transformed data for all the genes in the database.
+ * @param {Object} args - Parameters for the data.
+ * @param {number} [args.page = 1] - Current page number with a default value of 1.
+ * @param {number} [args.per_page = 20] - Total values per page with a default value of 20.
+ * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
  */
 // TODO: the code has to be changed in future when new database will be in place.
-const genes = async () => {
+// TODO: right now a single table genes is used which has been split into two new tables ie gene and gene_annotation.
+const genes = async ({ page = 1, per_page = 20, all = false }) => {
+    // setting limit and offset.
+    const { limit, offset } = calcLimitOffset(page, per_page);
     try {
-        const genes = await knex.select().from('genes');
+        let query = knex.select().from('genes');
+        // if the user has not queried to get all the compound, 
+        // then limit and offset will be used to give back the queried limit.
+        if (!all) {
+            query.limit(limit).offset(offset);
+        }
+        // execute the query.
+        const genes = await query;
         return transformGene(genes);
     } catch (err) {
         console.log(err);
@@ -45,18 +58,30 @@ const genes = async () => {
 
 /**
  * Returns the transformed data for all the queried gene in the database.
- * @param {object} args
+ * @param {Object} args
  */
 // TODO: the code has to be changed in future when new database will be in place.
-const gene = async args => {
+// TODO: right now a single table genes is used which has been split into two new tables ie gene and gene_annotation.
+const gene = async (args) => {
     const {
-        geneId
+        geneId,
+        geneName
     } = args;
+    // throw error if neither of the arguments are passed.
+    if (!geneId && !geneName) {
+        throw new Error('Please specify atleast one of the ID or the Name of the Gene you want to query!');
+    }
     try {
-        let gene = await knex
+        let query = knex
             .select()
-            .from('genes')
-            .where('genes.gene_id', geneId);
+            .from('genes');
+        // final query based on the input args.
+        let gene;
+        if (geneId) {
+            gene = await query.where('genes.gene_id', geneId);
+        } else if (geneName) {
+            gene = await query.where('genes.gene_name', geneName);
+        }
         // transforming the rowdatapacket object.
         gene = transformObject(gene);
         // getting the right data to be sent.
