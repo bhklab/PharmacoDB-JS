@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Layout from '../../Utils/Layout';
+import Layout from '../../UtilComponents/Layout';
+import dataset_colors from '../../../styles/dataset_colors';
 import StyledWrapper from '../../../styles/utils';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
+import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
 import { getDatasetCountsQuery } from '../../../queries/dataset';
-import Loading from '../../Utils/Loading';
-import AverageDatasetBarPlot from './AverageDatasetBarPlot';
-import dataset_colors from '../../../styles/dataset_colors';
+import Loading from '../../UtilComponents/Loading';
 
 /**
  *
@@ -47,14 +47,16 @@ const renderComponent = (loading, error, data) => {
   }
   return (
     <>
-      <div className="plot">
-        <h3>Average experiments per cell line in each data set</h3>
-        <AverageDatasetBarPlot data={experimentsPerCell} />
-      </div>
-      <div className="plot">
-        <h3>Average experiments per compound in each dataset</h3>
-        <AverageDatasetBarPlot data={experimentsPerCompound} />
-      </div>
+      <AverageDatasetBarPlot
+        data={experimentsPerCell}
+        xaxis="Experiments"
+        title="Average experiments per cell line in each data set"
+      />
+      <AverageDatasetBarPlot
+        data={experimentsPerCompound}
+        xaxis="Experiments"
+        title="Average experiments per compound in each dataset"
+      />
     </>
   );
 };

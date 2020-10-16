@@ -39,6 +39,12 @@ const StyledIndivPage = styled.div`
     }
   }
 
+  .plot {
+    h4 {
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
 `;
 
 const StyledSidebar = styled.div`
@@ -72,7 +78,6 @@ const StyledSidebar = styled.div`
   @media only screen and (max-width: 765px) {
     display:none;
   }
-
 `;
 
 export {

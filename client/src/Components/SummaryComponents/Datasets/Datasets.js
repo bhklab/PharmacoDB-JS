@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../Utils/Table';
-import Layout from '../../Utils/Layout';
+import Table from '../../UtilComponents/Table';
+import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../Utils/Loading';

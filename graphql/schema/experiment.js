@@ -6,6 +6,7 @@ const experimentType = `
         compound: Compound!
         dataset: Dataset!
         dose_responses: [DrugResponse!]
+        profile: Profile!
     }
 `;
 

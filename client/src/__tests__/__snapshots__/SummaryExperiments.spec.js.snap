@@ -8204,62 +8204,64 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 >
                   <styled.div>
                     <div
-                      className="sc-AxgMl hKMAOG"
+                      className="sc-AxgMl gXIWvf"
                     >
-                      <div
-                        className="plot"
+                      <DatasetHorizontalPlot
+                        data={
+                          Array [
+                            Object {
+                              "color": "#2b8cbe",
+                              "count": 445.115990990991,
+                              "id": 2,
+                              "name": "CTRPv2",
+                            },
+                            Object {
+                              "color": "#a8ddb5",
+                              "count": 203.31830477908025,
+                              "id": 5,
+                              "name": "GDSC1000",
+                            },
+                            Object {
+                              "color": "#ccebc5",
+                              "count": 112.05952380952381,
+                              "id": 6,
+                              "name": "GRAY",
+                            },
+                            Object {
+                              "color": "#4eb3d3",
+                              "count": 51.22,
+                              "id": 3,
+                              "name": "FIMM",
+                            },
+                            Object {
+                              "color": "#08589e",
+                              "count": 10.999057492931197,
+                              "id": 1,
+                              "name": "CCLE",
+                            },
+                            Object {
+                              "color": "#7bccc4",
+                              "count": 8.561007957559681,
+                              "id": 4,
+                              "name": "gCSI",
+                            },
+                            Object {
+                              "color": "#f0f9e8",
+                              "count": 0.6190476190476191,
+                              "id": 7,
+                              "name": "UHNBreast",
+                            },
+                          ]
+                        }
+                        title="Average experiments per cell line in each data set"
+                        xaxis="Experiments"
                       >
-                        <h3>
-                          Average experiments per cell line in each data set
-                        </h3>
-                        <AverageDatasetBarPlot
-                          data={
-                            Array [
-                              Object {
-                                "color": "#2b8cbe",
-                                "count": 445.115990990991,
-                                "id": 2,
-                                "name": "CTRPv2",
-                              },
-                              Object {
-                                "color": "#a8ddb5",
-                                "count": 203.31830477908025,
-                                "id": 5,
-                                "name": "GDSC1000",
-                              },
-                              Object {
-                                "color": "#ccebc5",
-                                "count": 112.05952380952381,
-                                "id": 6,
-                                "name": "GRAY",
-                              },
-                              Object {
-                                "color": "#4eb3d3",
-                                "count": 51.22,
-                                "id": 3,
-                                "name": "FIMM",
-                              },
-                              Object {
-                                "color": "#08589e",
-                                "count": 10.999057492931197,
-                                "id": 1,
-                                "name": "CCLE",
-                              },
-                              Object {
-                                "color": "#7bccc4",
-                                "count": 8.561007957559681,
-                                "id": 4,
-                                "name": "gCSI",
-                              },
-                              Object {
-                                "color": "#f0f9e8",
-                                "count": 0.6190476190476191,
-                                "id": 7,
-                                "name": "UHNBreast",
-                              },
-                            ]
-                          }
+                        <div
+                          className="plot"
                         >
+                          <h4>
+                            Average experiments per cell line in each data set
+                          </h4>
                           <PlotlyComponent
                             config={
                               Object {
@@ -8307,21 +8309,34 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             debug={false}
                             layout={
                               Object {
-                                "autosize": true,
+                                "autoresize": true,
                                 "height": 530,
                                 "margin": Object {
-                                  "t": 50,
+                                  "b": 50,
+                                  "l": 65,
+                                  "r": 0,
+                                  "t": 20,
                                 },
                                 "xaxis": Object {
                                   "autorange": true,
+                                  "color": "#205e74",
                                   "range": Array [
                                     0,
-                                    949.4736842105264,
+                                    469.4736842105263,
                                   ],
+                                  "title": Object {
+                                    "font": Object {
+                                      "family": "Robot Slab, serif",
+                                      "size": 16,
+                                    },
+                                    "standoff": 10,
+                                    "text": "Experiments",
+                                  },
                                   "type": "linear",
                                 },
                                 "yaxis": Object {
                                   "autorange": true,
+                                  "color": "#205e74",
                                   "range": Array [
                                     -0.5,
                                     6.5,
@@ -8347,62 +8362,64 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                               }
                             />
                           </PlotlyComponent>
-                        </AverageDatasetBarPlot>
-                      </div>
-                      <div
-                        className="plot"
+                        </div>
+                      </DatasetHorizontalPlot>
+                      <DatasetHorizontalPlot
+                        data={
+                          Array [
+                            Object {
+                              "color": "#a8ddb5",
+                              "count": 901.92,
+                              "id": 5,
+                              "name": "GDSC1000",
+                            },
+                            Object {
+                              "color": "#2b8cbe",
+                              "count": 726.5863970588235,
+                              "id": 2,
+                              "name": "CTRPv2",
+                            },
+                            Object {
+                              "color": "#08589e",
+                              "count": 486.25,
+                              "id": 1,
+                              "name": "CCLE",
+                            },
+                            Object {
+                              "color": "#7bccc4",
+                              "count": 403.4375,
+                              "id": 4,
+                              "name": "gCSI",
+                            },
+                            Object {
+                              "color": "#ccebc5",
+                              "count": 104.58888888888889,
+                              "id": 6,
+                              "name": "GRAY",
+                            },
+                            Object {
+                              "color": "#4eb3d3",
+                              "count": 49.25,
+                              "id": 3,
+                              "name": "FIMM",
+                            },
+                            Object {
+                              "color": "#f0f9e8",
+                              "count": 13,
+                              "id": 7,
+                              "name": "UHNBreast",
+                            },
+                          ]
+                        }
+                        title="Average experiments per compound in each dataset"
+                        xaxis="Experiments"
                       >
-                        <h3>
-                          Average experiments per compound in each dataset
-                        </h3>
-                        <AverageDatasetBarPlot
-                          data={
-                            Array [
-                              Object {
-                                "color": "#a8ddb5",
-                                "count": 901.92,
-                                "id": 5,
-                                "name": "GDSC1000",
-                              },
-                              Object {
-                                "color": "#2b8cbe",
-                                "count": 726.5863970588235,
-                                "id": 2,
-                                "name": "CTRPv2",
-                              },
-                              Object {
-                                "color": "#08589e",
-                                "count": 486.25,
-                                "id": 1,
-                                "name": "CCLE",
-                              },
-                              Object {
-                                "color": "#7bccc4",
-                                "count": 403.4375,
-                                "id": 4,
-                                "name": "gCSI",
-                              },
-                              Object {
-                                "color": "#ccebc5",
-                                "count": 104.58888888888889,
-                                "id": 6,
-                                "name": "GRAY",
-                              },
-                              Object {
-                                "color": "#4eb3d3",
-                                "count": 49.25,
-                                "id": 3,
-                                "name": "FIMM",
-                              },
-                              Object {
-                                "color": "#f0f9e8",
-                                "count": 13,
-                                "id": 7,
-                                "name": "UHNBreast",
-                              },
-                            ]
-                          }
+                        <div
+                          className="plot"
                         >
+                          <h4>
+                            Average experiments per compound in each dataset
+                          </h4>
                           <PlotlyComponent
                             config={
                               Object {
@@ -8450,21 +8467,34 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             debug={false}
                             layout={
                               Object {
-                                "autosize": true,
+                                "autoresize": true,
                                 "height": 530,
                                 "margin": Object {
-                                  "t": 50,
+                                  "b": 50,
+                                  "l": 65,
+                                  "r": 0,
+                                  "t": 20,
                                 },
                                 "xaxis": Object {
                                   "autorange": true,
+                                  "color": "#205e74",
                                   "range": Array [
                                     0,
                                     949.4736842105264,
                                   ],
+                                  "title": Object {
+                                    "font": Object {
+                                      "family": "Robot Slab, serif",
+                                      "size": 16,
+                                    },
+                                    "standoff": 10,
+                                    "text": "Experiments",
+                                  },
                                   "type": "linear",
                                 },
                                 "yaxis": Object {
                                   "autorange": true,
+                                  "color": "#205e74",
                                   "range": Array [
                                     -0.5,
                                     6.5,
@@ -8490,8 +8520,8 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                               }
                             />
                           </PlotlyComponent>
-                        </AverageDatasetBarPlot>
-                      </div>
+                        </div>
+                      </DatasetHorizontalPlot>
                     </div>
                   </styled.div>
                 </div>

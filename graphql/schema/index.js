@@ -12,6 +12,8 @@ const { RootQuery } = require('./root_query');
 const { sourceType, sourceAnnotationType, sourceStatsType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
+const { geneDrugType } = require('./gene_drug');
+const { profileType } = require('./profile');
 
 
 // schema definition.
@@ -72,6 +74,9 @@ const schema = `
 
     "GeneDrug Type"
     ${geneDrugType}
+
+    "Profile Type"
+    ${profileType}
 
     "Root Query"
     ${RootQuery}
