@@ -6,7 +6,7 @@ import { gql } from 'apollo-boost';
  */
 const getGenesQuery = gql`
   query getAllGenes {
-    genes {
+    genes(all: true) {
       id
       name
       annotation {

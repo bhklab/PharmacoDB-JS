@@ -6,7 +6,7 @@ import { gql } from 'apollo-boost';
  */
 const getCellLinesQuery = gql`
   query getAllCellLines {
-    cell_lines {
+    cell_lines(all: true) {
       id
       name
       tissue {
