@@ -17,8 +17,8 @@ const compoundType = `
     }
 `;
 
-const singleCompoundType = `
-    type SingleCompound {
+const compoundDetailType = `
+    type CompoundDetail {
         compound: Compound!
         synonyms: [SourceAnnotation!]
         targets: [Target!]
@@ -28,5 +28,5 @@ const singleCompoundType = `
 module.exports = {
     compoundType,
     compoundAnnotationType,
-    singleCompoundType
+    compoundDetailType
 };

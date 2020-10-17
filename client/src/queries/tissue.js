@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost';
 
 const getTissuesQuery = gql`
   query getAllTissues {
-    tissues {
+    tissues(all: true) {
       id
       name
     }

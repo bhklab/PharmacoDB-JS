@@ -2,13 +2,14 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element, animateScroll as scroll } from 'react-scroll';
+import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Layout from '../../Utils/Layout';
+import Layout from '../../UtilComponents/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
-import { NotFoundContent } from '../../Utils/NotFoundPage';
-import SnakeCase from '../../Utils/SnakeCase';
-import Table from '../../Utils/Table';
+import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
+import SnakeCase from '../../../utils/convertToSnakeCase';
+import Table from '../../UtilComponents/Table';
+import PlotSection from './PlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
@@ -46,6 +47,7 @@ const formatSynonymData = (data) => {
       sources: x.source.join(', '),
     }));
   }
+  return null;
 };
 
 /**
@@ -89,6 +91,7 @@ const createSideLink = (link) => <Link key={link} className="link" activeClass="
 const IndivCompounds = (props) => {
   // parameter.
   const { match: { params } } = props;
+  // const compoundId = parseInt(params.id);
 
   // query to get the data for the single compound.
   const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
@@ -155,6 +158,7 @@ const IndivCompounds = (props) => {
                     </Element>
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
+                      <PlotSection compound={({ id: data.compound.id, name: data.compound.name })} />
                     </Element>
                   </div>
                 </div>

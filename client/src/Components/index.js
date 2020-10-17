@@ -6,7 +6,7 @@ import CellLines from './SummaryComponents/CellLines/CellLines';
 import IndivCompounds from './IndividualComponents/IndivCompounds/IndivCompounds';
 import Datasets from './SummaryComponents/Datasets/Datasets';
 import Home from './Home/Home';
-import NotFoundPage from './Utils/NotFoundPage';
+import NotFoundPage from './UtilComponents/NotFoundPage';
 
 export {
   Compounds, IndivCompounds, Home, NotFoundPage,

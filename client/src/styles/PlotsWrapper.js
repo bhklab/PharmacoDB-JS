@@ -5,7 +5,7 @@ import colors from './colors';
 const PlotsWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   .plot {
     width: calc(50% - 10px);

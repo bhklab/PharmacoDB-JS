@@ -2,15 +2,22 @@ const knex = require('../../db/knex');
 
 /**
  * 
- * @param {Number} compoundId 
+ * @param {number} compoundId 
+ * @param {string} compoundName
  */
-const targetQuery = async (compoundId) => {
-    return await knex.distinct('t.target_name')
+const targetQuery = async (compoundId, compoundName) => {
+    // main query.
+    const query = knex.distinct('t.target_name')
         .select('d.drug_name', 'dt.target_id', 'dt.drug_id')
         .from('drug_targets as dt')
         .join('targets as t', 't.target_id', 'dt.target_id')
-        .join('drugs as d', 'd.drug_id', 'dt.drug_id')
-        .where('dt.drug_id', compoundId);
+        .join('drugs as d', 'd.drug_id', 'dt.drug_id');
+    // subquery.
+    if (compoundId) {
+        return query.where('d.drug_id', compoundId);
+    } else if (compoundName) {
+        return query.where('d.drug_name', compoundName);
+    }
 };
 
 /**
@@ -27,10 +34,11 @@ const targetQuery = async (compoundId) => {
  */
 const compound_target = async (args) => {
     const {
-        compoundId
+        compoundId,
+        compoundName
     } = args;
     const returnObject = {};
-    const targets = await targetQuery(compoundId);
+    const targets = await targetQuery(compoundId, compoundName);
 
     targets.forEach((target, i) => {
         const {

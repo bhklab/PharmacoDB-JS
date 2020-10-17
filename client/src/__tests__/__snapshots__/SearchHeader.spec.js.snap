@@ -195,7 +195,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -237,7 +249,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 69,
+                  "end": 80,
                   "start": 0,
                 },
               },
@@ -267,7 +279,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -346,7 +370,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 121,
+                  "end": 132,
                   "start": 0,
                 },
               },
@@ -557,7 +581,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -599,7 +635,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 69,
+                      "end": 80,
                       "start": 0,
                     },
                   },
@@ -624,7 +660,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -703,7 +751,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 121,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -717,9 +765,9 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines(all: true) {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
-                "{\\"query\\":\\"query getAllTissues {\\\\n  tissues {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                "{\\"query\\":\\"query getAllTissues {\\\\n  tissues(all: true) {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
               },
             },
             "localState": LocalState {
@@ -912,7 +960,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -954,7 +1014,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -979,7 +1039,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -1058,7 +1130,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },
@@ -1267,7 +1339,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -1309,7 +1393,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -1334,7 +1418,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -1413,7 +1509,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -1428,9 +1524,9 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                  "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines(all: true) {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                   "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
-                  "{\\"query\\":\\"query getAllTissues {\\\\n  tissues {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                  "{\\"query\\":\\"query getAllTissues {\\\\n  tissues(all: true) {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 },
               },
               "localState": LocalState {
@@ -1623,7 +1719,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -1665,7 +1773,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -1690,7 +1798,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -1769,7 +1889,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -2116,7 +2236,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -2158,7 +2290,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 69,
+                      "end": 80,
                       "start": 0,
                     },
                   },
@@ -2214,7 +2346,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -2256,7 +2400,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -2288,7 +2432,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -2367,7 +2523,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 121,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -2423,7 +2579,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -2502,7 +2670,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -2681,7 +2849,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -2723,7 +2903,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -2754,7 +2934,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -2833,7 +3025,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },
@@ -3046,7 +3238,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -3088,7 +3292,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -3113,7 +3317,19 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -3192,7 +3408,7 @@ exports[`Search Header renders correctly on pages other than home 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },
@@ -5715,7 +5931,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -5757,7 +5985,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 69,
+                  "end": 80,
                   "start": 0,
                 },
               },
@@ -5787,7 +6015,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       "selections": Array [
                         Object {
                           "alias": undefined,
-                          "arguments": Array [],
+                          "arguments": Array [
+                            Object {
+                              "kind": "Argument",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "all",
+                              },
+                              "value": Object {
+                                "kind": "BooleanValue",
+                                "value": true,
+                              },
+                            },
+                          ],
                           "directives": Array [],
                           "kind": "Field",
                           "name": Object {
@@ -5866,7 +6106,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 121,
+                  "end": 132,
                   "start": 0,
                 },
               },
@@ -6077,7 +6317,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -6119,7 +6371,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 69,
+                      "end": 80,
                       "start": 0,
                     },
                   },
@@ -6144,7 +6396,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -6223,7 +6487,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 121,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -6237,9 +6501,9 @@ exports[`Search Header renders correctly on the home page 1`] = `
             "link": MockLink {
               "addTypename": false,
               "mockedResponsesByKey": Object {
-                "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines(all: true) {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
-                "{\\"query\\":\\"query getAllTissues {\\\\n  tissues {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                "{\\"query\\":\\"query getAllTissues {\\\\n  tissues(all: true) {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
               },
             },
             "localState": LocalState {
@@ -6432,7 +6696,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -6474,7 +6750,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -6499,7 +6775,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -6578,7 +6866,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },
@@ -6787,7 +7075,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -6829,7 +7129,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -6854,7 +7154,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -6933,7 +7245,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -6948,9 +7260,9 @@ exports[`Search Header renders correctly on the home page 1`] = `
               "link": MockLink {
                 "addTypename": false,
                 "mockedResponsesByKey": Object {
-                  "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                  "{\\"query\\":\\"query getAllCellLines {\\\\n  cell_lines(all: true) {\\\\n    id\\\\n    name\\\\n    tissue {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
                   "{\\"query\\":\\"query getAllCompounds {\\\\n  compounds(all: true) {\\\\n    id\\\\n    name\\\\n    annotation {\\\\n      smiles\\\\n      inchikey\\\\n      pubchem\\\\n      fda_status\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
-                  "{\\"query\\":\\"query getAllTissues {\\\\n  tissues {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
+                  "{\\"query\\":\\"query getAllTissues {\\\\n  tissues(all: true) {\\\\n    id\\\\n    name\\\\n  }\\\\n}\\\\n\\"}": Array [],
                 },
               },
               "localState": LocalState {
@@ -7143,7 +7455,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -7185,7 +7509,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -7210,7 +7534,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -7289,7 +7625,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -7636,7 +7972,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -7678,7 +8026,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 69,
+                      "end": 80,
                       "start": 0,
                     },
                   },
@@ -7734,7 +8082,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -7776,7 +8136,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 69,
+                          "end": 80,
                           "start": 0,
                         },
                       },
@@ -7808,7 +8168,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                           "selections": Array [
                             Object {
                               "alias": undefined,
-                              "arguments": Array [],
+                              "arguments": Array [
+                                Object {
+                                  "kind": "Argument",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "all",
+                                  },
+                                  "value": Object {
+                                    "kind": "BooleanValue",
+                                    "value": true,
+                                  },
+                                },
+                              ],
                               "directives": Array [],
                               "kind": "Field",
                               "name": Object {
@@ -7887,7 +8259,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 121,
+                      "end": 132,
                       "start": 0,
                     },
                   },
@@ -7943,7 +8315,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                               "selections": Array [
                                 Object {
                                   "alias": undefined,
-                                  "arguments": Array [],
+                                  "arguments": Array [
+                                    Object {
+                                      "kind": "Argument",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "all",
+                                      },
+                                      "value": Object {
+                                        "kind": "BooleanValue",
+                                        "value": true,
+                                      },
+                                    },
+                                  ],
                                   "directives": Array [],
                                   "kind": "Field",
                                   "name": Object {
@@ -8022,7 +8406,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                         ],
                         "kind": "Document",
                         "loc": Object {
-                          "end": 121,
+                          "end": 132,
                           "start": 0,
                         },
                       },
@@ -8201,7 +8585,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -8243,7 +8639,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -8274,7 +8670,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -8353,7 +8761,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },
@@ -8566,7 +8974,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -8608,7 +9028,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 69,
+                        "end": 80,
                         "start": 0,
                       },
                     },
@@ -8633,7 +9053,19 @@ exports[`Search Header renders correctly on the home page 1`] = `
                             "selections": Array [
                               Object {
                                 "alias": undefined,
-                                "arguments": Array [],
+                                "arguments": Array [
+                                  Object {
+                                    "kind": "Argument",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "all",
+                                    },
+                                    "value": Object {
+                                      "kind": "BooleanValue",
+                                      "value": true,
+                                    },
+                                  },
+                                ],
                                 "directives": Array [],
                                 "kind": "Field",
                                 "name": Object {
@@ -8712,7 +9144,7 @@ exports[`Search Header renders correctly on the home page 1`] = `
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 121,
+                        "end": 132,
                         "start": 0,
                       },
                     },

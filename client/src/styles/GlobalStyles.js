@@ -14,8 +14,11 @@ const GlobalStyles = createGlobalStyle`
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 20px;
     }
-
+    .js-plotly-plot {
+        width: 100%;
+    }
     .noscroll
     {
         position: fixed; 
@@ -76,6 +79,21 @@ const GlobalStyles = createGlobalStyle`
         }
         p {
             margin: 2em;
+        }
+    }
+
+    .plot {
+        margin-bottom: 20px;
+        h3 {
+            text-align: center;
+            margin: 15px 0;
+        }
+        .notifications {
+            margin-left: 65px;
+            P {
+                font-size: 10px;
+                color: ${colors.teal}
+            }
         }
     }
     /* desktop */

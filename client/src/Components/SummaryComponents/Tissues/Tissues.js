@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-import Table from '../../Utils/Table';
-import Layout from '../../Utils/Layout';
+import Table from '../../UtilComponents/Table';
+import Layout from '../../UtilComponents/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getTissuesQuery } from '../../../queries/tissue';
 import { getCellLinesQuery } from '../../../queries/cell';
-import Loading from '../../Utils/Loading';
+import Loading from '../../UtilComponents/Loading';
 
 const tableColumns = [
   {
