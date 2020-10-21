@@ -18,7 +18,7 @@ const genericType = `
 
 const summaryType = `
     type Summary {
-        dataset: Dataset!
+        dataset: Generic!
         type: String!
         count: Int!
         list: [Generic!]
