@@ -250,7 +250,8 @@ const dataset = async (args, parent, info) => {
  * @returns {Array} - returns an array of the objects.
  * { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  */
-const cell_lines_count_grouped_by_dataset = async () => {
+// TODO: Probably later on this can be changed type_grouped_by_dataset.
+const cell_lines_grouped_by_dataset = async () => {
     const cell_count = await cellLinesGroupByDatasetQuery();
     return Object.keys(cell_count).map(value => cell_count[value]);
 };
@@ -289,22 +290,10 @@ const type_tested_on_dataset_summary = async ({ type, datasetId }) => {
 };
 
 
-/**
- * @returns {Array}
- */
-const cell_lines_count_per_dataset = async () => {
-    const query = await knex.select('d.dataset_id', 'd.dataset_name', 'c.cell_id', 'c.cell_name', 'tissue_id')
-        .from('dataset_cells as dc')
-        .leftJoin('datasets as d', 'd.dataset_id', 'dc.dataset_id')
-        .leftJoin('cells as c', 'c.cell_id', 'dc.cell_id');
-    console.log(query);
-};
-
 
 module.exports = {
     datasets,
     dataset,
-    cell_lines_count_grouped_by_dataset,
+    cell_lines_grouped_by_dataset,
     type_tested_on_dataset_summary,
-    cell_lines_count_per_dataset
 };
