@@ -1,7 +1,6 @@
 const countType = `
     type Count {
-        "This is the dataset object"
-        dataset: Dataset!
+        dataset: Generic!
         "Number of the elements in source/dataset"
         count: Int!
     }
@@ -19,9 +18,9 @@ const genericType = `
 const summaryType = `
     type Summary {
         dataset: Generic!
-        type: String!
         count: Int!
-        list: [Generic!]
+        type: String!
+        list: [Generic!]!
     }
 `;
 
