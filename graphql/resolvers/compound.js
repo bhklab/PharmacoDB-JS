@@ -51,6 +51,7 @@ const transformCompounds = data => {
         const {
             drug_id,
             drug_name,
+            drug_uid,
             smiles,
             inchikey,
             pubchem,
@@ -59,6 +60,7 @@ const transformCompounds = data => {
         return {
             id: drug_id,
             name: drug_name,
+            uid: drug_uid,
             annotation: {
                 smiles: smiles,
                 inchikey: inchikey,

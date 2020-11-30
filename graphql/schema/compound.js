@@ -13,6 +13,7 @@ const compoundType = `
     type Compound {
         id: Int!
         name: String!
+        uid: String!
         annotation: CompoundAnnotation! # to-one
     }
 `;
