@@ -1,15 +1,19 @@
-const csv = require('csvjson');
-const fs = require('fs');
+const csv = require('csvtojson');
 const path = require('path');
 
 const fileLocation = path.join('..', 'data', 'latest', 'drug.csv');
-const file = fs.readFileSync(fileLocation, 'utf8');
-const options = { delimiter: ',' };
-const data = csv.toObject(file, options);
+const parserParams = { 
+    delimiter: ',', 
+    quote: '"',
+    ignoreEmpty: true
+};
 
 exports.seed = function (knex) {
     return knex('compound').del()
         .then(function () {
+            return csv(parserParams).fromFile(fileLocation);
+        })
+        .then(function (data) {
             return knex('compound').insert(data);
         });
 };

@@ -1,7 +1,7 @@
 const csv = require('csvtojson');
 const path = require('path');
 
-const fileLocation = path.join('..', 'data', 'latest', 'tissue.csv');
+const fileLocation = path.join('..', 'data', 'latest', 'drug_annotation.csv');
 const parserParams = { 
     delimiter: ',', 
     quote: '"',
@@ -9,11 +9,11 @@ const parserParams = {
 };
 
 exports.seed = function (knex) {
-    return knex('tissue').del()
+    return knex('drug_annotation').del()
         .then(function () {
             return csv(parserParams).fromFile(fileLocation);
         })
         .then(function (data) {
-            return knex('tissue').insert(data);
+            return knex('drug_annotation').insert(data);
         });
 };
