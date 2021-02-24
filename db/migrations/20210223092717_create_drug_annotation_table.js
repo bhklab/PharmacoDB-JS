@@ -3,7 +3,7 @@ exports.up = function (knex) {
         if (!exists) {
             return knex.schema.createTable('drug_annotation', table => {
                 table.integer('drug_id').unsigned().notNullable();
-                table.string('smiles');
+                table.text('smiles');
                 table.string('inchikey');
                 table.string('pubchem');
                 table.boolean('fda_status');
