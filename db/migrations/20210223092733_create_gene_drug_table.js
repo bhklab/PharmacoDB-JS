@@ -6,11 +6,11 @@ exports.up = function (knex) {
                 table.integer('drug_id').unsigned().notNullable();
                 table.float('estimate');
                 table.float('se'); // should i use float to store double
-                table.integer('n'); // unsigned?
+                table.integer('n').unsigned();
                 table.float('tstat');
                 table.float('fstat');
                 table.float('pvalue');
-                table.integer('df'); //unsigned?
+                table.integer('df').unsigned();
                 table.float('fdr');
                 table.float('FWER_genes');
                 table.float('FWER_drugs');
@@ -21,8 +21,8 @@ exports.up = function (knex) {
                 table.string('sens_stat');
                 table.integer('tissue_id').unsigned().notNullable();
                 table.string('mDataType');
-                table.integer('tested_in_human_trials').unsigned(); // unsigned? boolean?
-                table.integer('in_clinical_trials').unsigned(); // unsigned? boolean?
+                table.boolean('tested_in_human_trials');
+                table.boolean('in_clinical_trials');
                 table.increments('id').primary();
                 table.foreign('gene_id').references('id').inTable('gene');
                 table.foreign('drug_id').references('id').inTable('compound');

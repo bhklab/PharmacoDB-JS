@@ -6,7 +6,7 @@ exports.up = function (knex) {
                 table.string('smiles');
                 table.string('inchikey');
                 table.string('pubchem');
-                table.integer('fda_status');
+                table.boolean('fda_status');
                 table.foreign('drug_id').references('id').inTable('compound');
             });
         }
