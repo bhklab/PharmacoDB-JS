@@ -1,7 +1,7 @@
 const csv = require('csvtojson');
 const path = require('path');
 
-const fileLocation = path.join('..', 'data', 'latest', 'clinical_trial.csv');
+const fileLocation = path.join('pharmacodi-data', 'clinical_trial.csv');
 const parserParams = { 
     delimiter: ',', 
     quote: '"',
