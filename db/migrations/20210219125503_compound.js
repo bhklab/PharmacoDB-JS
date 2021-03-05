@@ -1,6 +1,5 @@
-exports.up = function(knex) {
-    return knex.schema
-        .hasTable('compound')
+exports.up = function (knex) {
+    return knex.schema.hasTable('compound')
         .then(exists => {
             if (!exists) {
                 return knex.schema.createTable('compound', table => {
@@ -11,9 +10,12 @@ exports.up = function(knex) {
         })
         .catch(err => {
             throw err;
+        })
+        .finally(() => {
+            knex.destroy();
         });
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
     return knex.schema.dropTableIfExists('compound');
 };

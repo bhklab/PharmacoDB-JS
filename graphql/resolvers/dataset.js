@@ -22,29 +22,44 @@ const datasetQuery = async datasetId => {
  *      CCLE: { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  * }
  */
-const cellCountGroupByDatasetQuery = async () => {
+const cellLinesGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
+    const dataset = [];
     const query = await knex
-        .select('d.dataset_name', 'd.dataset_id')
-        .countDistinct('dc.cell_id as count')
+        .select('d.dataset_id', 'd.dataset_name', 'c.cell_id', 'c.cell_name', 'tissue_id')
         .from('dataset_cells as dc')
-        .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
-        .groupBy('d.dataset_id');
+        .leftJoin('datasets as d', 'd.dataset_id', 'dc.dataset_id')
+        .leftJoin('cells as c', 'c.cell_id', 'dc.cell_id');
     // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
     query.forEach(value => {
         const {
             dataset_name,
             dataset_id,
-            count
+            cell_id,
+            cell_name
         } = value;
-        returnObject[dataset_name] = {
-            dataset: {
-                id: dataset_id,
-                name: dataset_name
-            },
-            count: count
-        };
+        if (!dataset.includes(dataset_name)) {
+            dataset.push(dataset_name);
+            returnObject[dataset_name] = {
+                dataset: {
+                    id: dataset_id,
+                    name: dataset_name,
+                },
+                count: 1,
+                type: 'cell_line',
+                list: [{
+                    id: cell_id,
+                    name: cell_name
+                }]
+            };
+        } else {
+            returnObject[dataset_name].count += 1;
+            returnObject[dataset_name].list.push({
+                id: cell_id,
+                name: cell_name
+            });
+        }
     });
     // return the transformed object.
     return returnObject;
@@ -131,7 +146,7 @@ const datasets = async (args, parent, info) => {
         // retrieves data if it was requested
         let compound_count, cell_count, experiment_count;
         if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
-        if (listOfFields.includes('cell_count')) cell_count = await cellCountGroupByDatasetQuery();
+        if (listOfFields.includes('cell_count')) cell_count = await cellLinesGroupByDatasetQuery();
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
         // return the transformed data for this function.
         const data = datasets.map(dataset => {
@@ -190,7 +205,7 @@ const dataset = async (args, parent, info) => {
         const returnData = [];
         let cell_count, compound_count, tissue_count, experiment_count, cells, compounds;
         const datasets = await datasetQuery();
-        if (listOfFields.includes('cell_count')) cell_count = await cellCountGroupByDatasetQuery();
+        if (listOfFields.includes('cell_count')) cell_count = await cellLinesGroupByDatasetQuery();
         if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
         if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
@@ -235,8 +250,9 @@ const dataset = async (args, parent, info) => {
  * @returns {Array} - returns an array of the objects.
  * { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  */
-const cell_lines_per_dataset = async () => {
-    const cell_count = await cellCountGroupByDatasetQuery();
+// TODO: Probably later on this can be changed type_grouped_by_dataset.
+const cell_lines_grouped_by_dataset = async () => {
+    const cell_count = await cellLinesGroupByDatasetQuery();
     return Object.keys(cell_count).map(value => cell_count[value]);
 };
 
@@ -250,7 +266,7 @@ const cell_lines_per_dataset = async () => {
  *      list: {id: 'type id', name: 'type name' } 
  * }
  */
-const type_tested_on_dataset = async ({ type, datasetId }) => {
+const type_tested_on_dataset_summary = async ({ type, datasetId }) => {
     const type_list = await summaryQuery(type, datasetId);
     const count = type_list.length;
     const returnObject = {};
@@ -274,9 +290,10 @@ const type_tested_on_dataset = async ({ type, datasetId }) => {
 };
 
 
+
 module.exports = {
     datasets,
     dataset,
-    cell_lines_per_dataset,
-    type_tested_on_dataset
+    cell_lines_grouped_by_dataset,
+    type_tested_on_dataset_summary,
 };
