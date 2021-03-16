@@ -4,18 +4,18 @@ exports.up = function (knex) {
             return knex.schema.createTable('gene_drug', table => {
                 table.integer('gene_id').unsigned().notNullable();
                 table.integer('drug_id').unsigned().notNullable();
-                table.float('estimate');
-                table.float('se'); // should i use float to store double
+                table.decimal('estimate', 64, 16);
+                table.decimal('se', 64, 16);
                 table.integer('n').unsigned();
-                table.float('tstat');
-                table.float('fstat');
-                table.float('pvalue');
+                table.decimal('tstat', 64, 16);
+                table.decimal('fstat', 64, 16);
+                table.decimal('pvalue', 64, 16);
                 table.integer('df').unsigned();
-                table.float('fdr');
-                table.float('FWER_genes');
-                table.float('FWER_drugs');
-                table.float('FWER_all');
-                table.float('BF_p_all');
+                table.decimal('fdr', 64, 16);
+                table.decimal('FWER_genes', 64, 16);
+                table.decimal('FWER_drugs', 64, 16);
+                table.decimal('FWER_all', 64, 16);
+                table.decimal('BF_p_all', 64, 16);
                 table.boolean('meta_res');
                 table.integer('dataset_id').unsigned().notNullable();
                 table.string('sens_stat');
