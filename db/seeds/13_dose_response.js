@@ -34,7 +34,6 @@ const insertRows = async (knex) => {
     
 }
 
-
 exports.seed = async function (knex) {
     await knex('dose_response').del()
         .on('query', function () {
@@ -57,8 +56,10 @@ exports.seed = async function (knex) {
                 readStream.resume();
             }
         },
-        (error) => { console.log(error.stack); }, 
-        async () => { await insertRows(knex); } )
-    
-    return;
+        function(error) { 
+            console.log(error.stack);
+        })
+
+    // Insert any remaining rows (onCompleted cannot be async?)
+    await insertRows(knex);   
 };

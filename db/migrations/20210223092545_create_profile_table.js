@@ -3,14 +3,14 @@ exports.up = function (knex) {
         if (!exists) {
             return knex.schema.createTable('profile', table => {
                 table.integer('experiment_id').unsigned().notNullable();
-                table.float('HS', 12, 6);
-                table.float('Einf', 12, 6);
-                table.float('EC50', 12, 6);
-                table.float('AAC', 12, 6);
-                table.float('IC50', 12, 6);
-                table.float('DSS1', 12, 6);
-                table.float('DSS2', 12, 6);
-                table.float('DSS3', 12, 6);
+                table.decimal('HS', 65, 8);
+                table.decimal('Einf', 65, 8);
+                table.decimal('EC50', 65, 8);
+                table.decimal('AAC', 65, 8);
+                table.decimal('IC50', 65, 8);
+                table.decimal('DSS1', 65, 8);
+                table.decimal('DSS2', 65, 8);
+                table.decimal('DSS3', 65, 8);
                 table.foreign('experiment_id').references('id').inTable('experiment');
             });
         }
