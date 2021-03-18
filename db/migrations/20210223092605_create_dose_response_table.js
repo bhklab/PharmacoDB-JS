@@ -6,7 +6,10 @@ exports.up = function (knex) {
                 table.integer('experiment_id').unsigned().notNullable();
                 table.float('dose', 16, 8).notNullable();
                 table.float('response', 16, 8).notNullable();
-                table.foreign('experiment_id').references('id').inTable('experiment');
+                table
+                    .foreign('experiment_id')
+                    .references('id')
+                    .inTable('experiment');
             });
         }
     });
@@ -15,3 +18,5 @@ exports.up = function (knex) {
 exports.down = function (knex) {
     return knex.schema.dropTableIfExists('dose_response');
 };
+
+
