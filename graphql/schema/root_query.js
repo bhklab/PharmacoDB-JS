@@ -36,10 +36,11 @@ const RootQuery = `type RootQuery {
         One of the parameters has to be passed either an ID or the dataset Name"""
     dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
 
-    cell_lines_per_dataset: [Count!]!
+    "This is a query to get the cell lines that are grouped based on the dataset."
+    cell_lines_grouped_by_dataset: [Summary!]!
 
     "arguments that can be passed: 'cell', 'tissue', 'drug'"
-    type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): Summary!
+    type_tested_on_dataset_summary(type: AllowedValues!, datasetId: Int!): Summary!
 
 
     """Root Queries for experiments.

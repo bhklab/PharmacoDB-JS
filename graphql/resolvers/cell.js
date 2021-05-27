@@ -12,12 +12,14 @@ const transformCellLines = data => {
         const {
             cell_id,
             cell_name,
+            cell_line_uid,
             tissue_id,
             tissue_name
         } = cell;
         return {
             id: cell_id,
             name: cell_name,
+            uid: cell_line_uid,
             tissue: {
                 id: tissue_id,
                 name: tissue_name
@@ -40,6 +42,7 @@ const transformSingleCellLine = data => {
         const {
             cell_id,
             cell_name,
+            cell_line_uid,
             tissue_id,
             tissue_name,
             source_cell_name,
@@ -49,6 +52,7 @@ const transformSingleCellLine = data => {
         if (!i) {
             returnObject['id'] = cell_id;
             returnObject['name'] = cell_name;
+            returnObject['uid'] = cell_line_uid;
             returnObject['tissue'] = {
                 id: tissue_id,
                 name: tissue_name
@@ -135,6 +139,7 @@ const cell_line = async args => {
         let query = knex
             .select('cells.cell_id as cell_id',
                 'cells.cell_name as cell_name',
+                'cells.cell_line_uid as cell_line_uid',
                 'tissues.tissue_id as tissue_id',
                 'tissues.tissue_name as tissue_name',
                 'source_cell_names.cell_name as source_cell_name',
