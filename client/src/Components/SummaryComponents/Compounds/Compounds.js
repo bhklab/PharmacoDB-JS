@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';

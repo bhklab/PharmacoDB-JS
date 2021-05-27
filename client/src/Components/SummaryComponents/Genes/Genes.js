@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 import { getGenesQuery } from '../../../queries/gene';
 import Loading from '../../UtilComponents/Loading';
 
