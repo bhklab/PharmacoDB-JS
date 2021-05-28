@@ -21,6 +21,14 @@ const TableStyles = styled.div`
       border-bottom: 1px solid ${colors.white_smoke};
       border-right: 1px solid ${colors.white_smoke};
       overflow-x: auto;
+
+      a {
+        color: ${colors.dark_gray_text};
+        :hover {
+            color: ${colors.dark_pink_highlight};
+        }
+      }
+
       // hiding the scrollbar but still able to scroll.
       ::-webkit-scrollbar {
         width: 0px;
@@ -41,6 +49,10 @@ const TableStyles = styled.div`
         td {
           border-bottom: 0px solid ${colors.white_smoke};
         }
+      }
+      
+      :hover {
+          background: ${colors.pale_tint};
       }
     }
   
