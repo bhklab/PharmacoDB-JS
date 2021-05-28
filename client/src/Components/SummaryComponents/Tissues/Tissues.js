@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import { Link } from 'react-router-dom';
 import StyledWrapper from '../../../styles/utils';
 import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
@@ -16,6 +17,7 @@ const tableColumns = [
   {
     Header: 'Name',
     accessor: 'name',
+    Cell: (row) => (<Link to={`/tissues/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
+import { Link } from 'react-router-dom';
 import Layout from '../../UtilComponents/Layout';
 import Table from '../../UtilComponents/Table/Table';
 import { getGenesQuery } from '../../../queries/gene';
@@ -10,6 +11,7 @@ const table_columns = [
   {
     Header: 'Name',
     accessor: 'name',
+    Cell: (row) => (<Link to={`/genes/${row.row.original.id}`}>{row.value}</Link>),
   },
   {
     Header: 'Ensembl ID',
@@ -33,9 +35,10 @@ const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.genes.map((value) => {
-      const { name, annotation } = value;
+      const { name, annotation, id } = value;
       const { ensg, gene_seq_end, gene_seq_start } = annotation;
       return {
+        id,
         name,
         ensg,
         gene_seq_start,
