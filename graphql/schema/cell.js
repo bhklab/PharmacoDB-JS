@@ -6,16 +6,18 @@ const cellLineType = `
     }
 `;
 
-const cellAnnotationType = `
-    type CellLineAnnotation {
+const cellLineDetailType = `
+    type CellLineDetail {
         id: Int!
         name: String!
         tissue: Tissue!
         synonyms: [SourceAnnotation!]
+        diseases: [String]
+        accessions: [String!]
     }
 `;
 
 module.exports = {
     cellLineType,
-    cellAnnotationType
+    cellLineDetailType
 };

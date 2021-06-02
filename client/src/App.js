@@ -6,7 +6,8 @@ import SearchContext from './context/SearchContext';
 
 import {
   IndivCompounds, Compounds, Home, NotFoundPage,
-  Tissues, Genes, CellLines, Datasets, Experiments,
+  Tissues, IndivTissues, Genes, IndivGenes, CellLines, IndivCellLines,
+  Datasets, IndivDatasets, Experiments,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -31,6 +32,10 @@ const App = () => {
             <Route path="/cell_lines" exact component={CellLines} />
             <Route path="/datasets" exact component={Datasets} />
             <Route path="/compounds/:id" component={IndivCompounds} />
+            <Route path="/cell_lines/:id" component={IndivCellLines} />
+            <Route path="/tissues/:id" component={IndivTissues} />
+            <Route path="/datasets/:id" component={IndivDatasets} />
+            <Route path="/genes/:id" component={IndivGenes} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </Router>

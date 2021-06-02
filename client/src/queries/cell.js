@@ -6,7 +6,7 @@ import { gql } from 'apollo-boost';
  */
 const getCellLinesQuery = gql`
   query getAllCellLines {
-    cell_lines {
+    cell_lines(all: true) {
       id
       name
       tissue {
@@ -19,14 +19,16 @@ const getCellLinesQuery = gql`
 
 /**
  * @param { Number } cellId - cell id of the cell line to be queried.
- * @returns - all the information returns by the cell lines query
- * and synonym for the cell line in different datasets.
+ * @returns - all the information returns by the cell lines query,
+ * diseases, accessions, and synonym for the cell line in different datasets.
  */
 const getCellLineQuery = gql`
   query getSingleCellLine($cellId: Int!) {
     cell_line(cellId: $cellId) {
       id
       name
+      diseases
+      accessions
       tissue {
         id
         name
