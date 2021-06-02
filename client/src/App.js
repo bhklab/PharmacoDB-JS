@@ -7,6 +7,7 @@ import SearchContext from './context/SearchContext';
 import {
   IndivCompounds, Compounds, Home, NotFoundPage,
   Tissues, Genes, CellLines, Datasets, Experiments,
+  Biomarker,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -24,6 +25,7 @@ const App = () => {
         <Router>
           <Switch>
             <Route path="/" exact component={Home} />
+            <Route path="/biomarker" component={Biomarker} />
             <Route path="/compounds" exact component={Compounds} />
             <Route path="/tissues" exact component={Tissues} />
             <Route path="/genes" exact component={Genes} />
