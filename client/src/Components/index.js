@@ -5,12 +5,13 @@ import Experiments from './SummaryComponents/Experiments/Experiments';
 import CellLines from './SummaryComponents/CellLines/CellLines';
 import IndivCompounds from './IndividualComponents/IndivCompounds/IndivCompounds';
 import IndivCellLines from './IndividualComponents/IndivCellLines/IndivCellLines';
+import IndivTissues from './IndividualComponents/IndivTissues/IndivTissues';
 import Datasets from './SummaryComponents/Datasets/Datasets';
 import Home from './Home/Home';
 import NotFoundPage from './UtilComponents/NotFoundPage';
 
 export {
   Compounds, IndivCompounds, Home, NotFoundPage,
-  Tissues, Genes, CellLines, IndivCellLines,
+  Tissues, IndivTissues, Genes, CellLines, IndivCellLines,
   Datasets, Experiments,
 };

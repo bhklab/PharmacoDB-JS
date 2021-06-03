@@ -118,8 +118,10 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
     // looping through each data point.
     tissue.forEach((row, i) => {
         // only return tissue_name if source_tissue_name is N/A
-        if (row.source_tissue_name == null)
-            return returnObject.name = row.tissue_name;
+        if (row.source_tissue_name == null) {
+            returnObject.name = row.tissue_name;
+            return returnObject;
+        }
 
         const {
             tissue_id,
