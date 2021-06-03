@@ -3,52 +3,39 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getSingleCompoundExperimentsQuery } from '../../../queries/experiments';
+import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
-import ProfileCellLine from '../../Plots/ProfileCellLine';
+import ProfileCompound from '../../Plots/ProfileCompound';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
- * cell line and tissue dataset horizontal plots
- * @param {Array} experiments - list of experiments for a given drug returned by the API
- * @returns - array of two items. Elements of the array are a list of data points for tissue and cell line plots respectively
+ * compound horizontal plots
+ * @param {Array} experiments - list of experiments for a given cell line returned by the API
+ * @returns - array of items. Elements of the array are a list of data points for compound plots respectively
  * Each data point contains name, count and color properties
  * @example
- * [[{name: "CTRPv2", count: 25, color: "#ccebc5"}], ... ]
+ * [{name: "GDSC1000", count: 208, color: "#08589e"}, ... ]
  */
 const generateCountPlotData = (experiments) => {
-  const tissueObj = {};
-  const cellLineObj = {};
+  const compoundObj = {};
   experiments.forEach((experiment) => {
-    if (cellLineObj[experiment.dataset.name]) {
-      cellLineObj[experiment.dataset.name].push(experiment.cell_line.id);
+    if (compoundObj[experiment.dataset.name]) {
+      compoundObj[experiment.dataset.name].push(experiment.compound.id);
     } else {
-      cellLineObj[experiment.dataset.name] = [experiment.cell_line.id];
-    }
-
-    if (tissueObj[experiment.dataset.name]) {
-      tissueObj[experiment.dataset.name].push(experiment.tissue.id);
-    } else {
-      tissueObj[experiment.dataset.name] = [experiment.tissue.id];
+      compoundObj[experiment.dataset.name] = [experiment.compound.id];
     }
   });
-  const tissueData = Object.entries(tissueObj).map((dataset, i) => ({
+  const compoundData = Object.entries(compoundObj).map((dataset, i) => ({
     name: dataset[0],
     count: [...new Set(dataset[1])].length,
     color: dataset_colors[i],
   }));
-  const cellLineData = Object.entries(cellLineObj).map((dataset, i) => ({
-    name: dataset[0],
-    count: [...new Set(dataset[1])].length,
-    color: dataset_colors[i],
-  }));
-
-  return [tissueData, cellLineData];
+  return [compoundData];
 };
 /**
- * Section that display plots for the individula compound page.
+ * Section that display plots for the individual cell Line page.
  *
  * @component
  * @example
@@ -58,11 +45,11 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-  const { compound } = props;
-  const { id, name } = compound;
+  const { cellLine } = props;
+  const { id, name } = cellLine;
 
-  const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
-    variables: { compoundId: id },
+  const { loading, error, data } = useQuery(getSingleCellLineExperimentsQuery, {
+    variables: { cellLineId: id },
   });
   if (loading) {
     return <Loading />;
@@ -70,26 +57,29 @@ const PlotSection = (props) => {
   if (error) {
     return <p> Error! </p>;
   }
-  const [tissuesData, cellLinesData] = generateCountPlotData(data.experiments);
+  const [compoundsData] = generateCountPlotData(data.experiments);
   return (
     <>
-      <DatasetHorizontalPlot
-        data={cellLinesData}
-        xaxis="# of cell lines"
-        title={`Number of cell lines tested with ${name} (per dataset)`}
-      />
-      <DatasetHorizontalPlot
-        data={tissuesData}
-        xaxis="# of tissues"
-        title={`Number of tissues tested with ${name} (per dataset)`}
-      />
-      <ProfileCellLine compound={name} data={data.experiments} />
+      {
+          compoundsData.length
+            ? (
+              <>
+                <DatasetHorizontalPlot
+                  data={compoundsData}
+                  xaxis="# of compounds"
+                  title={`Number of compounds tested with ${name} (per dataset)`}
+                />
+                <ProfileCompound cellLine={name} data={data.experiments} />
+              </>
+            )
+            : <p> No data is available for plotting this cell line. </p>
+        }
     </>
   );
 };
 
 PlotSection.propTypes = {
-  compound: PropTypes.shape({
+  cellLine: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,
