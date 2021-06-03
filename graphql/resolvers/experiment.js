@@ -208,8 +208,8 @@ const experiments = async (args, context, info) => {
                     break;
                 }
             });
-            // removes limit/offset when client passes compoundId argument
-            return compoundId ? subquery.as('SE') : cellLineId ? subquery.as('SE') :subquery.limit(all ? '*' : limit)
+            // removes limit/offset when client passes compoundId, cellLineId, or tissueId argument
+            return compoundId || cellLineId || tissueId ? subquery.as('SE') :subquery.limit(all ? '*' : limit)
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
