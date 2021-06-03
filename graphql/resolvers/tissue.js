@@ -81,11 +81,11 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
                 'source_tissue_names.tissue_name as source_tissue_name',
                 'datasets.dataset_name as dataset_name')
             .from('tissues')
-            .join('source_tissue_names',
+            .leftJoin('source_tissue_names',
                 'tissues.tissue_id',
                 'source_tissue_names.tissue_id')
-            .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
-            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+            .leftJoin('sources', 'sources.source_id', 'source_tissue_names.source_id')
+            .leftJoin('datasets', 'datasets.dataset_id', 'sources.dataset_id');
     } else {
         query = knex.select().from('tissues');
     }
@@ -113,9 +113,14 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         name: 'empty',
         synonyms: []
     };
+
     const source_tissue_name_list = [];
     // looping through each data point.
     tissue.forEach((row, i) => {
+        // only return tissue_name if source_tissue_name is N/A
+        if (row.source_tissue_name == null)
+            return returnObject.name = row.tissue_name;
+
         const {
             tissue_id,
             tissue_name,
@@ -187,7 +192,7 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
     const { limit, offset } = calcLimitOffset(page, per_page);
     try {
         const query = knex.select().from('tissues');
-        // if the user has not queried to get all the compound, 
+        // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
