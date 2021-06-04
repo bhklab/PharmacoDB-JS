@@ -116,7 +116,7 @@ const IndivGenes = (props) => {
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
   const synonymData = React.useMemo(() => formatSynonymData(data.annotation), [data.annotation]);
 
-  // formatted data for external ids annotation table
+  // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
   const linkData = React.useMemo(() => formatLinkData(data), [data]);
 
