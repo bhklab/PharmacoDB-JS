@@ -49,7 +49,7 @@ const formatSynonymData = (data) => {
 };
 
 /**
- * Format data for the external ids link table
+ * Format data for link table
  * @param {Array} data link data from the gene API
  */
 const formatLinkData = (data) => {
@@ -141,10 +141,6 @@ const IndivGenes = (props) => {
                       <h3>Links</h3>
                       <Table columns={linkColumns} data={linkData} disablePagination />
                     </Element>
-                    {/* <Element className="section" name="top_genes"> */}
-                    {/*  <h3>Top Genes</h3> */}
-                    {/*  /!* <div className="text">{data.gene.annotation.fda_status}</div> *!/ */}
-                    {/* </Element> */}
                   </div>
                 </div>
               </StyledIndivPage>
