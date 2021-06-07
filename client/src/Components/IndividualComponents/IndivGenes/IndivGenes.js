@@ -22,48 +22,46 @@ const SYNONYM_COLUMNS = [
 const LINK_COLUMNS = [
   {
     Header: 'Genecard',
-    accessor: 'db',
+    accessor: 'id',
   },
 ];
 
 const SIDE_LINKS = ['Synonyms', 'Links'];
 
 /**
+ * Format data for synonym and link tables
+ * @param {String} id,link gene id and link to reference
+ */
+const formatTableLinks = (id, link) => [{
+  id: <a href={link} target="_blank">
+    <div style={{ textAlign: 'center' }}>
+      {' '}
+      {id}
+      {' '}
+    </div>
+  </a>,
+}];
+
+/**
  * Format data for the synonyms table
- * @param {Array} data synonym data from the gene API
+ * @param data synonym data from the gene API
  */
 const formatSynonymData = (data) => {
   if (data) {
     const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.ensg}`;
-    return [{
-      id: <a href={link} target= "_blank">
-        <div style={{ textAlign: 'center' }}>
-          {' '}
-          {data.ensg}
-          {' '}
-        </div>
-      </a>,
-    }];
+    return formatTableLinks(data.ensg, link);
   }
   return null;
 };
 
 /**
  * Format data for link table
- * @param {Array} data link data from the gene API
+ * @param data link data from the gene API
  */
 const formatLinkData = (data) => {
   if (data) {
     const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
-    return [{
-      db: <a href={link} target= "_blank">
-        <div style={{ textAlign: 'center' }}>
-          {' '}
-          {data.name}
-          {' '}
-        </div>
-      </a>,
-    }];
+    return formatTableLinks(data.name, link);
   }
   return null;
 };
