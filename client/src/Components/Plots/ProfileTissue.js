@@ -172,16 +172,17 @@ const runDataAnalysis = (data, dataset, profile) => {
  * @example
  *
  * return (
- *   <ProfileCellLine/>
+ *   <ProfileTissue/>
  * )
  */
-const ProfileCellLine = (props) => {
+const ProfileTissue = (props) => {
   const { data, compound } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
   // preformats the data and creates selection options for datasets and profiles
-  const formattedData = useMemo(() => formatExperimentPlotData(data, 'cell_line'), [data]);
+  const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
+  console.log(data, formattedData);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
@@ -235,7 +236,7 @@ const ProfileCellLine = (props) => {
   );
 };
 
-ProfileCellLine.propTypes = {
+ProfileTissue.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -264,4 +265,4 @@ ProfileCellLine.propTypes = {
   compound: PropTypes.string.isRequired,
 };
 
-export default ProfileCellLine;
+export default ProfileTissue;
