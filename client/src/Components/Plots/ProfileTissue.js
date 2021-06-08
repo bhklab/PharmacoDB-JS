@@ -4,7 +4,7 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
-import { formatExperimentPlotData, generateOptions } from '../../utils/plotProcessing';
+import { formatExperimentPlotData } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -59,24 +59,12 @@ const retrieveProfiles = (dataObj, profile, dataset) => {
 };
 
 /**
- * Helper function that creates data for the gap between low and high values for the plot
- * @param {Number} distance - sets how many empty bars should be in the gap
- * @returns {Array} - returns an array of objects with value, name and label properties
- */
-const generateEmptySpace = (distance) => {
-  const output = [];
-  for (let i = 0; i < distance; i += 1) {
-    output.push({ value: 0, name: i, label: '' });
-  }
-  return output;
-};
-
-/**
  * Function that creates final data and layout for plotly
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
 const generateRenderData = (data, dataset, profile) => {
+  console.log(data);
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -92,16 +80,12 @@ const generateRenderData = (data, dataset, profile) => {
       },
     },
   };
-  const notifications = {
-    subset: data.length > 60 ? 'Plot represents the top and bottom 30 data points' : null,
-    errorBars: dataset === 'All' ? 'Error Bars represent the Median Absolute Deviation' : null,
-  };
   data.forEach((el, i) => {
     const {
       name, value, deviation, label,
     } = el;
     const trace = {
-      type: 'bar',
+      type: 'box',
       marker: {
         color: i % 2 === 0 ? colors.blue : colors.green,
       },
@@ -122,7 +106,7 @@ const generateRenderData = (data, dataset, profile) => {
     layout.xaxis.ticktext.push(label);
     plotData.push(trace);
   });
-  return { plotData, layout, notifications };
+  return { plotData, layout };
 };
 
 /**
@@ -134,21 +118,21 @@ const generateRenderData = (data, dataset, profile) => {
  */
 const runDataAnalysis = (data, dataset, profile) => {
   // calculates median and deviation values and sort cell lines based on median
+  console.log(data);
   const calculatedData = [];
-  Object.values(data).forEach((el) => {
-    const profiles = retrieveProfiles(el.profiles, profile, dataset);
+  Object.values(data).forEach((tissue) => {
+    const profiles = retrieveProfiles(tissue.profiles, profile, dataset);
     // updates calculated data only if there is at list one profile
     if (profiles.length > 0) {
       const value = calculateMedian(profiles);
       const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
       calculatedData.push({
-        value, deviation, name: el.name, label: el.name,
+        value, deviation, name: tissue.name, label: tissue.name,
       });
     }
   });
   calculatedData.sort((a, b) => b.value - a.value);
-  // returns calculatedData or a subset of first and last 30 items from calculated data along with some few empty datapoints to create a gap if there too many dataoints
-  return calculatedData.length > 60 ? [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)] : calculatedData;
+  return calculatedData;
 };
 
 /**
@@ -162,18 +146,20 @@ const runDataAnalysis = (data, dataset, profile) => {
  * )
  */
 const ProfileTissue = (props) => {
-  const { data, compound } = props;
+  const {
+    data, compound, profileOptions, datasetOptions,
+  } = props;
+  console.log(data);
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
-  const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
   // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
-  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
-  }, [selectedProfile, selectedDataset]);
+  }, [selectedProfile, selectedDataset, formattedData]);
   return (
     <div className="plot">
       <StyledSelectorContainer>
@@ -203,20 +189,6 @@ const ProfileTissue = (props) => {
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h3>
       <Plot data={plotData} layout={layout} config={config} />
-      <div className="notifications">
-        {notifications.subset ? (
-          <p>
-            <sup>* </sup>
-            {notifications.subset}
-          </p>
-        ) : null}
-        {notifications.errorBars ? (
-          <p>
-            <sup>** </sup>
-            {notifications.errorBars}
-          </p>
-        ) : null}
-      </div>
     </div>
   );
 };
@@ -245,6 +217,18 @@ ProfileTissue.propTypes = {
         AAC: PropTypes.number,
         IC50: PropTypes.number,
       }).isRequired,
+    }),
+  ).isRequired,
+  profileOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    }),
+  ).isRequired,
+  datasetOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
     }),
   ).isRequired,
   compound: PropTypes.string.isRequired,

@@ -11,14 +11,17 @@ const formatExperimentPlotData = (experiments, accessor) => {
   experiments.forEach((experiment) => {
     const { __typename, ...profile } = experiment.profile;
     const { dataset } = experiment;
-    if (!outputObj[experiment[accessor].name]) {
-      outputObj[experiment[accessor].name] = {
-        id: experiment[accessor].id,
-        name: experiment[accessor].name,
-        profiles: { [dataset.name]: profile },
-      };
+    // retrieves name and id properties of a tissue or cell line
+    const { id, name } = experiment[accessor];
+    if (!outputObj[name]) {
+      outputObj[name] = { id, name, profiles: { [dataset.name]: accessor === 'tissue' ? [profile] : profile } };
     } else {
-      outputObj[experiment[accessor].name].profiles[experiment.dataset.name] = profile;
+      // adds another dataset to an existing cell line
+      if (accessor === 'cell_line') outputObj[name].profiles[dataset.name] = profile;
+      // initializes new dataset for an existing tissue
+      if (accessor === 'tissue' && !outputObj[name].profiles[dataset.name]) outputObj[name].profiles[dataset.name] = [profile];
+      // adds profile to an tissue to an existing dataset
+      if (accessor === 'tissue' && outputObj[name].profiles[dataset.name]) outputObj[name].profiles[dataset.name].push(profile);
     }
   });
   return outputObj;

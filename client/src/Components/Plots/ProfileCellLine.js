@@ -4,7 +4,7 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
-import { formatExperimentPlotData, generateOptions } from '../../utils/plotProcessing';
+import { formatExperimentPlotData } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -175,7 +175,7 @@ const ProfileCellLine = (props) => {
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
-  }, [selectedProfile, selectedDataset]);
+  }, [selectedProfile, selectedDataset, formattedData]);
   return (
     <div className="plot">
       <StyledSelectorContainer>
