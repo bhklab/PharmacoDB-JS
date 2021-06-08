@@ -3,9 +3,8 @@ import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import generateSelectOptions from '../../utils/generateSelectOptions';
 import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
-import formatExperimentPlotData from '../../utils/formatExperimentPlotData';
+import { formatExperimentPlotData, generateOptions } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -57,19 +56,6 @@ const retrieveProfiles = (dataObj, profile, dataset) => {
     }
   });
   return output;
-};
-
-/**
- *
- * @param {Array} data - experiments data from the API call
- * @returns {Array} - returns an array of profile and dataset options respectively that can be used by react-select
- * @example
- * return [[{value: 'CCLE', label: 'CCLE'}, ...],[...]]
- */
-const generateOptions = (data) => {
-  const profileOptions = Object.keys(data[0].profile);
-  const datasetOptions = ['All', ...new Set(data.map((el) => el.dataset.name))];
-  return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
 };
 
 /**
@@ -176,13 +162,15 @@ const runDataAnalysis = (data, dataset, profile) => {
  * )
  */
 const ProfileCellLine = (props) => {
-  const { data, compound } = props;
+  const {
+    data, compound, profileOptions, datasetOptions,
+  } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
   // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'cell_line'), [data]);
-  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
+
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
@@ -259,6 +247,18 @@ ProfileCellLine.propTypes = {
         AAC: PropTypes.number,
         IC50: PropTypes.number,
       }).isRequired,
+    }),
+  ).isRequired,
+  profileOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    }),
+  ).isRequired,
+  datasetOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
     }),
   ).isRequired,
   compound: PropTypes.string.isRequired,

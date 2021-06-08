@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { getSingleCompoundExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
+import { generateOptions } from '../../../utils/plotProcessing';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import ProfileCellLine from '../../Plots/ProfileCellLine';
 import ProfileTissue from '../../Plots/ProfileTissue';
@@ -69,6 +70,7 @@ const PlotSection = (props) => {
   const experimentalData = data ? data.experiments : [];
   // memoization of the plotData
   const [tissuesData, cellLinesData] = useMemo(() => generateCountPlotData(experimentalData), [experimentalData]);
+  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(experimentalData), [experimentalData]);
 
   if (loading) {
     return <Loading />;
@@ -89,8 +91,18 @@ const PlotSection = (props) => {
         xaxis="# of tissues"
         title={`Number of tissues tested with ${name} (per dataset)`}
       />
-      <ProfileCellLine compound={name} data={data.experiments} />
-      <ProfileTissue compound={name} data={data.experiments} />
+      <ProfileCellLine
+        compound={name}
+        data={experimentalData}
+        profileOptions={profileOptions}
+        datasetOptions={datasetOptions}
+      />
+      <ProfileTissue
+        compound={name}
+        data={experimentalData}
+        profileOptions={profileOptions}
+        datasetOptions={datasetOptions}
+      />
     </>
   );
 };

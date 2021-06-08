@@ -8,9 +8,7 @@
  */
 const formatExperimentPlotData = (experiments, accessor) => {
   const outputObj = {};
-  console.log(accessor, experiments);
   experiments.forEach((experiment) => {
-    console.log(outputObj);
     const { __typename, ...profile } = experiment.profile;
     const { dataset } = experiment;
     if (!outputObj[experiment[accessor].name]) {
@@ -26,4 +24,24 @@ const formatExperimentPlotData = (experiments, accessor) => {
   return outputObj;
 };
 
-export default formatExperimentPlotData;
+/**
+ *
+ * @param {Array} arr - array of string, takes the input to be converted to object usable by react-select library.
+ * @returns {Array} - array of objects with value and label properties and removes __typename field added by apollo client
+ */
+const generateSelectOptions = (arr) => arr.filter((el) => el !== '__typename').map((el) => ({ value: el, label: el }));
+
+/**
+ *
+ * @param {Array} data - experiments data from the API call
+ * @returns {Array} - returns an array of profile and dataset options respectively that can be used by react-select
+ * @example
+ * return [[{value: 'CCLE', label: 'CCLE'}, ...],[...]]
+ */
+const generateOptions = (data) => {
+  const profileOptions = data.length > 0 ? Object.keys(data[0].profile) : [];
+  const datasetOptions = ['All', ...new Set(data.map((el) => el.dataset.name))];
+  return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
+};
+
+export { formatExperimentPlotData, generateOptions };
