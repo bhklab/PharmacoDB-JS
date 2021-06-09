@@ -3,7 +3,6 @@ import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
 import { formatExperimentPlotData } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
@@ -15,6 +14,7 @@ const config = {
 
 // reusable layout object
 const baseLayout = {
+  title: 'Example title',
   autoresize: true,
   height: 530,
   margin: {
@@ -47,12 +47,14 @@ const baseLayout = {
  */
 const retrieveProfiles = (dataObj, profile, dataset) => {
   const output = [];
+  console.log(dataObj, profile, dataset);
   Object.keys(dataObj).forEach((datasetProfile) => {
     // filters out null values
     if (dataObj[datasetProfile][profile] === null) return;
     // only populates output array if there is a matching dataset or dataset are acceptable
     if (dataset === 'All' || dataset === datasetProfile) {
-      output.push(dataObj[datasetProfile][profile]);
+      console.log(dataObj, datasetProfile, profile);
+      output.push(...dataObj[datasetProfile].map((el) => el[profile]));
     }
   });
   return output;
@@ -82,7 +84,7 @@ const generateRenderData = (data, dataset, profile) => {
   };
   data.forEach((el, i) => {
     const {
-      name, value, deviation, label,
+      name, values, label,
     } = el;
     const trace = {
       type: 'box',
@@ -90,18 +92,12 @@ const generateRenderData = (data, dataset, profile) => {
         color: i % 2 === 0 ? colors.blue : colors.green,
       },
       name,
-      x: [`${name} cell line`],
-      y: [value],
+      // x: [`${name} cell line`],
+      y: values,
     };
     // skips hoverinfo for gap bars
     if (!label) trace.hoverinfo = 'skip';
-    if (deviation) {
-      trace.error_y = {
-        type: 'data',
-        array: [deviation],
-        visible: true,
-      };
-    }
+
     layout.xaxis.tickvals.push(`${name} cell line`);
     layout.xaxis.ticktext.push(label);
     plotData.push(trace);
@@ -124,10 +120,8 @@ const runDataAnalysis = (data, dataset, profile) => {
     const profiles = retrieveProfiles(tissue.profiles, profile, dataset);
     // updates calculated data only if there is at list one profile
     if (profiles.length > 0) {
-      const value = calculateMedian(profiles);
-      const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
       calculatedData.push({
-        value, deviation, name: tissue.name, label: tissue.name,
+        values: profiles, name: tissue.name, label: tissue.name,
       });
     }
   });
@@ -158,8 +152,10 @@ const ProfileTissue = (props) => {
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
+    console.log(values);
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
+  console.log(plotData);
   return (
     <div className="plot">
       <StyledSelectorContainer>
