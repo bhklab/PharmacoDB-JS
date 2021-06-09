@@ -62,9 +62,7 @@ const generateRenderData = (data, dataset, profile) => {
     },
   };
   data.forEach((el, i) => {
-    const {
-      name, values, label,
-    } = el;
+    const { value, name } = el;
     const trace = {
       type: 'box',
       boxpoints: 'all',
@@ -76,10 +74,10 @@ const generateRenderData = (data, dataset, profile) => {
         size: 2,
       },
       name,
-      y: values,
+      y: value,
     };
     plotData.push(trace);
-    layout.xaxis.ticktext.push(label);
+    layout.xaxis.ticktext.push(name);
   });
   return { plotData, layout };
 };
@@ -105,7 +103,7 @@ const ProfileTissue = (props) => {
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
-    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile);
+    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'tissue');
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
   return (

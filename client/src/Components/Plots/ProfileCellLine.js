@@ -3,8 +3,7 @@ import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
-import { formatExperimentPlotData } from '../../utils/plotProcessing';
+import { formatExperimentPlotData, runPlotDataAnalysis } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -37,38 +36,6 @@ const baseLayout = {
   },
   bargap: 0,
   showlegend: false,
-};
-
-/**
- * A helper function that creates an array of values out of profile object
- * @param {Object} dataObj - profiles data object that has AAC and IC50 profiles for different datasets
- * @param {String} profile - a selected profile, can be AAC or IC50
- * @returns {Array} - returns array of numbers
- */
-const retrieveProfiles = (dataObj, profile, dataset) => {
-  const output = [];
-  Object.keys(dataObj).forEach((datasetProfile) => {
-    // filters out null values
-    if (dataObj[datasetProfile][profile] === null) return;
-    // only populates output array if there is a matching dataset or dataset are acceptable
-    if (dataset === 'All' || dataset === datasetProfile) {
-      output.push(dataObj[datasetProfile][profile]);
-    }
-  });
-  return output;
-};
-
-/**
- * Helper function that creates data for the gap between low and high values for the plot
- * @param {Number} distance - sets how many empty bars should be in the gap
- * @returns {Array} - returns an array of objects with value, name and label properties
- */
-const generateEmptySpace = (distance) => {
-  const output = [];
-  for (let i = 0; i < distance; i += 1) {
-    output.push({ value: 0, name: i, label: '' });
-  }
-  return output;
 };
 
 /**
@@ -126,32 +93,6 @@ const generateRenderData = (data, dataset, profile) => {
 };
 
 /**
- * Function that calculates median, deviation values, sorts data and creates a subset that will be further rendered
- * @param {Object} data - data object that has cell lines and their dataset profiles in it
- * @param {String} dataset - selected dataset
- * @param {String} profile - selected profile
- * @returns {Object} - returns an array of objects (max length is 63) with value, deviation, name and label properties
- */
-const runDataAnalysis = (data, dataset, profile) => {
-  // calculates median and deviation values and sort cell lines based on median
-  const calculatedData = [];
-  Object.values(data).forEach((el) => {
-    const profiles = retrieveProfiles(el.profiles, profile, dataset);
-    // updates calculated data only if there is at list one profile
-    if (profiles.length > 0) {
-      const value = calculateMedian(profiles);
-      const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
-      calculatedData.push({
-        value, deviation, name: el.name, label: el.name,
-      });
-    }
-  });
-  calculatedData.sort((a, b) => b.value - a.value);
-  // returns calculatedData or a subset of first and last 30 items from calculated data along with some few empty datapoints to create a gap if there too many dataoints
-  return calculatedData.length > 60 ? [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)] : calculatedData;
-};
-
-/**
  * Waterfall plot that shows cell line profiles (AAC or IC50) for different datasets
  *
  * @component
@@ -173,7 +114,7 @@ const ProfileCellLine = (props) => {
 
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
-    const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
+    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'cell_line');
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
   return (
