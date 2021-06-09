@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import { formatExperimentPlotData } from '../../utils/plotProcessing';
+import { formatExperimentPlotData, runPlotDataAnalysis } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -14,12 +14,11 @@ const config = {
 
 // reusable layout object
 const baseLayout = {
-  title: 'Example title',
   autoresize: true,
   height: 530,
   margin: {
     t: 20,
-    b: 60,
+    b: 120,
     l: 65,
     r: 0,
   },
@@ -29,35 +28,15 @@ const baseLayout = {
       size: 9,
     },
     fixedrange: true,
-    tickmode: 'array',
+    tickmode: 'linear',
+    anchor: 'free',
+    position: 0.025,
   },
   yaxis: {
     color: colors.dark_teal_heading,
     fixedrange: true,
   },
-  bargap: 0,
   showlegend: false,
-};
-
-/**
- * A helper function that creates an array of values out of profile object
- * @param {Object} dataObj - profiles data object that has AAC and IC50 profiles for different datasets
- * @param {String} profile - a selected profile, can be AAC or IC50
- * @returns {Array} - returns array of numbers
- */
-const retrieveProfiles = (dataObj, profile, dataset) => {
-  const output = [];
-  console.log(dataObj, profile, dataset);
-  Object.keys(dataObj).forEach((datasetProfile) => {
-    // filters out null values
-    if (dataObj[datasetProfile][profile] === null) return;
-    // only populates output array if there is a matching dataset or dataset are acceptable
-    if (dataset === 'All' || dataset === datasetProfile) {
-      console.log(dataObj, datasetProfile, profile);
-      output.push(...dataObj[datasetProfile].map((el) => el[profile]));
-    }
-  });
-  return output;
 };
 
 /**
@@ -66,14 +45,14 @@ const retrieveProfiles = (dataObj, profile, dataset) => {
  * @returns {Object} - returns object with plotData and layout properties
  */
 const generateRenderData = (data, dataset, profile) => {
-  console.log(data);
   const plotData = [];
   const layout = {
     ...baseLayout,
     xaxis: {
       ...baseLayout.xaxis,
-      tickvals: [],
       ticktext: [],
+      // draws tick labels vertically if there are more than 5 otherwise labels are horizontal
+      tickangle: data.length > 5 ? -90 : 0,
     },
     yaxis: {
       ...baseLayout.yaxis,
@@ -88,45 +67,21 @@ const generateRenderData = (data, dataset, profile) => {
     } = el;
     const trace = {
       type: 'box',
+      boxpoints: 'all',
+      jitter: 1,
+      pointpos: 0,
+      hoveron: 'boxes',
       marker: {
         color: i % 2 === 0 ? colors.blue : colors.green,
+        size: 2,
       },
       name,
-      // x: [`${name} cell line`],
       y: values,
     };
-    // skips hoverinfo for gap bars
-    if (!label) trace.hoverinfo = 'skip';
-
-    layout.xaxis.tickvals.push(`${name} cell line`);
-    layout.xaxis.ticktext.push(label);
     plotData.push(trace);
+    layout.xaxis.ticktext.push(label);
   });
   return { plotData, layout };
-};
-
-/**
- * Function that calculates median, deviation values, sorts data and creates a subset that will be further rendered
- * @param {Object} data - data object that has cell lines and their dataset profiles in it
- * @param {String} dataset - selected dataset
- * @param {String} profile - selected profile
- * @returns {Object} - returns an array of objects (max length is 63) with value, deviation, name and label properties
- */
-const runDataAnalysis = (data, dataset, profile) => {
-  // calculates median and deviation values and sort cell lines based on median
-  console.log(data);
-  const calculatedData = [];
-  Object.values(data).forEach((tissue) => {
-    const profiles = retrieveProfiles(tissue.profiles, profile, dataset);
-    // updates calculated data only if there is at list one profile
-    if (profiles.length > 0) {
-      calculatedData.push({
-        values: profiles, name: tissue.name, label: tissue.name,
-      });
-    }
-  });
-  calculatedData.sort((a, b) => b.value - a.value);
-  return calculatedData;
 };
 
 /**
@@ -143,7 +98,6 @@ const ProfileTissue = (props) => {
   const {
     data, compound, profileOptions, datasetOptions,
   } = props;
-  console.log(data);
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
@@ -151,11 +105,9 @@ const ProfileTissue = (props) => {
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
-    const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
-    console.log(values);
+    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile);
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
-  console.log(plotData);
   return (
     <div className="plot">
       <StyledSelectorContainer>

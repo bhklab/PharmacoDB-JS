@@ -47,4 +47,45 @@ const generateOptions = (data) => {
   return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
 };
 
-export { formatExperimentPlotData, generateOptions };
+/**
+ * A helper function that creates an array of values out of profile object
+ * @param {Object} dataObj - profiles data object that has AAC and IC50 profiles for different datasets
+ * @param {String} profile - a selected profile, can be AAC or IC50
+ * @returns {Array} - returns array of numbers
+ */
+const retrieveProfiles = (dataObj, profile, dataset) => {
+  const output = [];
+  Object.keys(dataObj).forEach((datasetProfile) => {
+    // filters out null values
+    if (dataObj[datasetProfile][profile] === null) return;
+    // only populates output array if there is a matching dataset or dataset are acceptable
+    if (dataset === 'All' || dataset === datasetProfile) {
+      output.push(...dataObj[datasetProfile].map((el) => el[profile]));
+    }
+  });
+  return output;
+};
+
+/**
+ * Function that calculates median, deviation values, sorts data and creates a subset that will be further rendered
+ * @param {Object} data - data object that has cell lines and their dataset profiles in it
+ * @param {String} dataset - selected dataset
+ * @param {String} profile - selected profile
+ * @returns {Object} - returns an array of objects (max length is 63) with value, deviation, name and label properties
+ */
+const runPlotDataAnalysis = (data, dataset, profile) => {
+  const calculatedData = [];
+  Object.values(data).forEach((tissue) => {
+    const profiles = retrieveProfiles(tissue.profiles, profile, dataset);
+    // updates calculated data only if there is at list one profile
+    if (profiles.length > 0) {
+      calculatedData.push({
+        values: profiles, name: tissue.name, label: tissue.name,
+      });
+    }
+  });
+  calculatedData.sort((a, b) => b.values - a.values);
+  return calculatedData;
+};
+
+export { formatExperimentPlotData, generateOptions, runPlotDataAnalysis };
