@@ -1,13 +1,15 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCompoundExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
+import { generateOptions } from '../../../utils/plotProcessing';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import ProfileCellLine from '../../Plots/ProfileCellLine';
+import ProfileTissue from '../../Plots/ProfileTissue';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
@@ -64,13 +66,19 @@ const PlotSection = (props) => {
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
     variables: { compoundId: id },
   });
+
+  const experimentalData = data ? data.experiments : [];
+  // memoization of the plotData
+  const [tissuesData, cellLinesData] = useMemo(() => generateCountPlotData(experimentalData), [experimentalData]);
+  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(experimentalData), [experimentalData]);
+
   if (loading) {
     return <Loading />;
   }
   if (error) {
     return <p> Error! </p>;
   }
-  const [tissuesData, cellLinesData] = generateCountPlotData(data.experiments);
+
   return (
     <>
       <DatasetHorizontalPlot
@@ -83,7 +91,18 @@ const PlotSection = (props) => {
         xaxis="# of tissues"
         title={`Number of tissues tested with ${name} (per dataset)`}
       />
-      <ProfileCellLine compound={name} data={data.experiments} />
+      <ProfileCellLine
+        compound={name}
+        data={experimentalData}
+        profileOptions={profileOptions}
+        datasetOptions={datasetOptions}
+      />
+      <ProfileTissue
+        compound={name}
+        data={experimentalData}
+        profileOptions={profileOptions}
+        datasetOptions={datasetOptions}
+      />
     </>
   );
 };
