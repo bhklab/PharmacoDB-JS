@@ -12,13 +12,13 @@ const compoundQueries = require('../queries/compound_queries');
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {
-    
+
     // test for all compound route. Checks Compound Graphql type
-    it('Returns "id" and "name" properties of all compounds in the database', function(done) {
+    it('Returns "id" and "name" properties of all compounds in the database', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundsKeysTestQuery })
+            .send({ query: compoundQueries.multipleCompoundsTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -42,7 +42,7 @@ const test = (server) => {
     it('Returns a compound object based on a compound ID input.', done => {
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundKeysTestQuery })
+            .send({ query: compoundQueries.singleCompoundTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -53,7 +53,7 @@ const test = (server) => {
 
                 // checks compound object of a SingleCompound type
                 expect(compound.compound).to.be.an('object').that.has.all.keys('id', 'name', 'annotation');
-                const {id, name, annotation } = compound.compound;
+                const { id, name, annotation } = compound.compound;
                 expect(id).to.be.a('number');
                 expect(name).to.be.string;
                 expect(annotation).to.be.an('object').that.has.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
@@ -88,7 +88,7 @@ const test = (server) => {
     it('Returns a compound object for paclitaxel.', done => {
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundQueryPaclitaxel })
+            .send({ query: compoundQueries.paclitaxelCompoundTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -101,6 +101,6 @@ const test = (server) => {
 
 };
 
-module.exports= {
+module.exports = {
     test
 };

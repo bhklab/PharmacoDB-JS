@@ -2,7 +2,7 @@
  * Source Queries to be used for graphql.test.js
  */
 
-const allSourcesTestQuery = `
+const multipleSourcesTestQuery = `
   query getSources {
     sources {
       id
@@ -30,6 +30,6 @@ const sourceStatsTestQuery = `
 
 
 module.exports = {
-    allSourcesTestQuery,
+    multipleSourcesTestQuery,
     sourceStatsTestQuery
 };

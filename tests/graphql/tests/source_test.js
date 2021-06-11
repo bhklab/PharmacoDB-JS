@@ -15,13 +15,13 @@ const test = (server) => {
     it('Test to validate the "id" and "name" for all the sources and dataset object for the sources and checking for the correctness of datatype', done => {
         request(server)
             .post('/graphql')
-            .send({ query: sourceQueries.allSourcesTestQuery })
+            .send({ query: sourceQueries.multipleSourcesTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const { sources } = res.body.data;
                 sources.every(source => {
-                    const {id, name, dataset} = source;
+                    const { id, name, dataset } = source;
                     // expect to have all the data for source object.
                     expect(source).to.have.all.keys('id', 'name', 'dataset');
                     // expect id to be a number.
@@ -43,7 +43,7 @@ const test = (server) => {
     it('Test to validate the source stats', done => {
         request(server)
             .post('/graphql')
-            .send({query: sourceQueries.sourceStatsTestQuery})
+            .send({ query: sourceQueries.sourceStatsTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -65,6 +65,6 @@ const test = (server) => {
     });
 };
 
-module.exports= {
+module.exports = {
     test
 };
