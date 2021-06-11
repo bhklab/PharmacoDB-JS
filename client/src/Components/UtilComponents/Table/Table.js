@@ -177,6 +177,8 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
+  data: [],
+  columns: [],
   disablePagination: false,
 };
 
