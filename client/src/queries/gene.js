@@ -22,6 +22,27 @@ const getGenesQuery = gql`
 `;
 
 
+/**
+ * @param {number} geneId - gene id for which the data is needed.
+ * @returns - the information for the queried gene.
+ */
+const getGeneQuery = gql`
+  query getSingleGene($geneId: Int) {
+    gene(geneId: $geneId) {
+      id
+      name
+      annotation {
+        gene_id
+        ensg
+        gene_seq_start
+        gene_seq_end
+      }
+    }
+  }
+`
+
+
 export {
   getGenesQuery,
+  getGeneQuery,
 };
