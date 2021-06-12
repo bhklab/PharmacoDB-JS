@@ -14,14 +14,17 @@ const defaultHeight = 600 - defaultMargin.top - defaultMargin.bottom;
 
 
 /**
- * @param {number} height - canvas height.
- * @param {number} width - canvas width
- * @param {Object} margin - margin object having the margin values.
- * @param {string} id - selecting the id to attach the svg.
+ * @param {Object} svgParam - object with height, width, margin and id.
+ * @param {number} svgParam.height - canvas height with a default value passed as variable.
+ * @param {number} svgParam.width - canvas width with a default value passed as variable.
+ * @param {Object} svgParam.margin - margin object having the margin values with a default value passed as an object.
+ * @param {string} svgParam.id - selecting the id to attach the svg with a default value of an empty string.
+ * @returns - an svg canvas with the given height and width.
  */
 const createSvgCanvas = (
-    height = defaultHeight, width = defaultWidth, margin = defaultMargin, id
-) => (
+    { height = defaultHeight, width = defaultWidth, margin = defaultMargin, id = '' }
+) => {
+    return (
         select(`#${id}`)
             .append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -31,5 +34,6 @@ const createSvgCanvas = (
                 'translate(' + margin.left + ',' + margin.top + ')')
 
     );
+}
 
 export default createSvgCanvas;
