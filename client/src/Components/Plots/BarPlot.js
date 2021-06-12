@@ -1,9 +1,10 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import datasets from '../../utils/datasetsList';
 
 const data = [
   {
-    x: ['CTRPV2', 'GDSC1000', 'GRAY', 'FIMM', 'CCLE', 'gCSI', 'UHNBreast'],
+    x: datasets,
     y: [544, 250, 90, 52, 26, 16, 4],
     type: 'bar',
     marker: {
