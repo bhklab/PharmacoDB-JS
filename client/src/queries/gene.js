@@ -15,7 +15,6 @@ const getGenesQuery = gql`
         ensg
         gene_seq_start
         gene_seq_end
-        
       }
     }
   }
