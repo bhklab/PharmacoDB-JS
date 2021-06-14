@@ -76,24 +76,22 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
     // if the subtypes contains 'synonyms'.
     if (subtypes.includes('synonyms')) {
         query = knex
-            .select('tissues.tissue_id as tissue_id',
-                'tissues.tissue_name as tissue_name',
-                'source_tissue_names.tissue_name as source_tissue_name',
-                'datasets.dataset_name as dataset_name')
-            .from('tissues')
-            .leftJoin('source_tissue_names',
-                'tissues.tissue_id',
-                'source_tissue_names.tissue_id')
-            .leftJoin('sources', 'sources.source_id', 'source_tissue_names.source_id')
-            .leftJoin('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+            .select('tissue.id as tissue_id',
+                'tissue.name as tissue_name',
+                'tissue_synonym.tissue_name as source_tissue_name',
+                'dataset.dataset_name as dataset_name')
+            .from('tissue')
+            .leftJoin('tissue_synonym', 'tissue.id', 'tissue_synonym.tissue_id')
+            .leftJoin('dataset_tissue', 'dataset_tissue.tissue_id', 'tissue.id')
+            .leftJoin('dataset', 'dataset.id', 'dataset_tissue.dataset_id');
     } else {
-        query = knex.select().from('tissues');
+        query = knex.select().from('tissue');
     }
     // based on the tissueId passed or tissueName passed.
     if (tissueId) {
-        return await query.where('tissues.tissue_id', tissueId);
+        return await query.where('tissue.id', tissueId);
     } else if (tissueName) {
-        return await query.where('tissues.tissue_name', tissueName);
+        return await query.where('tissue.name', tissueName);
     }
 
 };

@@ -10,16 +10,16 @@ const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const transformCellLines = data => {
     return data.map(cell => {
         const {
-            cell_id,
-            cell_name,
+            id,
+            name,
             tissue_id,
             tissue_name,
             diseases,
             accessions
         } = cell;
-        return {
-            id: cell_id,
-            name: cell_name,
+        const output = {
+            id,
+            name,
             tissue: {
                 id: tissue_id,
                 name: tissue_name
@@ -27,6 +27,8 @@ const transformCellLines = data => {
             diseases: diseases,
             accessions: accessions
         };
+        console.log('Output ', output);
+        return output;
     });
 };
 
@@ -103,10 +105,12 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
         // query to grab the cell line data.
-        let query = knex.select().from('cells as c');
+        let query = knex.select().from('cell as c');
         // if the query containes the tissue field, then we will make a join.
+        console.log(listOfFields);
         if (listOfFields.includes('tissue')) {
-            query = query.join('tissues as t', 'c.tissue_id', 't.tissue_id');
+            console.log('Here');
+            query = query.join('tissue as t', 'c.tissue_id', 't.id');
         }
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
@@ -116,6 +120,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         // call to grab the cell lines.
         let cell_lines = await query;
         // return the transformed data.
+        console.log(cell_lines);
         return transformCellLines(cell_lines);
     } catch (err) {
         console.log(err);
@@ -141,27 +146,25 @@ const cell_line = async args => {
         let cell_line;
         // the base query
         let query = knex
-            .select('cells.cell_id as cell_id',
-                'cells.cell_name as cell_name',
-                'tissues.tissue_id as tissue_id',
-                'tissues.tissue_name as tissue_name',
-                'source_cell_names.cell_name as source_cell_name',
-                'datasets.dataset_name as dataset_name',
+            .select('cell.id as cell_id',
+                'cell.name as cell_name',
+                'tissue.id as tissue_id',
+                'tissue.name as tissue_name',
+                'cell_synonym.cell_name as source_cell_name',
+                'dataset.name as dataset_name',
                 'cellosaurus.di as diseases',
-                'cells.accession_id as accessions')
-            .from('cells')
-            .join('tissues', 'tissues.tissue_id', 'cells.tissue_id')
-            .join('source_cell_names',
-                'cells.cell_id',
-                'source_cell_names.cell_id')
-            .join('sources', 'sources.source_id', 'source_cell_names.source_id')
-            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id')
-            .join('cellosaurus', 'cellosaurus.accession', 'cells.accession_id');
+                'cellosaurus.accession as accessions')
+            .from('cell')
+            .join('tissue', 'tissue.id', 'cell.tissue_id')
+            .join('cell_synonym', 'cell.id', 'cell_synonym.cell_id')
+            .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
+            .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
+            .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         // based on the arguments passed to the function.
         if (cellId) {
-            cell_line = await query.where('cells.cell_id', cellId);
+            cell_line = await query.where('cell.id', cellId);
         } else if (cellName) {
-            cell_line = await query.where('cells.cell_name', cellName);
+            cell_line = await query.where('cell.name', cellName);
         }
         // return the transformed data.
         return transformSingleCellLine(cell_line);
