@@ -40,7 +40,6 @@ const circleScaling = () => (
     d3.scaleLinear()
         .domain([0, 150])
         .range([5, 15])
-        .nice()
 );
 
 /**
