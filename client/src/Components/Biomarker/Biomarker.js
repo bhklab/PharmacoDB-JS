@@ -127,7 +127,8 @@ const Biomarker = (props) => {
     return (
         <Layout>
             <StyledWrapper>
-                <StyledIndivPage>
+                <StyledIndivPage >
+                    <h1>ERBB2 + LAPATINIB + BREAST</h1>
                     <StyledSidebar>
                         {
                             SIDE_LINKS.map((link) => createSideLink(link))
@@ -143,7 +144,7 @@ const Biomarker = (props) => {
                                 <h3>Compound Information</h3>
                                 <Table columns={compoundInfoColumns} data={transformedCompoundData} disablePagination />
                             </Element>
-                            <Element className="section" name="plots">
+                            <Element className="section" name="forest_plots">
                                 <h3>Plots</h3>
                                 <ForestPlot />
                             </Element>
@@ -151,7 +152,7 @@ const Biomarker = (props) => {
                     </div>
                 </StyledIndivPage>
             </StyledWrapper>
-        </Layout>
+        </Layout >
     );
 }
 

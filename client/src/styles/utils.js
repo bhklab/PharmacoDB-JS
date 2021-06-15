@@ -24,7 +24,8 @@ const StyledWrapper = styled.div`
     }
 
     h1 {
-        font-size: calc(2vw + 1.5em);
+        font-size: calc(1.75vw + 1.5em);
+        margin-bottom: 25px;
     }
 
     h2 {
@@ -45,14 +46,14 @@ const StyledWrapper = styled.div`
 `;
 
 StyledWrapper.propTypes = {
-  individual: PropTypes.bool,
-  summary: PropTypes.bool,
+    individual: PropTypes.bool,
+    summary: PropTypes.bool,
 };
 StyledWrapper.defaultProps = {
-  /**
- * important for searchheader blur
- */
-  className: 'page',
+    /**
+   * important for searchheader blur
+   */
+    className: 'page',
 };
 
 export default StyledWrapper;
