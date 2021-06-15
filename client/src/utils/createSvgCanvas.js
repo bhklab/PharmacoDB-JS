@@ -32,7 +32,6 @@ const createSvgCanvas = (
             .append('g')
             .attr('transform',
                 'translate(' + margin.left + ',' + margin.top + ')')
-
     );
 }
 
