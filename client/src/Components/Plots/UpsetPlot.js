@@ -46,4 +46,9 @@ const UpsetPlot = () => {
     )
 }
 
+// Proptypes.
+UpsetPlot.propTypes = {
+
+};
+
 export default UpsetPlot;
