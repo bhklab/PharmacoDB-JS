@@ -9,9 +9,9 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  */
 const datasetQuery = async datasetId => {
     const dataset = await knex
-        .select('dataset_id', 'dataset_name')
-        .from('datasets')
-        .where('dataset_id', 'like', datasetId ? `${datasetId}` : '%%');
+        .select('id as dataset_id', 'name as dataset_name')
+        .from('dataset')
+        .where('id', 'like', datasetId ? `${datasetId}` : '%%');
     return transformObject(dataset);
 };
 
@@ -27,10 +27,10 @@ const cellLinesGroupByDatasetQuery = async () => {
     const returnObject = {};
     const dataset = [];
     const query = await knex
-        .select('d.dataset_id', 'd.dataset_name', 'c.cell_id', 'c.cell_name', 'tissue_id')
-        .from('dataset_cells as dc')
-        .leftJoin('datasets as d', 'd.dataset_id', 'dc.dataset_id')
-        .leftJoin('cells as c', 'c.cell_id', 'dc.cell_id');
+        .select('d.id as dataset_id', 'd.name as dataset_name', 'c.id as cell_id', 'c.name as cell_name', 'tissue_id')
+        .from('dataset_cell as dc')
+        .leftJoin('dataset as d', 'd.id', 'dc.dataset_id')
+        .leftJoin('cell as c', 'c.id', 'dc.cell_id');
     // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
     query.forEach(value => {
         const {
@@ -73,12 +73,14 @@ const cellLinesGroupByDatasetQuery = async () => {
 const typeTestedCountGroupByDatasetQuery = async (type) => {
     // return object.
     const returnObject = {};
+    // sets mysql expression for distinct count query
+    const countExpression = type === 'experiment' ? 'e.id as count' : `e.${type}_id as count`;
     const query = await knex
-        .select('d.dataset_name', 'd.dataset_id')
-        .countDistinct(`e.${type}_id as count`)
-        .from('experiments as e')
-        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .groupBy('d.dataset_id');
+        .select('d.name as dataset_name', 'd.id as dataset_id')
+        .countDistinct(countExpression)
+        .from('experiment as e')
+        .join('dataset as d', 'd.id', 'e.dataset_id')
+        .groupBy('d.id');
     // return object {dataset: {id: Number, name: String}, count: number of 'types' tested in the dataset}.
     query.forEach(value => {
         const {
@@ -110,16 +112,16 @@ const summaryQuery = async (type, datasetId, datasetName) => {
     let datasets;
     // query to get the id and name for the type.
     const query = knex
-        .select('d.dataset_name', 'd.dataset_id')
-        .distinct(`e.${type}_id`, `t.${type}_name`)
-        .from('experiments as e')
-        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .join(`${type}s as t`, `t.${type}_id`, `e.${type}_id`);
+        .select('d.name as dataset_name', 'd.id as dataset_id')
+        .distinct(`e.${type}_id`, `t.name as ${type}_name`)
+        .from('experiment as e')
+        .join('dataset as d', 'd.id', 'e.dataset_id')
+        .join(`${type} as t`, 't.id', `e.${type}_id`);
     // based on the param datasetId and datasetName.
     if (datasetId) {
         datasets = await query.where('e.dataset_id', datasetId);
     } else if (datasetName) {
-        datasets = await query.where('d.dataset_name', datasetName);
+        datasets = await query.where('d.name', datasetName);
     }
     return transformObject(datasets);
 };

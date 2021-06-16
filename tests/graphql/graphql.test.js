@@ -32,10 +32,10 @@ describe('Tests: GraphQL API', () => {
     //     require('./tests/compound_test').test(server);
     // });
 
-    // tests for Cell API Routes
-    describe('Cell API Routes', () => {
-        require('./tests/cell_test').test(server);
-    });
+    // // tests for Cell API Routes
+    // describe('Cell API Routes', () => {
+    //     require('./tests/cell_test').test(server);
+    // });
 
     // // tests for Dataset API routes
     // describe('Dataset API Routes', () => {
