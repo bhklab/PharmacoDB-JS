@@ -27,7 +27,6 @@ const transformCellLines = data => {
             diseases: diseases,
             accessions: accessions
         };
-        console.log('Output ', output);
         return output;
     });
 };
@@ -104,23 +103,19 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+        const selectFields = ['c.id as id', 'c.name as name', 'tissue_id'];
+        // adds tissue name to the list of knex columns to select
+        if (listOfFields.includes('tissue')) selectFields.push('t.name as tissue_name');
         // query to grab the cell line data.
-        let query = knex.select().from('cell as c');
+        let query = knex.select(...selectFields).from('cell as c');
         // if the query containes the tissue field, then we will make a join.
-        console.log(listOfFields);
-        if (listOfFields.includes('tissue')) {
-            console.log('Here');
-            query = query.join('tissue as t', 'c.tissue_id', 't.id');
-        }
+        if (listOfFields.includes('tissue')) query = query.join('tissue as t', 'c.tissue_id', 't.id');
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
-        if (!all) {
-            query.limit(limit).offset(offset);
-        }
+        if (!all) query.limit(limit).offset(offset);
         // call to grab the cell lines.
         let cell_lines = await query;
         // return the transformed data.
-        console.log(cell_lines);
         return transformCellLines(cell_lines);
     } catch (err) {
         console.log(err);
