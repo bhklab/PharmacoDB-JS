@@ -62,7 +62,7 @@ const createSideLink = (link) => (
 const transformCompoundTableData = (data) => {
     // grabs the fda status and targets from the data.
     const fdaStatus = data.compound.annotation.fda_status;
-    const targets = data.targets.map(el => el.name);
+    const targets = data.targets.map(el => el.name).join(', ');
     // return an array of object(s).
     return [{
         status: fdaStatus,
@@ -73,18 +73,20 @@ const transformCompoundTableData = (data) => {
 
 /**
  * 
- * @param {Object} data - gene information data. 
+ * @param {Object} geneData - gene information data. 
+ * @param {Object} compoundData - compound information data.
  * @returns {Array} - transformed data.
  */
-const transformGeneTableData = (data) => {
-    console.log(data);
+const transformGeneTableData = (geneData, compoundData) => {
     // grab the ensg and gene location.
-    const ensg = data.annotation.ensg;
-    const location = data.annotation.gene_seq_start;
+    const ensg = geneData.annotation.ensg;
+    const location = geneData.annotation.gene_seq_start;
+    const target = [...compoundData.targets.map(el => el.name)].includes('ERBB2') ? 'Yes' : 'No';
     // return the transformed data.
     return [{
         ensg,
         location,
+        target,
     }]
 }
 
@@ -120,7 +122,7 @@ const Biomarker = (props) => {
         // transform the data for the tables in the biomarker page.
         if (compoundQueryData && geneQueryData) {
             setTransformedCompoundData(transformCompoundTableData(compoundQueryData.singleCompound));
-            setTransformedGeneData(transformGeneTableData(geneQueryData.gene));
+            setTransformedGeneData(transformGeneTableData(geneQueryData.gene, compoundQueryData.singleCompound));
         }
     }, [compoundQueryData, geneQueryData])
 

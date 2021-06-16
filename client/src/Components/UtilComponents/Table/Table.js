@@ -41,7 +41,6 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
  */
 const Table = ({ columns, data, disablePagination = false }) => {
-  console.log(columns, data, disablePagination)
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
