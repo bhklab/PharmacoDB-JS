@@ -47,10 +47,10 @@ describe('Tests: GraphQL API', () => {
     //     require('./tests/gene_test').test(server);
     // });
 
-    // // tests for Tissue API Routes
-    // describe('Tissue API Routes', () => {
-    //     require('./tests/tissue_test').test(server);
-    // });
+    // tests for Tissue API Routes
+    describe('Tissue API Routes', () => {
+        require('./tests/tissue_test').test(server);
+    });
 
     // // tests for Target API Routes
     // describe('Target API Routes', () => {
