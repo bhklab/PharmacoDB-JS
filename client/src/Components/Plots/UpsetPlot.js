@@ -37,7 +37,7 @@ const upsetCircle = (svg) => {
 const UpsetPlot = () => {
     useEffect(() => {
         // svg canvas.
-        const svg = createSvgCanvas(height, width, margin, 'upsetplot')
+        const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot' })
         // upset circle.
         upsetCircle(svg)
     })
