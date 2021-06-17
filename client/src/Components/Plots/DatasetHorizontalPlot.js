@@ -1,7 +1,9 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
 import colors from '../../styles/colors';
+import { getDatasetsQuery } from '../../queries/dataset';
 
 const config = {
   responsive: true,
@@ -54,10 +56,20 @@ const generatePlotlyData = (data) => {
  */
 const DatasetHorizontalPlot = (props) => {
   const { data, xaxis, title } = props;
+
+  // add datasets with 0 experiments to the plot
+  const { loading, error, data: allDatasets } = useQuery(getDatasetsQuery);
+  if (allDatasets) {
+    allDatasets.datasets.forEach((dataset) => {
+      let exist = false;
+      data.forEach((d) => { if (d.name === dataset.name) exist = true; });
+      if (!exist) data.push({ name: dataset.name, count: 0, color: '#ffffff' });
+    });
+  }
+
   // sorts data by count values
   data.sort((dataset1, dataset2) => dataset2.count - dataset1.count);
   const plotlyData = generatePlotlyData(data);
-
   const layout = {
     autoresize: true,
     height: 530,
