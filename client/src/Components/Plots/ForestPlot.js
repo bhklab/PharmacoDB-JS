@@ -57,7 +57,7 @@ const createXScale = () => (
  * @param {Object} svg - svg selection.
  */
 const createXAxis = (svg) => {
-    const xAxis = svg.append('g')
+    svg.append('g')
         .attr('id', 'x-axis')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(createXScale()))
@@ -90,6 +90,7 @@ const createHorizontalLines = (svg, scale) => {
             .attr('id', `horizontal-line-${element.dataset}`)
             .append('line')
             .style('stroke', `${colors.dark_gray_text}`)
+            .style('stroke-width', 1.5)
             .attr('x1', scale(element.estimate - MULTIPLIER * element.se))
             .attr("y1", i * height / data_length + height / data_length)
             .attr("x2", scale(element.estimate + MULTIPLIER * element.se))
@@ -128,7 +129,7 @@ const createPolygon = (svg, scale) => {
 
     svg.append('path')
         .attr('d', lineFunction(poly))
-        .attr('stroke', 'black')
+        .attr('stroke', `${colors.dark_gray_text}`)
         .attr('fill', `${colors.teal}`);
 };
 
@@ -143,7 +144,7 @@ const appendDatasetName = (svg) => {
         .append('text')
         .attr('font-weight', 700)
         .attr('x', 10)
-        .attr('y', 10)
+        .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
         .text('Dataset Name')
 
@@ -171,7 +172,7 @@ const appendEstimateText = (svg) => {
         .append('text')
         .attr('font-weight', 700)
         .attr('x', (width * 3) / 4 + 10)
-        .attr('y', 10)
+        .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
         .text('Estimate')
 
