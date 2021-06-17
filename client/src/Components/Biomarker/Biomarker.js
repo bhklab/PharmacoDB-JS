@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
+import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
 import SnakeCase from '../../utils/convertToSnakeCase';
+import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
@@ -101,6 +103,10 @@ const transformGeneTableData = (geneData, compoundData) => {
  * )
  */
 const Biomarker = (props) => {
+    // get the compound, gene and tissue parameters.
+    const { location } = props;
+    const params = queryString.parse(location.search);
+    const { compound, gene, tissue } = params;
     // set states for transformed data for tables.
     const [transformedCompoundData, setTransformedCompoundData] = useState([]);
     const [transformedGeneData, setTransformedGeneData] = useState([]);
@@ -108,10 +114,10 @@ const Biomarker = (props) => {
     // query to grab the gene and compound data based on the compound and gene id.
     const {
         loading: compoundDataLoading, error: compoundDataError, data: compoundQueryData
-    } = useQuery(getCompoundQuery, { variables: { compoundId: 415 } });
+    } = useQuery(getCompoundQuery, { variables: { compoundName: `${compound}` } });
     const {
         loading: geneDataLoading, error: geneDataError, data: geneQueryData
-    } = useQuery(getGeneQuery, { variables: { geneId: 5512 } });
+    } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
@@ -130,7 +136,7 @@ const Biomarker = (props) => {
         <Layout>
             <StyledWrapper>
                 <StyledIndivPage >
-                    <h1>ERBB2 + LAPATINIB + BREAST</h1>
+                    <h1>{`${TitleCase(gene)} + ${TitleCase(compound)} + ${TitleCase(tissue)}`}</h1>
                     <StyledSidebar>
                         {
                             SIDE_LINKS.map((link) => createSideLink(link))

@@ -12,6 +12,7 @@
     "lodash": "^4.17.21",
     "plotly.js": "^1.54.7",
     "prop-types": "^15.7.2",
+    "querystring": "^0.2.1",
     "react": "^16.13.1",
     "react-burger-menu": "^2.7.0",
     "react-dom": "^16.13.1",
