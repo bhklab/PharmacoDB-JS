@@ -15,7 +15,6 @@ const datasetQuery = async datasetId => {
     return transformObject(dataset);
 };
 
-
 /**
  * 
  * @returns {Object} - {
@@ -291,6 +290,70 @@ const type_tested_on_dataset_summary = async ({ type, datasetId }) => {
     return returnObject;
 };
 
+/**
+ * 
+ * @returns {Object}
+ */
+// TODO: Using dataset_id right now, might have to change in future.
+const datasetStatQuery = () => {
+    return knex.select()
+        .from('dataset_statistics as dt')
+        .join('dataset as d', 'd.id', 'dt.dataset_id');
+};
+
+
+/**
+ * @param {String} - takes an argument either 'compound', 'tissue' or 'cell'
+ * @returns {Object} - return object {source: {count: Number, source: String}, ....}
+ */
+const typeCountGroupByDataset = async type => {
+    // return object.
+    const returnObject = {};
+    /**
+     * queries the database to get the data in the required format.
+     * number of give type total across datasets
+     * @returns {count: Number, source: String}
+     */
+    const query = await knex
+        .select('d.name as dataset')
+        .countDistinct(`${type}_id as count`)
+        .from(`dataset_${type} as dt`)
+        .join('dataset as d', 'd.id', 'dt.dataset_id')
+        .groupBy('dt.dataset_id');
+    query.forEach(value => {
+        const {
+            dataset,
+            count
+        } = value;
+        returnObject[dataset] = {
+            dataset,
+            count
+        };
+    });
+    // return the transformed object.
+    return returnObject;
+};
+
+/**
+ * @returns {Object}
+ */
+// NOTE: This table stores the static data type count.
+const dataset_stats = async () => {
+    const stats = await datasetStatQuery();
+    // return object.
+    return stats.map(stat => {
+        const { id, name, cell_lines, drugs, tissues, experiments } = stat;
+        return {
+            id,
+            name,
+            cell_line_count: cell_lines,
+            tissue_count: tissues,
+            compound_count: drugs,
+            experiment_count: experiments
+        };
+    });
+};
+
 
 
 module.exports = {
@@ -298,4 +361,6 @@ module.exports = {
     dataset,
     cell_lines_grouped_by_dataset,
     type_tested_on_dataset_summary,
+    typeCountGroupByDataset,
+    dataset_stats
 };
