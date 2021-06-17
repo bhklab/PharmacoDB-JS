@@ -26,8 +26,8 @@ const getGenesQuery = gql`
  * @returns - the information for the queried gene.
  */
 const getGeneQuery = gql`
-  query getSingleGene($geneId: Int) {
-    gene(geneId: $geneId) {
+  query getSingleGene($geneId: Int, $geneName: String) {
+    gene(geneId: $geneId, geneName: $geneName) {
       id
       name
       annotation {
