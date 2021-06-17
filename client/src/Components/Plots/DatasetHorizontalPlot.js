@@ -59,8 +59,6 @@ const DatasetHorizontalPlot = (props) => {
 
   // add datasets with 0 experiments to the plot
   const { loading, error, data: allDatasets } = useQuery(getDatasetsQuery);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
   if (allDatasets) {
     allDatasets.datasets.forEach((dataset) => {
       let exist = false;
