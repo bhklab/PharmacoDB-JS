@@ -17,7 +17,7 @@ const test = (server) => {
         request(server)
             .post('/graphql')
             .send({ query: cellQueries.cellsKeysTestQuery })
-            // .expect(200)
+            .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const { cell_lines } = res.body.data;

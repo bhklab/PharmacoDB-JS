@@ -67,12 +67,6 @@ const RootQuery = `type RootQuery {
     "Root Queries for gene_drugs."
     gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!
 
-
-    "Root Queries for sources"
-    sources: [Source!]!
-    source_stats: [SourceStats!]!
-
-
     "Root Queries for targets."
     compound_target(compoundId: Int!): CompoundTarget!
 
