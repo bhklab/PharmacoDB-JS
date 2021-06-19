@@ -22,7 +22,7 @@ describe('Tests: GraphQL API', () => {
     let server = require('../../app');
 
     // Close the server instance and estroy knex connection pool after all the API tests are done.
-    after(async function() {
+    after(async function () {
         server.close();
         await knex.destroy();
     });
@@ -33,19 +33,19 @@ describe('Tests: GraphQL API', () => {
     // });
 
     // tests for Cell API Routes
-    describe('Cell API Routes', () => {
-        require('./tests/cell_test').test(server);
-    });
+    // describe('Cell API Routes', () => {
+    //     require('./tests/cell_test').test(server);
+    // });
 
     // // tests for Dataset API routes
     // describe('Dataset API Routes', () => {
     //     require('./tests/dataset_test').test(server);
     // });
 
-    // // tests for Gene API Routes
-    // describe('Gene API Routes', () => {
-    //     require('./tests/gene_test').test(server);
-    // });
+    // tests for Gene API Routes
+    describe('Gene API Routes', () => {
+        require('./tests/gene_test').test(server);
+    });
 
     // // tests for Tissue API Routes
     // describe('Tissue API Routes', () => {
@@ -56,11 +56,11 @@ describe('Tests: GraphQL API', () => {
     // describe('Target API Routes', () => {
     //     require('./tests/target_test').test(server);
     // });
-    
-    // // tests for Experiment API routes
-    // describe('Experiment API Routes', () => {
-    //     require('./tests/experiment_test').test(server);
-    // });
+
+    // tests for Experiment API routes
+    describe('Experiment API Routes', () => {
+        require('./tests/experiment_test').test(server);
+    });
 
     // // tests for Source API routes
     // describe('Source API Routes', () => {
