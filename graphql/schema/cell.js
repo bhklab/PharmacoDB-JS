@@ -6,6 +6,15 @@ const cellLineType = `
     }
 `;
 
+const cellAnnotationType = `
+    type SourceAnnotation {
+        """this is the name of a type ie tissue, cell that is used in the dataset"""
+        name: String!
+        """it's dataset name in our case"""
+        source: [String!]
+    }
+`;
+
 const cellLineDetailType = `
     type CellLineDetail {
         id: Int!
@@ -19,5 +28,6 @@ const cellLineDetailType = `
 
 module.exports = {
     cellLineType,
-    cellLineDetailType
+    cellLineDetailType,
+    cellAnnotationType
 };

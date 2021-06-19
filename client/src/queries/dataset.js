@@ -29,7 +29,7 @@ const getDatasetsQuery = gql`
 `;
 
 /**
- * @returns - The query returns an Array of object with the dataset object, count, type 
+ * @returns - The query returns an Array of object with the dataset object, count, type
  * and an array of objects containing the id and name of the cell lines belonging to that dataset.
  */
 const getCellLinesGroupedByDatasetQuery = gql`
@@ -49,10 +49,8 @@ const getCellLinesGroupedByDatasetQuery = gql`
   }
 `;
 
-
-
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
-  getCellLinesGroupedByDatasetQuery
+  getCellLinesGroupedByDatasetQuery,
 };
