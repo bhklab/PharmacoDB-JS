@@ -5,7 +5,7 @@ const experimentType = `
         tissue: Tissue!
         compound: Compound!
         dataset: Dataset!
-        dose_responses: [DrugResponse!]
+        dose_response: [DrugResponse!]
         profile: Profile!
     }
 `;

@@ -9,9 +9,11 @@ const geneType = `
 const geneAnnotationType = `
     type GeneAnnotation {
         gene_id: Int!
-        ensg: String
+        symbol: String
         gene_seq_start: Int
         gene_seq_end: Int
+        chr: String
+        strand: String
     }
 `;
 
