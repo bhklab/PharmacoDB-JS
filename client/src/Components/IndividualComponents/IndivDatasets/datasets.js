@@ -1,6 +1,6 @@
 const datasets = {
   1: {
-    id: '1',
+    id: 1,
     name: 'CCLE',
     acr: 'Broad-Novartis Cancer Cell Line Encyclopedia (CCLE)',
     acr_ref: '',
@@ -24,7 +24,7 @@ const datasets = {
         type: 'mRNA Expression', platform: 'Affymetrix HG-U133PLUS2', raw: 'Yes', processed: ['BrainArray', 'RMA'],
       },
       {
-        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'Yes', processed: 'No',
+        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'Yes', processed: ['No'],
       },
       {
         type: 'DNA Copy Number',
@@ -41,7 +41,7 @@ const datasets = {
     ],
   },
   2: {
-    id: '2',
+    id: 2,
     name: 'CTRPv2',
     acr: 'Cancer Therapeutics Response Portal version 2 (CTRPv2)',
     acr_ref: '',
@@ -74,7 +74,7 @@ const datasets = {
     ],
   },
   3: {
-    id: '3',
+    id: 3,
     name: 'FIMM',
     acr: 'Institute for Molecular Medicine Finland (FIMM)',
     acr_ref: '',
@@ -99,7 +99,7 @@ const datasets = {
     ],
   },
   4: {
-    id: '4',
+    id: 4,
     name: 'gCSI',
     acr: 'The Genentech Cell Line Screening Initiative (gCSI)',
     acr_ref: '',
@@ -137,7 +137,7 @@ const datasets = {
     ],
   },
   5: {
-    id: '5',
+    id: 5,
     name: 'GDSC1000',
     acr: 'Genomics of Drug Sensitivity in Cancer (GDSC)',
     acr_ref: '',
@@ -181,7 +181,7 @@ const datasets = {
     ],
   },
   6: {
-    id: '6',
+    id: 6,
     name: 'GRAY',
     acr: "Dataset generated in Dr. Joe Gray's lab at the Oregon Health and Science University",
     acr_ref: 'http://www.ohsu.edu/xd/education/schools/school-of-medicine/departments/basic-science-departments/biomedical-engineering/people/joe-gray.cfm',
@@ -244,7 +244,7 @@ const datasets = {
     ],
   },
   7: {
-    id: '7',
+    id: 7,
     name: 'UHNBreast',
     acr: 'University Health Network (UHN) Breast Cancer (BC) Screen',
     acr_ref: '',

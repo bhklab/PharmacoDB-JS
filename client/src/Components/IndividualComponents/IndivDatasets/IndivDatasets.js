@@ -46,14 +46,12 @@ const createSideLink = (link) => <Link key={link} className="link" activeClass="
  * @param {Array} resource  from dataset json file
  */
 const formatResouceData = (resource) => resource.map((x) => ((
-  <div>
-    <a id={x.urlextern} href={x.urlextern} target="_blank">
-      {x.name}
-      {' '}
-      <br />
-      <br />
-    </a>
-  </div>
+  <a key={x.urlextern} href={x.urlextern} target="_blank">
+    {x.name}
+    {' '}
+    <br />
+    <br />
+  </a>
 )));
 
 /**
@@ -61,14 +59,12 @@ const formatResouceData = (resource) => resource.map((x) => ((
  * @param {Array} resource  from dataset json file
  */
 const formatPublicationData = (resource) => resource.map((x) => ((
-  <div>
-    <a key={x.url} href={x.url} target="_blank">
-      {x.title}
-      {' '}
-      <br />
-      <br />
-    </a>
-  </div>
+  <a key={x.url} href={x.url} target="_blank">
+    {x.title}
+    {' '}
+    <br />
+    <br />
+  </a>
 )));
 /**
  * Format data for the synonyms table
@@ -154,11 +150,11 @@ const IndivDatasets = (props) => {
                     </Element>
                     <Element className="section" name="resources">
                       <h3>Resources</h3>
-                      <div className="text"><a href={resources.url}>{resources}</a></div>
+                      <div className="text">{resources}</div>
                     </Element>
                     <Element className="section" name="publications">
                       <h3>Publications</h3>
-                      <div className="text"><a href={publications.url}>{publications}</a></div>
+                      <div className="text">{publications}</div>
                     </Element>
                     <Element className="section" name="data_type">
                       <h3>Data Types</h3>
@@ -176,7 +172,7 @@ const IndivDatasets = (props) => {
                     </Element>
                     <Element className="section" name="plots">
                       <h3>Plots</h3>
-                      {/*<PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} />*/}
+                      {/* <PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} /> */}
                     </Element>
                   </div>
                 </div>
