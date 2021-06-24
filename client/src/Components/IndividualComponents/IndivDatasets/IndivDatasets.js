@@ -45,8 +45,8 @@ const createSideLink = (link) => <Link key={link} className="link" activeClass="
  * Format data for the resources section
  * @param {Array} resource  from dataset json file
  */
-const formatResouceData = (resource) => resource.map((x) => ((
-  <a key={x.urlextern} href={x.urlextern} target="_blank">
+const formatResouceData = (resource) => resource.map((x, index) => ((
+  <a key={index} href={x.urlextern} target="_blank">
     {x.name}
     {' '}
     <br />
@@ -58,8 +58,8 @@ const formatResouceData = (resource) => resource.map((x) => ((
  * Format data for the resources section
  * @param {Array} resource  from dataset json file
  */
-const formatPublicationData = (resource) => resource.map((x) => ((
-  <a key={x.url} href={x.url} target="_blank">
+const formatPublicationData = (resource) => resource.map((x, index) => ((
+  <a key={index} href={x.url} target="_blank">
     {x.title}
     {' '}
     <br />
@@ -158,7 +158,7 @@ const IndivDatasets = (props) => {
                     </Element>
                     <Element className="section" name="data_type">
                       <h3>Data Types</h3>
-                      <Table columns={datatypeColumns} data={datatypeData} disablePagination />
+                      <Table pivotBy={['type']} columns={datatypeColumns} data={datatypeData} disablePagination />
                     </Element>
                     <Element className="section" name="pharmacogx">
                       <h3>PharmacoGx</h3>
