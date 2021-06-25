@@ -1,6 +1,6 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { cellLineType, cellAnnotationType, cellLineDetailType } = require('./cell');
+const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
 const { countType, summaryType, genericType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType } = require('./dataset');
@@ -9,6 +9,7 @@ const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
+const { sourceAnnotationType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
@@ -24,9 +25,6 @@ const schema = `
 
     "Cell Line Type with id and name of the cell lines."
     ${cellLineType}
-    """Cell Line Annotation type with id, name, tissue information 
-     and annotations including the name of source and datasets it's present in"""
-    ${cellAnnotationType}
     ${cellLineDetailType}
 
     "Count Type"
@@ -51,6 +49,10 @@ const schema = `
 
     "Generic Type"
     ${genericType}
+
+    """Source Annotation type with id, name, tissue information 
+    and annotations including the name of source and datasets it's present in"""
+   ${sourceAnnotationType}
 
     "Summary Type"
     ${summaryType}
