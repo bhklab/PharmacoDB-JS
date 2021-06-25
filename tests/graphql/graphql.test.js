@@ -33,9 +33,9 @@ describe('Tests: GraphQL API', () => {
     });
 
     // tests for Cell API Routes
-    // describe('Cell API Routes', () => {
-    //     require('./tests/cell_test').test(server);
-    // });
+    describe('Cell API Routes', () => {
+        require('./tests/cell_test').test(server);
+    });
 
     // tests for Dataset API routes
     describe('Dataset API Routes', () => {
@@ -56,14 +56,14 @@ describe('Tests: GraphQL API', () => {
     describe('Target API Routes', () => {
         require('./tests/target_test').test(server);
     });
-    
+
     // tests for Experiment API routes
     describe('Experiment API Routes', () => {
         require('./tests/experiment_test').test(server);
     });
 
-    // tests for GeneDrug API routes
-    describe('GeneDrug API Routes', () => {
-        require('./tests/gene_drug_test').test(server);
-    });
+    // tests for CompoundDrug API routes
+    // describe('CompoundDrug API Routes', () => {
+    //     require('./tests/gene_drug_test').test(server);
+    // });
 });

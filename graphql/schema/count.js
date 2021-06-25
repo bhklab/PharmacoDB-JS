@@ -27,7 +27,7 @@ const summaryType = `
 
 const enumAllowedType = `
     enum AllowedValues {
-        DRUG
+        COMPOUND
         CELL
         TISSUE
     }

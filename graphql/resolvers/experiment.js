@@ -14,8 +14,8 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  'cell_name',
  'tissue_id',
  'tissue_name',
- 'drug_id',
- 'drug_name',
+ 'compound_id',
+ 'compound_name',
  'fda_status',
  'smiles',
  'inchikey',
@@ -51,8 +51,8 @@ const generateExperimentsColumns = listOfFields => {
                 break;
             case 'compound':
                 const compoundColumns = ['fda_status', 'smiles', 'inchikey', 'pubchem'];
-                columns.push('drug_id', 'drug_name', ...compoundColumns);
-                subqueryColumns.push('experiment.drug_id as drug_id', 'drug.name as drug_name', ...compoundColumns);
+                columns.push('compound_id', 'compound_name', ...compoundColumns);
+                subqueryColumns.push('experiment.compound_id as compound_id', 'compound.name as compound_name', ...compoundColumns);
                 break;
             case 'dataset':
                 columns.push(...['dataset_id', 'dataset_name']);
@@ -81,11 +81,11 @@ const transformExperiments = data => {
             experiment_id,
             cell_id,
             cell_name,
-            drug_id,
+            compound_id,
             dataset_id,
             tissue_id,
             tissue_name,
-            drug_name,
+            compound_name,
             dataset_name,
             dose,
             response,
@@ -106,7 +106,7 @@ const transformExperiments = data => {
             responseObj[experiment_id] = {
                 id: experiment_id,
                 cell_id,
-                drug_id,
+                compound_id,
                 dataset_id,
                 tissue: {
                     id: tissue_id,
@@ -121,8 +121,8 @@ const transformExperiments = data => {
                     }
                 },
                 compound: {
-                    id: drug_id,
-                    name: drug_name,
+                    id: compound_id,
+                    name: compound_name,
                     annotation: {
                         fda_status: fda_status ? 'Approved' : 'Not Approved',
                         smiles,
@@ -187,7 +187,7 @@ const experiments = async (args, context, info) => {
         function subqueryExperiments() {
             let subquery = this.select(subqueryColumns)
                 .from('experiment');
-            if (compoundId) subquery = subquery.where({ 'experiment.drug_id': compoundId });
+            if (compoundId) subquery = subquery.where({ 'experiment.compound_id': compoundId });
             if (cellLineId) subquery.where({ 'experiment.cell_id': cellLineId });
             if (tissueId) subquery.where({ 'experiment.tissue_id': tissueId });
             subtypes.forEach(subtype => {
@@ -199,8 +199,8 @@ const experiments = async (args, context, info) => {
                         subquery = subquery.join('tissue', 'tissue.id', '=', 'experiment.tissue_id');
                         break;
                     case 'compound':
-                        subquery = subquery.join('drug', 'drug.id', '=', 'experiment.drug_id')
-                            .join('drug_annotation', 'experiment.drug_id', '=', 'drug_annotation.drug_id');
+                        subquery = subquery.join('compound', 'compound.id', '=', 'experiment.compound_id')
+                            .join('compound_annotation', 'experiment.compound_id', '=', 'compound_annotation.compound_id');
                         break;
                     case 'dataset':
                         subquery = subquery.join('dataset', 'dataset.id', '=', 'experiment.dataset_id');
@@ -215,7 +215,7 @@ const experiments = async (args, context, info) => {
         let query = knex
             .select(columns)
             .from(subqueryExperiments);
-        // joins drug_responses table if needed
+        // joins compound_responses table if needed
         if (subtypes.includes('dose_response')) query = query.join('dose_response', 'SE.id', '=', 'dose_response.experiment_id');
         if (subtypes.includes('profile')) query = query.join('profile', 'SE.id', '=', 'profile.experiment_id');
         const experiments = await query;
@@ -241,11 +241,11 @@ const experiment = async args => {
             .select('experiment.id as experiment_id',
                 'experiment.cell_id as cell_id',
                 'experiment.tissue_id as tissue_id',
-                'experiment.drug_id as drug_id',
+                'experiment.compound_id as compound_id',
                 'experiment.dataset_id as dataset_id',
                 'cell.name as cell_name',
                 'tissue.name as tissue_name',
-                'drug.name as drug_name',
+                'compound.name as compound_name',
                 'dataset.name as dataset_name',
                 'dose',
                 'response',
@@ -264,10 +264,10 @@ const experiment = async args => {
             .from('experiment')
             .join('cell', 'cell.id', '=', 'experiment.cell_id')
             .join('tissue', 'tissue.id', '=', 'experiment.tissue_id')
-            .join('drug', 'drug.id', '=', 'experiment.drug_id')
+            .join('compound', 'compound.id', '=', 'experiment.compound_id')
             .join('dataset', 'dataset.id', '=', 'experiment.dataset_id')
             .join('dose_response', 'dose_response.experiment_id', '=', 'experiment.id')
-            .join('drug_annotation', 'experiment.drug_id', '=', 'drug_annotation.drug_id')
+            .join('compound_annotation', 'experiment.compound_id', '=', 'compound_annotation.compound_id')
             .join('profile', 'experiment.id', '=', 'profile.experiment_id')
             .where('experiment.id', experimentId);
         const output = transformExperiments(experiment);

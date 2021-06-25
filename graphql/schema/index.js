@@ -4,10 +4,10 @@ const { cellLineType, cellAnnotationType, cellLineDetailType } = require('./cell
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
 const { countType, summaryType, genericType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType } = require('./dataset');
-const { drugResponseType } = require('./drug_response');
+const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
-const { geneDrugType } = require('./gene_drug');
+const { geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
@@ -18,7 +18,7 @@ const { profileType } = require('./profile');
 const schema = `
     "Compound Type with id, name and annotations."
     ${compoundType}
-    "Compound Annotation Type with drug id, smiles, inchikey and pubchem."
+    "Compound Annotation Type with compound id, smiles, inchikey and pubchem."
     ${compoundAnnotationType}
     ${compoundDetailType}
 
@@ -36,8 +36,8 @@ const schema = `
     ${datasetType}
     ${datasetDetailType}
 
-    "Drug Response Type with dose and response values"
-    ${drugResponseType}
+    "compound Response Type with dose and response values"
+    ${compoundResponseType}
 
     ${enumAllowedType}
 
@@ -66,8 +66,8 @@ const schema = `
      including the name of source and datasets it's present in"""
     ${tissueDetailType}
 
-    "GeneDrug Type"
-    ${geneDrugType}
+    "Compoundcompound Type"
+    ${geneCompoundType}
 
     "Profile Type"
     ${profileType}

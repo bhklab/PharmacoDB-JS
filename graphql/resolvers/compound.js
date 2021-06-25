@@ -51,7 +51,7 @@ const transformCompounds = data => {
         const {
             id,
             name,
-            drug_uid,
+            compound_uid,
             smiles,
             inchikey,
             pubchem,
@@ -60,7 +60,7 @@ const transformCompounds = data => {
         return {
             id,
             name,
-            uid: drug_uid,
+            uid: compound_uid,
             annotation: {
                 smiles: smiles,
                 inchikey: inchikey,
@@ -92,7 +92,7 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
             targets: targets['targets']
         };
         return output;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }
@@ -106,19 +106,19 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
 const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
-        .select('drug.id as compound_id',
-            'drug.name as compound_name',
-            'drug_synonym.drug_name as source_compound_name',
+        .select('compound.id as compound_id',
+            'compound.name as compound_name',
+            'compound_synonym.compound_name as source_compound_name',
             'dataset.name as dataset_name')
-        .from('drug')
-        .join('drug_synonym', 'drug.id', 'drug_synonym.drug_id')
-        .join('dataset_compound', 'dataset_compound.compound_id', 'drug.id')
+        .from('compound')
+        .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
+        .join('dataset_compound', 'dataset_compound.compound_id', 'compound.id')
         .join('dataset', 'dataset.id', 'dataset_compound.dataset_id');
     // return sub query based on the compoundId or compoundName.
     if (compoundId) {
-        return await query.where('drug.id', compoundId);
+        return await query.where('compound.id', compoundId);
     } else if (compoundName) {
-        return await query.where('drug.name', compoundName);
+        return await query.where('compound.name', compoundName);
     }
 };
 
@@ -129,14 +129,14 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
  */
 const compoundQuery = async (compoundId, compoundName, subtypes) => {
     // the base query.
-    let baseQuery = knex.select().from('drug');
+    let baseQuery = knex.select().from('compound');
     // if the subtypes contains annotation type
-    if (subtypes.includes('annotation')) baseQuery = baseQuery.join('drug_annotation', 'drug.id', 'drug_annotation.drug_id');
+    if (subtypes.includes('annotation')) baseQuery = baseQuery.join('compound_annotation', 'compound.id', 'compound_annotation.compound_id');
     // return value.
     if (compoundId) {
-        return baseQuery.where('drug.id', compoundId);
+        return baseQuery.where('compound.id', compoundId);
     } else if (compoundName) {
-        return baseQuery.where('drug.name', compoundName);
+        return baseQuery.where('compound.name', compoundName);
     }
 };
 
@@ -157,9 +157,9 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         // query to get the data for all the compounds.
         let query = knex
             .select()
-            .from('drug');
-        // add a join to grab the drug annotations in case it's queried by the user.
-        if (listOfFields.includes('annotation')) query = query.join('drug_annotation', 'drug.id', 'drug_annotation.drug_id');
+            .from('compound');
+        // add a join to grab the compound annotations in case it's queried by the user.
+        if (listOfFields.includes('annotation')) query = query.join('compound_annotation', 'compound.id', 'compound_annotation.compound_id');
         // if the user has not queried to get all the compound, 
         // then limit and offset will be used to give back the queried limit.
         if (!all) {

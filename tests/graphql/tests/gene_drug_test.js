@@ -45,9 +45,9 @@ const test = (server) => {
 const testGeneDrugData = (res, done) => {
     const { gene_drugs } = res.body.data;
     expect(gene_drugs).to.be.an('array').that.have.lengthOf.above(0);
-    gene_drugs.every(gene_drug => {
-        expect(gene_drug).to.have.all.keys('id', 'estimate', 'se', 'n', 'tstat', 'fstat', 'pvalue', 'df', 'fdr', 'FWER_genes', 'FWER_drugs', 'FWER_all', 'BF_p_all', 'mDataType', 'level', 'drug_like_molecule', 'in_clinical_trials', 'dataset', 'gene', 'compound', 'tissue');
-        const { id, estimate, se, n, tstat, fstat, pvalue, df, fdr, FWER_genes, FWER_drugs, FWER_all, BF_p_all, mDataType, level, drug_like_molecule, dataset, gene, compound, tissue } = gene_drug;
+    gene_drugs.every(compound_drug => {
+        expect(compound_drug).to.have.all.keys('id', 'estimate', 'se', 'n', 'tstat', 'fstat', 'pvalue', 'df', 'fdr', 'FWER_genes', 'FWER_drugs', 'FWER_all', 'BF_p_all', 'mDataType', 'level', 'drug_like_molecule', 'in_clinical_trials', 'dataset', 'gene', 'compound', 'tissue');
+        const { id, estimate, se, n, tstat, fstat, pvalue, df, fdr, FWER_genes, FWER_drugs, FWER_all, BF_p_all, mDataType, level, drug_like_molecule, dataset, gene, compound, tissue } = compound_drug;
         // checks the format of experimental data
         expect(id).to.be.a('number');
         expect(estimate).to.be.a('number');

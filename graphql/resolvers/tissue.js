@@ -42,7 +42,7 @@ const compoundTestedQuery = async (tissueId, tissueName) => {
     let query;
     const subQuery = knex
         .select('d.name as dataset_name', 'd.id as dataset_id')
-        .countDistinct('e.drug_id as total')
+        .countDistinct('e.compound_id as total')
         .from('experiment as e')
         .join('dataset as d', 'd.id', 'e.dataset_id')
         .join('tissue as t', 't.id', 'e.tissue_id');

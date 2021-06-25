@@ -146,7 +146,7 @@ const datasets = async (args, parent, info) => {
         const datasets = await datasetQuery();
         // retrieves data if it was requested
         let compound_count, cell_count, experiment_count;
-        if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
+        if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('compound');
         if (listOfFields.includes('cell_count')) cell_count = await cellLinesGroupByDatasetQuery();
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
         // return the transformed data for this function.
@@ -207,11 +207,11 @@ const dataset = async (args, parent, info) => {
         let cell_count, compound_count, tissue_count, experiment_count, cells, compounds;
         const datasets = await datasetQuery();
         if (listOfFields.includes('cell_count')) cell_count = await cellLinesGroupByDatasetQuery();
-        if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('drug');
+        if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('compound');
         if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
         if (listOfFields.includes('cells_tested')) cells = await summaryQuery('cell', datasetId, datasetName);
-        if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('drug', datasetId, datasetName);
+        if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('compound', datasetId, datasetName);
 
         datasets.forEach(dataset => {
             // destructuring the dataset object.
@@ -231,7 +231,7 @@ const dataset = async (args, parent, info) => {
 
             if (dataset_id === datasetId || dataset_name === datasetName) {
                 if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => value['cell_name']);
-                if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => value['drug_name']);
+                if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => value['compound_name']);
 
                 returnData.unshift(data);
             } else {
@@ -342,13 +342,13 @@ const dataset_stats = async () => {
     const stats = await datasetStatQuery();
     // return object.
     return stats.map(stat => {
-        const { id, name, cell_lines, drugs, tissues, experiments } = stat;
+        const { id, name, cell_lines, compounds, tissues, experiments } = stat;
         return {
             id,
             name,
             cell_line_count: cell_lines,
             tissue_count: tissues,
-            compound_count: drugs,
+            compound_count: compounds,
             experiment_count: experiments
         };
     });

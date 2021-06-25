@@ -8,10 +8,10 @@ const knex = require('../../db/knex');
 const targetQuery = async (compoundId, compoundName) => {
     // main query.
     const query = knex.distinct('t.name as target_name')
-        .select('d.name as drug_name', 'dt.target_id', 'dt.drug_id')
-        .from('drug_target as dt')
+        .select('d.name as compound_name', 'dt.target_id', 'dt.compound_id')
+        .from('compound_target as dt')
         .join('target as t', 't.id', 'dt.target_id')
-        .join('drug as d', 'd.id', 'dt.drug_id');
+        .join('compound as d', 'd.id', 'dt.compound_id');
     // subquery.
     if (compoundId) {
         return query.where('d.id', compoundId);
@@ -44,12 +44,12 @@ const compound_target = async (args) => {
         const {
             target_id,
             target_name,
-            drug_name,
-            drug_id
+            compound_name,
+            compound_id
         } = target;
         if (!i) {
-            returnObject['compound_id'] = drug_id;
-            returnObject['compound_name'] = drug_name;
+            returnObject['compound_id'] = compound_id;
+            returnObject['compound_name'] = compound_name;
             returnObject['targets'] = [];
         }
         returnObject['targets'].push({

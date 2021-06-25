@@ -87,7 +87,7 @@ const RootQuery = `type RootQuery {
     """
         Root Queries for gene_drugs.
     """
-    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneDrug!]!
+    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [CompoundDrug!]!
 
 
     """
