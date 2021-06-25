@@ -12,7 +12,7 @@ import Loading from '../../UtilComponents/Loading';
  * @component
  * @example
  *
- * return (
+ * returns (
  *   <PlotSection/>
  * )
  */
