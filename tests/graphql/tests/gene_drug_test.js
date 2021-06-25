@@ -5,44 +5,44 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const geneDrugQueries = require('../queries/gene_drug_queries');
+const geneCompoundQueries = require('../queries/gene_drug_queries');
 
 /**
- * A function that contains tests for gene_drugs API.
+ * A function that contains tests for gene_compounds API.
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {
-    // test gene_drugs data for a given gene
-    it('Data coming from gene_drugs API route contains all experimental data for a single gene along with detailed information about dataset, tissue, gene and compound', function (done) {
+    // test gene_compounds data for a given gene
+    it('Data coming from gene_compounds API route contains all experimental data for a single gene along with detailed information about dataset, tissue, gene and compound', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
-            .send({ query: geneDrugQueries.geneDrugSearchByGeneQuery })
+            .send({ query: geneCompoundQueries.geneCompoundSearchByGeneQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                testGeneDrugData(res, done);
+                testGeneCompoundData(res, done);
             });
     });
-    // test gene_drugs data for a given compound
-    it('Data coming from gene_drugs API route contains all experimental data for a single compound along with detailed information about dataset, tissue, gene and compound', function (done) {
+    // test gene_compounds data for a given compound
+    it('Data coming from gene_compounds API route contains all experimental data for a single compound along with detailed information about dataset, tissue, gene and compound', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
-            .send({ query: geneDrugQueries.geneDrugSearchByDrugQuery })
+            .send({ query: geneCompoundQueries.geneCompoundSearchByCompoundQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
-                testGeneDrugData(res, done);
+                testGeneCompoundData(res, done);
             });
     });
 };
 
 /**
- * Function that checks validity of the data returned by drug_gene API
+ * Function that checks validity of the data returned by compound_gene API
  * Takes 2 arguments, response request body and done callback function from chai
  */
-const testGeneDrugData = (res, done) => {
+const testGeneCompoundData = (res, done) => {
     const { gene_drugs } = res.body.data;
     expect(gene_drugs).to.be.an('array').that.have.lengthOf.above(0);
     gene_drugs.every(compound_drug => {

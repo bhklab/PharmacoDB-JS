@@ -95,7 +95,7 @@ const test = (server) => {
             .end((err, res) => {
                 if (err) return done(err);
                 const { experiments } = res.body.data;
-                // expects to serve all experiments for a given drug instead of just a small subset
+                // expects to serve all experiments for a given compound instead of just a small subset
                 expect(experiments).to.be.an('array').that.have.lengthOf.above(50);
                 experiments.every(experiment => {
                     // expects certain types to be returned as indicated in the graphQL query

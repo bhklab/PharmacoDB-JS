@@ -1,4 +1,4 @@
-const geneDrugSearchByGeneQuery = `
+const geneCompoundSearchByGeneQuery = `
   {
     gene_drugs(geneId: 1) {
       id
@@ -50,7 +50,7 @@ const geneDrugSearchByGeneQuery = `
   }
 `;
 
-const geneDrugSearchByDrugQuery = `
+const geneCompoundSearchByCompoundQuery = `
   {
     gene_drugs(compoundId: 2) {
       id
@@ -105,6 +105,6 @@ const geneDrugSearchByDrugQuery = `
 
 
 module.exports = {
-    geneDrugSearchByGeneQuery,
-    geneDrugSearchByDrugQuery
+    geneCompoundSearchByGeneQuery,
+    geneCompoundSearchByCompoundQuery
 };
