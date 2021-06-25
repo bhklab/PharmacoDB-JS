@@ -135,16 +135,6 @@ const IndivGenes = (props) => {
                     <Element className="section" name="synonyms">
                       <h3>Synonyms</h3>
                       <Table columns={synonymColumns} data={synonymData} disablePagination />
-                      <iframe
-                        src={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.annotation.ensg}#ensembl_panel_1`}
-                        title="e! Ensembl"
-                        width="100%"
-                        height="380px"
-                        overflow="hidden"
-                        position="right"
-                        sandbox=""
-                        loading="eager"
-                      />
                     </Element>
                     <Element className="section" name="links">
                       <h3>Links</h3>

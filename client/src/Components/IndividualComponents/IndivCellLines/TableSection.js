@@ -52,13 +52,23 @@ const MOLECULAR_PROFILING_COLUMNS = [
  * Format data for the synonyms table
  * @param {Array} data synonym data from the cell line API
  */
-const formatDrugSummaryData = (experiment) => {
-  if (experiment) {
-    console.log(experiment.experiments);
-    return experiment.experiments.map((x) => ({
-      compound: x.compound.name,
-      dataset: x.dataset.name,
-      experiment_id: x.id,
+const formatDrugSummaryData = (data) => {
+  // collect data of datasets and number of experiments for each compound
+  const compoundObj = {};
+  data.experiments.forEach((experiment) => {
+    if (compoundObj[experiment.compound.name]) {
+      compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
+      compoundObj[experiment.compound.name].numExperiments += 1;
+    } else {
+      compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };
+    }
+  });
+  // assign values of collected compound data to the columns
+  if (data) {
+    return Object.values(compoundObj).map((x) => ({
+      compound: x.compound,
+      dataset: x.datasets.join(', '),
+      experiment_id: x.numExperiments,
     }));
   }
   return null;
@@ -101,7 +111,6 @@ const TableSection = (props) => {
           ? (
             <>
               <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(queryData)} />
-              <p> data is available for this table. </p>
             </>
           )
           : <p> No data is available for this table. </p>
