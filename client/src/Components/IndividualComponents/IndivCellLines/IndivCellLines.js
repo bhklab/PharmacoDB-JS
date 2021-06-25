@@ -13,6 +13,7 @@ import PlotSection from './PlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
+import TableSection from "./TableSection";
 
 const SYNONYM_COLUMNS = [
   {
@@ -161,6 +162,10 @@ const IndivCellLines = (props) => {
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
                       <PlotSection cellLine={({ id: data.id, name: data.name })} />
+                      <h3>Drugs Summary</h3>
+                      <TableSection cellLine={({ id: data.id, name: data.name })} />
+                      <h3>Molecular Profiling</h3>
+                      {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
                     </Element>
                   </div>
                 </div>
