@@ -7,6 +7,7 @@ import IndivCompounds from './IndividualComponents/IndivCompounds/IndivCompounds
 import IndivCellLines from './IndividualComponents/IndivCellLines/IndivCellLines';
 import IndivTissues from './IndividualComponents/IndivTissues/IndivTissues';
 import IndivGenes from './IndividualComponents/IndivGenes/IndivGenes';
+import IndivDatasets from './IndividualComponents/IndivDatasets/IndivDatasets';
 import Datasets from './SummaryComponents/Datasets/Datasets';
 import Home from './Home/Home';
 import NotFoundPage from './UtilComponents/NotFoundPage';
@@ -14,5 +15,5 @@ import NotFoundPage from './UtilComponents/NotFoundPage';
 export {
   Compounds, IndivCompounds, Home, NotFoundPage,
   Tissues, IndivTissues, Genes, IndivGenes, CellLines, IndivCellLines,
-  Datasets, Experiments,
+  Datasets, IndivDatasets, Experiments,
 };

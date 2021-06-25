@@ -55,7 +55,7 @@ const generateCountPlotData = (experiments) => {
  * @component
  * @example
  *
- * return (
+ * returns (
  *   <PlotSection/>
  * )
  */

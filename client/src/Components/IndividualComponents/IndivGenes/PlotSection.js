@@ -3,7 +3,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
+import { getSingleGeneExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
@@ -12,7 +12,7 @@ import ProfileCompound from '../../Plots/ProfileCompound';
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
  * compound horizontal plots
- * @param {Array} experiments - list of experiments for a given cell line returned by the API
+ * @param {Array} experiments - list of experiments for a given gene returned by the API
  * @returns - array of items. Elements of the array are a list of data points for compound plots respectively
  * Each data point contains name, count and color properties
  * @example
@@ -35,7 +35,7 @@ const generateCountPlotData = (experiments) => {
   return [compoundData];
 };
 /**
- * Section that display plots for the individual cell Line page.
+ * Section that display plots for the individual gene page.
  *
  * @component
  * @example
@@ -45,11 +45,11 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-  const { cellLine } = props;
-  const { id, name } = cellLine;
+  const { gene } = props;
+  const { id, name } = gene;
 
-  const { loading, error, data } = useQuery(getSingleCellLineExperimentsQuery, {
-    variables: { cellLineId: id },
+  const { loading, error, data } = useQuery(getSingleGeneExperimentsQuery, {
+    variables: { geneId: id },
   });
   if (loading) {
     return <Loading />;
@@ -67,19 +67,18 @@ const PlotSection = (props) => {
                 <DatasetHorizontalPlot
                   data={compoundsData}
                   xaxis="# of compounds"
-                  title={`Number of compounds tested with ${name} (per dataset)`}
+                  title={`Number of compounds tested targeting ${name} (per dataset)`}
                 />
-                <ProfileCompound cellLine={name} data={data.experiments} />
               </>
             )
-            : <p> No data is available for plotting this cell line. </p>
+            : <p> No data is available for plotting this gene. </p>
         }
     </>
   );
 };
 
 PlotSection.propTypes = {
-  cellLine: PropTypes.shape({
+  gene: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
   }).isRequired,

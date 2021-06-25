@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
+import Iframe from 'react-iframe';
 import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
@@ -26,7 +27,7 @@ const LINK_COLUMNS = [
   },
 ];
 
-const SIDE_LINKS = ['Synonyms', 'Links'];
+const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
 
 /**
  * Format data for synonym and link tables
@@ -39,7 +40,7 @@ const formatTableLinks = (id, link) => [{
       {id}
       {' '}
     </div>
-  </a>,
+      </a>,
 }];
 
 /**
@@ -117,7 +118,7 @@ const IndivGenes = (props) => {
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
   const linkData = React.useMemo(() => formatLinkData(data), [data]);
-
+  console.log('data:', data);
   return (gene.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -134,10 +135,23 @@ const IndivGenes = (props) => {
                     <Element className="section" name="synonyms">
                       <h3>Synonyms</h3>
                       <Table columns={synonymColumns} data={synonymData} disablePagination />
+                      <iframe
+                        src={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.annotation.ensg}#ensembl_panel_1`}
+                        title="e! Ensembl"
+                        width="100%"
+                        height="380px"
+                        overflow="hidden"
+                        position="right"
+                        sandbox=""
+                        loading="eager"
+                      />
                     </Element>
                     <Element className="section" name="links">
                       <h3>Links</h3>
                       <Table columns={linkColumns} data={linkData} disablePagination />
+                    </Element>
+                    <Element className="section" name="plots">
+                      <h3>Plots</h3>
                     </Element>
                   </div>
                 </div>
