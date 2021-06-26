@@ -28,7 +28,7 @@ const summaryType = `
 const enumAllowedType = `
     enum AllowedValues {
         COMPOUND
-        CELL
+        cell
         TISSUE
     }
 `;
