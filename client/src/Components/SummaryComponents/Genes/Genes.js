@@ -12,10 +12,6 @@ const table_columns = [
     accessor: 'name',
   },
   {
-    Header: 'Ensembl ID',
-    accessor: 'ensg',
-  },
-  {
     Header: 'Gene Seq Start',
     accessor: 'gene_seq_start',
   },

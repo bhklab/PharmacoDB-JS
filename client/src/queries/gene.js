@@ -11,7 +11,7 @@ const getGenesQuery = gql`
       id
       name
       annotation {
-        ensg
+        gene_id
         gene_seq_start
         gene_seq_end
         
