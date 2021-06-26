@@ -14,7 +14,7 @@ const compoundTargetType = `
         """compound name in the database"""
         compound_name: String!
         """target object"""
-        targets: [Target!]
+        targets: [Target]
     }
 `;
 
