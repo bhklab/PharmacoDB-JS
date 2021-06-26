@@ -8,15 +8,15 @@ const knex = require('../../db/knex');
 const targetQuery = async (compoundId, compoundName) => {
     // main query.
     const query = knex.distinct('t.name as target_name')
-        .select('d.name as compound_name', 'dt.target_id', 'dt.compound_id')
-        .from('compound_target as dt')
-        .join('target as t', 't.id', 'dt.target_id')
-        .join('compound as d', 'd.id', 'dt.compound_id');
+        .select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id')
+        .from('compound_target as ct')
+        .join('target as t', 't.id', 'ct.target_id')
+        .join('compound as c', 'c.id', 'ct.compound_id');
     // subquery.
     if (compoundId) {
-        return query.where('d.id', compoundId);
+        return query.where('c.id', compoundId);
     } else if (compoundName) {
-        return query.where('d.name', compoundName);
+        return query.where('c.name', compoundName);
     }
 };
 
