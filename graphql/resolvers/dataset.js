@@ -267,7 +267,8 @@ const cell_lines_grouped_by_dataset = async () => {
  *      list: {id: 'type id', name: 'type name' } 
  * }
  */
-const type_tested_on_dataset_summary = async ({ type, datasetId }) => {
+const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => {
+    const type = dataType.toLowerCase();
     const type_list = await summaryQuery(type, datasetId);
     const count = type_list.length;
     const returnObject = {};

@@ -9,7 +9,7 @@ const countType = `
 const enumAllowedType = `
     enum AllowedValues {
         COMPOUND
-        cell
+        CELL
         TISSUE
     }
 `;
