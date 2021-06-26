@@ -6,25 +6,6 @@ const countType = `
     }
 `;
 
-
-const genericType = `
-    type Generic {
-        id: Int!
-        name: String!
-    }
-`;
-
-
-const summaryType = `
-    type Summary {
-        dataset: Generic!
-        count: Int!
-        type: String!
-        list: [Generic!]!
-    }
-`;
-
-
 const enumAllowedType = `
     enum AllowedValues {
         COMPOUND
@@ -36,7 +17,5 @@ const enumAllowedType = `
 
 module.exports = {
     countType,
-    summaryType,
-    genericType,
     enumAllowedType
 };

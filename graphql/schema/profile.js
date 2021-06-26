@@ -13,5 +13,5 @@ const profileType = `
 `;
 
 module.exports = {
-  profileType
+    profileType
 };

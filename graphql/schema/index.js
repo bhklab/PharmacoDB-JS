@@ -2,13 +2,15 @@
 const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
-const { countType, summaryType, genericType, enumAllowedType } = require('./count');
+const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType } = require('./dataset');
 const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
+const { genericType } = require('./generic');
 const { geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
+const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');

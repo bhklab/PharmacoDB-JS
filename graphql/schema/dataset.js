@@ -13,7 +13,6 @@ const datasetType = `
     }
 `;
 
-
 const datasetDetailType = `
     type DatasetDetail {
         """id of the dataset"""
