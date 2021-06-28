@@ -138,7 +138,9 @@ const TableSection = (props) => {
               <h4>
                 <p align="center">
                   Cell lines of
+                  {' '}
                   {tissue.name}
+                  {' '}
                   tissue type
                 </p>
               </h4>
@@ -152,6 +154,7 @@ const TableSection = (props) => {
               <h4>
                 <p align="center">
                   Compounds tested with
+                  {' '}
                   {tissue.name}
                 </p>
               </h4>
@@ -167,7 +170,7 @@ const TableSection = (props) => {
               <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(queryData)} />
             </>
           )
-          : <p> No data is available for this table. </p>
+          : <p />
         }
     </>
   );
