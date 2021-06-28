@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Iframe from 'react-iframe';
 import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
@@ -34,13 +33,14 @@ const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
  * @param {String} id,link gene id and link to reference
  */
 const formatTableLinks = (id, link) => [{
-  id: <a href={link} target="_blank">
+  id:
+  <a href={link} target="_blank">
     <div style={{ textAlign: 'center' }}>
       {' '}
       {id}
       {' '}
     </div>
-      </a>,
+  </a>,
 }];
 
 /**

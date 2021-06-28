@@ -10,10 +10,9 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table';
 import PlotSection from './PlotSection';
-
+import TableSection from './TableSection';
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
-import TableSection from "./TableSection";
 
 const SYNONYM_COLUMNS = [
   {

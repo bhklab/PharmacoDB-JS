@@ -57,7 +57,7 @@ const formatDrugSummaryData = (data) => {
   const compoundObj = {};
   data.experiments.forEach((experiment) => {
     if (compoundObj[experiment.compound.name]) {
-      compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
+      if (!compoundObj[experiment.compound.name].datasets.includes(experiment.dataset.name)) compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
       compoundObj[experiment.compound.name].numExperiments += 1;
     } else {
       compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };

@@ -10,7 +10,7 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table';
 import PlotSection from './PlotSection';
-
+import TableSection from './TableSection';
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -125,7 +125,8 @@ const IndivTissues = (props) => {
                     </Element>
                     <Element name="plots" className="section temp">
                       <h3>Plots</h3>
-                      <PlotSection tissue={({ id: data.id, name: data.name })} />
+                      <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                      <TableSection tissue={({ id: data.id, name: formatName(data.name) })} />
                     </Element>
                   </div>
                 </div>
