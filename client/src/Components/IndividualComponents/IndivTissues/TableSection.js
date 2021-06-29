@@ -4,10 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueExperimentsQuery } from '../../../queries/experiments';
-import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import Table from '../../UtilComponents/Table';
-import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 
 const DRUG_SUMMARY_COLUMNS = [
   {
@@ -32,33 +30,41 @@ const CELL_LINE_SUMMARY_COLUMNS = [
 ];
 
 /**
- * Collect data for the drug summary table
- * @param {Array} data drug summary data from the experiment API
+ * Collect data for the drug summary and cell line summary tables
+ * @param {Array} data drug summary and cell line summary data from the experiment API
  */
-const generateDrugSummaryData = (data) => {
+const generateTablesData = (data) => {
   if (data.experiments) {
     const compoundObj = {};
+    const cellLineObj = {};
     let allDatasets = 0;
     data.experiments.forEach((experiment) => {
-      if (compoundObj[experiment.compound.name]) {
-        if (!compoundObj[experiment.compound.name].datasets.includes(experiment.dataset.name)) {
-          if (compoundObj[experiment.compound.name].datasets.length > allDatasets) allDatasets = compoundObj[experiment.compound.name].datasets.length;
-          compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
+      const compoundName = experiment.compound.name;
+      const cellName = experiment.cell_line.name;
+      if (compoundObj[compoundName]) {
+        if (!compoundObj[compoundName].datasets.includes(compoundName)) {
+          if (compoundObj[compoundName].datasets.length > allDatasets) allDatasets = compoundObj[compoundName].datasets.length;
+          compoundObj[compoundName].datasets.push(compoundName);
         }
-        compoundObj[experiment.compound.name].numExperiments += 1;
+        compoundObj[compoundName].numExperiments += 1;
       } else {
-        compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };
+        compoundObj[compoundName] = { compound: compoundName, datasets: [compoundName], numExperiments: 1 };
+      }
+      if (!cellLineObj[cellName]) {
+        cellLineObj[cellName] = { cellLine: cellName };
       }
     });
-    return { compound: compoundObj, numCompounds: Object.keys(compoundObj).length, numDataset: allDatasets + 1 };
+    return {
+      compound: compoundObj, numCompounds: Object.keys(compoundObj).length, numDataset: allDatasets + 1, cellLine: cellLineObj,
+    };
   }
+  return null;
 };
 /**
  * Format data for the Drug summary table
  * @param {Array} data Drug summary data returned from generate drug summary data
  */
-const formatDrugSummaryData = (data) => {
-  const compounds = data.compound;
+const formatDrugSummaryData = (compounds) => {
   if (compounds) {
     return Object.values(compounds).map((x) => ({
       compound: x.compound,
@@ -70,27 +76,10 @@ const formatDrugSummaryData = (data) => {
 };
 
 /**
- * Collect data for the cell line summary data
- * @param {Array} data cell line summary data from the experiment API
- */
-const generateCellLineSummaryData = (data) => {
-  const cellLineObj = {};
-  data.experiments.forEach((experiment) => {
-    if (cellLineObj[experiment.cell_line.name]) {
-      cellLineObj[experiment.cell_line.name].numExperiments += 1;
-    } else {
-      cellLineObj[experiment.cell_line.name] = { cellLine: experiment.cell_line.name, numExperiments: 1 };
-    }
-  });
-  return { cellLine: cellLineObj, length: Object.keys(cellLineObj).length };
-};
-
-/**
  * Format data for the cell line summary table
  * @param {Array} data cell line summary data returned from generate cell line summary data
  */
-const formatCellLineSummaryData = (data) => {
-  const cellLines = data.cellLine;
+const formatCellLineSummaryData = (cellLines) => {
   if (cellLines) {
     return Object.values(cellLines).map((x) => ({
       cellLine:
@@ -99,7 +88,6 @@ const formatCellLineSummaryData = (data) => {
     { x.cellLine }
     {' '}
   </div>,
-      experiments_number: x.numExperiments,
     }));
   }
   return null;
@@ -142,9 +130,9 @@ const TableSection = (props) => {
     return <p> Error! </p>;
   }
   const { data } = experiment;
-  const compoundsData = generateDrugSummaryData(queryData);
-  const cellLinesData = generateCellLineSummaryData(queryData);
-  console.log(cellLinesData);
+  const {
+    cellLine, compound, numDataset, numCompounds,
+  } = generateTablesData(queryData);
   return (data ? (
     <>
       {
@@ -162,11 +150,11 @@ const TableSection = (props) => {
                 </p>
               </h4>
               <p align="center">
-                {cellLinesData.length}
+                {cellLine.length}
                 {' '}
                 cell line(s) of this tissue type are currently recorded in database.
               </p>
-              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLinesData)} />
+              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} />
               <h3>Drugs Summary</h3>
               <h4>
                 <p align="center">
@@ -176,15 +164,15 @@ const TableSection = (props) => {
                 </p>
               </h4>
               <p align="center">
-                {compoundsData.numCompounds}
+                {numCompounds}
                 {' '}
                 compounds have been tested with this tissue, using data from
                 {' '}
-                {compoundsData.numDataset}
+                {numDataset}
                 {' '}
                 dataset(s).
               </p>
-              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compoundsData)} />
+              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compound)} />
             </>
           )
           : <p> Loading... </p>
