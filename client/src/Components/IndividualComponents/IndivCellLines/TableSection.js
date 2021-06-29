@@ -34,18 +34,6 @@ const MOLECULAR_PROFILING_COLUMNS = [
     Header: 'rna',
     accessor: 'tissue',
   },
-  // {
-  //   Header: 'rnaseq',
-  //   accessor: 'tissue',
-  // },
-  // {
-  //   Header: 'mutation',
-  //   accessor: 'tissue',
-  // },
-  // {
-  //   Header: 'cnv',
-  //   accessor: 'tissue',
-  // },
 ];
 
 /**
@@ -56,11 +44,13 @@ const formatDrugSummaryData = (data) => {
   // collect data of datasets and number of experiments for each compound
   const compoundObj = {};
   data.experiments.forEach((experiment) => {
-    if (compoundObj[experiment.compound.name]) {
-      if (!compoundObj[experiment.compound.name].datasets.includes(experiment.dataset.name)) compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
-      compoundObj[experiment.compound.name].numExperiments += 1;
+    const compoundName = experiment.compound.name;
+    const datasetName = experiment.dataset.name;
+    if (compoundObj[compoundName]) {
+      if (!compoundObj[compoundName].datasets.includes(datasetName)) compoundObj[compoundName].datasets.push(datasetName);
+      compoundObj[compoundName].numExperiments += 1;
     } else {
-      compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };
+      compoundObj[compoundName] = { compound: compoundName, datasets: [datasetName], numExperiments: 1 };
     }
   });
   // assign values of collected compound data to the columns
