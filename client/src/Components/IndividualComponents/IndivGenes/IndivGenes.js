@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
-import Iframe from 'react-iframe';
 import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
@@ -34,13 +33,14 @@ const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
  * @param {String} id,link gene id and link to reference
  */
 const formatTableLinks = (id, link) => [{
-  id: <a href={link} target="_blank">
+  id:
+  <a href={link} target="_blank">
     <div style={{ textAlign: 'center' }}>
       {' '}
       {id}
       {' '}
     </div>
-      </a>,
+  </a>,
 }];
 
 /**
@@ -135,16 +135,6 @@ const IndivGenes = (props) => {
                     <Element className="section" name="synonyms">
                       <h3>Synonyms</h3>
                       <Table columns={synonymColumns} data={synonymData} disablePagination />
-                      <iframe
-                        src={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.annotation.ensg}#ensembl_panel_1`}
-                        title="e! Ensembl"
-                        width="100%"
-                        height="380px"
-                        overflow="hidden"
-                        position="right"
-                        sandbox=""
-                        loading="eager"
-                      />
                     </Element>
                     <Element className="section" name="links">
                       <h3>Links</h3>
