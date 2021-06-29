@@ -30,7 +30,7 @@ const LINK_COLUMNS = [
     },
 ];
 
-const SIDE_LINKS = ['Synonyms', 'Links'];
+const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
 
 /**
  * Format data for synonym and link tables
@@ -100,84 +100,72 @@ const createSideLink = (link) => (
  * )
  */
 const IndivGenes = (props) => {
-    // parameter.
-    const {
-        match: { params },
-    } = props;
-    // const geneId = parseInt(params.id);
+  // parameter.
+  const { match: { params } } = props;
+  // const geneId = parseInt(params.id);
 
-    // query to get the data for the single gene.
-    const { loading, error, data: queryData } = useQuery(getGeneQuery, {
-        variables: { geneId: parseInt(params.id) },
-    });
-    // load data from query into state
-    const [gene, setGene] = useState({
-        data: {},
-        loaded: false,
-    });
+  // query to get the data for the single gene.
+  const { loading, error, data: queryData } = useQuery(getGeneQuery, {
+    variables: { geneId: parseInt(params.id) },
+  });
+  // load data from query into state
+  const [gene, setGene] = useState({
+    data: {},
+    loaded: false,
+  });
 
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            setGene({
-                data: queryData.gene,
-                loaded: true,
-            });
-        }
-    }, [queryData]);
+  // to set the state on the change of the data.
+  useEffect(() => {
+    if (queryData !== undefined) {
+      setGene({
+        data: queryData.gene,
+        loaded: true,
+      });
+    }
+  }, [queryData]);
 
-    // destructuring the gene object.
-    const { data } = gene;
+  // destructuring the gene object.
+  const { data } = gene;
 
-    // formatted data for synonyms annotation table
-    const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-    const synonymData = React.useMemo(
-        () => formatSynonymData(data.annotation),
-        [data.annotation]
-    );
+  // formatted data for synonyms annotation table
+  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
+  const synonymData = React.useMemo(() => formatSynonymData(data.annotation), [data.annotation]);
 
-    // formatted data for links annotation table
-    const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
-    const linkData = React.useMemo(() => formatLinkData(data), [data]);
-
-    return gene.loaded ? (
-        <Layout page={data.name}>
-            <StyledWrapper>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <NotFoundContent />
-                ) : (
-                    <StyledIndivPage className="indiv-genes">
-                        <h1>{data.name}</h1>
-                        <StyledSidebar>
-                            {SIDE_LINKS.map((link) => createSideLink(link))}
-                        </StyledSidebar>
-                        <div className="container">
-                            <div className="content">
-                                <Element className="section" name="synonyms">
-                                    <h3>Synonyms</h3>
-                                    <Table
-                                        columns={synonymColumns}
-                                        data={synonymData}
-                                        disablePagination
-                                    />
-                                </Element>
-                                <Element className="section" name="links">
-                                    <h3>Links</h3>
-                                    <Table
-                                        columns={linkColumns}
-                                        data={linkData}
-                                        disablePagination
-                                    />
-                                </Element>
-                            </div>
-                        </div>
-                    </StyledIndivPage>
-                )}
-            </StyledWrapper>
-        </Layout>
-    ) : null;
+  // formatted data for links annotation table
+  const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
+  const linkData = React.useMemo(() => formatLinkData(data), [data]);
+  console.log('data:', data);
+  return (gene.loaded ? (
+    <Layout page={data.name}>
+      <StyledWrapper>
+        {loading ? (<p>Loading...</p>)
+          : (error ? (<NotFoundContent />)
+            : (
+              <StyledIndivPage className="indiv-genes">
+                <h1>{data.name}</h1>
+                <StyledSidebar>
+                  {SIDE_LINKS.map((link) => createSideLink(link))}
+                </StyledSidebar>
+                <div className="container">
+                  <div className="content">
+                    <Element className="section" name="synonyms">
+                      <h3>Synonyms</h3>
+                      <Table columns={synonymColumns} data={synonymData} disablePagination />
+                    </Element>
+                    <Element className="section" name="links">
+                      <h3>Links</h3>
+                      <Table columns={linkColumns} data={linkData} disablePagination />
+                    </Element>
+                    <Element className="section" name="plots">
+                      <h3>Plots</h3>
+                    </Element>
+                  </div>
+                </div>
+              </StyledIndivPage>
+            ))}
+      </StyledWrapper>
+    </Layout>
+  ) : null);
 };
 
 IndivGenes.propTypes = {

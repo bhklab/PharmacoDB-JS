@@ -10,11 +10,8 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-
-import {
-    StyledIndivPage,
-    StyledSidebar,
-} from '../../../styles/IndivPageStyles';
+import TableSection from './TableSection';
+import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const ANNOTATION_COLUMNS = [
@@ -123,53 +120,40 @@ const IndivTissues = (props) => {
         }
     }, [queryData]);
 
-    // destructuring the tissue object.
-    const { data } = tissue;
-    // formatted data for annotation table
-    const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
-    const annotationData = React.useMemo(
-        () => formatAnnotationData(data.synonyms),
-        [data.synonyms]
-    );
-    return tissue.loaded ? (
-        <Layout page={data.name}>
-            <StyledWrapper>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <NotFoundContent />
-                ) : (
-                    <StyledIndivPage className="indiv-tissues">
-                        <h1>{formatName(data.name)}</h1>
-                        <StyledSidebar>
-                            {SIDE_LINKS.map((link) => createSideLink(link))}
-                        </StyledSidebar>
-                        <div className="container">
-                            <div className="content">
-                                <Element className="section" name="annotations">
-                                    <h3>Annotations</h3>
-                                    <Table
-                                        columns={annotationColumns}
-                                        data={annotationData}
-                                        disablePagination
-                                    />
-                                </Element>
-                                <Element name="plots" className="section temp">
-                                    <h3>Plots</h3>
-                                    <PlotSection
-                                        tissue={{
-                                            id: data.id,
-                                            name: data.name,
-                                        }}
-                                    />
-                                </Element>
-                            </div>
-                        </div>
-                    </StyledIndivPage>
-                )}
-            </StyledWrapper>
-        </Layout>
-    ) : null;
+  // destructuring the tissue object.
+  const { data } = tissue;
+  // formatted data for annotation table
+  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
+  const annotationData = React.useMemo(() => formatAnnotationData(data.synonyms), [data.synonyms]);
+  return (tissue.loaded ? (
+    <Layout page={data.name}>
+      <StyledWrapper>
+        {loading ? (<p>Loading...</p>)
+          : (error ? (<NotFoundContent />)
+            : (
+              <StyledIndivPage className="indiv-tissues">
+                <h1>{formatName(data.name)}</h1>
+                <StyledSidebar>
+                  {SIDE_LINKS.map((link) => createSideLink(link))}
+                </StyledSidebar>
+                <div className="container">
+                  <div className="content">
+                    <Element className="section" name="annotations">
+                      <h3>Annotations</h3>
+                      <Table columns={annotationColumns} data={annotationData} disablePagination />
+                    </Element>
+                    <Element name="plots" className="section temp">
+                      <h3>Plots</h3>
+                      <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                      <TableSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                    </Element>
+                  </div>
+                </div>
+              </StyledIndivPage>
+            ))}
+      </StyledWrapper>
+    </Layout>
+  ) : null);
 };
 
 IndivTissues.propTypes = {

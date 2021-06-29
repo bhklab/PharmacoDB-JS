@@ -29,6 +29,20 @@ const getDatasetsQuery = gql`
 `;
 
 /**
+ * @param { Number } datasetId - dataset id of the dataset to be queried.
+ * @returns - all the information returns by the dataset query,
+ * id, and name for the dataset.
+ */
+const getDatasetQuery = gql`
+  query getSingleDataset($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id
+      name
+    }
+  }
+`;
+
+/**
  * @returns - The query returns an Array of object with the dataset object, count, type
  * and an array of objects containing the id and name of the cell lines belonging to that dataset.
  */
@@ -52,5 +66,6 @@ const getCellLinesGroupedByDatasetQuery = gql`
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
+  getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
 };
