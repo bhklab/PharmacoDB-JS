@@ -1,5 +1,5 @@
-const geneDrugType = `
-    type GeneDrug {
+const geneCompoundType = `
+    type CompoundDrug {
         id: Int!
         gene: Gene!
         compound: Compound!
@@ -26,5 +26,5 @@ const geneDrugType = `
 `;
 
 module.exports = {
-    geneDrugType
+    geneCompoundType
 };

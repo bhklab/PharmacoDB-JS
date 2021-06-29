@@ -16,18 +16,18 @@ const cellCountQuery = async (tissueId, tissueName) => {
     // query variable.
     let query;
     const subQuery = knex
-        .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
+        .select('d.name as dataset_name', 'd.id as dataset_id')
         .count('dc.cell_id as total')
-        .from('dataset_cells as dc')
-        .join('cells as c', 'c.cell_id', 'dc.cell_id')
-        .join('datasets as d', 'd.dataset_id', 'dc.dataset_id')
-        .join('tissues as t', 't.tissue_id', 'c.tissue_id');
+        .from('dataset_cell as dc')
+        .join('cell as c', 'c.id', 'dc.cell_id')
+        .join('dataset as d', 'd.id', 'dc.dataset_id')
+        .join('tissue as t', 't.id', 'c.tissue_id');
 
     if (tissueId) {
-        query = await subQuery.where('t.tissue_id', tissueId)
+        query = await subQuery.where('t.id', tissueId)
             .groupBy('dc.dataset_id');
     } else if (tissueName) {
-        query = await subQuery.where('t.tissue_name', tissueName)
+        query = await subQuery.where('t.name', tissueName)
             .groupBy('dc.dataset_id');
     }
     return transformObject(query);
@@ -41,18 +41,18 @@ const compoundTestedQuery = async (tissueId, tissueName) => {
     // query variable.
     let query;
     const subQuery = knex
-        .select('d.dataset_name as dataset_name', 'd.dataset_id as dataset_id')
-        .countDistinct('e.drug_id as total')
-        .from('experiments as e')
-        .join('datasets as d', 'd.dataset_id', 'e.dataset_id')
-        .join('tissues as t', 't.tissue_id', 'e.tissue_id');
+        .select('d.name as dataset_name', 'd.id as dataset_id')
+        .countDistinct('e.compound_id as total')
+        .from('experiment as e')
+        .join('dataset as d', 'd.id', 'e.dataset_id')
+        .join('tissue as t', 't.id', 'e.tissue_id');
 
     if (tissueId) {
-        query = await subQuery.where('t.tissue_id', tissueId)
-            .groupBy('d.dataset_id');
+        query = await subQuery.where('t.id', tissueId)
+            .groupBy('d.id');
     } else if (tissueName) {
-        query = await subQuery.where('t.tissue_name', tissueName)
-            .groupBy('d.dataset_id');
+        query = await subQuery.where('t.name', tissueName)
+            .groupBy('d.id');
     }
 
     return transformObject(query);
@@ -76,24 +76,22 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
     // if the subtypes contains 'synonyms'.
     if (subtypes.includes('synonyms')) {
         query = knex
-            .select('tissues.tissue_id as tissue_id',
-                'tissues.tissue_name as tissue_name',
-                'source_tissue_names.tissue_name as source_tissue_name',
-                'datasets.dataset_name as dataset_name')
-            .from('tissues')
-            .join('source_tissue_names',
-                'tissues.tissue_id',
-                'source_tissue_names.tissue_id')
-            .join('sources', 'sources.source_id', 'source_tissue_names.source_id')
-            .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+            .select('tissue.id as tissue_id',
+                'tissue.name as tissue_name',
+                'tissue_synonym.tissue_name as source_tissue_name',
+                'dataset.name as dataset_name')
+            .from('tissue')
+            .leftJoin('tissue_synonym', 'tissue.id', 'tissue_synonym.tissue_id')
+            .leftJoin('dataset_tissue', 'dataset_tissue.tissue_id', 'tissue.id')
+            .leftJoin('dataset', 'dataset.id', 'dataset_tissue.dataset_id');
     } else {
-        query = knex.select().from('tissues');
+        query = knex.select().from('tissue');
     }
     // based on the tissueId passed or tissueName passed.
     if (tissueId) {
-        return await query.where('tissues.tissue_id', tissueId);
+        return await query.where('tissue.id', tissueId);
     } else if (tissueName) {
-        return await query.where('tissues.tissue_name', tissueName);
+        return await query.where('tissue.name', tissueName);
     }
 
 };
@@ -113,9 +111,16 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         name: 'empty',
         synonyms: []
     };
+
     const source_tissue_name_list = [];
     // looping through each data point.
     tissue.forEach((row, i) => {
+        // only return tissue_name if source_tissue_name is N/A
+        if (row.source_tissue_name == null) {
+            returnObject.name = row.tissue_name;
+            return returnObject;
+        }
+
         const {
             tissue_id,
             tissue_name,
@@ -186,19 +191,13 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
     // setting limit and offset.
     const { limit, offset } = calcLimitOffset(page, per_page);
     try {
-        const query = knex.select().from('tissues');
-        // if the user has not queried to get all the compound, 
+        const query = knex.select().from('tissue');
+        // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
-        const tissues = await query;
-        return tissues.map(tissue => {
-            return {
-                id: tissue.tissue_id,
-                name: tissue.tissue_name
-            };
-        });
+        return await query;
     } catch (err) {
         console.log(err);
         throw err;

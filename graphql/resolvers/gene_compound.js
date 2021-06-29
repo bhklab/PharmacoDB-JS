@@ -8,7 +8,7 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  * @returns {Array} - Returns a transformed array of objects.
  */
 const transformGeneDrugs = data => {
-    return data.map(gene_drug => {
+    return data.map(compound_drug => {
         const {
             id,
             drug_id,
@@ -42,7 +42,7 @@ const transformGeneDrugs = data => {
             ensg,
             gene_seq_start,
             gene_seq_end
-        } = gene_drug;
+        } = compound_drug;
         return {
             id,
             estimate,
@@ -106,7 +106,7 @@ const transformGeneDrugs = data => {
  */
 const gene_drugs = async (args, context, info) => {
     const { geneId, compoundId, page = 1, per_page = 20, all = false } = args;
-    if (!geneId && !compoundId) throw new Error('Ivalid input! Query must include geneId or compoundId'); 
+    if (!geneId && !compoundId) throw new Error('Ivalid input! Query must include geneId or compoundId');
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
         const listOfFields = retrieveFields(info);
@@ -115,26 +115,26 @@ const gene_drugs = async (args, context, info) => {
         const subtypes = [];
         listOfFields.forEach(el => {
             switch (el.name) {
-            case 'dataset':
-                columns.push(...['datasets.dataset_id as dataset_id', 'dataset_name']);
-                subtypes.push(el.name);
-                break;
-            case 'gene':
-                columns.push(...['genes.gene_id as gene_id', 'gene_name', 'ensg', 'gene_seq_start',
-                    'gene_seq_end']);
-                subtypes.push(el.name);
-                break;
-            case 'compound':
-                columns.push(...['drugs.drug_id as drug_id', 'drug_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                subtypes.push(el.name);
-                break;
-            case 'tissue':
-                columns.push(...['tissues.tissue_id as tissue_id', 'tissue_name']);
-                subtypes.push(el.name);
-                break;
-            default:
-                columns.push(el.name);
-                break;
+                case 'dataset':
+                    columns.push(...['datasets.dataset_id as dataset_id', 'dataset_name']);
+                    subtypes.push(el.name);
+                    break;
+                case 'gene':
+                    columns.push(...['genes.gene_id as gene_id', 'gene_name', 'ensg', 'gene_seq_start',
+                        'gene_seq_end']);
+                    subtypes.push(el.name);
+                    break;
+                case 'compound':
+                    columns.push(...['drugs.drug_id as drug_id', 'drug_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    subtypes.push(el.name);
+                    break;
+                case 'tissue':
+                    columns.push(...['tissues.tissue_id as tissue_id', 'tissue_name']);
+                    subtypes.push(el.name);
+                    break;
+                default:
+                    columns.push(el.name);
+                    break;
             }
         });
         let query = knex.select(columns);
@@ -148,19 +148,19 @@ const gene_drugs = async (args, context, info) => {
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-            case 'dataset':
-                query = query.join('datasets', 'datasets.dataset_id', 'GD.dataset_id');
-                break;
-            case 'gene':
-                query = query.join('genes', 'genes.gene_id', 'GD.gene_id');
-                break;
-            case 'compound':
-                query = query.join('drugs', 'drugs.drug_id', 'GD.drug_id')
-                    .join('drug_annots', 'drug_annots.drug_id', 'GD.drug_id');
-                break;
-            case 'tissue':
-                query = query.join('tissues', 'tissues.tissue_id', 'GD.tissue_id');
-                break;
+                case 'dataset':
+                    query = query.join('datasets', 'datasets.dataset_id', 'GD.dataset_id');
+                    break;
+                case 'gene':
+                    query = query.join('genes', 'genes.gene_id', 'GD.gene_id');
+                    break;
+                case 'compound':
+                    query = query.join('drugs', 'drugs.drug_id', 'GD.drug_id')
+                        .join('drug_annots', 'drug_annots.drug_id', 'GD.drug_id');
+                    break;
+                case 'tissue':
+                    query = query.join('tissues', 'tissues.tissue_id', 'GD.tissue_id');
+                    break;
             }
         });
         const geneDrugResults = await query;

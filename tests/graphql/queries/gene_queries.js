@@ -9,7 +9,7 @@ const singleGeneTestQuery = `
       name,
       annotation {
         gene_id,
-        ensg,
+        symbol,
         gene_seq_start,
         gene_seq_end
       }
@@ -24,7 +24,7 @@ const multipleGenesTestQuery = `
         name,
         annotation {
           gene_id,
-          ensg,
+          symbol,
           gene_seq_start,
           gene_seq_end
         }

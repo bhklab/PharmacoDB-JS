@@ -1,25 +1,34 @@
-import React, { useContext } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-import SearchContext from './context/SearchContext';
+import React, { useContext } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import SearchContext from "./context/SearchContext";
 
 import {
-  IndivCompounds, Compounds, Home, NotFoundPage,
-  Tissues, Genes, CellLines, Datasets, Experiments,
-  Biomarker,
-} from './Components/index';
-import GlobalStyles from './styles/GlobalStyles';
+  IndivCompounds,
+  Compounds,
+  Home,
+  NotFoundPage,
+  Tissues,
+  IndivTissues,
+  Genes,
+  IndivGenes,
+  CellLines,
+  IndivCellLines,
+  Datasets,
+  Experiments,
+} from "./Components/index";
+import GlobalStyles from "./styles/GlobalStyles";
 
 // apollo client setup.
 const client = new ApolloClient({
-  uri: '/graphql', // making requests to this endpoint.
+  uri: "/graphql", // making requests to this endpoint.
 });
 
 const App = () => {
   const { noscroll } = useContext(SearchContext);
   return (
-    <div className={`app ${noscroll ? 'noscroll' : null}`}>
+    <div className={`app ${noscroll ? "noscroll" : null}`}>
       <ApolloProvider client={client}>
         <GlobalStyles />
         <Router>
@@ -33,6 +42,9 @@ const App = () => {
             <Route path="/cell_lines" exact component={CellLines} />
             <Route path="/datasets" exact component={Datasets} />
             <Route path="/compounds/:id" component={IndivCompounds} />
+            <Route path="/cell_lines/:id" component={IndivCellLines} />
+            <Route path="/tissues/:id" component={IndivTissues} />
+            <Route path="/genes/:id" component={IndivGenes} />
             <Route path="*" component={NotFoundPage} />
           </Switch>
         </Router>

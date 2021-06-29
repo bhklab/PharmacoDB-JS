@@ -3,10 +3,9 @@ const cellLineResolver = require('./cell');
 const datasetResolver = require('./dataset');
 const experimentResolver = require('./experiment');
 const geneResolver = require('./gene');
-const sourceResolver = require('./source');
 const targetResolver = require('./target');
 const tissueResolver = require('./tissue');
-const geneDrugResolver = require('./gene_drug');
+const geneCompoundResolver = require('./gene_compound');
 
 const rootResolver = {
     ...compoundResolver,
@@ -14,10 +13,9 @@ const rootResolver = {
     ...datasetResolver,
     ...experimentResolver,
     ...geneResolver,
-    ...sourceResolver,
     ...targetResolver,
     ...tissueResolver,
-    ...geneDrugResolver
+    ...geneCompoundResolver
 };
 
 module.exports = rootResolver;

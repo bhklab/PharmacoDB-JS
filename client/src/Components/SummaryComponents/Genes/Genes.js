@@ -14,10 +14,6 @@ const table_columns = [
     Cell: (row) => (<Link to={`/genes/${row.row.original.id}`}>{row.value}</Link>),
   },
   {
-    Header: 'Ensembl ID',
-    accessor: 'ensg',
-  },
-  {
     Header: 'Gene Seq Start',
     accessor: 'gene_seq_start',
   },

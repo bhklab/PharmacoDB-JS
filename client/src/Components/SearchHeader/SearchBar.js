@@ -87,12 +87,12 @@ const SearchBar = (props) => {
   const [data, setData] = useState({
     compounds: [],
     tissues: [],
-    'cell lines': [],
+    cell_lines: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
     compounds: false,
     tissues: false,
-    'cell lines': false,
+    cell_lines: false,
   });
 
   // various states for select:
@@ -124,7 +124,7 @@ const SearchBar = (props) => {
    * Handles keypresses or any other changes in the input.
    *
    * @param {Object} event the current value of the input
-  */
+   */
   const handleInputChange = (event) => {
     setSelectState({
       ...selectState,
@@ -194,12 +194,12 @@ const SearchBar = (props) => {
       ...data,
       compounds: compoundsData ? compoundsData.compounds : [],
       tissues: tissuesData ? tissuesData.tissues : [],
-      'cell lines': cellsData ? cellsData.cell_lines : [],
+      cell_lines: cellsData ? cellsData.cell_lines : [],
     });
     setDataLoaded({
       compounds: !!compoundsData,
       tissues: !!tissuesData,
-      'cell lines': !!cellsData,
+      cell_lines: !!cellsData,
     });
   }, [compoundsData, tissuesData, cellsData]);
 
@@ -237,7 +237,7 @@ const SearchBar = (props) => {
             className="placeholder"
             text={placeholders}
           />
-       )}
+            )}
         value={selectState.selected}
         formatGroupLabel={formatGroupLabel}
         styles={SearchBarStyles}
@@ -260,7 +260,7 @@ SearchBar.propTypes = {
   }).isRequired,
   /**
    * onClick handler for closing and opening search
-  */
+   */
   onClick: PropTypes.func.isRequired,
 };
 

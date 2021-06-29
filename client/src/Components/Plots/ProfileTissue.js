@@ -18,7 +18,7 @@ const baseLayout = {
   height: 530,
   margin: {
     t: 20,
-    b: 60,
+    b: 120,
     l: 65,
     r: 0,
   },
@@ -28,13 +28,14 @@ const baseLayout = {
       size: 9,
     },
     fixedrange: true,
-    tickmode: 'array',
+    tickmode: 'linear',
+    anchor: 'free',
+    position: 0.025,
   },
   yaxis: {
     color: colors.dark_teal_heading,
     fixedrange: true,
   },
-  bargap: 0,
   showlegend: false,
 };
 
@@ -49,8 +50,9 @@ const generateRenderData = (data, dataset, profile) => {
     ...baseLayout,
     xaxis: {
       ...baseLayout.xaxis,
-      tickvals: [],
       ticktext: [],
+      // draws tick labels vertically if there are more than 5 otherwise labels are horizontal
+      tickangle: data.length > 5 ? -90 : 0,
     },
     yaxis: {
       ...baseLayout.yaxis,
@@ -59,37 +61,25 @@ const generateRenderData = (data, dataset, profile) => {
       },
     },
   };
-  const notifications = {
-    subset: data.length > 60 ? 'Plot represents the top and bottom 30 data points' : null,
-    errorBars: dataset === 'All' ? 'Error Bars represent the Median Absolute Deviation' : null,
-  };
   data.forEach((el, i) => {
-    const {
-      name, value, deviation, label,
-    } = el;
+    const { value, name } = el;
     const trace = {
-      type: 'bar',
+      type: 'box',
+      boxpoints: 'all',
+      jitter: 1,
+      pointpos: 0,
+      hoveron: 'boxes',
       marker: {
         color: i % 2 === 0 ? colors.blue : colors.green,
+        size: 2,
       },
       name,
-      x: [`${name} cell line`],
-      y: [value],
+      y: value,
     };
-    // skips hoverinfo for gap bars
-    if (!label) trace.hoverinfo = 'skip';
-    if (deviation) {
-      trace.error_y = {
-        type: 'data',
-        array: [deviation],
-        visible: true,
-      };
-    }
-    layout.xaxis.tickvals.push(`${name} cell line`);
-    layout.xaxis.ticktext.push(label);
     plotData.push(trace);
+    layout.xaxis.ticktext.push(name);
   });
-  return { plotData, layout, notifications };
+  return { plotData, layout };
 };
 
 /**
@@ -99,22 +89,21 @@ const generateRenderData = (data, dataset, profile) => {
  * @example
  *
  * return (
- *   <ProfileCellLine/>
+ *   <ProfileTissue/>
  * )
  */
-const ProfileCellLine = (props) => {
+const ProfileTissue = (props) => {
   const {
     data, compound, profileOptions, datasetOptions,
   } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
-  const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
   // preformats the data and creates selection options for datasets and profiles
-  const formattedData = useMemo(() => formatExperimentPlotData(data, 'cell_line'), [data]);
-
+  const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
-    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'cell_line');
+    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'tissue');
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
   return (
@@ -146,25 +135,11 @@ const ProfileCellLine = (props) => {
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h3>
       <Plot data={plotData} layout={layout} config={config} />
-      <div className="notifications">
-        {notifications.subset ? (
-          <p>
-            <sup>* </sup>
-            {notifications.subset}
-          </p>
-        ) : null}
-        {notifications.errorBars ? (
-          <p>
-            <sup>** </sup>
-            {notifications.errorBars}
-          </p>
-        ) : null}
-      </div>
     </div>
   );
 };
 
-ProfileCellLine.propTypes = {
+ProfileTissue.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -205,4 +180,4 @@ ProfileCellLine.propTypes = {
   compound: PropTypes.string.isRequired,
 };
 
-export default ProfileCellLine;
+export default ProfileTissue;
