@@ -1,105 +1,105 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@apollo/react-hooks": "^3.1.5",
-    "apollo-boost": "^0.4.9",
-    "better-docs": "^2.0.1",
-    "d3": "^7.0.0",
-    "graphql": "^15.0.0",
-    "jsdoc": "^3.6.7",
-    "lodash": "^4.17.21",
-    "plotly.js": "^1.54.7",
-    "prop-types": "^15.7.2",
-    "querystring": "^0.2.1",
-    "react": "^16.13.1",
-    "react-burger-menu": "^2.7.0",
-    "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
-    "react-loading": "^2.0.3",
-    "react-plotly.js": "^2.4.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
-    "react-scroll": "^1.7.16",
-    "react-scroll-to-top": "^0.2.4",
-    "react-select": "^3.1.0",
-    "react-slidedown": "^2.4.5",
-    "react-table": "^7.3.2",
-    "react-typing-effect": "^2.0.3",
-    "react-virtualized": "^9.21.2",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2",
-    "styled-components": "^5.1.1"
-  },
-  "scripts": {
-    "start": "react-scripts --max_old_space_size=4096 start",
-    "build": "react-scripts --max_old_space_size=4096 build",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject",
-    "docs": "jsdoc -r -c jsdoc.conf.json",
-    "lint": "eslint src"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js",
-      "jest-canvas-mock"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/(?!@babel/runtime)"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
+    "name": "client",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@apollo/react-hooks": "^3.1.5",
+        "apollo-boost": "^0.4.9",
+        "better-docs": "^2.0.1",
+        "d3": "^7.0.0",
+        "graphql": "^15.0.0",
+        "jsdoc": "^3.6.7",
+        "lodash": "^4.17.21",
+        "plotly.js": "^1.54.7",
+        "prop-types": "^15.7.2",
+        "querystring": "^0.2.1",
+        "react": "^16.13.1",
+        "react-burger-menu": "^2.7.0",
+        "react-dom": "^16.13.1",
+        "react-helmet": "^6.1.0",
+        "react-loading": "^2.0.3",
+        "react-plotly.js": "^2.4.0",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "^3.4.3",
+        "react-scroll": "^1.7.16",
+        "react-scroll-to-top": "^0.2.4",
+        "react-select": "^3.1.0",
+        "react-slidedown": "^2.4.5",
+        "react-table": "^7.3.2",
+        "react-typing-effect": "^2.0.3",
+        "react-virtualized": "^9.21.2",
+        "semantic-ui-css": "^2.4.1",
+        "semantic-ui-react": "^0.88.2",
+        "styled-components": "^5.1.1"
+    },
+    "scripts": {
+        "start": "react-scripts --max_old_space_size=4096 start",
+        "build": "react-scripts --max_old_space_size=4096 build",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "eject": "react-scripts eject",
+        "docs": "jsdoc -r -c jsdoc.conf.json",
+        "lint": "eslint src"
+    },
+    "jest": {
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/setupTests.js",
+            "jest-canvas-mock"
+        ],
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
+        ],
+        "transformIgnorePatterns": [
+            "/node_modules/(?!@babel/runtime)"
+        ],
+        "moduleNameMapper": {
+            "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+            "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
+        }
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "proxy": "http://localhost:5000",
+    "devDependencies": {
+        "@apollo/react-testing": "^3.1.4",
+        "@babel/plugin-proposal-class-properties": "^7.0.0",
+        "@babel/plugin-proposal-export-default-from": "^7.0.0",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "babel-eslint": "^10.1.0",
+        "babel-jest": "^24.9.0",
+        "babel-loader": "^8.1.0",
+        "core-js": "^3.6.5",
+        "enzyme": "^3.11.0",
+        "enzyme-adapter-react-16": "^1.15.2",
+        "enzyme-to-json": "^3.5.0",
+        "eslint": "^6.6.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-node": "^4.1.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-config-react-app": "^5.2.1",
+        "eslint-plugin-flowtype": "^4.0.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-react": "^7.24.0",
+        "eslint-plugin-react-hooks": "^1.7.0",
+        "jest": "^24.9.0",
+        "jest-canvas-mock": "^2.2.0",
+        "prettier": "^2.3.2",
+        "react-hot-loader": "^4.12.21",
+        "regenerator-runtime": "^0.13.6"
     }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:5000",
-  "devDependencies": {
-    "@apollo/react-testing": "^3.1.4",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "babel-eslint": "^10.1.0",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "^8.1.0",
-    "core-js": "^3.6.5",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "enzyme-to-json": "^3.5.0",
-    "eslint": "^7.29.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-node": "^4.1.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "^4.0.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "jest": "^24.9.0",
-    "jest-canvas-mock": "^2.2.0",
-    "prettier": "^2.3.2",
-    "react-hot-loader": "^4.12.21",
-    "regenerator-runtime": "^0.13.6"
-  }
 }
