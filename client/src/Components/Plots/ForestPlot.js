@@ -4,6 +4,46 @@ import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 
+const poly = [
+    { x: 250.0, y: 300.0 },
+    { x: 275, y: 275 },
+    { x: 300.0, y: 300.0 },
+    { x: 275.0, y: 325 },
+    { x: 250.0, y: 300.0 },
+];
+const data = [
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 5,
+        n: 27,
+        se: 1.031,
+        estimate: -0.63,
+        dataset_name: 'CCLE',
+    },
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 3,
+        n: 5,
+        se: 0.203,
+        estimate: -0.085,
+        dataset_name: 'FIMM',
+    },
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 4,
+        n: 27,
+        se: 1.033,
+        estimate: 0.542,
+        dataset_name: 'gCSI',
+    },
+];
+
 // data length and multiplier variables.
 const data_length = data.length + 3;
 const MULTIPLIER = 1.96;
@@ -13,7 +53,7 @@ const margin = {
     top: 40,
     right: 20,
     bottom: 20,
-    left: 20
+    left: 20,
 };
 
 // width and height of the SVG canvas.
@@ -21,36 +61,35 @@ const width = 800 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
 // calculates the minimum and maximum estimate from the data.
-const minEstimate = Math.min(...data.map(val => val.estimate));
-const maxEstimate = Math.max(...data.map(val => val.estimate));
+const minEstimate = Math.min(...data.map((val) => val.estimate));
+const maxEstimate = Math.max(...data.map((val) => val.estimate));
 
 // calculates the minimum and maximum standard error from the data.
-const minStandardError = Math.min(...data.map(val => val.se));
-const maxStandardError = Math.max(...data.map(val => val.se));
+const minStandardError = Math.min(...data.map((val) => val.se));
+const maxStandardError = Math.max(...data.map((val) => val.se));
 
 // calculates the minimum and maximum n value from the data.
-const minNValue = Math.min(...data.map(val => val.n));
-const maxNValue = Math.max(...data.map(val => val.n));
+const minNValue = Math.min(...data.map((val) => val.n));
+const maxNValue = Math.max(...data.map((val) => val.n));
 
 /**
  * @returns - d3 linear scale for circles.
  * mapped the min and max values to a range.
  */
-const circleScaling = () => (
-    d3.scaleLinear()
-        .domain([0, 150])
-        .range([5, 15])
-);
+const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 15]);
 
 /**
  * @returns - d3 linear scale for x-axis.
  */
-const createXScale = () => (
-    d3.scaleLinear()
-        .domain([minEstimate - MULTIPLIER * maxStandardError, maxEstimate + MULTIPLIER * maxStandardError])
+const createXScale = () =>
+    d3
+        .scaleLinear()
+        .domain([
+            minEstimate - MULTIPLIER * maxStandardError,
+            maxEstimate + MULTIPLIER * maxStandardError,
+        ])
         .range([100, (width * 3) / 4])
-        .nice()
-);
+        .nice();
 
 /**
  * Appends x-axis to the main svg element.
@@ -60,7 +99,7 @@ const createXAxis = (svg) => {
     svg.append('g')
         .attr('id', 'x-axis')
         .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(createXScale()))
+        .call(d3.axisBottom(createXScale()));
 };
 
 /**
@@ -74,9 +113,9 @@ const createVerticalLine = (svg, scale) => {
         .append('line')
         .style('stroke', `${colors.dark_gray_text}`)
         .attr('x1', scale(0))
-        .attr("y1", 0)
-        .attr("x2", scale(0))
-        .attr("y2", height);
+        .attr('y1', 0)
+        .attr('x2', scale(0))
+        .attr('y2', height);
 };
 
 /**
@@ -92,10 +131,10 @@ const createHorizontalLines = (svg, scale) => {
             .style('stroke', `${colors.dark_gray_text}`)
             .style('stroke-width', 1.5)
             .attr('x1', scale(element.estimate - MULTIPLIER * element.se))
-            .attr("y1", i * height / data_length + height / data_length)
-            .attr("x2", scale(element.estimate + MULTIPLIER * element.se))
-            .attr("y2", i * height / data_length + height / data_length);
-    })
+            .attr('y1', (i * height) / data_length + height / data_length)
+            .attr('x2', scale(element.estimate + MULTIPLIER * element.se))
+            .attr('y2', (i * height) / data_length + height / data_length);
+    });
 };
 
 /**
@@ -110,11 +149,11 @@ const createCircles = (svg, xScale, circleScale) => {
             .attr('id', `cirlce-${element.dataset}`)
             .append('circle')
             .attr('cx', xScale(element.estimate))
-            .attr('cy', i * height / data_length + height / data_length)
+            .attr('cy', (i * height) / data_length + height / data_length)
             .attr('r', circleScale(element.n))
             .attr('stroke', 'black')
             .attr('fill', `${colors.teal}`);
-    })
+    });
 };
 
 /**
@@ -123,9 +162,14 @@ const createCircles = (svg, xScale, circleScale) => {
  * @param {Object} scale - x axis scale.
  */
 const createPolygon = (svg, scale) => {
-    const lineFunction = d3.line()
-        .x(function (d) { return d.x })
-        .y(function (d) { return d.y })
+    const lineFunction = d3
+        .line()
+        .x(function (d) {
+            return d.x;
+        })
+        .y(function (d) {
+            return d.y;
+        });
 
     svg.append('path')
         .attr('d', lineFunction(poly))
@@ -146,7 +190,7 @@ const appendDatasetName = (svg) => {
         .attr('x', 10)
         .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
-        .text('Dataset Name')
+        .text('Dataset Name');
 
     // append dataset name.
     data.forEach((element, i) => {
@@ -155,10 +199,10 @@ const appendDatasetName = (svg) => {
             .append('text')
             .attr('font-weight', 200)
             .attr('x', 10)
-            .attr('y', i * height / data_length + height / data_length)
+            .attr('y', (i * height) / data_length + height / data_length)
             .attr('fill', `${colors.dark_gray_text}`)
-            .text(`${element.dataset_name}`)
-    })
+            .text(`${element.dataset_name}`);
+    });
 };
 
 /**
@@ -174,22 +218,22 @@ const appendEstimateText = (svg) => {
         .attr('x', (width * 3) / 4 + 10)
         .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
-        .text('Estimate')
+        .text('Estimate');
 
     // append dataset name.
     data.forEach((element, i) => {
-        svg.append('g')
+        svg
+            .append('g')
             .attr('id', `dataset-${element.dataset_name}`)
             .append('text')
             .attr('font-weight', 200)
             .attr('x', (width * 3) / 4 + 10)
-            .attr('y', i * height / data_length + height / data_length)
-            .attr('fill', `${colors.dark_gray_text}`)
-            .text(`(
+            .attr('y', (i * height) / data_length + height / data_length)
+            .attr('fill', `${colors.dark_gray_text}`).text(`(
                 ${(element.estimate - MULTIPLIER * element.se).toFixed(2)}, 
                 ${(element.estimate + MULTIPLIER * element.se).toFixed(2)}
-            )`)
-    })
+            )`);
+    });
 };
 
 /**
@@ -200,7 +244,7 @@ const appendEstimateText = (svg) => {
  */
 const createForestPlot = (margin, height, width) => {
     // creating the svg canvas.
-    const svg = createSvgCanvas({ id: 'forestplot', width, height, margin })
+    const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
     // scale for x-axis.
     const xScale = createXScale();
     // scale for circles.
@@ -222,18 +266,15 @@ const createForestPlot = (margin, height, width) => {
 };
 
 /**
- * @returns {component} - returns the forest plot component. 
+ * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = (props) => {
     useEffect(() => {
         createForestPlot(margin, height, width);
-    }, [])
+    }, []);
 
-    return (
-        <div id="forestplot" />
-    )
+    return <div id="forestplot" />;
 };
-
 
 // proptypes for the forest plot component.
 ForestPlot.propTypes = {

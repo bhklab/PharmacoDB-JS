@@ -1,4 +1,4 @@
-import Biomarker from "../Components/Biomarker/Biomarker";
+import Biomarker from "./Biomarker/Biomarker";
 import Compounds from "./SummaryComponents/Compounds/Compounds";
 import Genes from "./SummaryComponents/Genes/Genes";
 import Tissues from "./SummaryComponents/Tissues/Tissues";
@@ -25,4 +25,5 @@ export {
   IndivCellLines,
   Datasets,
   Experiments,
+  Biomarker,
 };

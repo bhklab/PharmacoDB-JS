@@ -12,9 +12,48 @@ import { StyledIndivPage, StyledSidebar } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
 
+const poly = [
+    { x: 250.0, y: 300.0 },
+    { x: 275, y: 275 },
+    { x: 300.0, y: 300.0 },
+    { x: 275.0, y: 325 },
+    { x: 250.0, y: 300.0 },
+];
+const data = [
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 5,
+        n: 27,
+        se: 1.031,
+        estimate: -0.63,
+        dataset_name: 'CCLE',
+    },
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 3,
+        n: 5,
+        se: 0.203,
+        estimate: -0.085,
+        dataset_name: 'FIMM',
+    },
+    {
+        gene: 5512,
+        drug: 415,
+        tissue: 2,
+        dataset: 4,
+        n: 27,
+        se: 1.033,
+        estimate: 0.542,
+        dataset_name: 'gCSI',
+    },
+];
 
 // side links.
-const SIDE_LINKS = ['Gene Information', 'Compound Information', 'Forest Plots']
+const SIDE_LINKS = ['Gene Information', 'Compound Information', 'Forest Plots'];
 
 // gene information columns.
 const GENE_INFO_COLUMNS = [
@@ -52,52 +91,70 @@ const COMPOUND_INFO_COLUMNS = [
  * @param {String} link
  */
 const createSideLink = (link) => (
-    <Link key={link} className="link" activeClass="selected" to={`${SnakeCase(link)}`} spy smooth duration={200} offset={-400}>{link}</Link>
+    <Link
+        key={link}
+        className="link"
+        activeClass="selected"
+        to={`${SnakeCase(link)}`}
+        spy
+        smooth
+        duration={200}
+        offset={-400}
+    >
+        {link}
+    </Link>
 );
 
-
 /**
- * 
- * @param {Object} data - compound information data. 
+ *
+ * @param {Object} data - compound information data.
  * @returns {Array} - transformed data [{status: fdaStatus, targets: ['', '']}]
  */
 const transformCompoundTableData = (data) => {
     // grabs the fda status and targets from the data.
     const fdaStatus = data.compound.annotation.fda_status;
-    const targets = data.targets.map(el => el.name).join(', ');
+    const targets = data.targets.map((el) => el.name).join(', ');
     // return an array of object(s).
-    return [{
-        status: fdaStatus,
-        targets,
-    }];
-}
-
+    return [
+        {
+            status: fdaStatus,
+            targets,
+        },
+    ];
+};
 
 /**
- * 
- * @param {Object} geneData - gene information data. 
+ *
+ * @param {Object} geneData - gene information data.
  * @param {Object} compoundData - compound information data.
  * @returns {Array} - transformed data.
  */
 const transformGeneTableData = (geneData, compoundData) => {
     // grab the ensg and gene location.
-    const ensg = geneData.annotation.ensg;
+    const ensg = geneData.name;
     const location = geneData.annotation.gene_seq_start;
-    const target = [...compoundData.targets.map(el => el.name)].includes('ERBB2') ? 'Yes' : 'No';
+    const symbol = geneData.annotation.symbol;
+    const target = [...compoundData.targets.map((el) => el.name)].includes(
+        'ERBB2'
+    )
+        ? 'Yes'
+        : 'No';
     // return the transformed data.
-    return [{
-        ensg,
-        location,
-        target,
-    }]
-}
-
+    return [
+        {
+            ensg,
+            location,
+            target,
+            symbol,
+        },
+    ];
+};
 
 /**
  * Biomarker component.
  *
  * @component
- * 
+ *
  * returns (
  *   <Biomarker/>
  * )
@@ -113,10 +170,16 @@ const Biomarker = (props) => {
 
     // query to grab the gene and compound data based on the compound and gene id.
     const {
-        loading: compoundDataLoading, error: compoundDataError, data: compoundQueryData
-    } = useQuery(getCompoundQuery, { variables: { compoundName: `${compound}` } });
+        loading: compoundDataLoading,
+        error: compoundDataError,
+        data: compoundQueryData,
+    } = useQuery(getCompoundQuery, {
+        variables: { compoundName: `${compound}` },
+    });
     const {
-        loading: geneDataLoading, error: geneDataError, data: geneQueryData
+        loading: geneDataLoading,
+        error: geneDataError,
+        data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
     // compound and gene information columns.
@@ -127,30 +190,53 @@ const Biomarker = (props) => {
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
         if (compoundQueryData && geneQueryData) {
-            setTransformedCompoundData(transformCompoundTableData(compoundQueryData.singleCompound));
-            setTransformedGeneData(transformGeneTableData(geneQueryData.gene, compoundQueryData.singleCompound));
+            setTransformedCompoundData(
+                transformCompoundTableData(compoundQueryData.singleCompound)
+            );
+            setTransformedGeneData(
+                transformGeneTableData(
+                    geneQueryData.gene,
+                    compoundQueryData.singleCompound
+                )
+            );
         }
-    }, [compoundQueryData, geneQueryData])
+    }, [compoundQueryData, geneQueryData]);
 
     return (
         <Layout>
             <StyledWrapper>
-                <StyledIndivPage >
-                    <h1>{`${TitleCase(gene)} + ${TitleCase(compound)} + ${TitleCase(tissue)}`}</h1>
+                <StyledIndivPage>
+                    <h1>
+                        {`${TitleCase(gene)} + ${TitleCase(
+                            compound
+                        )} + ${TitleCase(tissue)}`}
+                    </h1>
                     <StyledSidebar>
-                        {
-                            SIDE_LINKS.map((link) => createSideLink(link))
-                        }
+                        {SIDE_LINKS.map((link) => createSideLink(link))}
                     </StyledSidebar>
                     <div className="container">
                         <div className="content">
-                            <Element className="section" name="gene_information">
+                            <Element
+                                className="section"
+                                name="gene_information"
+                            >
                                 <h3>Gene Information</h3>
-                                <Table columns={geneInfoColumns} data={transformedGeneData} disablePagination />
+                                <Table
+                                    columns={geneInfoColumns}
+                                    data={transformedGeneData}
+                                    disablePagination
+                                />
                             </Element>
-                            <Element className="section" name="compound_information">
+                            <Element
+                                className="section"
+                                name="compound_information"
+                            >
                                 <h3>Compound Information</h3>
-                                <Table columns={compoundInfoColumns} data={transformedCompoundData} disablePagination />
+                                <Table
+                                    columns={compoundInfoColumns}
+                                    data={transformedCompoundData}
+                                    disablePagination
+                                />
                             </Element>
                             <Element className="section" name="forest_plots">
                                 <h3>Plots</h3>
@@ -160,13 +246,11 @@ const Biomarker = (props) => {
                     </div>
                 </StyledIndivPage>
             </StyledWrapper>
-        </Layout >
+        </Layout>
     );
-}
+};
 
 // proptypes for the biomarker component.
-Biomarker.propTypes = {
-
-};
+Biomarker.propTypes = {};
 
 export default Biomarker;

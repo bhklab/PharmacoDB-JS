@@ -5,8 +5,10 @@
  * @returns {String} - returns a snake cased string (eg. annotated_targets)
  */
 
-const convertToSnakeCase = (string, splitInputBy = ' ') => (
-    string.split(splitInputBy).map((value) => value.toLowerCase()).join('_')
-);
+const convertToSnakeCase = (string, splitInputBy = ' ') =>
+    string
+        .split(splitInputBy)
+        .map((value) => value.toLowerCase())
+        .join('_');
 
 export default convertToSnakeCase;
