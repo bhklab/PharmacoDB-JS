@@ -36,27 +36,29 @@ const CELL_LINE_SUMMARY_COLUMNS = [
  * @param {Array} data drug summary data from the experiment API
  */
 const generateDrugSummaryData = (data) => {
-  const compoundObj = {};
-  let allDatasets = 0;
-  data.experiments.forEach((experiment) => {
-    if (compoundObj[experiment.compound.name]) {
-      if (!compoundObj[experiment.compound.name].datasets.includes(experiment.dataset.name)) {
-        if (compoundObj[experiment.compound.name].datasets.length > allDatasets) allDatasets = compoundObj[experiment.compound.name].datasets.length;
-        compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
+  if (data.experiments) {
+    const compoundObj = {};
+    let allDatasets = 0;
+    data.experiments.forEach((experiment) => {
+      if (compoundObj[experiment.compound.name]) {
+        if (!compoundObj[experiment.compound.name].datasets.includes(experiment.dataset.name)) {
+          if (compoundObj[experiment.compound.name].datasets.length > allDatasets) allDatasets = compoundObj[experiment.compound.name].datasets.length;
+          compoundObj[experiment.compound.name].datasets.push(experiment.dataset.name);
+        }
+        compoundObj[experiment.compound.name].numExperiments += 1;
+      } else {
+        compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };
       }
-      compoundObj[experiment.compound.name].numExperiments += 1;
-    } else {
-      compoundObj[experiment.compound.name] = { compound: experiment.compound.name, datasets: [experiment.dataset.name], numExperiments: 1 };
-    }
-  });
-  return { compound: compoundObj, numCompounds: Object.keys(compoundObj).length, numDataset: allDatasets + 1 };
+    });
+    return { compound: compoundObj, numCompounds: Object.keys(compoundObj).length, numDataset: allDatasets + 1 };
+  }
 };
 /**
  * Format data for the Drug summary table
  * @param {Array} data Drug summary data returned from generate drug summary data
  */
 const formatDrugSummaryData = (data) => {
-  const compounds = generateDrugSummaryData(data).compound;
+  const compounds = data.compound;
   if (compounds) {
     return Object.values(compounds).map((x) => ({
       compound: x.compound,
@@ -88,10 +90,15 @@ const generateCellLineSummaryData = (data) => {
  * @param {Array} data cell line summary data returned from generate cell line summary data
  */
 const formatCellLineSummaryData = (data) => {
-  const cellLines = generateCellLineSummaryData(data).cellLine;
+  const cellLines = data.cellLine;
   if (cellLines) {
     return Object.values(cellLines).map((x) => ({
-      cellLine: <div style={{ textAlign: 'center' }}> { x.cellLine } </div>,
+      cellLine:
+  <div style={{ textAlign: 'center' }}>
+    {' '}
+    { x.cellLine }
+    {' '}
+  </div>,
       experiments_number: x.numExperiments,
     }));
   }
@@ -128,7 +135,17 @@ const TableSection = (props) => {
       });
     }
   }, [queryData]);
-  return (
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <p> Error! </p>;
+  }
+  const { data } = experiment;
+  const compoundsData = generateDrugSummaryData(queryData);
+  const cellLinesData = generateCellLineSummaryData(queryData);
+  console.log(cellLinesData);
+  return (data ? (
     <>
       {
         queryData !== undefined
@@ -145,11 +162,11 @@ const TableSection = (props) => {
                 </p>
               </h4>
               <p align="center">
-                {generateCellLineSummaryData(queryData).length}
+                {cellLinesData.length}
                 {' '}
                 cell line(s) of this tissue type are currently recorded in database.
               </p>
-              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(queryData)} />
+              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLinesData)} />
               <h3>Drugs Summary</h3>
               <h4>
                 <p align="center">
@@ -159,21 +176,21 @@ const TableSection = (props) => {
                 </p>
               </h4>
               <p align="center">
-                {generateDrugSummaryData(queryData).numCompounds}
+                {compoundsData.numCompounds}
                 {' '}
                 compounds have been tested with this tissue, using data from
                 {' '}
-                {generateDrugSummaryData(queryData).numDataset}
+                {compoundsData.numDataset}
                 {' '}
                 dataset(s).
               </p>
-              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(queryData)} />
+              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compoundsData)} />
             </>
           )
-          : <p />
+          : <p> Loading... </p>
         }
     </>
-  );
+  ) : null);
 };
 
 TableSection.propTypes = {
