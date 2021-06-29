@@ -82,11 +82,11 @@ const formatDiseaseData = (data) => {
 const formatLinkData = (data) => {
     if (data) {
         const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
-        return data.map((x) => ({
-            key: x,
-            path: cellosaurus_path + x,
+        return {
+            key: data,
+            path: cellosaurus_path + data,
             source: 'Cellosaurus',
-        }));
+        };
     }
     return null;
 };
@@ -209,17 +209,17 @@ const IndivCellLines = (props) => {
                                 <Element className="section" name="link(s)">
                                     <h3>Link(s)</h3>
                                     <div className="text">
-                                        {linkData
-                                            ? linkData.map((x) => (
-                                                  <a
-                                                      key={x.key}
-                                                      target="_blank"
-                                                      href={x.path}
-                                                  >
-                                                      {x.source}
-                                                  </a>
-                                              ))
-                                            : ''}
+                                        {linkData ? (
+                                            <a
+                                                key={linkData.key}
+                                                target="_blank"
+                                                href={linkData.path}
+                                            >
+                                                {linkData.source}
+                                            </a>
+                                        ) : (
+                                            ''
+                                        )}
                                     </div>
                                 </Element>
                                 <Element name="plots" className="section temp">
