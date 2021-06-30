@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueExperimentsQuery } from '../../../queries/experiments';
 import Loading from '../../UtilComponents/Loading';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 
 const DRUG_SUMMARY_COLUMNS = [
   {
@@ -83,11 +83,11 @@ const formatCellLineSummaryData = (cellLines) => {
   if (cellLines) {
     return Object.values(cellLines).map((x) => ({
       cellLine:
-  <div style={{ textAlign: 'center' }}>
-    {' '}
-    { x.cellLine }
-    {' '}
-  </div>,
+        <div style={{ textAlign: 'center' }}>
+          {' '}
+          {x.cellLine}
+          {' '}
+        </div>,
     }));
   }
   return null;
@@ -176,7 +176,7 @@ const TableSection = (props) => {
             </>
           )
           : <p> Loading... </p>
-        }
+      }
     </>
   ) : null);
 };

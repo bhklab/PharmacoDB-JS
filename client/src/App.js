@@ -17,7 +17,7 @@ import {
     CellLines,
     IndivCellLines,
     Datasets,
-    IndivDatasets.
+    IndivDatasets,
     Experiments,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
@@ -57,7 +57,11 @@ const App = () => {
                         />
                         <Route path="/tissues/:id" component={IndivTissues} />
                         <Route path="/genes/:id" component={IndivGenes} />
-                         <Route path="/datasets/:id" exact component={IndivDatasets} />
+                        <Route
+                            path="/datasets/:id"
+                            exact
+                            component={IndivDatasets}
+                        />
                         <Route path="*" component={NotFoundPage} />
                     </Switch>
                 </Router>
