@@ -8,16 +8,20 @@ import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 
-import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
+import {
+  StyledIndivPage,
+  StyledSidebar,
+} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
   {
     Header: 'Ensembl Gene ID',
     accessor: 'id',
-  }];
+  },
+];
 
 const LINK_COLUMNS = [
   {
@@ -32,16 +36,15 @@ const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
  * Format data for synonym and link tables
  * @param {String} id,link gene id and link to reference
  */
-const formatTableLinks = (id, link) => [{
-  id:
-  <a href={link} target="_blank">
-    <div style={{ textAlign: 'center' }}>
-      {' '}
-      {id}
-      {' '}
-    </div>
-  </a>,
-}];
+const formatTableLinks = (id, link) => [
+  {
+    id: (
+      <a href={link} target="_blank">
+        <div style={{ textAlign: 'center' }}> {id} </div>
+      </a>
+    ),
+  },
+];
 
 /**
  * Format data for the synonyms table
@@ -49,8 +52,8 @@ const formatTableLinks = (id, link) => [{
  */
 const formatSynonymData = (data) => {
   if (data) {
-    const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.ensg}`;
-    return formatTableLinks(data.ensg, link);
+    const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`;
+    return formatTableLinks(data.name, link);
   }
   return null;
 };
@@ -71,7 +74,20 @@ const formatLinkData = (data) => {
  *
  * @param {String} link
  */
-const createSideLink = (link) => <Link key={link} className="link" activeClass="selected" to={`${SnakeCase(link)}`} spy smooth duration={200} offset={-400}>{link}</Link>;
+const createSideLink = (link) => (
+  <Link
+    key={link}
+    className="link"
+    activeClass="selected"
+    to={`${SnakeCase(link)}`}
+    spy
+    smooth
+    duration={200}
+    offset={-400}
+  >
+    {link}
+  </Link>
+);
 
 /**
  * Parent component for the individual gene page.
@@ -113,7 +129,7 @@ const IndivGenes = (props) => {
 
   // formatted data for synonyms annotation table
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(data.annotation), [data.annotation]);
+  const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
 
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);

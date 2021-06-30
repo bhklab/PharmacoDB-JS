@@ -14,8 +14,8 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  'cell_name',
  'tissue_id',
  'tissue_name',
- 'drug_id',
- 'drug_name',
+ 'compound_id',
+ 'compound_name',
  'fda_status',
  'smiles',
  'inchikey',
@@ -24,47 +24,46 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  'dataset_name' ], ...]
  */
 const generateExperimentsColumns = listOfFields => {
-    console.log(listOfFields);
     // array of columns for the knex main query and subquery
-    const columns = ['SE.experiment_id as experiment_id'];
-    const subqueryColumns = ['experiment_id'];
+    const columns = ['SE.id as experiment_id'];
+    const subqueryColumns = ['experiment.id'];
     // boolean that tracks if tissue information has already been requested
     // tissue can be used as a type in experiments and/or as a type in cell_line
     let tissueRequested = false;
     // adds columns based on client GraphQL query
     listOfFields.forEach(field => {
         switch (field.name) {
-        case 'cell_line':
-            columns.push(...['cell_id', 'cell_name']);
-            subqueryColumns.push(...['experiments.cell_id as cell_id', 'cell_name']);
-            // adds tissue columns if they are in the subfields of cell_line type and have been already added
-            if (field.fields.some(subfield => subfield.name === 'tissue') && !tissueRequested) {
-                tissueRequested = true;
-                columns.push(...['tissue_id', 'tissue_name']);
-                subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
-            }
-            break;
-        case 'tissue':
-            if (!tissueRequested) {
-                columns.push(...['tissue_id', 'tissue_name']);
-                subqueryColumns.push(...['experiments.tissue_id as tissue_id', 'tissue_name']);
-            }
-            break;
-        case 'compound':
-            const compoundColumns = ['drug_name', 'fda_status', 'smiles', 'inchikey', 'pubchem'];
-            columns.push('drug_id', ...compoundColumns);
-            subqueryColumns.push('experiments.drug_id as drug_id', ...compoundColumns);
-            break;
-        case 'dataset':
-            columns.push(...['dataset_id', 'dataset_name']);
-            subqueryColumns.push(...['experiments.dataset_id as dataset_id', 'dataset_name']);
-            break;
-        case 'dose_responses':
-            columns.push(...['dose','response']);
-            break;
-        case 'profile':
-            columns.push(...field.fields.map(el => el.name));
-            break;
+            case 'cell_line':
+                columns.push(...['cell_id', 'cell_name']);
+                subqueryColumns.push(...['experiment.cell_id as cell_id', 'cell.name as cell_name']);
+                // adds tissue columns if they are in the subfields of cell_line type and have been already added
+                if (field.fields.some(subfield => subfield.name === 'tissue') && !tissueRequested) {
+                    tissueRequested = true;
+                    columns.push(...['tissue_id', 'tissue_name']);
+                    subqueryColumns.push(...['experiment.tissue_id as tissue_id', 'tissue.name as tissue_name']);
+                }
+                break;
+            case 'tissue':
+                if (!tissueRequested) {
+                    columns.push(...['tissue_id', 'tissue_name']);
+                    subqueryColumns.push(...['experiment.tissue_id as tissue_id', 'tissue.name as tissue_name']);
+                }
+                break;
+            case 'compound':
+                const compoundColumns = ['fda_status', 'smiles', 'inchikey', 'pubchem'];
+                columns.push('compound_id', 'compound_name', ...compoundColumns);
+                subqueryColumns.push('experiment.compound_id as compound_id', 'compound.name as compound_name', ...compoundColumns);
+                break;
+            case 'dataset':
+                columns.push(...['dataset_id', 'dataset_name']);
+                subqueryColumns.push(...['experiment.dataset_id as dataset_id', 'dataset.name as dataset_name']);
+                break;
+            case 'dose_response':
+                columns.push(...['dose', 'response']);
+                break;
+            case 'profile':
+                columns.push(...field.fields.map(el => el.name));
+                break;
         }
     });
     return [columns, subqueryColumns];
@@ -82,11 +81,11 @@ const transformExperiments = data => {
             experiment_id,
             cell_id,
             cell_name,
-            drug_id,
+            compound_id,
             dataset_id,
             tissue_id,
             tissue_name,
-            drug_name,
+            compound_name,
             dataset_name,
             dose,
             response,
@@ -107,7 +106,7 @@ const transformExperiments = data => {
             responseObj[experiment_id] = {
                 id: experiment_id,
                 cell_id,
-                drug_id,
+                compound_id,
                 dataset_id,
                 tissue: {
                     id: tissue_id,
@@ -122,8 +121,8 @@ const transformExperiments = data => {
                     }
                 },
                 compound: {
-                    id: drug_id,
-                    name: drug_name,
+                    id: compound_id,
+                    name: compound_name,
                     annotation: {
                         fda_status: fda_status ? 'Approved' : 'Not Approved',
                         smiles,
@@ -145,14 +144,14 @@ const transformExperiments = data => {
                     DSS2,
                     DSS3
                 },
-                dose_responses: [{
+                dose_response: [{
                     dose,
                     response
                 }]
             };
         } else {
             // just pushes dose and response values to an existing experiment
-            responseObj[experiment_id].dose_responses.push({
+            responseObj[experiment_id].dose_response.push({
                 dose,
                 response
             });
@@ -182,43 +181,43 @@ const experiments = async (args, context, info) => {
     try {
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
-        const [ columns, subqueryColumns ] = generateExperimentsColumns(listOfFields);
+        const [columns, subqueryColumns] = generateExperimentsColumns(listOfFields);
         // subquery builder function, gets experiments metadata. Needed as a subquery because user-specified limit and offset values
         // has to be applied on the experiment level and not be based on the total number of rows
         function subqueryExperiments() {
             let subquery = this.select(subqueryColumns)
-                .from('experiments');
-            if (compoundId) subquery = subquery.where({ 'experiments.drug_id': compoundId });
-            if (cellLineId) subquery.where({ 'experiments.cell_id': cellLineId });
-            if (tissueId) subquery.where({ 'experiments.tissue_id': tissueId });
+                .from('experiment');
+            if (compoundId) subquery = subquery.where({ 'experiment.compound_id': compoundId });
+            if (cellLineId) subquery.where({ 'experiment.cell_id': cellLineId });
+            if (tissueId) subquery.where({ 'experiment.tissue_id': tissueId });
             subtypes.forEach(subtype => {
                 switch (subtype) {
-                case 'cell_line':
-                    subquery = subquery.join('cells', 'cells.cell_id', '=', 'experiments.cell_id');
-                    break;
-                case 'tissue':
-                    subquery = subquery.join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id');
-                    break;
-                case 'compound':
-                    subquery = subquery.join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
-                        .join('drug_annots', 'experiments.drug_id', '=', 'drug_annots.drug_id');
-                    break;
-                case 'dataset':
-                    subquery = subquery.join('datasets', 'datasets.dataset_id', '=', 'experiments.dataset_id');
-                    break;
+                    case 'cell_line':
+                        subquery = subquery.join('cell', 'cell.id', '=', 'experiment.cell_id');
+                        break;
+                    case 'tissue':
+                        subquery = subquery.join('tissue', 'tissue.id', '=', 'experiment.tissue_id');
+                        break;
+                    case 'compound':
+                        subquery = subquery.join('compound', 'compound.id', '=', 'experiment.compound_id')
+                            .join('compound_annotation', 'experiment.compound_id', '=', 'compound_annotation.compound_id');
+                        break;
+                    case 'dataset':
+                        subquery = subquery.join('dataset', 'dataset.id', '=', 'experiment.dataset_id');
+                        break;
                 }
             });
             // removes limit/offset when client passes compoundId, cellLineId, or tissueId argument
-            return compoundId || cellLineId || tissueId ? subquery.as('SE') :subquery.limit(all ? '*' : limit)
+            return compoundId || cellLineId || tissueId ? subquery.as('SE') : subquery.limit(all ? '*' : limit)
                 .offset(all ? '*' : offset)
                 .as('SE');
         }
         let query = knex
             .select(columns)
             .from(subqueryExperiments);
-        // joins drug_responses table if needed
-        if (subtypes.includes('dose_responses')) query = query.join('dose_responses', 'SE.experiment_id', '=', 'dose_responses.experiment_id');
-        if (subtypes.includes('profile')) query = query.join('profiles', 'SE.experiment_id', '=', 'profiles.experiment_id');
+        // joins compound_responses table if needed
+        if (subtypes.includes('dose_response')) query = query.join('dose_response', 'SE.id', '=', 'dose_response.experiment_id');
+        if (subtypes.includes('profile')) query = query.join('profile', 'SE.id', '=', 'profile.experiment_id');
         const experiments = await query;
         return transformExperiments(experiments);
     } catch (err) {
@@ -239,16 +238,15 @@ const experiment = async args => {
         } = args;
         // query to get experiment related data
         let experiment = await knex
-            .select('experiments.experiment_id as experiment_id',
-                'experiments.tissue_id',
-                'experiments.cell_id as cell_id',
-                'experiments.tissue_id as tissue_id',
-                'experiments.drug_id as drug_id',
-                'experiments.dataset_id as dataset_id',
-                'cell_name',
-                'tissue_name',
-                'drug_name',
-                'dataset_name',
+            .select('experiment.id as experiment_id',
+                'experiment.cell_id as cell_id',
+                'experiment.tissue_id as tissue_id',
+                'experiment.compound_id as compound_id',
+                'experiment.dataset_id as dataset_id',
+                'cell.name as cell_name',
+                'tissue.name as tissue_name',
+                'compound.name as compound_name',
+                'dataset.name as dataset_name',
                 'dose',
                 'response',
                 'fda_status',
@@ -263,15 +261,15 @@ const experiment = async args => {
                 'DSS1',
                 'DSS2',
                 'DSS3')
-            .from('experiments')
-            .join('cells', 'cells.cell_id', '=', 'experiments.cell_id')
-            .join('tissues', 'tissues.tissue_id', '=', 'experiments.tissue_id')
-            .join('drugs', 'drugs.drug_id', '=', 'experiments.drug_id')
-            .join('datasets', 'datasets.dataset_id', '=','experiments.dataset_id')
-            .join('dose_responses', 'dose_responses.experiment_id', '=', 'experiments.experiment_id')
-            .join('drug_annots', 'experiments.drug_id', '=', 'drug_annots.drug_id')
-            .join('profiles', 'experiments.experiment_id', '=', 'profiles.experiment_id')
-            .where('experiments.experiment_id', experimentId);
+            .from('experiment')
+            .join('cell', 'cell.id', '=', 'experiment.cell_id')
+            .join('tissue', 'tissue.id', '=', 'experiment.tissue_id')
+            .join('compound', 'compound.id', '=', 'experiment.compound_id')
+            .join('dataset', 'dataset.id', '=', 'experiment.dataset_id')
+            .join('dose_response', 'dose_response.experiment_id', '=', 'experiment.id')
+            .join('compound_annotation', 'experiment.compound_id', '=', 'compound_annotation.compound_id')
+            .join('profile', 'experiment.id', '=', 'profile.experiment_id')
+            .where('experiment.id', experimentId);
         const output = transformExperiments(experiment);
         return output[0];
     } catch (err) {

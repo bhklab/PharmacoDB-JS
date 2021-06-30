@@ -19,32 +19,32 @@ import ProfileCompound from '../../Plots/ProfileCompound';
  * [[{name: "CTRPv2", count: 25, color: "#ccebc5"}], ... ]
  */
 const generateCountPlotData = (experiments) => {
-  const compoundObj = {};
-  const cellLineObj = {};
-  experiments.forEach((experiment) => {
-    if (cellLineObj[experiment.dataset.name]) {
-      cellLineObj[experiment.dataset.name].push(experiment.cell_line.id);
-    } else {
-      cellLineObj[experiment.dataset.name] = [experiment.cell_line.id];
-    }
+    const compoundObj = {};
+    const cellLineObj = {};
+    experiments.forEach((experiment) => {
+        if (cellLineObj[experiment.dataset.name]) {
+            cellLineObj[experiment.dataset.name].push(experiment.cell_line.id);
+        } else {
+            cellLineObj[experiment.dataset.name] = [experiment.cell_line.id];
+        }
 
-    if (compoundObj[experiment.dataset.name]) {
-      compoundObj[experiment.dataset.name].push(experiment.compound.id);
-    } else {
-      compoundObj[experiment.dataset.name] = [experiment.compound.id];
-    }
-  });
-  const compoundData = Object.entries(compoundObj).map((dataset, i) => ({
-    name: dataset[0],
-    count: [...new Set(dataset[1])].length,
-    color: dataset_colors[i],
-  }));
-  const cellLineData = Object.entries(cellLineObj).map((dataset, i) => ({
-    name: dataset[0],
-    count: [...new Set(dataset[1])].length,
-    color: dataset_colors[i],
-  }));
-  return [compoundData, cellLineData];
+        if (compoundObj[experiment.dataset.name]) {
+            compoundObj[experiment.dataset.name].push(experiment.compound.id);
+        } else {
+            compoundObj[experiment.dataset.name] = [experiment.compound.id];
+        }
+    });
+    const compoundData = Object.entries(compoundObj).map((dataset, i) => ({
+        name: dataset[0],
+        count: [...new Set(dataset[1])].length,
+        color: dataset_colors[i],
+    }));
+    const cellLineData = Object.entries(cellLineObj).map((dataset, i) => ({
+        name: dataset[0],
+        count: [...new Set(dataset[1])].length,
+        color: dataset_colors[i],
+    }));
+    return [compoundData, cellLineData];
 };
 /**
  * Section that display plots for the individual tissue page.
@@ -57,48 +57,55 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-  const { tissue } = props;
-  const { id, name } = tissue;
+    const { tissue } = props;
+    const { id, name } = tissue;
 
-  const { loading, error, data } = useQuery(getSingleTissueExperimentsQuery, {
-    variables: { tissueId: id },
-  });
-  if (loading) {
-    return <Loading />;
-  }
-  if (error) {
-    return <p> Error! </p>;
-  }
-  const [compoundsData, cellLinesData] = generateCountPlotData(data.experiments);
-  return (
-    <>
-      {
-        id
-          ? (
-            <>
-              <DatasetHorizontalPlot
-                data={cellLinesData}
-                xaxis="# of cell lines"
-                title={`Number of cell lines of ${name.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
-              />
-              <DatasetHorizontalPlot
-                data={compoundsData}
-                xaxis="# of compounds"
-                title={`Number of compounds tested with ${name.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, ' $1')} cell lines (per dataset)`}
-              />
-            </>
-          )
-          : <p> No data is available for plotting this tissue. </p>
-      }
-    </>
-  );
+    const { loading, error, data } = useQuery(getSingleTissueExperimentsQuery, {
+        variables: { tissueId: id },
+    });
+    if (loading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <p> Error! </p>;
+    }
+    const [compoundsData, cellLinesData] = generateCountPlotData(
+        data.experiments
+    );
+    return (
+        <>
+            {id ? (
+                <>
+                    <DatasetHorizontalPlot
+                        data={cellLinesData}
+                        xaxis="# of cell lines"
+                        title={`Number of cell lines of ${name
+                            .replaceAll(/_/g, ' ')
+                            .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
+                    />
+                    <DatasetHorizontalPlot
+                        data={compoundsData}
+                        xaxis="# of compounds"
+                        title={`Number of compounds tested with ${name
+                            .replaceAll(/_/g, ' ')
+                            .replace(
+                                /([A-Z][a-z])/g,
+                                ' $1'
+                            )} cell lines (per dataset)`}
+                    />
+                </>
+            ) : (
+                <p> No data is available for plotting this tissue. </p>
+            )}
+        </>
+    );
 };
 
 PlotSection.propTypes = {
-  tissue: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }).isRequired,
+    tissue: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+    }).isRequired,
 };
 
 export default PlotSection;

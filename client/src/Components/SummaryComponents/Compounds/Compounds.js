@@ -1,7 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
+import { Link } from 'react-router-dom';
 import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
 import BarPlot from '../../Plots/BarPlot';
@@ -11,6 +12,7 @@ const table_columns = [
   {
     Header: 'Name',
     accessor: 'name',
+    Cell: (row) => (<Link to={`/compounds/${row.row.original.id}`}>{row.value}</Link>),
   },
   {
     Header: 'SMILES',
@@ -38,11 +40,12 @@ const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
-      const { name, annotation } = value;
+      const { name, annotation, id } = value;
       const {
         smiles, inchikey, pubchem, fda_status,
       } = annotation;
       return {
+        id,
         name,
         smiles,
         inchikey,

@@ -2,7 +2,7 @@
  * Compound Queries to be used for graphql.test.js
  */
 
-const compoundsKeysTestQuery = `
+const multipleCompoundsTestQuery = `
     { 
         compounds(all: true) { 
             id 
@@ -18,7 +18,7 @@ const compoundsKeysTestQuery = `
 `;
 
 // using compoundId 13 since it has all annotation fields present and has at least one target
-const compoundKeysTestQuery = `
+const singleCompoundTestQuery = `
     { 
         compound(compoundId: 13) {
             compound {
@@ -39,14 +39,13 @@ const compoundKeysTestQuery = `
               id
               name
             }
-    
         } 
     }
 `;
 
-const compoundQueryPaclitaxel = `
+const paclitaxelCompoundTestQuery = `
     {
-        compound(compoundId: 526) {
+        compound(compoundId: 641) {
             compound {
                 id 
                 name 
@@ -61,7 +60,7 @@ const compoundQueryPaclitaxel = `
 `;
 
 module.exports = {
-    compoundsKeysTestQuery,
-    compoundKeysTestQuery,
-    compoundQueryPaclitaxel
+    multipleCompoundsTestQuery,
+    singleCompoundTestQuery,
+    paclitaxelCompoundTestQuery,
 };

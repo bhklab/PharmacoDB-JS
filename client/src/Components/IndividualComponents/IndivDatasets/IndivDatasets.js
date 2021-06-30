@@ -8,7 +8,7 @@ import Layout from '../../UtilComponents/Layout';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import datasets from './datasets';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 
 import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';

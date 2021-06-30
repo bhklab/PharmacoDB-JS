@@ -1,12 +1,14 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import Table from '../../UtilComponents/Table';
+import Table from '../../UtilComponents/Table/Table';
+import { Link } from 'react-router-dom';
 import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../UtilComponents/Loading';
 import UpsetPlot from '../../Plots/UpsetPlot';
 
+// an array with the columns of dataset table.
 const table_columns = [
   {
     Header: 'Id',
@@ -15,6 +17,7 @@ const table_columns = [
   {
     Header: 'Name',
     accessor: 'name',
+    Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
 

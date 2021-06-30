@@ -6,39 +6,38 @@ import { gql } from 'apollo-boost';
  * and also returning the annotation object for each of the gene in the database.
  */
 const getGenesQuery = gql`
-  query getAllGenes {
-    genes(all: true) {
-      id
-      name
-      annotation {
-        ensg
-        gene_seq_start
-        gene_seq_end
-        
-      }
+    query getAllGenes {
+        genes(all: true) {
+            id
+            name
+            annotation {
+                gene_id
+                gene_seq_start
+                gene_seq_end
+            }
+        }
     }
-  }
 `;
 
 /**
- * @param { Number } geneID - gene id of the gene to be queried.
- * @returns - all the information returns by the gene query
+ * @param {number} geneId - gene id for which the data is needed.
+ * @returns - the information for the queried gene.
  */
 const getGeneQuery = gql`
-  query getSingleGene($geneId: Int!) {
-    gene(geneId: $geneId) {
-      id
-      name
-      annotation {
-        ensg
-        gene_seq_start
-        gene_seq_end
-      }
+    query getSingleGene($geneId: Int, $geneName: String) {
+        gene(geneId: $geneId, geneName: $geneName) {
+            id
+            name
+            annotation {
+                gene_id
+                symbol
+                gene_seq_start
+                gene_seq_end
+                chr
+                strand
+            }
+        }
     }
-  }
 `;
 
-export {
-  getGenesQuery,
-  getGeneQuery,
-};
+export { getGenesQuery, getGeneQuery };

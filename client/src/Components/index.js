@@ -1,3 +1,4 @@
+import Biomarker from './Biomarker/Biomarker';
 import Compounds from './SummaryComponents/Compounds/Compounds';
 import Genes from './SummaryComponents/Genes/Genes';
 import Tissues from './SummaryComponents/Tissues/Tissues';
@@ -13,7 +14,18 @@ import Home from './Home/Home';
 import NotFoundPage from './UtilComponents/NotFoundPage';
 
 export {
-  Compounds, IndivCompounds, Home, NotFoundPage,
-  Tissues, IndivTissues, Genes, IndivGenes, CellLines, IndivCellLines,
-  Datasets, IndivDatasets, Experiments,
+    Compounds,
+    IndivCompounds,
+    Home,
+    NotFoundPage,
+    Tissues,
+    IndivTissues,
+    Genes,
+    IndivGenes,
+    CellLines,
+    IndivCellLines,
+    IndivDatasets,
+    Datasets,
+    Experiments,
+    Biomarker,
 };

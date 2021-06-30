@@ -2,14 +2,16 @@
 const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
-const { countType, summaryType, genericType, enumAllowedType } = require('./count');
+const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType } = require('./dataset');
-const { drugResponseType } = require('./drug_response');
+const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
-const { geneDrugType } = require('./gene_drug');
+const { genericType } = require('./generic');
+const { geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
-const { sourceType, sourceAnnotationType, sourceStatsType } = require('./source');
+const { summaryType } = require('./summary');
+const { sourceAnnotationType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
@@ -19,15 +21,12 @@ const { profileType } = require('./profile');
 const schema = `
     "Compound Type with id, name and annotations."
     ${compoundType}
-    "Compound Annotation Type with drug id, smiles, inchikey and pubchem."
+    "Compound Annotation Type with compound id, smiles, inchikey and pubchem."
     ${compoundAnnotationType}
     ${compoundDetailType}
 
     "Cell Line Type with id and name of the cell lines."
     ${cellLineType}
-    """Cell Line Annotation type with id, name, tissue information 
-     and annotations including the name of source and datasets it's present in"""
-    ${sourceAnnotationType}
     ${cellLineDetailType}
 
     "Count Type"
@@ -37,8 +36,8 @@ const schema = `
     ${datasetType}
     ${datasetDetailType}
 
-    "Drug Response Type with dose and response values"
-    ${drugResponseType}
+    "compound Response Type with dose and response values"
+    ${compoundResponseType}
 
     ${enumAllowedType}
 
@@ -53,9 +52,9 @@ const schema = `
     "Generic Type"
     ${genericType}
 
-    "Source Type"
-    ${sourceType}
-    ${sourceStatsType}
+    """Source Annotation type with id, name, tissue information 
+    and annotations including the name of source and datasets it's present in"""
+   ${sourceAnnotationType}
 
     "Summary Type"
     ${summaryType}
@@ -71,8 +70,8 @@ const schema = `
      including the name of source and datasets it's present in"""
     ${tissueDetailType}
 
-    "GeneDrug Type"
-    ${geneDrugType}
+    "Compoundcompound Type"
+    ${geneCompoundType}
 
     "Profile Type"
     ${profileType}
