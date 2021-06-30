@@ -42,6 +42,7 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
           DB_NAME: ${{ secrets.DB_NAME }}
-          KNEX_CLIENT: ${{ secrets.client }}
+          DB_PORT: ${{ secrets.DB_PORT }}
           NODE_ENV: ${{ secrets.NODE_ENV }}
+          KNEX_CLIENT: ${{ secrets.KNEX_CLIENT }}
         run: npm test
