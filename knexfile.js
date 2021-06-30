@@ -21,7 +21,7 @@ module.exports = {
         }
     },
     production: {
-        client: 'mysql',
+        client: process.env.KNEX_CLIENT,
         connection: {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
