@@ -11,23 +11,23 @@ import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 
 import {
-    StyledIndivPage,
-    StyledSidebar,
+  StyledIndivPage,
+  StyledSidebar,
 } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
-    {
-        Header: 'Ensembl Gene ID',
-        accessor: 'id',
-    },
+  {
+    Header: 'Ensembl Gene ID',
+    accessor: 'id',
+  },
 ];
 
 const LINK_COLUMNS = [
-    {
-        Header: 'Genecard',
-        accessor: 'id',
-    },
+  {
+    Header: 'Genecard',
+    accessor: 'id',
+  },
 ];
 
 const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
@@ -37,13 +37,13 @@ const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
  * @param {String} id,link gene id and link to reference
  */
 const formatTableLinks = (id, link) => [
-    {
-        id: (
-            <a href={link} target="_blank">
-                <div style={{ textAlign: 'center' }}> {id} </div>
-            </a>
-        ),
-    },
+  {
+    id: (
+      <a href={link} target="_blank">
+        <div style={{ textAlign: 'center' }}> {id} </div>
+      </a>
+    ),
+  },
 ];
 
 /**
@@ -51,11 +51,11 @@ const formatTableLinks = (id, link) => [
  * @param data synonym data from the gene API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.ensg}`;
-        return formatTableLinks(data.ensg, link);
-    }
-    return null;
+  if (data) {
+    const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`;
+    return formatTableLinks(data.name, link);
+  }
+  return null;
 };
 
 /**
@@ -63,11 +63,11 @@ const formatSynonymData = (data) => {
  * @param data link data from the gene API
  */
 const formatLinkData = (data) => {
-    if (data) {
-        const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
-        return formatTableLinks(data.name, link);
-    }
-    return null;
+  if (data) {
+    const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
+    return formatTableLinks(data.name, link);
+  }
+  return null;
 };
 
 /**
@@ -75,18 +75,18 @@ const formatLinkData = (data) => {
  * @param {String} link
  */
 const createSideLink = (link) => (
-    <Link
-        key={link}
-        className="link"
-        activeClass="selected"
-        to={`${SnakeCase(link)}`}
-        spy
-        smooth
-        duration={200}
-        offset={-400}
-    >
-        {link}
-    </Link>
+  <Link
+    key={link}
+    className="link"
+    activeClass="selected"
+    to={`${SnakeCase(link)}`}
+    spy
+    smooth
+    duration={200}
+    offset={-400}
+  >
+    {link}
+  </Link>
 );
 
 /**
@@ -129,7 +129,7 @@ const IndivGenes = (props) => {
 
   // formatted data for synonyms annotation table
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(data.annotation), [data.annotation]);
+  const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
 
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
@@ -169,14 +169,14 @@ const IndivGenes = (props) => {
 };
 
 IndivGenes.propTypes = {
-    /**
-     * IndivGenes' param id
-     */
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-        }).isRequired,
+  /**
+   * IndivGenes' param id
+   */
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
 };
 
 export default IndivGenes;
