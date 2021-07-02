@@ -60,7 +60,7 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-  const { compound } = props;
+  const { display, compound } = props;
   const { id, name } = compound;
 
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
@@ -81,28 +81,40 @@ const PlotSection = (props) => {
 
   return (
     <>
-      <DatasetHorizontalPlot
-        data={cellLinesData}
-        xaxis="# of cell lines"
-        title={`Number of cell lines tested with ${name} (per dataset)`}
-      />
-      <DatasetHorizontalPlot
-        data={tissuesData}
-        xaxis="# of tissues"
-        title={`Number of tissues tested with ${name} (per dataset)`}
-      />
-      <ProfileCellLine
-        compound={name}
-        data={experimentalData}
-        profileOptions={profileOptions}
-        datasetOptions={datasetOptions}
-      />
-      <ProfileTissue
-        compound={name}
-        data={experimentalData}
-        profileOptions={profileOptions}
-        datasetOptions={datasetOptions}
-      />
+      {
+        display === 'celllines' &&
+        <DatasetHorizontalPlot
+          data={cellLinesData}
+          xaxis="# of cell lines"
+          title={`Number of cell lines tested with ${name} (per dataset)`}
+        />
+      }
+      {
+        display === 'tissues' &&
+        <DatasetHorizontalPlot
+          data={tissuesData}
+          xaxis="# of tissues"
+          title={`Number of tissues tested with ${name} (per dataset)`}
+        />
+      }
+      {
+        display === 'profileCells' &&
+        <ProfileCellLine
+          compound={name}
+          data={experimentalData}
+          profileOptions={profileOptions}
+          datasetOptions={datasetOptions}
+        />
+      }
+      {
+        display === 'profileTissues' &&
+        <ProfileTissue
+          compound={name}
+          data={experimentalData}
+          profileOptions={profileOptions}
+          datasetOptions={datasetOptions}
+        />
+      }
     </>
   );
 };

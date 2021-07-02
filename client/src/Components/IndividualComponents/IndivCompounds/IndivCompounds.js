@@ -14,6 +14,7 @@ import PlotSection from './PlotSection';
 import {
     StyledIndivPage,
     StyledSidebar,
+    StyledSidebarList
 } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -39,12 +40,21 @@ const ANNOTATION_COLUMNS = [
     },
 ];
 
+// const SIDE_LINKS = [
+//     'Synonyms',
+//     'External IDs',
+//     'Annotated Targets',
+//     'FDA Approval Status',
+//     'Plots',
+// ];
+
 const SIDE_LINKS = [
-    'Synonyms',
-    'External IDs',
-    'Annotated Targets',
-    'FDA Approval Status',
-    'Plots',
+    {label: 'Synonyms and IDs', name: 'synonyms'},
+    {label: 'Anotated Targets', name: 'targets'},
+    {label: 'Number of Tested Cell Lines', name: 'celllines'},
+    {label: 'Number of Tested Tissues', name: 'tissues'},
+    {label: 'Profile (Cell Lines)', name: 'profileCells'},
+    {label: 'Profile (Tissues)', name: 'profileTissues'},
 ];
 
 /**
@@ -91,20 +101,20 @@ const formatAnnotationData = (data) => {
  *
  * @param {String} link
  */
-const createSideLink = (link) => (
-    <Link
-        key={link}
-        className="link"
-        activeClass="selected"
-        to={`${SnakeCase(link)}`}
-        spy
-        smooth
-        duration={200}
-        offset={-400}
-    >
-        {link}
-    </Link>
-);
+// const createSideLink = (link) => (
+//     <Link
+//         key={link}
+//         className="link"
+//         activeClass="selected"
+//         to={`${SnakeCase(link)}`}
+//         spy
+//         smooth
+//         duration={200}
+//         offset={-400}
+//     >
+//         {link}
+//     </Link>
+// );
 
 /**
  * Parent component for the individual compound page.
@@ -134,6 +144,9 @@ const IndivCompounds = (props) => {
         loaded: false,
     });
 
+    // A section to display on the page
+    const [display, setDisplay] = useState('synonyms');
+
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
@@ -160,6 +173,18 @@ const IndivCompounds = (props) => {
         [data.compound]
     );
 
+    /**
+     * 
+     * @param {String} link 
+     */
+    const createSideLink = (link, i) => (
+        <li key={i} className={display === link.name ? 'selected': undefined}>
+            <button type='button' onClick={() => setDisplay(link.name)}>
+                {link.label}
+            </button>
+        </li>
+    );
+
     return compound.loaded ? (
         <Layout page={data.compound.name}>
             <StyledWrapper>
@@ -169,62 +194,68 @@ const IndivCompounds = (props) => {
                     <NotFoundContent />
                 ) : (
                     <StyledIndivPage className="indiv-compounds">
-                        <h1>{data.compound.name}</h1>
-                        <StyledSidebar>
-                            {SIDE_LINKS.map((link) => createSideLink(link))}
-                        </StyledSidebar>
-                        <div className="container">
-                            <div className="content">
-                                <Element className="section" name="synonyms">
-                                    <h3>Synonyms</h3>
-                                    <Table
-                                        columns={synonymColumns}
-                                        data={synonymData}
-                                        disablePagination
-                                    />
-                                </Element>
-                                <Element
-                                    className="section"
-                                    name="external_ids"
-                                >
-                                    <h3>External IDs</h3>
-                                    <Table
-                                        columns={annotationColumns}
-                                        data={annotationData}
-                                        disablePagination
-                                    />
-                                </Element>
-                                <Element
-                                    className="section"
-                                    name="annotated_targets"
-                                >
-                                    <h3>Annotated Targets</h3>
-                                    <div className="text">
-                                        {data.targets
-                                            ? data.targets
-                                                  .map((x) => x.name)
-                                                  .join(', ')
-                                            : ''}
-                                    </div>
-                                </Element>
-                                <Element
-                                    className="section"
-                                    name="fda_approval_status"
-                                >
-                                    <h3>FDA Approval Status</h3>
-                                    <div className="text">
-                                        {data.compound.annotation.fda_status}
-                                    </div>
-                                </Element>
-                                <Element name="plots" className="section temp">
-                                    <h3>Plots</h3>
-                                    <PlotSection
-                                        compound={{
-                                            id: data.compound.id,
-                                            name: data.compound.name,
-                                        }}
-                                    />
-                                </Element>
+                        <div className='heading'>
+                            <span className='title'>{data.compound.name}</span>
+                            <span className='attributes'>
+                                FDA Approval Status:  
+                                <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
+                                    {data.compound.annotation.fda_status}
+                                </span>
+                            </span>
+                        </div>
+                        <div className='wrapper'>
+                            <StyledSidebarList>
+                                {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                            </StyledSidebarList>
+                            <div className="container">
+                                <div className="content">
+                                    {
+                                        display === 'synonyms' &&
+                                        <React.Fragment>
+                                            <Element className="section" name="synonyms">
+                                                <div className='section-title'>Synonyms</div>
+                                                <Table
+                                                    columns={synonymColumns}
+                                                    data={synonymData}
+                                                    disablePagination
+                                                />
+                                            </Element>
+                                            <Element
+                                                className="section"
+                                                name="external_ids"
+                                            >
+                                                <div className='section-title'>External IDs</div>
+                                                <Table
+                                                    columns={annotationColumns}
+                                                    data={annotationData}
+                                                    disablePagination
+                                                />
+                                            </Element>
+                                        </React.Fragment>
+                                    }
+                                    {
+                                        display === 'targets' &&
+                                        <Element className="section" name="annotated_targets">
+                                            <div className='section-title'>Annotated Targets</div>
+                                            <div className="text">
+                                                {data.targets
+                                                    ? data.targets
+                                                        .map((x) => x.name)
+                                                        .join(', ')
+                                                    : ''}
+                                            </div>
+                                        </Element>
+                                    }
+                                    <Element name="plots" className="section temp">
+                                        <PlotSection
+                                            display={display}
+                                            compound={{
+                                                id: data.compound.id,
+                                                name: data.compound.name,
+                                            }}
+                                        />
+                                    </Element>
+                                </div>
                             </div>
                         </div>
                     </StyledIndivPage>

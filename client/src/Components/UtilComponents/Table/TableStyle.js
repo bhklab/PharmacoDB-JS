@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 
 const TableStyles = styled.div`
-  margin-bottom: 5rem;
-  margin-top: 2rem;
+  // margin-bottom: 2rem;
+  // margin-top: 2rem;
   overflow-x: auto;
 
   table {
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
     width: 100%;
+    font-size: 12px;
 
     th,
     td {
