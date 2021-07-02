@@ -12,7 +12,7 @@ const StyledIndivPage = styled.div`
     .title {
       font-size: 32px;
       font-weight: bold;
-      margin-left: 180px;
+      margin-left: 18%;
     }
     .attributes {
       .value {
@@ -116,7 +116,7 @@ const StyledSidebar = styled.div`
 `;
 
 const StyledSidebarList = styled.ul`
-  width: 200px;
+  width: 20%;
   padding: 5px 0px;
 
   list-style-type: none;
