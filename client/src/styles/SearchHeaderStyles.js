@@ -74,7 +74,7 @@ const StyledSearchHeader = styled.div`
         width: 45px;
         height: 35px;
         right: 0;
-        top: 33px;
+        top: 10px;
         background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : colors.light_blue_bg)};
         display:none;
         opacity:0.7;

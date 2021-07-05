@@ -2,18 +2,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 
 import {
     StyledIndivPage,
-    StyledSidebar,
     StyledSidebarList
 } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
@@ -40,21 +38,12 @@ const ANNOTATION_COLUMNS = [
     },
 ];
 
-// const SIDE_LINKS = [
-//     'Synonyms',
-//     'External IDs',
-//     'Annotated Targets',
-//     'FDA Approval Status',
-//     'Plots',
-// ];
-
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
     {label: 'Anotated Targets', name: 'targets'},
-    {label: 'Number of Tested Cell Lines', name: 'celllines'},
-    {label: 'Number of Tested Tissues', name: 'tissues'},
-    {label: 'Profile (Cell Lines)', name: 'profileCells'},
-    {label: 'Profile (Tissues)', name: 'profileTissues'},
+    {label: 'Bar Plots', name: 'barplots'},
+    {label: 'AAC (Cell Lines)', name: 'aacCells'},
+    {label: 'AAC (Tissues)', name: 'aacTissues'},
 ];
 
 /**
@@ -96,25 +85,6 @@ const formatAnnotationData = (data) => {
     }
     return modifiedData;
 };
-
-/**
- *
- * @param {String} link
- */
-// const createSideLink = (link) => (
-//     <Link
-//         key={link}
-//         className="link"
-//         activeClass="selected"
-//         to={`${SnakeCase(link)}`}
-//         spy
-//         smooth
-//         duration={200}
-//         offset={-400}
-//     >
-//         {link}
-//     </Link>
-// );
 
 /**
  * Parent component for the individual compound page.
@@ -246,7 +216,7 @@ const IndivCompounds = (props) => {
                                             </div>
                                         </Element>
                                     }
-                                    <Element name="plots" className="section temp">
+                                    <Element>
                                         <PlotSection
                                             display={display}
                                             compound={{

@@ -45,7 +45,7 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-    const { cellLine } = props;
+    const { display, cellLine } = props;
     const { id, name } = cellLine;
 
     const { loading, error, data } = useQuery(
@@ -55,7 +55,7 @@ const PlotSection = (props) => {
         }
     );
     if (loading) {
-        return <Loading />;
+        return '';
     }
     if (error) {
         return <p> Error! </p>;
@@ -65,12 +65,18 @@ const PlotSection = (props) => {
         <>
             {compoundsData.length ? (
                 <>
-                    <DatasetHorizontalPlot
-                        data={compoundsData}
-                        xaxis="# of compounds"
-                        title={`Number of compounds tested with ${name} (per dataset)`}
-                    />
-                    <ProfileCompound cellLine={name} data={data.experiments} />
+                    {
+                        display === 'barPlot' &&
+                        <DatasetHorizontalPlot
+                            data={compoundsData}
+                            xaxis="# of compounds"
+                            title={`Number of compounds tested with ${name} (per dataset)`}
+                        />
+                    }
+                    {
+                        display === 'aacCompounds' &&
+                        <ProfileCompound cellLine={name} data={data.experiments} />
+                    }
                 </>
             ) : (
                 <p> No data is available for plotting this cell line. </p>
