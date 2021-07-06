@@ -10,22 +10,24 @@ const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const transformCellLines = data => {
     return data.map(cell => {
         const {
-            id,
-            name,
+            cell_id,
+            cell_name,
             tissue_id,
             tissue_name,
-            diseases,
-            accessions
+            dataset_id,
+            dataset_name,
         } = cell;
         const output = {
-            id,
-            name,
+            id: cell_id,
+            name: cell_name,
             tissue: {
                 id: tissue_id,
-                name: tissue_name
+                name: tissue_name,
             },
-            diseases: diseases,
-            accessions: accessions
+            dataset: {
+                id: dataset_id,
+                name: dataset_name,
+            }
         };
         return output;
     });
@@ -103,19 +105,28 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
-        const selectFields = ['c.id as id', 'c.name as name', 'tissue_id'];
-        // adds tissue name to the list of knex columns to select
+
+        const selectFields = ['c.id as cell_id', 'c.name as cell_name', 'tissue_id'];
+        // adds tissue name to the list of knex columns to select.
         if (listOfFields.includes('tissue')) selectFields.push('t.name as tissue_name');
+        // add dataset detail to the list of knex columns to select.
+        if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
+
         // query to grab the cell line data.
         let query = knex.select(...selectFields).from('cell as c');
         // if the query containes the tissue field, then we will make a join.
         if (listOfFields.includes('tissue')) query = query.join('tissue as t', 'c.tissue_id', 't.id');
+        // if the query contains the dataset field, then make a join.
+        if (listOfFields.includes('dataset')) query = query.join('dataset_cell as dc', 'dc.cell_id', 'c.id')
+            .join('dataset as d', 'dc.dataset_id', 'd.id');
+
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) query.limit(limit).offset(offset);
         // call to grab the cell lines.
         let cell_lines = await query;
         // return the transformed data.
+        console.log(transformCellLines(cell_lines));
         return transformCellLines(cell_lines);
     } catch (err) {
         console.log(err);
