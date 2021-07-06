@@ -55,7 +55,9 @@ const transformCompounds = data => {
             smiles,
             inchikey,
             pubchem,
-            fda_status
+            fda_status,
+            dataset_id,
+            dataset_name,
         } = compound;
         return {
             id,
@@ -66,6 +68,10 @@ const transformCompounds = data => {
                 inchikey: inchikey,
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status)
+            },
+            dataset: {
+                id: dataset_id,
+                name: dataset_name,
             }
         };
     });
@@ -154,19 +160,30 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+
+        // select fields.
+        const selectFields = [
+            'c.id as id', 'c.name as name', 'd.id as dataset_id', 'd.name as dataset_name',
+            'ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey',
+        ];
+
         // query to get the data for all the compounds.
-        let query = knex
-            .select()
-            .from('compound');
+        let query = knex.select(...selectFields).from('compound as c');
         // add a join to grab the compound annotations in case it's queried by the user.
-        if (listOfFields.includes('annotation')) query = query.join('compound_annotation', 'compound.id', 'compound_annotation.compound_id');
+        if (listOfFields.includes('annotation')) query = query.join('compound_annotation as ca', 'ca.compound_id', 'c.id');
+        // add a join to grab the dataset information if it's been queried by the user.
+        if (listOfFields.includes('dataset')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
+            .join('dataset as d', 'dc.dataset_id', 'd.id');
+
         // if the user has not queried to get all the compound, 
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
+
         // execute the query.
         const compounds = await query;
+
         // return the transformed data.
         return transformCompounds(compounds);
     } catch (err) {
