@@ -22,7 +22,7 @@ const BurgerMenu = () => {
       width: '27px',
       height: '23px',
       right: '10px',
-      top: '40px',
+      top: '15px',
     },
     bmBurgerBars: {
       background: page === 'home' ? 'white' : colors.dark_teal_heading,

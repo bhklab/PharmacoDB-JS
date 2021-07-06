@@ -10,6 +10,7 @@ import { generateOptions } from '../../../utils/plotProcessing';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import ProfileCellLine from '../../Plots/ProfileCellLine';
 import ProfileTissue from '../../Plots/ProfileTissue';
+import PlotsWrapper from '../../../styles/PlotsWrapper';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
@@ -60,7 +61,7 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-  const { compound } = props;
+  const { display, compound } = props;
   const { id, name } = compound;
 
   const { loading, error, data } = useQuery(getSingleCompoundExperimentsQuery, {
@@ -73,7 +74,7 @@ const PlotSection = (props) => {
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(experimentalData), [experimentalData]);
 
   if (loading) {
-    return <Loading />;
+    return '';
   }
   if (error) {
     return <p> Error! </p>;
@@ -81,28 +82,39 @@ const PlotSection = (props) => {
 
   return (
     <>
-      <DatasetHorizontalPlot
-        data={cellLinesData}
-        xaxis="# of cell lines"
-        title={`Number of cell lines tested with ${name} (per dataset)`}
-      />
-      <DatasetHorizontalPlot
-        data={tissuesData}
-        xaxis="# of tissues"
-        title={`Number of tissues tested with ${name} (per dataset)`}
-      />
-      <ProfileCellLine
-        compound={name}
-        data={experimentalData}
-        profileOptions={profileOptions}
-        datasetOptions={datasetOptions}
-      />
-      <ProfileTissue
-        compound={name}
-        data={experimentalData}
-        profileOptions={profileOptions}
-        datasetOptions={datasetOptions}
-      />
+      {
+        display === 'barplots' &&
+        <PlotsWrapper>
+          <DatasetHorizontalPlot
+            data={cellLinesData}
+            xaxis="# of cell lines"
+            title={`Number of cell lines tested with ${name} (per dataset)`}
+          />
+          <DatasetHorizontalPlot
+            data={tissuesData}
+            xaxis="# of tissues"
+            title={`Number of tissues tested with ${name} (per dataset)`}
+          />
+        </PlotsWrapper>
+      }
+      {
+        display === 'aacCells' &&
+        <ProfileCellLine
+          compound={name}
+          data={experimentalData}
+          profileOptions={profileOptions}
+          datasetOptions={datasetOptions}
+        />
+      }
+      {
+        display === 'aacTissues' &&
+        <ProfileTissue
+          compound={name}
+          data={experimentalData}
+          profileOptions={profileOptions}
+          datasetOptions={datasetOptions}
+        />
+      }
     </>
   );
 };

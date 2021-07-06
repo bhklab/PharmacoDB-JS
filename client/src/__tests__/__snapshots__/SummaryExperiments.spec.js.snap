@@ -6847,7 +6847,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                       "height": "23px",
                       "position": "fixed",
                       "right": "10px",
-                      "top": "40px",
+                      "top": "15px",
                       "width": "27px",
                     },
                     "bmCross": Object {
@@ -7146,7 +7146,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                               "height": "23px",
                               "position": "fixed",
                               "right": "10px",
-                              "top": "40px",
+                              "top": "15px",
                               "width": "27px",
                             },
                             "bmCross": Object {
@@ -7274,7 +7274,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             "height": "23px",
                             "position": "fixed",
                             "right": "10px",
-                            "top": "40px",
+                            "top": "15px",
                             "width": "27px",
                           },
                           "bmCross": Object {
@@ -7317,7 +7317,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             "height": "23px",
                             "position": "fixed",
                             "right": "10px",
-                            "top": "40px",
+                            "top": "15px",
                             "width": "27px",
                             "zIndex": 1000,
                           }
@@ -7403,7 +7403,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 page="experiments"
               >
                 <div
-                  className="sc-AxjAm awKSx"
+                  className="sc-AxjAm eZRzfY"
                 >
                   <div
                     className="burger-bg"
@@ -7417,7 +7417,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                       page="experiments"
                     >
                       <div
-                        className="sc-AxirZ iGaWxx header"
+                        className="sc-AxirZ gqFuQr header"
                       >
                         <div
                           className="container"
@@ -7445,7 +7445,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             page="experiments"
                           >
                             <div
-                              className="sc-AxiKw hOQNuo"
+                              className="sc-AxiKw jtJoTX"
                             >
                               <Dropdown
                                 additionLabel="Add "
@@ -8148,7 +8148,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                 onClick={[Function]}
                               >
                                 <button
-                                  className="sc-AxhCb bVxjJp search-button"
+                                  className="sc-AxhCb dHCVpc search-button"
                                   onClick={[Function]}
                                 >
                                   <img
@@ -9712,11 +9712,11 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 className="page"
               >
                 <div
-                  className="sc-AxhUy bolzwM page"
+                  className="sc-AxhUy fCPmkz page"
                 >
                   <styled.div>
                     <div
-                      className="sc-AxgMl gXIWvf"
+                      className="sc-AxgMl YDVZs"
                     >
                       <DatasetHorizontalPlot
                         data={
@@ -9838,7 +9838,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                   ],
                                   "title": Object {
                                     "font": Object {
-                                      "family": "Robot Slab, serif",
+                                      "family": "arial",
                                       "size": 16,
                                     },
                                     "standoff": 10,
@@ -9996,7 +9996,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                   ],
                                   "title": Object {
                                     "font": Object {
-                                      "family": "Robot Slab, serif",
+                                      "family": "arial",
                                       "size": 16,
                                     },
                                     "standoff": 10,

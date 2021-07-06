@@ -11,7 +11,7 @@ import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import TableSection from './TableSection';
-import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
+import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
@@ -26,11 +26,11 @@ const SYNONYM_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-    'Synonyms',
-    'Tissue Type',
-    'Disease(s)',
-    'Link(s)',
-    'Plots',
+  {label: 'Cell Line Data', name: 'data'},
+  {label: 'Bar Plot', name: 'barPlot'},
+  {label: 'AAC (Compounds)', name: 'aacCompounds'},
+  {label: 'Drugs Summary', name: 'drugsSummary'},
+  {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
 
 /**
@@ -89,25 +89,6 @@ const formatLinkData = (data) => {
 };
 
 /**
- *
- * @param {String} link
- */
-const createSideLink = (link) => (
-    <Link
-        key={link}
-        className="link"
-        activeClass="selected"
-        to={`${SnakeCase(link)}`}
-        spy
-        smooth
-        duration={200}
-        offset={-400}
-    >
-        {link}
-    </Link>
-);
-
-/**
  * Parent component for the individual cell line page.
  *
  * @component
@@ -134,6 +115,9 @@ const IndivCellLines = (props) => {
         loaded: false,
     });
 
+    // A section to display on the page
+    const [display, setDisplay] = useState('data');
+
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
@@ -147,6 +131,18 @@ const IndivCellLines = (props) => {
     // destructuring the cellLine object.
     const { data } = cellLine;
 
+  /**
+   * 
+   * @param {String} link 
+   */
+  const createSideLink = (link, i) => (
+      <li key={i} className={display === link.name ? 'selected': undefined}>
+          <button type='button' onClick={() => setDisplay(link.name)}>
+              {link.label}
+          </button>
+      </li>
+  );
+
   // formatted data for synonyms annotation table
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
   const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [data.synonyms]);
@@ -159,40 +155,63 @@ const IndivCellLines = (props) => {
           : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-cellLines">
-                <h1>{data.name}</h1>
-                <StyledSidebar>
-                  {SIDE_LINKS.map((link) => createSideLink(link))}
-                </StyledSidebar>
-                <div className="container">
-                  <div className="content">
-                    <Element className="section" name="synonyms">
-                      <h3>Synonyms</h3>
-                      <Table columns={synonymColumns} data={synonymData} disablePagination />
-                    </Element>
-                    <Element className="section" name="tissue_type">
-                      <h3>Tissue Type</h3>
-                      <div className="text">{data.tissue.name}</div>
-                    </Element>
-                    <Element className="section" name="disease(s)">
-                      <h3>Disease(s)</h3>
-                      <div className="text">
-                        {diseaseData ? diseaseData.map((x) => <a key={x.key} target="_blank" href={x.source}>{x.name}</a>) : 'N/A'}
-                      </div>
-                    </Element>
-                    <Element className="section" name="link(s)">
-                      <h3>Link(s)</h3>
-                      <div className="text">
-                        {linkData ? (<a key={linkData.key} target="_blank" href={linkData.path}>{linkData.source}</a>) : ''}
-                      </div>
-                    </Element>
-                    <Element name="plots" className="section temp">
-                      <h3>Plots</h3>
-                      <PlotSection cellLine={({ id: data.id, name: data.name })} />
-                      <h3>Drugs Summary</h3>
-                      <TableSection cellLine={({ id: data.id, name: data.name })} />
-                      <h3>Molecular Profiling</h3>
-                      {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
-                    </Element>
+                <div className='heading'>
+                    <span className='title'>{data.name}</span>
+                    <span className='attributes'>
+                        Tissue Type:  
+                        <span className='value highlight'>
+                          {data.tissue.name}
+                        </span>
+                    </span>
+                </div>
+                <div className='wrapper'>
+                  <StyledSidebarList>
+                    {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                  </StyledSidebarList>
+                  <div className="container">
+                    <div className="content">
+                      {
+                        display === 'data' &&
+                        <React.Fragment>
+                          <Element className="section" name="synonyms">
+                            <div className='section-title'>Synonyms</div>
+                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                          </Element>
+                          <Element className="section" name="disease(s)">
+                            <div className='section-title'>Disease(s)</div>
+                            <div className="text">
+                              {diseaseData ? diseaseData.map((x) => <a key={x.key} target="_blank" href={x.source}>{x.name}</a>) : 'N/A'}
+                            </div>
+                          </Element>
+                          <Element className="section" name="link(s)">
+                            <div className='section-title'>Link(s)</div>
+                            <div className="text">
+                              {linkData ? (<a key={linkData.key} target="_blank" href={linkData.path}>{linkData.source}</a>) : ''}
+                            </div>
+                          </Element>
+                        </React.Fragment>
+                      }
+                      <Element>
+                        <PlotSection 
+                          display={display}
+                          cellLine={({ id: data.id, name: data.name })} 
+                        />
+                      </Element>
+                      {
+                        display === 'drugsSummary' &&
+                        <Element className="section">
+                          <div className='section-title'>Drugs Summary</div>
+                          <TableSection cellLine={({ id: data.id, name: data.name })} />
+                        </Element>
+                      }
+                      {
+                        display === 'molecularProfiling' &&
+                        <Element className="section">
+                          <div className='section-title'>Molecular Profiling</div>
+                          {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
+                        </Element>
+                      }
+                    </div>
                   </div>
                 </div>
               </StyledIndivPage>
