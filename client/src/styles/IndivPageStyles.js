@@ -4,8 +4,8 @@ import colors from './colors';
 const StyledIndivPage = styled.div`
   .heading {
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -2,11 +2,10 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import datasets from './datasets';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
@@ -16,13 +15,10 @@ import StyledWrapper from '../../../styles/utils';
 import { getDatasetQuery } from '../../../queries/dataset';
 
 const SIDE_LINKS = [
-  { label: 'Acronym', name: 'acronym' },
-  { label: 'Description', name: 'description' }, 
+  { label: 'Dataset Information', name: 'info' },
   { label: 'Resources', name: 'resources' },
-  { label: 'Publications', name: 'publications'},
   { label: 'Data type', name: 'datatype' },
-  { label: 'PharmacoGx', name: 'pharmacoGx' },
-  { label: 'Plots', name: 'plots' }
+  { label: 'Bar Plots', name: 'barPlots' }
 ];
 
 const DATATYPE_COLUMNS = [
@@ -110,7 +106,7 @@ const IndivDatasets = (props) => {
   });
 
   // A section to display on the page
-  const [display, setDisplay] = useState('synonyms');
+  const [display, setDisplay] = useState('info');
 
   // read dataset data from json file
   const datasetInfo = datasets[params.id];
@@ -153,12 +149,8 @@ const IndivDatasets = (props) => {
           : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-compounds">
-                <h1>{data[0].name}</h1>
                 <div className='heading'>
                     <span className='title'>{data[0].name}</span>
-                    <span className='attributes'>
-                        
-                    </span>
                 </div>
                 <div className='wrapper'>
                   <StyledSidebarList>
@@ -167,19 +159,32 @@ const IndivDatasets = (props) => {
                   <div className="container">
                     <div className="content">
                       {
-                        display === 'acronym' &&
-                        <Element className="section" name="acronym">
-                          <div className='section-title'>Acronym</div>
-                          {datasetInfo.acr_ref ? (<div className="text"><a href={datasetInfo.acr_ref}>{datasetInfo.acr}</a></div>)
-                            : (<div className="text">{datasetInfo.acr}</div>)}
-                        </Element>
-                      }
-                      {
-                        display === 'description' &&
-                        <Element className="section" name="description">
-                          <div className='section-title'>Description</div>
-                          <div className="text">{datasetInfo.des}</div>
-                        </Element>
+                        display === 'info' &&
+                        <React.Fragment>
+                          <Element className="section" name="acronym">
+                            <div className='section-title'>Acronym</div>
+                            {datasetInfo.acr_ref ? (<div className="text"><a href={datasetInfo.acr_ref}>{datasetInfo.acr}</a></div>)
+                              : (<div className="text">{datasetInfo.acr}</div>)}
+                          </Element>
+                          <Element className="section" name="description">
+                            <div className='section-title'>Description</div>
+                            <div className="text">{datasetInfo.des}</div>
+                          </Element>
+                          <Element className="section" name="publications">
+                            <div className='section-title'>Publications</div>
+                            <div className="text">{publications}</div>
+                          </Element>
+                          <Element className="section" name="pharmacogx">
+                            <div className='section-title'>PharmacoGx</div>
+                            <div className="text">
+                              <a href={pharmacoLink} target="_blank">
+                                PharmacoSet object for:
+                                {' '}
+                                {datasetInfo.name}
+                              </a>
+                            </div>
+                          </Element>
+                        </React.Fragment>
                       }
                       {
                         display === 'resources' &&
@@ -189,36 +194,15 @@ const IndivDatasets = (props) => {
                         </Element>
                       }
                       {
-                        <Element className="section" name="publications">
-                          <div className='section-title'>Publications</div>
-                          <div className="text">{publications}</div>
-                        </Element>
-                      }
-                      {
-                        display === 'datatypes' &&
+                        display === 'datatype' &&
                         <Element className="section" name="data_type">
                           <div className='section-title'>Data Types</div>
                           <Table pivotBy={['type']} columns={datatypeColumns} data={datatypeData} disablePagination />
                         </Element>
                       }
-                      { 
-                        display === 'pharmacoGx' &&
-                        <Element className="section" name="pharmacogx">
-                          <div className='section-title'>PharmacoGx</div>
-                          <div className="text">
-                            <a href={pharmacoLink} target="_blank">
-                              PharmacoSet object for:
-                              {' '}
-                              {datasetInfo.name}
-                            </a>
-                          </div>
-                        </Element>
-                      }
                       {
-                        display === 'plots' &&
                         <Element>
-                          <div className='section-title'>Plots</div>
-                          {/* <PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} /> */}
+                          <PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} display={display} />
                         </Element>
                       }
                     </div>

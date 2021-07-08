@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueExperimentsQuery } from '../../../queries/experiments';
@@ -64,40 +64,42 @@ const PlotSection = (props) => {
     const { loading, error, data } = useQuery(getSingleTissueExperimentsQuery, {
         variables: { tissueId: id },
     });
-    if (loading) {
-        return '';
-    }
+    const tissuesData = data ? data.experiments : [];
+    const [compoundsData, cellLinesData] = useMemo(() => generateCountPlotData(tissuesData), []);
+
     if (error) {
         return <p> Error! </p>;
     }
-    const [compoundsData, cellLinesData] = generateCountPlotData(
-        data.experiments
-    );
+
     return (
         <>
             {id ? (
                 <>
                     {
-                        display === 'barPlots' &&
-                        <PlotsWrapper>
-                            <DatasetHorizontalPlot
-                                data={cellLinesData}
-                                xaxis="# of cell lines"
-                                title={`Number of cell lines of ${name
-                                    .replaceAll(/_/g, ' ')
-                                    .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
-                            />
-                            <DatasetHorizontalPlot
-                                data={compoundsData}
-                                xaxis="# of compounds"
-                                title={`Number of compounds tested with ${name
-                                    .replaceAll(/_/g, ' ')
-                                    .replace(
-                                        /([A-Z][a-z])/g,
-                                        ' $1'
-                                    )} cell lines (per dataset)`}
-                            />
-                        </PlotsWrapper>
+                        display === 'barPlots' ?
+                            loading ? <Loading />
+                            :
+                            <PlotsWrapper>
+                                <DatasetHorizontalPlot
+                                    data={cellLinesData}
+                                    xaxis="# of cell lines"
+                                    title={`Number of cell lines of ${name
+                                        .replaceAll(/_/g, ' ')
+                                        .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
+                                />
+                                <DatasetHorizontalPlot
+                                    data={compoundsData}
+                                    xaxis="# of compounds"
+                                    title={`Number of compounds tested with ${name
+                                        .replaceAll(/_/g, ' ')
+                                        .replace(
+                                            /([A-Z][a-z])/g,
+                                            ' $1'
+                                        )} cell lines (per dataset)`}
+                                />
+                            </PlotsWrapper>
+                        :
+                        ''
                     }
                 </>
             ) : (

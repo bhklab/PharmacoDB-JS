@@ -12,6 +12,7 @@ const getDatasetCountsQuery = gql`
       cell_count
       experiment_count
       compound_tested_count
+      tissue_tested_count
     }
   }
 `;
