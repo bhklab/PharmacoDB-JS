@@ -76,9 +76,10 @@ const StyledIndivPage = styled.div`
   }
 
   .plot {
-    h4 {
+    h4, h5 {
       text-align: center;
       margin-top: 15px;
+      color: ${colors.dark_teal_heading};
     }
   }
 `;
