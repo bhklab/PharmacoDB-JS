@@ -81,14 +81,7 @@ const formatDrugSummaryData = (compounds) => {
  */
 const formatCellLineSummaryData = (cellLines) => {
   if (cellLines) {
-    return Object.values(cellLines).map((x) => ({
-      cellLine:
-        <div style={{ textAlign: 'center' }}>
-          {' '}
-          {x.cellLine}
-          {' '}
-        </div>,
-    }));
+    return Object.values(cellLines).map((x) => ({cellLine: x.cellLine}));
   }
   return null;
 };
@@ -123,9 +116,11 @@ const TableSection = (props) => {
       });
     }
   }, [queryData]);
+
   if (loading) {
     return '';
   }
+
   if (error) {
     return <p> Error! </p>;
   }
@@ -156,7 +151,7 @@ const TableSection = (props) => {
                     {' '}
                     cell line(s) of this tissue type are currently recorded in database.
                   </p>
-                  <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} />
+                  <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} center={true} />
                 </React.Fragment>
               }
               {

@@ -4,8 +4,8 @@ import colors from './colors';
 const StyledIndivPage = styled.div`
   .heading {
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -76,9 +76,10 @@ const StyledIndivPage = styled.div`
   }
 
   .plot {
-    h4 {
+    h4, h5 {
       text-align: center;
       margin-top: 15px;
+      color: ${colors.dark_teal_heading};
     }
   }
 `;

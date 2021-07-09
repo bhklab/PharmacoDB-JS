@@ -83,37 +83,49 @@ const PlotSection = (props) => {
   return (
     <>
       {
-        display === 'barplots' &&
-        <PlotsWrapper>
-          <DatasetHorizontalPlot
-            data={cellLinesData}
-            xaxis="# of cell lines"
-            title={`Number of cell lines tested with ${name} (per dataset)`}
-          />
-          <DatasetHorizontalPlot
-            data={tissuesData}
-            xaxis="# of tissues"
-            title={`Number of tissues tested with ${name} (per dataset)`}
-          />
-        </PlotsWrapper>
+        display === 'barplots' ?
+          loading ? <Loading />
+          :
+          <PlotsWrapper>
+            <DatasetHorizontalPlot
+              data={cellLinesData}
+              xaxis="# of cell lines"
+              title={`Number of cell lines tested with ${name} (per dataset)`}
+            />
+            <DatasetHorizontalPlot
+              data={tissuesData}
+              xaxis="# of tissues"
+              title={`Number of tissues tested with ${name} (per dataset)`}
+            />
+          </PlotsWrapper>
+        :
+        ''
       }
       {
-        display === 'aacCells' &&
-        <ProfileCellLine
-          compound={name}
-          data={experimentalData}
-          profileOptions={profileOptions}
-          datasetOptions={datasetOptions}
-        />
+        display === 'aacCells' ?
+          loading ? <Loading />
+          :
+          <ProfileCellLine
+            compound={name}
+            data={experimentalData}
+            profileOptions={profileOptions}
+            datasetOptions={datasetOptions}
+          />
+        :
+        ''
       }
       {
-        display === 'aacTissues' &&
-        <ProfileTissue
-          compound={name}
-          data={experimentalData}
-          profileOptions={profileOptions}
-          datasetOptions={datasetOptions}
-        />
+        display === 'aacTissues' ?
+          loading ? <Loading />
+          :
+          <ProfileTissue
+            compound={name}
+            data={experimentalData}
+            profileOptions={profileOptions}
+            datasetOptions={datasetOptions}
+          />
+        :
+        ''
       }
     </>
   );

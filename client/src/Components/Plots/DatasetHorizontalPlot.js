@@ -72,7 +72,7 @@ const DatasetHorizontalPlot = (props) => {
   const plotlyData = generatePlotlyData(data);
   const layout = {
     autoresize: true,
-    height: 530,
+    height: 400,
     margin: {
       t: 20,
       b: 50,
@@ -84,7 +84,7 @@ const DatasetHorizontalPlot = (props) => {
       title: {
         text: xaxis,
         font: {
-          size: 16,
+          size: 12,
           family: 'arial',
 
         },
@@ -97,7 +97,7 @@ const DatasetHorizontalPlot = (props) => {
   };
   return (
     <div className="plot">
-      <h4>{title}</h4>
+      <h5>{title}</h5>
       <Plot data={[plotlyData]} layout={layout} config={config} />
     </div>
   );

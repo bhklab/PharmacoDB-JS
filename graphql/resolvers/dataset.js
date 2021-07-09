@@ -145,10 +145,14 @@ const datasets = async (args, parent, info) => {
         // grab the datasets {id, name}.
         const datasets = await datasetQuery();
         // retrieves data if it was requested
-        let compound_count, cell_count, experiment_count;
+        let compound_count, cell_count, experiment_count, tissue_count;
         if (listOfFields.includes('compound_tested_count')) compound_count = await typeTestedCountGroupByDatasetQuery('compound');
         if (listOfFields.includes('cell_count')) cell_count = await cellLinesGroupByDatasetQuery();
         if (listOfFields.includes('experiment_count')) experiment_count = await typeTestedCountGroupByDatasetQuery('experiment');
+        if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
+
+        console.log(tissue_count);
+        
         // return the transformed data for this function.
         const data = datasets.map(dataset => {
             const {
@@ -163,6 +167,7 @@ const datasets = async (args, parent, info) => {
             if (listOfFields.includes('compound_tested_count')) output.compound_tested_count = compound_count[dataset_name].count;
             if (listOfFields.includes('cell_count')) output.cell_count = cell_count[dataset_name].count;
             if (listOfFields.includes('experiment_count')) output.experiment_count = experiment_count[dataset_name].count;
+            if (listOfFields.includes('tissue_tested_count')) output.tissue_tested_count = tissue_count[dataset_name].count;
             return output;
         });
         return data;
