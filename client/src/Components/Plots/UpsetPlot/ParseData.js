@@ -3,28 +3,38 @@ import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import UpsetPlot from './UpsetPlot';
 
-const datasets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const datasets = ['CCLE', 'CTRPV2', 'FIMM', 'gCSI', 'GDSC1000', 'GRAY', 'UHNBreast'];
 // create data for the upset plot.
-const data = {
+const dataset = {
     set1: {
-        keys: ['a', 'b', 'c'],
+        keys: ['CCLE', 'CTRPV2', 'FIMM'],
         values: ['x', 'y', 'z', 'd'],
+        count: 4,
     },
     set2: {
-        keys: ['a'],
+        keys: ['CCLE'],
         values: ['x'],
+        count: 1,
     },
     set3: {
-        keys: ['a', 'b'],
+        keys: ['CCLE', 'CTRPV2'],
         values: ['x', 'y', 'z'],
+        count: 3,
     },
     set4: {
-        keys: ['a', 'c'],
+        keys: ['CCLE', 'FIMM'],
         values: ['x', 'y', 'd'],
+        count: 3,
     },
     set5: {
-        keys: ['b', 'c'],
-        values: ['x', 'y', 'z', 'd'],
+        keys: ['CTRPV2', 'FIMM'],
+        values: ['x', 'y', 'z', 'd', 'p'],
+        count: 5,
+    },
+    set6: {
+        keys: ['CTRPV2', 'FIMM'],
+        values: ['x', 'y', 'z', 'd', 'p'],
+        count: 5,
     },
 }
 
@@ -58,7 +68,7 @@ const ParseData = () => {
     }
 
     return (
-        data ? <UpsetPlot data={data} datasets={datasets} /> : ''
+        data ? <UpsetPlot data={dataset} datasets={datasets} /> : ''
     )
 };
 
