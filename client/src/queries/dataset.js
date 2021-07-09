@@ -74,10 +74,21 @@ const getDatasetCellLinesQuery = gql`
   }
 `;
 
+const getDatasetCompoundQuery = gql`
+  query getDatasetCompoundQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      compounds_tested
+    }
+  }
+`;
+
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
-  getDatasetCellLinesQuery
+  getDatasetCellLinesQuery,
+  getDatasetCompoundQuery
 };

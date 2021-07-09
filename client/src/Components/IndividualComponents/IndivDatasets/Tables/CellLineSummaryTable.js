@@ -23,7 +23,7 @@ const CellLineSummaryTable = (props) => {
     });
     const cellLines = useMemo(() => parseTableData(data, dataset.id), [data]);
 
-    const CELL_LINE_SUMMARY_COLUMNS = [
+    const columns = [
         {
           Header: `All cell lines tested in ${dataset.name}`,
           accessor: 'cellLine',
@@ -36,7 +36,7 @@ const CellLineSummaryTable = (props) => {
                 loading ?
                 <Loading />
                 :
-                <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={cellLines} center={true} />
+                <Table columns={columns} data={cellLines} center={true} />
             }
             {
                 error && <p>An error occurred</p>

@@ -10,6 +10,7 @@ import datasets from './datasets';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CellLineSummaryTable from './Tables/CellLineSummaryTable';
+import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
 
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
@@ -21,7 +22,7 @@ const SIDE_LINKS = [
   { label: 'Data type', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
   { label: 'Summary Cell Lines', name: 'cellLines' },
-  { label: 'Summary Drugs', name: 'drugs' },
+  { label: 'Summary Compounds', name: 'compounds' },
 ];
 
 const DATATYPE_COLUMNS = [
@@ -113,7 +114,7 @@ const IndivDatasets = (props) => {
 
   // read dataset data from json file
   const datasetInfo = datasets[params.id];
-  
+
   // to set the state on the change of the data.
   useEffect(() => {
     if (queryData !== undefined) {
@@ -213,6 +214,12 @@ const IndivDatasets = (props) => {
                         display === 'cellLines' &&
                         <Element className="section" name="cellLines">
                           <CellLineSummaryTable dataset={({ id: datasetInfo.id, name: datasetInfo.name })} />
+                        </Element>
+                      }
+                      {
+                        display === 'compounds' &&
+                        <Element className="section" name="cellLines">
+                          <CompoundsSummaryTable dataset={({ id: datasetInfo.id, name: datasetInfo.name })} />
                         </Element>
                       }
                     </div>
