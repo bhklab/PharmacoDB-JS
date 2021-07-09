@@ -64,9 +64,20 @@ const getCellLinesGroupedByDatasetQuery = gql`
   }
 `;
 
+const getDatasetCellLinesQuery = gql`
+  query getDatasetCellLinesQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      cells_tested
+    }
+  }
+`;
+
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
+  getDatasetCellLinesQuery
 };

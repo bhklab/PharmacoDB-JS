@@ -39,8 +39,9 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} columns - an array of table columns.
  * @param {Array} data - an array of data for the table.
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
+ * @param {boolean} center - a boolean value used to center cell content (used for sing-column tables)
  */
-const Table = ({ columns, data, disablePagination = false }) => {
+const Table = ({ columns, data, disablePagination = false, center = false }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -126,10 +127,19 @@ const Table = ({ columns, data, disablePagination = false }) => {
         </thead>
         <tbody {...getTableBodyProps()}>
           {page.map((row) => {
+            console.log(row.cells);
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => <td {...cell.getCellProps()}>{cell.render('Cell')}</td>)}
+                {
+                  row.cells.map(
+                    (cell) => (
+                      <td className={center ? 'center' : ''}{...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  )
+                }
               </tr>
             );
           })}
