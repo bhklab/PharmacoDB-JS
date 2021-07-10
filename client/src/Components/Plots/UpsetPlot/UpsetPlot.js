@@ -5,7 +5,10 @@ import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
 
 // bar rectangle width.
-const BAR_WIDTH = 30;
+const BAR_WIDTH = 20;
+
+// circle radius.
+const CIRCLE_RADIUS = 10;
 
 // margin for the svg element.
 const margin = {
@@ -36,7 +39,7 @@ const yScale = (min = 0, max) => d3.scaleLinear()
  */
 const xScale = (min = 0, max) => d3.scaleLinear()
     .domain([min, max])
-    .range([0, max * (BAR_WIDTH * 1.5)])
+    .range([0, max * (BAR_WIDTH * 1.75)])
     .nice();
 
 /**
@@ -66,14 +69,22 @@ const xAxis = (svg, scale) => svg
  * @param {scale} Object - y axis scale.
  */
 const appendRectangles = (svg, data, scale) => {
+    // get the data object keys.
     const keys = Object.keys(data);
+    // for each key append rectangle and text.
     keys.forEach((key, i) => {
         svg.append('rect')
             .attr('height', height / 2 - scale(data[key].count))
             .attr('width', BAR_WIDTH)
-            .attr('x', `${(margin.left * 1.5) + (i * (BAR_WIDTH + 10))}`)
+            .attr('x', `${(margin.left * 1.5) + (i * (BAR_WIDTH + 10) + 10)}`)
             .attr('y', scale(data[key].count))
             .attr('fill', `${colors.dark_teal_heading}`)
+            .on('mouseover', (e) => console.log(e))
+
+        svg.append('text')
+            .attr('x', `${(margin.left * 1.5) + (i * (BAR_WIDTH + 10) + ((2 * BAR_WIDTH) / 3))}`)
+            .attr('y', scale(data[key].count) - 5)
+            .text(`${data[key].count}`)
     })
 };
 
@@ -99,23 +110,35 @@ const circleAxis = (svg, datasets) => {
  * @param {number} length - length of the data.
  */
 const upsetCircle = (svg, data, datasets, length) => {
+    // data keys.
     const dataKeys = Object.keys(data);
+
+    // loop and set the circles.
     for (let i = 0; i < length; i++) {
         for (let j = 0; j < datasets.length; j++) {
             svg.append('circle')
                 .attr('transform', `translate(${margin.left * 1.9}, ${height / 2 + 30})`)
                 .style('fill', data[dataKeys[i]].keys.includes(datasets[j]) ? `${colors.dark_teal_heading}` : `${colors.silver}`)
-                .attr("r", 10)
-                .attr("cx", i * (BAR_WIDTH + 10))
+                .attr("r", CIRCLE_RADIUS)
+                .attr("cx", i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
                 .attr("cy", j * 30);
         }
+
+        svg.append('line')
+            .attr('transform', `translate(${margin.left * 1.9}, ${height / 2 + 30})`)
+            .attr('x1', i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
+            .attr('y1', datasets.indexOf(data[dataKeys[i]].keys[0]) * 30)
+            .attr('x2', i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
+            .attr('y2', datasets.indexOf(data[dataKeys[i]].keys[data[dataKeys[i]].keys.length - 1]) * 30)
+            .style('stroke', `${colors.dark_teal_heading}`)
+            .attr('stroke-width', 4);
     }
 };
 
 /**
- * Main function that will create 
- * @param {Object} svg - svg element.
- * 
+ * Main function to create upset plot.
+ * @param {Object} data - input data object.
+ * @param {Array} datasets - array of datasets.
  */
 const createUpsetPlot = (data, datasets) => {
     // get the max total value in the data object.
