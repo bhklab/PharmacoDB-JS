@@ -49,6 +49,7 @@ const xScale = (min = 0, max) => d3.scaleLinear()
  */
 const yAxis = (svg, scale) => svg
     .append('g')
+    .attr('id', 'y-axis')
     .attr('transform', `translate(${margin.left * 1.5}, 0)`)
     .call(d3.axisLeft(scale));
 
@@ -59,6 +60,7 @@ const yAxis = (svg, scale) => svg
  */
 const xAxis = (svg, scale) => svg
     .append('g')
+    .attr('id', 'x-axis')
     .attr('transform', `translate(${margin.left * 1.5}, ${height / 2})`)
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
 
@@ -71,19 +73,25 @@ const xAxis = (svg, scale) => svg
 const appendRectangles = (svg, data, scale) => {
     // get the data object keys.
     const keys = Object.keys(data);
+
     // for each key append rectangle and text.
+    const rectangles = svg.append('g')
+        .attr('class', 'bar-rectangles');
+
     keys.forEach((key, i) => {
-        svg.append('rect')
+        rectangles.append('rect')
             .attr('height', height / 2 - scale(data[key].count))
             .attr('width', BAR_WIDTH)
             .attr('x', `${(margin.left * 1.5) + (i * (BAR_WIDTH + 10) + 10)}`)
             .attr('y', scale(data[key].count))
+            .attr('id', `rect-${key}`)
             .attr('fill', `${colors.dark_teal_heading}`)
             .on('mouseover', (e) => console.log(e))
 
-        svg.append('text')
+        rectangles.append('text')
             .attr('x', `${(margin.left * 1.5) + (i * (BAR_WIDTH + 10) + ((2 * BAR_WIDTH) / 3))}`)
             .attr('y', scale(data[key].count) - 5)
+            .attr('id', `text-${key}`)
             .text(`${data[key].count}`)
     })
 };
@@ -94,10 +102,14 @@ const appendRectangles = (svg, data, scale) => {
  * @param {Array} datasets - array of the datasets.
  */
 const circleAxis = (svg, datasets) => {
+    const circleText = svg.append('g')
+        .attr('class', 'circle-axis');
+
     for (let i = 0; i < datasets.length; i++) {
-        svg.append('text')
-            .attr("text-anchor", "end")
+        circleText.append('text')
+            .attr('text-anchor', 'end')
             .attr('transform', `translate(${margin.left * 1.5}, ${height / 2 + ((i + 1) * 31)})`)
+            .attr('id', `text-circle-${datasets[i]}`)
             .text(`${datasets[i]}`);
     }
 };
@@ -113,25 +125,35 @@ const upsetCircle = (svg, data, datasets, length) => {
     // data keys.
     const dataKeys = Object.keys(data);
 
+    const circles = svg.append('g')
+        .attr('class', 'circles');
+
     // loop and set the circles.
     for (let i = 0; i < length; i++) {
+        // get set.
+        const set = data[dataKeys[i]];
+
         for (let j = 0; j < datasets.length; j++) {
-            svg.append('circle')
+            // append circles.
+            circles.append('circle')
                 .attr('transform', `translate(${margin.left * 1.9}, ${height / 2 + 30})`)
-                .style('fill', data[dataKeys[i]].keys.includes(datasets[j]) ? `${colors.dark_teal_heading}` : `${colors.silver}`)
-                .attr("r", CIRCLE_RADIUS)
-                .attr("cx", i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
-                .attr("cy", j * 30);
+                .style('fill', set.keys.includes(datasets[j]) ? `${colors.dark_teal_heading}` : `${colors.silver}`)
+                .attr('r', CIRCLE_RADIUS)
+                .attr('cx', i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
+                .attr('cy', j * 30)
+                .attr('class', `circle-set-${i}`);
         }
 
-        svg.append('line')
+        // append line to the upset circles.
+        circles.append('line')
             .attr('transform', `translate(${margin.left * 1.9}, ${height / 2 + 30})`)
             .attr('x1', i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
-            .attr('y1', datasets.indexOf(data[dataKeys[i]].keys[0]) * 30)
+            .attr('y1', datasets.indexOf(set.keys[0]) * 30)
             .attr('x2', i * (BAR_WIDTH + 10) + BAR_WIDTH / 4)
-            .attr('y2', datasets.indexOf(data[dataKeys[i]].keys[data[dataKeys[i]].keys.length - 1]) * 30)
+            .attr('y2', datasets.indexOf(set.keys[set.keys.length - 1]) * 30)
             .style('stroke', `${colors.dark_teal_heading}`)
-            .attr('stroke-width', 4);
+            .attr('stroke-width', 3)
+            .attr('class', `line-set-${i}`);;
     }
 };
 
@@ -141,14 +163,23 @@ const upsetCircle = (svg, data, datasets, length) => {
  * @param {Array} datasets - array of datasets.
  */
 const createUpsetPlot = (data, datasets) => {
-    // get the max total value in the data object.
-    const maxCount = Math.max(...Object.keys(data).map(el => data[el].count));
-    // get the length of the data object.
-    const dataLength = Object.keys(data).length;
+
+    // sort the data based on the count.
+    const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
+    // sorted data.
+    const sortedData = {};
+    sortedEnteries.forEach((entry) => {
+        sortedData[entry[0]] = entry[1];
+    });
+
+    // get the max total value in the sortedData object.
+    const maxCount = Math.max(...Object.keys(sortedData).map(el => sortedData[el].count));
+    // get the length of the sortedData object.
+    const sortedDataLength = Object.keys(sortedData).length;
     // svg canvas.
     const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot' })
     // create scale for x axis.
-    const scaleXAxis = xScale(0, dataLength);
+    const scaleXAxis = xScale(0, sortedDataLength);
     // create scale for y axis.
     const scaleYAxis = yScale(0, maxCount);
     // create x axis.
@@ -156,9 +187,9 @@ const createUpsetPlot = (data, datasets) => {
     // create y axis.
     yAxis(svg, scaleYAxis);
     // append rectangle for the bar chart.
-    appendRectangles(svg, data, scaleYAxis);
+    appendRectangles(svg, sortedData, scaleYAxis);
     // upset circle.
-    upsetCircle(svg, data, datasets, dataLength);
+    upsetCircle(svg, sortedData, datasets, sortedDataLength);
     // append text to the circles as axis.
     circleAxis(svg, datasets);
 };
