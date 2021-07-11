@@ -33,8 +33,18 @@ const dataset = {
     },
     set6: {
         keys: ['CTRPV2', 'FIMM'],
-        values: ['x', 'y', 'z', 'd', 'p'],
-        count: 5,
+        values: ['x', 'y'],
+        count: 2,
+    },
+    set7: {
+        keys: ['CTRPV2', 'UHNBreast'],
+        values: ['x', 'y', 'z'],
+        count: 3,
+    },
+    set8: {
+        keys: ['CTRPV2', 'GRAY'],
+        values: ['x', 'y', 'z', 'd'],
+        count: 4,
     },
 }
 
