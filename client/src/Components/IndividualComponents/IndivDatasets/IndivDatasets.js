@@ -19,7 +19,7 @@ import { getDatasetQuery } from '../../../queries/dataset';
 const SIDE_LINKS = [
   { label: 'Dataset Information', name: 'info' },
   { label: 'Resources', name: 'resources' },
-  { label: 'Data type', name: 'datatype' },
+  { label: 'Data types', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
   { label: 'Summary Cell Lines', name: 'cellLines' },
   { label: 'Summary Compounds', name: 'compounds' },
@@ -29,17 +29,23 @@ const DATATYPE_COLUMNS = [
   {
     Header: () => <div style={{ textAlign: 'left' }}>Data Type</div>,
     accessor: 'type',
-  }, {
+    disableSortBy: true,
+    merged: true
+  }, 
+  {
     Header: <div style={{ textAlign: 'left' }}>Assay/Platform</div>,
     accessor: 'platform',
+    disableSortBy: true
   },
   {
     Header: <div style={{ textAlign: 'left' }}>Raw</div>,
     accessor: 'raw',
+    disableSortBy: true
   },
   {
     Header: <div style={{ textAlign: 'left' }}>Processed</div>,
     accessor: 'processed',
+    disableSortBy: true
   },
 ];
 
@@ -202,7 +208,12 @@ const IndivDatasets = (props) => {
                         display === 'datatype' &&
                         <Element className="section" name="data_type">
                           <div className='section-title'>Data Types</div>
-                          <Table pivotBy={['type']} columns={datatypeColumns} data={datatypeData} disablePagination />
+                          <Table 
+                            pivotBy={['type']} 
+                            columns={datatypeColumns} 
+                            data={datatypeData} 
+                            disablePagination 
+                          />
                         </Element>
                       }
                       {
