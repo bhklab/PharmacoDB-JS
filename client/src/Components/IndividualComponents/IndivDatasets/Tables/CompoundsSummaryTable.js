@@ -27,6 +27,7 @@ const CompoundsSummaryTable = (props) => {
         {
           Header: `All compounds lines tested in ${dataset.name}`,
           accessor: 'compound',
+          center: true
         }
     ];
 

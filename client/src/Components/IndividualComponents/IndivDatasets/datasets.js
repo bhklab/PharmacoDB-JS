@@ -276,5 +276,43 @@ const datasets = {
       },
     ],
   },
+  8: {
+    id: 8,
+    name: 'gCSI',
+    acr: 'The Genentech Cell Line Screening Initiative (gCSI)',
+    acr_ref: '',
+    des: 'The Genentech Cell Line Screening Initiative (gCSI) was undertaken independently of CCLE and GDSC to to address the concerns of inconsistencies across large-scale pharmacogenomic studies. In gCSI, Genentech independently characterized the response of 410 cancer cell lines to a subset ​agents tested by GDSC and CCLE. Genentech also evaluated three specific aspects of the screening protocols that are relevant to measured drug response: readout of cell viability (metabolic versus DNA content), seeding density strategy, and cell culture media conditions.',
+    resource: [
+      { id: '0', name: 'compareDrugScreens package', urlextern: 'http://research-pub.gene.com/gCSI-cellline-data' },
+      { id: '1', name: 'RNA-seq data', urlextern: 'https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2706/' },
+      { id: '2', name: 'RNA-seq and SNP array data', urlextern: 'https://ega-archive.org/studies/EGAS00001000610' },
+    ],
+    pub: [
+      {
+        id: '0',
+        title: 'A comprehensive transcriptional portrait of human cancer cell lines, Nature Biotechnology 2015',
+        url: 'https://www.nature.com/articles/nbt.3080',
+      },
+      {
+        id: '1',
+        title: 'Reproducible pharmacogenomic profiling of cancer cell line panels, Nature 2016',
+        url: 'https://www.nature.com/articles/nature17987',
+      },
+    ],
+    dtype: [
+      {
+        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AUC', 'IC50'],
+      },
+      {
+        type: 'mRNA expression', platform: 'Illumina RNA-seq', raw: 'Yes', processed: ['VSN/DESeq counts', 'RPKM'],
+      },
+      {
+        type: 'DNA Copy Number', platform: 'Illumina 2.5M SNP', raw: 'Yes', processed: ['PICNIC'],
+      },
+      {
+        type: 'DNA Mutation', platform: 'Sanger', raw: 'No', processed: ['CSV'],
+      },
+    ],
+  },
 };
 export default datasets;

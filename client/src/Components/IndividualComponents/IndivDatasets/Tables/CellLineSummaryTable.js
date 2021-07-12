@@ -27,6 +27,7 @@ const CellLineSummaryTable = (props) => {
         {
           Header: `All cell lines tested in ${dataset.name}`,
           accessor: 'cellLine',
+          center: true
         },
     ];
 
