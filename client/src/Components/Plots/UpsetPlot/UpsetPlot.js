@@ -52,6 +52,7 @@ const yAxis = (svg, scale) => svg
  * Creates x axis.
  * @param {Object} svg - svg canvas object.
  * @param {Object} scale - scale for creating the x axis.
+ * @param {number} height - height of svg canvas.
  */
 const xAxis = (svg, scale, height) => svg
     .append('g')
@@ -64,6 +65,7 @@ const xAxis = (svg, scale, height) => svg
  * @param {Object} svg - svg canvas object.
  * @param {data} Object - data input object.
  * @param {scale} Object - y axis scale.
+ * @param {number} height - height of svg canvas.
  */
 const appendRectangles = (svg, data, scale, height) => {
     // get the data object keys.
@@ -95,6 +97,7 @@ const appendRectangles = (svg, data, scale, height) => {
  * 
  * @param {Object} svg - svg canvas object.
  * @param {Array} datasets - array of the datasets.
+ * @param {number} height - height of svg canvas.
  */
 const circleAxis = (svg, datasets, height) => {
     const circleText = svg.append('g')
@@ -103,7 +106,7 @@ const circleAxis = (svg, datasets, height) => {
     for (let i = 0; i < datasets.length; i++) {
         circleText.append('text')
             .attr('text-anchor', 'end')
-            .attr('transform', `translate(${margin.left * 1.5}, ${height / 2 + ((i + 1) * CIRCLE_RADIUS * 3)})`)
+            .attr('transform', `translate(${margin.left * 1.5}, ${height / 2 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
             .attr('id', `text-circle-${datasets[i]}`)
             .text(`${datasets[i]}`);
     }
@@ -115,6 +118,7 @@ const circleAxis = (svg, datasets, height) => {
  * @param {Object} data - input data object.
  * @param {Array} datasets - datasets array.
  * @param {number} length - length of the data.
+ * @param {number} height - height of svg canvas.
  */
 const upsetCircle = (svg, data, datasets, length, height) => {
     // data keys.
