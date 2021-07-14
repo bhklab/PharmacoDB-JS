@@ -93,8 +93,58 @@ const getSingleTissueExperimentsQuery = gql`
   }
 `;
 
+/**
+ * @param { Number } tissueId - takes the tissue id as the argument to the query.
+ * @returns - Query returns celllines used in all experiments for the given tissue.
+ */
+const getSingleTissueCellLinesQuery = gql`
+query getSingleTissueCellLines($tissueId: Int!) {
+  experiments(tissueId: $tissueId) {
+    id
+    cell_line {
+      id
+      name
+    }
+  }
+}
+`;
+
+/**
+ * @param { Number } tissueId - takes the tissue id as the argument to the query.
+ * @returns - Query returns compounds used in all experiments for the given tissue.
+ */
+ const getSingleTissueCompoundsQuery = gql`
+ query getSingleTissueCompounds($tissueId: Int!) {
+   experiments(tissueId: $tissueId) {
+     id
+     compound {
+       id
+       name
+     }
+     dataset {
+      id
+      name
+    }
+   }
+ }
+ `;
+
+const getSingleGeneExperimentsQuery = gql`
+  query getSingleGeneExperiments($geneId: Int!) {
+    gene_drugs(geneId: $geneId, all: true) {
+      dataset {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export {
   getSingleCompoundExperimentsQuery,
   getSingleCellLineExperimentsQuery,
   getSingleTissueExperimentsQuery,
+  getSingleTissueCellLinesQuery,
+  getSingleTissueCompoundsQuery,
+  getSingleGeneExperimentsQuery
 };

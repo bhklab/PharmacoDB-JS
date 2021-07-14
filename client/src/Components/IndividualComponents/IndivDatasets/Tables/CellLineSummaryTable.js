@@ -1,14 +1,15 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useMemo } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useMemo, useEffect, useState } from 'react';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getDatasetCellLinesQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 
 const parseTableData = (data, datasetId) => {
-    if (typeof data !== 'undefined') {
+    console.log(datasetId);
+    if (data && typeof data !== 'undefined') {
         let cells = data.dataset.find(item => item.id === datasetId).cells_tested;
         return cells.map(item => ({cellLine: item}));
     }
@@ -18,8 +19,9 @@ const parseTableData = (data, datasetId) => {
 const CellLineSummaryTable = (props) => {
     const { dataset } = props;
 
-    const { loading, error, data } = useQuery(getDatasetCellLinesQuery, {
-        variables: { datasetId: dataset.id }
+    const {loading, error, data} = useQuery(getDatasetCellLinesQuery, {
+        variables: { datasetId: dataset.id },
+        fetchPolicy: "network-only"
     });
     const cellLines = useMemo(() => parseTableData(data, dataset.id), [data]);
 

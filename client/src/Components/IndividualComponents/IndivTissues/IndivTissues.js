@@ -2,15 +2,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
+// import TableSection from './TableSection';
+import CellLineSummaryTable from './Tables/CellLineSummaryTable';
+import DrugSummaryTable from './Tables/DrugSummaryTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -153,18 +154,24 @@ const createSideLink = (link, i) => (
                                     <Table columns={annotationColumns} data={annotationData} disablePagination />
                                 </Element>
                             }
-                            <Element>
-                                <PlotSection 
-                                    display={display}
-                                    tissue={({ id: data.id, name: formatName(data.name) })} 
-                                />
-                            </Element>
-                            <Element>
-                                <TableSection 
-                                    display={display}
-                                    tissue={({ id: data.id, name: formatName(data.name) })} 
-                                />
-                            </Element>
+                            {
+                                display === 'barPlots' &&
+                                <Element>
+                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'cellLineSummary' &&
+                                <Element>
+                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'drugSummary' &&
+                                <Element>
+                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
                         </div>
                     </div>
                 </div>

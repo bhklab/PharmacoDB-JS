@@ -19,7 +19,8 @@ const CompoundsSummaryTable = (props) => {
     const { dataset } = props;
 
     const { loading, error, data } = useQuery(getDatasetCompoundQuery, {
-        variables: { datasetId: dataset.id }
+        variables: { datasetId: dataset.id },
+        fetchPolicy: "network-only"
     });
     const compounds = useMemo(() => parseTableData(data, dataset.id), [data]);
 
