@@ -85,11 +85,13 @@ const appendRectangles = (svg, data, scale, height) => {
             .attr('fill', `${colors.dark_teal_heading}`)
             .on('mouseover', (e) => console.log(e))
 
-        // rectangles.append('text')
-        //     .attr('x', `${(margin.left * 1.9) + (i * CIRCLE_RADIUS * 3)}`)
-        //     .attr('y', scale(data[key].count) - 5)
-        //     .attr('id', `text-${key}`)
-        //     .text(`${data[key].count}`)
+        rectangles.append('text')
+            .attr('x', `${(margin.left * 1.8) + (i * CIRCLE_RADIUS * 3)}`)
+            .attr('y', scale(data[key].count) - 5)
+            .attr('id', `text-${key}`)
+            .text(`${data[key].count}`)
+            .attr('font-size', 10)
+            .attr('font-weight', 600);
     })
 };
 
@@ -163,7 +165,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  */
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
-    const width = CIRCLE_RADIUS * 3.5 * Object.keys(data).length;
+    const width = CIRCLE_RADIUS * 3.1 * Object.keys(data).length;
     const height = 700 - margin.top - margin.bottom;
 
     // sort the data based on the count.
