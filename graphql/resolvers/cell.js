@@ -118,7 +118,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         if (listOfFields.includes('tissue')) query = query.join('tissue as t', 'c.tissue_id', 't.id');
         // if the query contains the dataset field, then make a join.
         if (listOfFields.includes('dataset')) query = query.join('dataset_cell as dc', 'dc.cell_id', 'c.id')
-            .join('dataset as d', 'dc.dataset_id', 'd.id');
+            .join('dataset as d', 'dc.dataset_id', 'd.id').orderBy('d.id');
 
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
@@ -126,7 +126,6 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         // call to grab the cell lines.
         let cell_lines = await query;
         // return the transformed data.
-        console.log(transformCellLines(cell_lines));
         return transformCellLines(cell_lines);
     } catch (err) {
         console.log(err);

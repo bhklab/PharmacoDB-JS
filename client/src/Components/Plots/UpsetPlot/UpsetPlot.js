@@ -5,14 +5,14 @@ import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
 
 // circle radius.
-const CIRCLE_RADIUS = 10;
+const CIRCLE_RADIUS = 8;
 
 // margin for the svg element.
 const margin = {
-    top: 20,
+    top: 80,
     right: 20,
-    bottom: 80,
-    left: 60
+    bottom: 0,
+    left: 30
 };
 
 /**
@@ -85,11 +85,11 @@ const appendRectangles = (svg, data, scale, height) => {
             .attr('fill', `${colors.dark_teal_heading}`)
             .on('mouseover', (e) => console.log(e))
 
-        rectangles.append('text')
-            .attr('x', `${(margin.left * 1.9) + (i * CIRCLE_RADIUS * 3)}`)
-            .attr('y', scale(data[key].count) - 5)
-            .attr('id', `text-${key}`)
-            .text(`${data[key].count}`)
+        // rectangles.append('text')
+        //     .attr('x', `${(margin.left * 1.9) + (i * CIRCLE_RADIUS * 3)}`)
+        //     .attr('y', scale(data[key].count) - 5)
+        //     .attr('id', `text-${key}`)
+        //     .text(`${data[key].count}`)
     })
 };
 
@@ -163,8 +163,8 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  */
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
-    const width = CIRCLE_RADIUS * 5 * datasets.length;
-    const height = 750 - margin.top - margin.bottom;
+    const width = CIRCLE_RADIUS * 3.5 * Object.keys(data).length;
+    const height = 700 - margin.top - margin.bottom;
 
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
@@ -207,12 +207,15 @@ const createUpsetPlot = (data, datasets) => {
  * )
  */
 const UpsetPlot = ({ data, datasets }) => {
+    console.log(data, datasets);
     useEffect(() => {
         // create upset plot.
         createUpsetPlot(data, datasets);
     })
     return (
-        <div id='upsetplot' />
+        <div style={{ width: 800, overflow: 'auto' }} >
+            <div id='upsetplot' />
+        </div>
     )
 };
 
