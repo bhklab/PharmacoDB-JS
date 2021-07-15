@@ -3,7 +3,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
+import { getCellLinesQuery } from '../../../queries/cell';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
@@ -49,10 +49,9 @@ const PlotSection = (props) => {
     const { id, name } = cellLine;
 
     const { loading, error, data } = useQuery(
-        getSingleCellLineExperimentsQuery,
-        {
-            variables: { cellLineId: id },
-        }
+        getCellLinesQuery, {
+            fetchPolicy: "network-only",
+            }
     );
     if (loading) {
         return <Loading />;
@@ -60,6 +59,11 @@ const PlotSection = (props) => {
     if (error) {
         return <p> Error! </p>;
     }
+    // if (!loading) console.log(data.cell_lines);
+    let count = 0
+    data.cell_lines.forEach((x)=>
+        (x["dataset"]["name"]==="CCLE") ? count +=1 : count = count)
+    console.log(count)
     const [compoundsData] = generateCountPlotData(data.experiments);
     return (
         <>
