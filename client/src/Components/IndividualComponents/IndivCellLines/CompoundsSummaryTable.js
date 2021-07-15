@@ -25,17 +25,6 @@ const DRUG_SUMMARY_COLUMNS = [
     },
 ];
 
-const MOLECULAR_PROFILING_COLUMNS = [
-    {
-        Header: 'Datasets',
-        accessor: 'name',
-    },
-    {
-        Header: 'rna',
-        accessor: 'tissue',
-    },
-];
-
 /**
  * Format data for the synonyms table
  * @param {Array} data synonym data from the cell line API
@@ -79,7 +68,7 @@ const formatDrugSummaryData = (data) => {
  *   <PlotSection/>
  * )
  */
-const TableSection = (props) => {
+const CompoundsSummaryTable = (props) => {
     const { cellLine } = props;
     const { id } = cellLine;
     const {
@@ -94,6 +83,7 @@ const TableSection = (props) => {
         data: {},
         loaded: false,
     });
+    console.log(experiment);
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
@@ -104,26 +94,25 @@ const TableSection = (props) => {
         }
     }, [queryData]);
     return (
-        <>
-            {queryData !== undefined ? (
-                <>
-                    <Table
-                        columns={DRUG_SUMMARY_COLUMNS}
-                        data={formatDrugSummaryData(queryData)}
-                    />
-                </>
-            ) : (
-                <p> No data is available for this table. </p>
-            )}
-        </>
+        <React.Fragment>
+            {
+                loading ?
+                    <Loading />
+                    :
+                    <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(queryData)} center={true} />
+            }
+            {
+                error && <p>An error occurred</p>
+            }
+        </React.Fragment>
     );
 };
 
-TableSection.propTypes = {
+CompoundsSummaryTable.propTypes = {
     cellLine: PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string,
     }).isRequired,
 };
 
-export default TableSection;
+export default CompoundsSummaryTable;

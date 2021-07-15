@@ -10,7 +10,8 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
+import CompoundsSummaryTable from './CompoundsSummaryTable';
+import MolecularProfilingTable from './MolecularProfilingTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -132,8 +133,8 @@ const IndivCellLines = (props) => {
     const { data } = cellLine;
 
   /**
-   * 
-   * @param {String} link 
+   *
+   * @param {String} link
    */
   const createSideLink = (link, i) => (
       <li key={i} className={display === link.name ? 'selected': undefined}>
@@ -158,7 +159,7 @@ const IndivCellLines = (props) => {
                 <div className='heading'>
                     <span className='title'>{data.name}</span>
                     <span className='attributes'>
-                        Tissue Type:  
+                        Tissue Type:
                         <span className='value highlight'>
                           {data.tissue.name}
                         </span>
@@ -192,22 +193,23 @@ const IndivCellLines = (props) => {
                         </React.Fragment>
                       }
                       <Element>
-                        <PlotSection 
+                        <PlotSection
                           display={display}
-                          cellLine={({ id: data.id, name: data.name })} 
+                          cellLine={({ id: data.id, name: data.name })}
                         />
                       </Element>
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
                           <div className='section-title'>Drugs Summary</div>
-                          <TableSection cellLine={({ id: data.id, name: data.name })} />
+                          <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }
                       {
                         display === 'molecularProfiling' &&
                         <Element className="section">
                           <div className='section-title'>Molecular Profiling</div>
+                            <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
                           {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
                         </Element>
                       }
