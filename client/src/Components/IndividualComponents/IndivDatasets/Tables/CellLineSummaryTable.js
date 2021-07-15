@@ -8,7 +8,7 @@ import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 
 const parseTableData = (data, datasetId) => {
-    console.log(datasetId);
+    console.log(data);
     if (data && typeof data !== 'undefined') {
         let cells = data.dataset.find(item => item.id === datasetId).cells_tested;
         return cells.map(item => ({cellLine: item}));

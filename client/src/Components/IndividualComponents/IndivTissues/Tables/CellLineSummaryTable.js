@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueCellLinesQuery } from '../../../../queries/experiments';
@@ -33,18 +33,23 @@ const CELL_LINE_SUMMARY_COLUMNS = [
 
 const CellLineSummaryTable = (props) => {
     const { tissue } = props;
-    const { loading, error, data } = useQuery(getSingleTissueCellLinesQuery, {
+    const [cellLines, setCellLines] = useState([]);
+    const [error, setError] = useState(false);
+    
+    const { loading } = useQuery(getSingleTissueCellLinesQuery, {
         variables: { tissueId: tissue.id },
-        fetchPolicy: "network-only"
+        fetchPolicy: "network-only",
+        onCompleted: (data) => {
+            setCellLines(generateTableData(data));
+        },
+        onError: () => {setError(true)}
     });
-    const cellLines = useMemo(() => generateTableData(data), [data]);
-
-    if (error) {
-        return <p> Error! </p>;
-    }
 
     return(
         <React.Fragment>
+            {
+                error && <p> Error! </p>
+            }
             {
                 loading ? <Loading />
                 :

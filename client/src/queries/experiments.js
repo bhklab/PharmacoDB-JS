@@ -113,21 +113,21 @@ query getSingleTissueCellLines($tissueId: Int!) {
  * @param { Number } tissueId - takes the tissue id as the argument to the query.
  * @returns - Query returns compounds used in all experiments for the given tissue.
  */
- const getSingleTissueCompoundsQuery = gql`
- query getSingleTissueCompounds($tissueId: Int!) {
-   experiments(tissueId: $tissueId) {
-     id
-     compound {
-       id
-       name
-     }
-     dataset {
+const getSingleTissueCompoundsQuery = gql`
+  query getSingleTissueCompounds($tissueId: Int!) {
+    experiments(tissueId: $tissueId) {
+      id
+      compound {
+        id
+        name
+      }
+      dataset {
       id
       name
     }
-   }
- }
- `;
+    }
+  }
+`;
 
 const getSingleGeneExperimentsQuery = gql`
   query getSingleGeneExperiments($geneId: Int!) {

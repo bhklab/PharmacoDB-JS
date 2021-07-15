@@ -18,7 +18,7 @@ const DRUG_SUMMARY_COLUMNS = [
     },
     {
       Header: 'Experiments',
-      accessor: 'experiments_number',
+      accessor: 'num_experiments',
     },
 ];
 
@@ -27,49 +27,52 @@ const DRUG_SUMMARY_COLUMNS = [
  * @param {Array} data drug summary data from the experiment API
  */
 const generateTableData = (data) => {
-    console.log('generateTableData');
-    let tableData = { compound: [], numCompounds: 0, numDataset: 0 };
+    let tableData = { ready: false, compound: [], numCompounds: 0, numDataset: 0 };
     if (data) {
-        let uniqueCompounds = [...new Set(data.experiments.map(item => item.compound.id))];
-        let uniqueDatasets = [...new Set(data.experiments.map(item => item.dataset.id))];
+        let uniqueCompounds = [...new Set(data.map(item => item.compound.id))];
+        let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
         let compounds = [];
         for(let id of uniqueCompounds){
-            let experiments = data.experiments.filter(item => item.compound.id === id);
+            let experiments = data.filter(item => item.compound.id === id);
             compounds.push({
                 compound: experiments[0].compound.name,
                 dataset: [...new Set(experiments.map(item => item.dataset.name))].join(', '),
-                experiments_number: experiments.length
+                num_experiments: experiments.length
             })
         }
-        compounds.sort((a, b) => b.experiments_number - a.experiments_number);
+        compounds.sort((a, b) => b.num_experiments - a.num_experiments);
         tableData.compound = compounds;
         tableData.numCompounds = uniqueCompounds.length;
         tableData.numDataset = uniqueDatasets.length;
+        tableData.ready = true;
     }
     return tableData;
 };
 
 const DrugSummaryTable = (props) => {
     const { tissue } = props;
-    const { loading, error, data } = useQuery(getSingleTissueCompoundsQuery, {
-        variables: { tissueId: tissue.id },
-        fetchPolicy: "network-only"
-    });
-    const [tableData, setTableData] = useState({ compound: [], numCompounds: 0, numDataset: 0 });
-    // const tableData = useMemo(() => generateTableData(data), [data]);
+    const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
+    const [error, setError] = useState(false);
 
-    useEffect(() => {
-        if(!loading && data){
-            setTableData(generateTableData(data));
+    const { loading } = useQuery(getSingleTissueCompoundsQuery, {
+        variables: { tissueId: tissue.id },
+        // fetchPolicy: "network-only",
+        onCompleted: (data) => {
+            console.log(data);
+            setTableData(generateTableData(data.experiments));
+        },
+        onError: (err) => {
+            setError(true);
         }
-    }, [loading]);
+    });
 
     return(
         <React.Fragment>
             {
-                loading ? <Loading />
-                :
-                error ? <p> Error! </p>
+                error && <p> Error! </p>
+            }
+            {
+                loading || !tableData.ready ? <Loading />
                 :
                 <React.Fragment>
                     <h4>
