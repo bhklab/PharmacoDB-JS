@@ -134,7 +134,6 @@ const IndivGenes = (props) => {
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
   const linkData = React.useMemo(() => formatLinkData(data), [data]);
-  console.log('data:', data);
   return (gene.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
