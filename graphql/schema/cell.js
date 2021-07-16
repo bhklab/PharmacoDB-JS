@@ -29,5 +29,5 @@ const cellLineDetailType = `
 
 module.exports = {
     cellLineType,
-    cellLineDetailType,
+    cellLineDetailType
 };
