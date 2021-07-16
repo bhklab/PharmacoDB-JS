@@ -30,7 +30,7 @@ const datasetDetailType = `
         """number of experiments held across the dataset"""
         experiment_count: Int!
         """cell line names tested in the dataset"""
-        cells_tested: [String!]
+        cells_tested: [CellLineTested!]
         """compound names tested in the dataset"""
         compounds_tested: [String!]
     }

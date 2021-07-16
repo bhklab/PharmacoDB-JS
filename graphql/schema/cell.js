@@ -25,7 +25,17 @@ const cellLineDetailType = `
     }
 `;
 
+const cellLineTestedType = `
+    type CellLineTested {
+        """cell line id in the database"""
+        id: Int!
+        """cell line name in the database"""
+        name: String!
+    }
+`;
+
 module.exports = {
     cellLineType,
     cellLineDetailType,
+    cellLineTestedType
 };
