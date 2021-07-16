@@ -6,15 +6,15 @@ import PropTypes from 'prop-types';
 import { getMolCellQuery } from '../../../queries/mol';
 import Table from '../../UtilComponents/Table/Table';
 import Loading from '../../UtilComponents/Loading';
+import { Link } from 'react-router-dom';
 
 
 const parseTableData = (data) => {
     // prepare returned data from api for molecular profiling table
     const dataObject = {}
-    if (data) data.forEach((x)=> {
+    if (data && data.length>0) data.forEach((x)=> {
         // each data row contains dataset id and name, mDataTypes and num_profs, and allDataTypes
         const datasetId = x['dataset']['id']
-
         // create an object for each dataset if visited for the first time, otherwise just update it
         if (!dataObject[datasetId]) {
             dataObject[datasetId] = {};
@@ -27,18 +27,22 @@ const parseTableData = (data) => {
         dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g,"").toLowerCase()] = x['num_prof'];
     }
     )
-    console.log('data',dataObject);
     const tableData = []
     for (const [key, value] of Object.entries(dataObject)) {
-        tableData.push({dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })
-        // console.log(value['dataset']);
+        tableData.push({id: key, dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })
     }
     return tableData;
 }
 
 const COLUMNS = (data) => {
     const columns = [];
-    columns.push({Header: 'Datasets', accessor: 'dataset_name'})
+    columns.push(
+        {
+        Header: 'Datasets',
+        accessor: 'dataset_name',
+        Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
+        }
+    )
     for (const [key, value] of Object.entries(data)) {
         value['dataTypes'].forEach ((molProf) =>
             columns.push({Header: molProf, accessor: molProf.replace(/[^a-zA-Z]/g,"").toLowerCase()})
@@ -54,9 +58,6 @@ const MolecularProfilingTable = (props) => {
         variables: { cellLineId: cellLine.id}
     });
 
-    if (!loading) console.log(parseTableData(data["mol_cell"]));
-    // if (!loading) console.log(data["mol_cell"]);
-    if (!loading) console.log(COLUMNS(data["mol_cell"]));
     return(
         <React.Fragment>
             {

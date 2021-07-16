@@ -29,7 +29,7 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
-  {label: 'AAC (Compounds)', name: 'aacCompounds'},
+  // {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -210,7 +210,6 @@ const IndivCellLines = (props) => {
                         <Element className="section">
                           <div className='section-title'>Molecular Profiling</div>
                             <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
-                          {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
                         </Element>
                       }
                     </div>

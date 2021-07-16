@@ -61,7 +61,7 @@ const PlotSection = (props) => {
     if (error) {
         return <p> Error! </p>;
     }
-    
+
     return (
         <>
             {compoundsData.length ? (
@@ -82,16 +82,16 @@ const PlotSection = (props) => {
                         display === 'aacCompounds' ?
                             loading ? <Loading />
                             :
-                            <ProfileCompound 
-                                cellLine={name} 
-                                data={data.experiments} 
+                            <ProfileCompound
+                                cellLine={name}
+                                data={data.experiments}
                             />
                         :
                         ''
                     }
                 </>
             ) : (
-                <p> No data is available for plotting this cell line. </p>
+                <p></p>
             )}
         </>
     );
