@@ -11,7 +11,8 @@ const CELL_LINE_SUMMARY_COLUMNS = [
     {
       Header: 'Cell Line',
       accessor: 'cellLine',
-      center: true
+      center: true,
+      Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.id}`}>{item.value}</a>
     },
 ];
 
@@ -26,7 +27,7 @@ const CELL_LINE_SUMMARY_COLUMNS = [
         for(let id of ids){
             cellLines.push(data.experiments.find(item => item.cell_line.id === id));
         }
-        cellLines = cellLines.map(item => ({cellLine: item.cell_line.name}));
+        cellLines = cellLines.map(item => ({cellLine: item.cell_line.name, id: item.cell_line.id}));
     }
     return cellLines;
 };

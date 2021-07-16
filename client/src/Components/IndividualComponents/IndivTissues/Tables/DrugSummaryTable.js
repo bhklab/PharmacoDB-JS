@@ -11,10 +11,20 @@ const DRUG_SUMMARY_COLUMNS = [
     {
       Header: 'Compounds',
       accessor: 'compound',
+      Cell: (item) => <a href={`/compounds/${item.cell.row.original.id}`}>{item.value}</a>
     },
     {
       Header: 'Datasets',
       accessor: 'dataset',
+      Cell: (item) => {
+          let datasets = item.cell.row.original.datasetObj;
+          return(datasets.map((obj, i) => (
+            <span key={i}>
+                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+            </span>
+          )
+        ));
+      }
     },
     {
       Header: 'Experiments',
@@ -34,10 +44,22 @@ const generateTableData = (data) => {
         let compounds = [];
         for(let id of uniqueCompounds){
             let experiments = data.filter(item => item.compound.id === id);
+            
+            let datasets = experiments.map(item => item.dataset);
+            let datasetIds = [...new Set(datasets.map(item => item.id))];
+            let datasetObj = [];
+            for(let id of datasetIds){
+                let found = datasets.find(item => item.id === id);
+                datasetObj.push(found);
+            }
+            datasetObj.sort((a, b) => a - b);
+
             compounds.push({
                 compound: experiments[0].compound.name,
-                dataset: [...new Set(experiments.map(item => item.dataset.name))].join(', '),
-                num_experiments: experiments.length
+                dataset: datasetObj.map(item => item.name).join(', '),
+                num_experiments: experiments.length,
+                id: experiments[0].compound.id,
+                datasetObj: datasetObj
             })
         }
         compounds.sort((a, b) => b.num_experiments - a.num_experiments);
