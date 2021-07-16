@@ -93,6 +93,7 @@ const CompoundsSummaryTable = (props) => {
             });
         }
     }, [queryData]);
+
     return (
         <React.Fragment>
             {
