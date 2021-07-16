@@ -18,14 +18,22 @@ const MOLECULAR_PROFILING_COLUMNS = [
 
 
 const parseTableData = (data) => {
-    // find distinct molecular data types
-    dataTypes = []
-    data.forEach((x)=> i)
-    if (typeof data !== 'undefined') {
-        let compounds = data.dataset.find(item => item.id === datasetId).compounds_tested;
-        return compounds.map(item => ({compound: item}));
+    // prepare returned data from api for molecular profiling table
+    const dataObject = {}
+    if (data) data.forEach((x)=> {
+        // each data row contains dataset id and name, mDataTypes and num_profs, and allDataTypes
+        const datasetId = x['dataset']['id']
+        // create an object for each dataset if visited for the first time, otherwise just update it
+        if (!dataObject[datasetId]) {
+            dataObject[datasetId] = {};
+            dataObject[datasetId]['dataset'] = x['dataset'];
+            dataObject[datasetId]['dataset']['molProf'] = {};
+            x['dataTypes'].forEach((dataType) => dataObject[datasetId]['dataset']['molProf'][dataType] = "-" )
+        }
+        dataObject[datasetId]['dataset']['molProf'][x['mDataType']] = x['num_prof'];
     }
-    return [];
+    )
+    return dataObject;
 }
 
 const MolecularProfilingTable = (props) => {
@@ -34,12 +42,10 @@ const MolecularProfilingTable = (props) => {
         variables: { cellLineId: cellLine.id}
     });
 
-    const { data: data1} = useQuery(getMolCellQuery, {
-        variables: { cellLineId: cellLine.id}
-    });
-    console.log(data,data1);
+    if (!loading) console.log(parseTableData(data["mol_cell"]));
     return(
         <React.Fragment>
+
         </React.Fragment>
     );
 }

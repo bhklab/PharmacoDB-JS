@@ -39,25 +39,6 @@ const dataTypesQuery = async (cellLineId, cellLineName) => {
     }
 };
 
-const transformMols= data => {
-    return data.map(mol => {
-        const {
-            dataset_id,
-            dataset_name,
-            mDataType,
-            num_prof,
-        } = cell;
-        const output = {
-            dataset_id,
-            dataset_name,
-            mol: {
-                dataType: mDataType,
-                num_prof: num_prof
-            }
-        };
-        return output;
-    });
-};
 
 /**
  *
@@ -76,6 +57,12 @@ const mol_cell = async (args) => {
     } = args;
     const returnObject = [];
     const molCells = await molCellQuery(cellLineId, cellLineName);
+    const dataTypes = await dataTypesQuery(cellLineId, cellLineName);
+
+    const allDataTypesList = [];
+    dataTypes.forEach((dataType) => {
+        allDataTypesList.push(dataType.mDataType);
+    })
 
     molCells.forEach((molcell, i) => {
         molProfObject = [];
@@ -86,11 +73,12 @@ const mol_cell = async (args) => {
             num_prof,
         } = molcell;
 
-        molProfObject['dataset_id'] = dataset_id;
-        molProfObject['dataset_name'] = dataset_name;
+        molProfObject['dataset']={};
+        molProfObject['dataset']['id'] = dataset_id;
+        molProfObject['dataset']['name'] = dataset_name;
+        molProfObject['dataTypes'] = allDataTypesList;
         molProfObject['mDataType'] = mDataType;
         molProfObject['num_prof'] = num_prof;
-
         returnObject.push(molProfObject);
         }
     );
@@ -98,5 +86,5 @@ const mol_cell = async (args) => {
 };
 
 module.exports = {
-    mol_cell
+    mol_cell,
 };

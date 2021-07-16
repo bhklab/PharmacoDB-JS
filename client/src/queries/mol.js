@@ -8,8 +8,11 @@ import { gql } from 'apollo-boost';
 const getMolCellQuery = gql`
   query getSingleMolCell($cellLineId: Int, $cellLineName: String) {
     mol_cell(cellLineId: $cellLineId, cellLineName: $cellLineName) {
-      dataset_id
-      dataset_name
+      dataset {
+        id 
+        name
+      }
+      dataTypes
       mDataType
       num_prof
     }
