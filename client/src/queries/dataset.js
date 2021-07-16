@@ -82,7 +82,10 @@ const getDatasetCompoundQuery = gql`
     dataset(datasetId: $datasetId) {
       id,
       name,
-      compounds_tested
+      compounds_tested {
+        id
+        name
+      }
     }
   }
 `;

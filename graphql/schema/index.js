@@ -1,6 +1,6 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { cellLineType, cellLineDetailType, cellLineTestedType } = require('./cell');
+const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType } = require('./dataset');
@@ -28,7 +28,6 @@ const schema = `
     "Cell Line Type with id and name of the cell lines."
     ${cellLineType}
     ${cellLineDetailType}
-    ${cellLineTestedType}
 
     "Count Type"
     ${countType}
