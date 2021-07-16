@@ -12,6 +12,7 @@ const getDatasetCountsQuery = gql`
       cell_count
       experiment_count
       compound_tested_count
+      tissue_tested_count
     }
   }
 `;
@@ -63,9 +64,31 @@ const getCellLinesGroupedByDatasetQuery = gql`
   }
 `;
 
+const getDatasetCellLinesQuery = gql`
+  query getDatasetCellLinesQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      cells_tested
+    }
+  }
+`;
+
+const getDatasetCompoundQuery = gql`
+  query getDatasetCompoundQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      compounds_tested
+    }
+  }
+`;
+
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
+  getDatasetCellLinesQuery,
+  getDatasetCompoundQuery
 };

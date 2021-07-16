@@ -10,6 +10,8 @@ const datasetType = `
         cell_count: Int
         """number of experiments in the dataset"""
         experiment_count: Int 
+        """number of tissues in the dataset"""
+        tissue_tested_count: Int 
     }
 `;
 

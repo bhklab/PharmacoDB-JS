@@ -81,14 +81,7 @@ const formatDrugSummaryData = (compounds) => {
  */
 const formatCellLineSummaryData = (cellLines) => {
   if (cellLines) {
-    return Object.values(cellLines).map((x) => ({
-      cellLine:
-        <div style={{ textAlign: 'center' }}>
-          {' '}
-          {x.cellLine}
-          {' '}
-        </div>,
-    }));
+    return Object.values(cellLines).map((x) => ({cellLine: x.cellLine}));
   }
   return null;
 };
@@ -104,7 +97,7 @@ const formatCellLineSummaryData = (cellLines) => {
  * )
  */
 const TableSection = (props) => {
-  const { tissue } = props;
+  const { display, tissue } = props;
   const { id } = tissue;
   const { loading, error, data: queryData } = useQuery(getSingleTissueExperimentsQuery, {
     variables: { tissueId: id },
@@ -123,9 +116,11 @@ const TableSection = (props) => {
       });
     }
   }, [queryData]);
+
   if (loading) {
-    return <Loading />;
+    return '';
   }
+
   if (error) {
     return <p> Error! </p>;
   }
@@ -139,40 +134,48 @@ const TableSection = (props) => {
         queryData !== undefined
           ? (
             <>
-              <h3>Cell Line Summary</h3>
-              <h4>
-                <p align="center">
-                  Cell lines of
-                  {' '}
-                  {tissue.name}
-                  {' '}
-                  tissue type
-                </p>
-              </h4>
-              <p align="center">
-                {cellLine.length}
-                {' '}
-                cell line(s) of this tissue type are currently recorded in database.
-              </p>
-              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} />
-              <h3>Drugs Summary</h3>
-              <h4>
-                <p align="center">
-                  Compounds tested with
-                  {' '}
-                  {tissue.name}
-                </p>
-              </h4>
-              <p align="center">
-                {numCompounds}
-                {' '}
-                compounds have been tested with this tissue, using data from
-                {' '}
-                {numDataset}
-                {' '}
-                dataset(s).
-              </p>
-              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compound)} />
+              {
+                display === 'cellLineSummary' &&
+                <React.Fragment>
+                  <h4>
+                    <p align="center">
+                      Cell lines of
+                      {' '}
+                      {tissue.name}
+                      {' '}
+                      tissue type
+                    </p>
+                  </h4>
+                  <p align="center">
+                    {cellLine.length}
+                    {' '}
+                    cell line(s) of this tissue type are currently recorded in database.
+                  </p>
+                  <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} center={true} />
+                </React.Fragment>
+              }
+              {
+                display === 'drugSummary' &&
+                <React.Fragment>
+                  <h4>
+                    <p align="center">
+                      Compounds tested with
+                      {' '}
+                      {tissue.name}
+                    </p>
+                  </h4>
+                  <p align="center">
+                    {numCompounds}
+                    {' '}
+                    compounds have been tested with this tissue, using data from
+                    {' '}
+                    {numDataset}
+                    {' '}
+                    dataset(s).
+                  </p>
+                  <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compound)} />
+                </React.Fragment>
+              }
             </>
           )
           : <p> Loading... </p>

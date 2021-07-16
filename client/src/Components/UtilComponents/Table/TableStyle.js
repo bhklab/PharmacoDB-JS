@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 
 const TableStyles = styled.div`
-  margin-bottom: 5rem;
-  margin-top: 2rem;
+  // margin-bottom: 2rem;
+  // margin-top: 2rem;
   overflow-x: auto;
 
   table {
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
     width: 100%;
+    font-size: 12px;
 
     th,
     td {
@@ -21,7 +22,7 @@ const TableStyles = styled.div`
       border-bottom: 1px solid ${colors.white_smoke};
       border-right: 1px solid ${colors.white_smoke};
       overflow-x: auto;
-
+      
       a {
         color: ${colors.dark_gray_text};
         :hover {
@@ -42,6 +43,9 @@ const TableStyles = styled.div`
       @media only screen and (max-width: 1082px) { 
         max-width:100px;
       }
+    }
+    .center {
+      text-align: center;
     }
 
     tr {

@@ -6,7 +6,6 @@ import TableStyles from './TableStyle';
 import PropTypes from 'prop-types';
 import searchIcon from '../../../images/magnif-glass.png';
 
-
 /**
  * Filter for global search of table
  */
@@ -67,6 +66,69 @@ const Table = ({ columns, data, disablePagination = false }) => {
     useSortBy,
     usePagination);
 
+  /**
+   * Function to format and render table rows.
+   * Handles merging of cells with an identical value.
+   * In order for the merge to work, the values need to be sorted.
+   * @returns rows to be rendered 
+   */
+  const renderRows = () => {
+    // Get all the columns that are marked as merged
+    let mergedCols = columns.filter(col => col.merged);
+
+    // Count the number of values to be merged
+    for(let col of mergedCols){
+      let values = data.map(item => item[col.accessor]);
+      col.mergedValues = [...new Set(values)].map(item => ({
+        value: item, // Unique cell value
+        count: values.filter(value => value === item).length, // Count of the value
+        rendered: false // Indicates whether the value has been rendered or not.
+      }));
+    }
+
+    let rows = page.map((row) => {
+      prepareRow(row);
+      return (
+        <tr {...row.getRowProps()}>
+          {
+            row.cells.map(
+              (cell) => {
+                let rowSpan = 0;
+                /**
+                 * If a column is marked as merged, 
+                 *  1. Find the values to be merged.
+                 *  2. Set the rowSpan to the number of occurences of the merged value. 
+                 *  3. Set the rendered property as true (rendered only once)
+                 */
+                if(cell.column.merged){
+                  let merged = mergedCols.find(item => cell.column.id === item.accessor)
+                                .mergedValues.find(item => item.value === cell.value);
+                  if(merged.count > 1){
+                    if(!merged.rendered){
+                      rowSpan = merged.count;
+                      merged.rendered = true;
+                    }
+                  }else{
+                    rowSpan = 1;
+                  }
+                }else{
+                  rowSpan = 1
+                }
+                return rowSpan > 0 ? 
+                <td className={cell.column.center ? 'center' : ''}{...cell.getCellProps()} rowSpan={rowSpan}>
+                  {cell.render('Cell')}
+                </td>
+                :
+                undefined
+              }
+            )
+          }
+        </tr>
+      );
+    });
+    return (rows)
+  }
+
   // Render the UI for your table
   return (
     <TableStyles>
@@ -125,14 +187,9 @@ const Table = ({ columns, data, disablePagination = false }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => <td {...cell.getCellProps()}>{cell.render('Cell')}</td>)}
-              </tr>
-            );
-          })}
+          {
+            renderRows()
+          }
         </tbody>
       </table>
       {!disablePagination ? (
