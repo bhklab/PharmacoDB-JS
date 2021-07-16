@@ -50,7 +50,7 @@ const generatePlotlyData = (data) => {
  * @component
  * @example
  *
- * return (
+ * returns (
  *   <Plot data={[plotlyData]} layout={layout} config={config} />
  * )
  */

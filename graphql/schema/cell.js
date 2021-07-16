@@ -6,6 +6,8 @@ const cellLineType = `
         name: String!
         """cell line's tissue type"""
         tissue: Tissue!
+        """dataset information of the cell line"""
+        dataset: [Generic!]
     }
 `;
 

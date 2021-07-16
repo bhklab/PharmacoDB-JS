@@ -191,13 +191,28 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
     // setting limit and offset.
     const { limit, offset } = calcLimitOffset(page, per_page);
     try {
-        const query = knex.select().from('tissue');
+        //comment: not taking care of the fields queried and limiting the query to the db as the tables are small.
+        const query = knex
+            .select('d.id as dataset_id', 'd.name as dataset_name', 't.id as id', 't.name as name')
+            .from('tissue as t')
+            .join('dataset_tissue as dt', 't.id', 'dt.tissue_id')
+            .join('dataset as d', 'd.id', 'dt.dataset_id');
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
-        return await query;
+        // awaits for the query.
+        const tissues = await query;
+        // returns the transformed object.
+        return tissues.map(({ id, name, dataset_id, dataset_name }) => ({
+            id,
+            name,
+            dataset: {
+                id: dataset_id,
+                name: dataset_name,
+            }
+        }));
     } catch (err) {
         console.log(err);
         throw err;

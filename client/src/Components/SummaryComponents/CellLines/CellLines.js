@@ -7,7 +7,6 @@ import Layout from '../../UtilComponents/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../UtilComponents/Loading';
-import TitleCase from '../../../utils/convertToSnakeCase';
 
 const tableColumns = [
   {
@@ -33,7 +32,7 @@ const getTableData = (data) => {
       return {
         id,
         name: name.replace(/_/g, ' '),
-        tissue: TitleCase(tissue.name.replace(/_/g, ' ')),
+        tissue: tissue.name,
       };
     });
   }
