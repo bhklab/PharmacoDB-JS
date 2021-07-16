@@ -19,7 +19,7 @@ const CIRCLE_RADIUS = 8;
 const margin = {
     top: 80,
     right: 20,
-    bottom: 0,
+    bottom: 80,
     left: 30
 };
 
@@ -31,7 +31,7 @@ const margin = {
  */
 const yScale = (min = 0, max, height) => d3.scaleLinear()
     .domain([min, max])
-    .range([height / 1.75, 0])
+    .range([height / 1.5, 0])
     .nice();
 
 /**
@@ -65,7 +65,7 @@ const yAxis = (svg, scale) => svg
 const xAxis = (svg, scale, height) => svg
     .append('g')
     .attr('id', 'x-axis')
-    .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.75})`)
+    .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5})`)
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
 
 /**
@@ -85,21 +85,36 @@ const appendRectangles = (svg, data, scale, height) => {
 
     keys.forEach((key, i) => {
         rectangles.append('rect')
-            .attr('height', height / 1.75 - scale(data[key].count))
+            .attr('height', height / 1.5 - scale(data[key].count))
             .attr('width', CIRCLE_RADIUS * 2)
             .attr('x', `${(margin.left * 1.8) + (i * CIRCLE_RADIUS * 3)}`)
             .attr('y', scale(data[key].count))
             .attr('id', `rect-${key}`)
             .attr('fill', `${colors.dark_teal_heading}`)
-            .on('mouseover', (e) => console.log(e))
-
-        rectangles.append('text')
-            .attr('x', `${(margin.left * 1.8) + (i * CIRCLE_RADIUS * 3)}`)
-            .attr('y', scale(data[key].count) - 5)
-            .attr('id', `text-${key}`)
-            .text(`${data[key].count}`)
-            .attr('font-size', 10)
-            .attr('font-weight', 600);
+            .on('mouseover', function () {
+                // append the corresponding text to the bar chart.
+                rectangles.append('text')
+                    .attr('x', `${(margin.left * 1.8) + (i * CIRCLE_RADIUS * 3)}`)
+                    .attr('y', scale(data[key].count) - 5)
+                    .attr('id', `text-${key}`)
+                    .text(`${data[key].count}`)
+                    .attr('font-size', 9)
+                    .attr('font-weight', 600);
+                // changes the color.
+                d3.select(`#rect-${key}`)
+                    .attr('opacity', 0.7);
+                // change the cursor type.
+                d3.select(this).style("cursor", "pointer");
+            })
+            .on('mouseout', function () {
+                // remove the text from the bar graph.
+                d3.select(`#text-${key}`).remove();
+                // fill the color again to default.
+                d3.select(`#rect-${key}`)
+                    .attr('opacity', 1.0);
+                // change the cursor to default.
+                d3.select(this).style("cursor", "default");
+            })
     })
 };
 
@@ -116,7 +131,7 @@ const circleAxis = (svg, datasets, height) => {
     for (let i = 0; i < datasets.length; i++) {
         circleText.append('text')
             .attr('text-anchor', 'end')
-            .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.75 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
+            .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
             .attr('id', `text-circle-${datasets[i]}`)
             .text(`${datasets[i]}`);
     }
@@ -145,7 +160,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
         for (let j = 0; j < datasets.length; j++) {
             // append circles.
             circles.append('circle')
-                .attr('transform', `translate(${margin.left * 2}, ${height / 1.75 + CIRCLE_RADIUS * 3})`)
+                .attr('transform', `translate(${margin.left * 2}, ${height / 1.5 + CIRCLE_RADIUS * 3})`)
                 .style('fill', set.keys.includes(datasets[j]) ? `${colors.dark_teal_heading}` : `${colors.silver}`)
                 .attr('r', CIRCLE_RADIUS)
                 .attr('cx', i * CIRCLE_RADIUS * 3)
@@ -155,7 +170,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
 
         // append line to the upset circles.
         circles.append('line')
-            .attr('transform', `translate(${margin.left * 2}, ${height / 1.75 + CIRCLE_RADIUS * 3})`)
+            .attr('transform', `translate(${margin.left * 2}, ${height / 1.5 + CIRCLE_RADIUS * 3})`)
             .attr('x1', i * CIRCLE_RADIUS * 3)
             .attr('y1', datasets.indexOf(set.keys[0]) * CIRCLE_RADIUS * 3)
             .attr('x2', i * CIRCLE_RADIUS * 3)
@@ -217,7 +232,6 @@ const createUpsetPlot = (data, datasets) => {
  * )
  */
 const UpsetPlot = ({ data, datasets }) => {
-    console.log(data, datasets);
     useEffect(() => {
         // create upset plot.
         createUpsetPlot(data, datasets);
