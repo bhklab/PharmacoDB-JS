@@ -1,5 +1,6 @@
 const profileType = `
     type Profile {
+      """profile object with data"""
       HS: Float
       Einf: Float
       EC50: Float

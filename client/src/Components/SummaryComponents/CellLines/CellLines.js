@@ -1,17 +1,18 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import StyledWrapper from '../../../styles/utils';
-import Table from '../../UtilComponents/Table';
+import { Link } from 'react-router-dom';
+import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../UtilComponents/Loading';
-import TitleCase from '../../../utils/convertToSnakeCase';
 
 const tableColumns = [
   {
     Header: 'Name',
     accessor: 'name',
+    Cell: (row) => (<Link to={`/cell_lines/${row.row.original.id}`}>{row.value}</Link>),
   },
   {
     Header: 'Tissue',
@@ -27,10 +28,11 @@ const getTableData = (data) => {
   let tableData = [];
   if (data) {
     tableData = data.cell_lines.map((value) => {
-      const { name, tissue } = value;
+      const { name, tissue, id } = value;
       return {
+        id,
         name: name.replace(/_/g, ' '),
-        tissue: TitleCase(tissue.name.replace(/_/g, ' ')),
+        tissue: tissue.name,
       };
     });
   }

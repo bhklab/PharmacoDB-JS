@@ -1,6 +1,5 @@
 import { gql } from 'apollo-boost';
 
-
 /**
  * @param {boolean} all - takes a boolean value if to search all the compounds or not.
  * @returns - Query returns the list of compounds with the id and name of the compound
@@ -21,7 +20,6 @@ const getCompoundsQuery = gql`
   }
 `;
 
-
 /**
  * @param { number } compoundId - takes the compound id as the argument to the query.
  * @returns - Query returns info of compound object for the given id and
@@ -29,8 +27,8 @@ const getCompoundsQuery = gql`
  * and also providing the target object.
  */
 const getCompoundQuery = gql`
-  query getSingleCompound($compoundId: Int!) {
-    singleCompound: compound(compoundId: $compoundId) {
+  query getSingleCompound($compoundId: Int, $compoundName: String) {
+    singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {
       compound {
         id
         name
@@ -53,13 +51,11 @@ const getCompoundQuery = gql`
   }
 `;
 
-
 const disableDrug = gql`
   {
     drug @client
   }
 `;
-
 
 export {
   getCompoundsQuery,

@@ -33,6 +33,118 @@ const getSingleCompoundExperimentsQuery = gql`
   }
 `;
 
+/**
+ * @param { Number } cellLineId - takes the cell line id as the argument to the query.
+ * @returns - Query returns all experiments for the given cell line.
+ */
+const getSingleCellLineExperimentsQuery = gql`
+  query getSingleCellLineExperiments($cellLineId: Int!) {
+    experiments(cellLineId: $cellLineId) {
+      id
+      compound {
+        id
+        name
+      }
+      tissue {
+        id
+        name
+      }
+      dataset {
+        id
+        name
+      }
+      profile {
+        AAC
+        IC50
+      }
+    }
+  }
+`;
+
+/**
+ * @param { Number } tissueId - takes the tissue id as the argument to the query.
+ * @returns - Query returns all experiments for the given tissue.
+ */
+const getSingleTissueExperimentsQuery = gql`
+  query getSingleTissueExperiments($tissueId: Int!) {
+    experiments(tissueId: $tissueId) {
+      id
+      compound {
+        id
+        name
+      }
+      cell_line {
+        id
+        name
+        tissue {
+          id
+          name
+        }
+      }
+      dataset {
+        id
+        name
+      }
+      profile {
+        AAC
+        IC50
+      }
+    }
+  }
+`;
+
+/**
+ * @param { Number } tissueId - takes the tissue id as the argument to the query.
+ * @returns - Query returns celllines used in all experiments for the given tissue.
+ */
+const getSingleTissueCellLinesQuery = gql`
+query getSingleTissueCellLines($tissueId: Int!) {
+  experiments(tissueId: $tissueId) {
+    id
+    cell_line {
+      id
+      name
+    }
+  }
+}
+`;
+
+/**
+ * @param { Number } tissueId - takes the tissue id as the argument to the query.
+ * @returns - Query returns compounds used in all experiments for the given tissue.
+ */
+const getSingleTissueCompoundsQuery = gql`
+  query getSingleTissueCompounds($tissueId: Int!) {
+    experiments(tissueId: $tissueId) {
+      id
+      compound {
+        id
+        name
+      }
+      dataset {
+      id
+      name
+    }
+    }
+  }
+`;
+
+const getSingleGeneExperimentsQuery = gql`
+  query getSingleGeneExperiments($geneId: Int!) {
+    gene_drugs(geneId: $geneId, all: true) {
+      dataset {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export {
   getSingleCompoundExperimentsQuery,
+  getSingleCellLineExperimentsQuery,
+  getSingleTissueExperimentsQuery,
+  getSingleTissueCellLinesQuery,
+  getSingleTissueCompoundsQuery,
+  getSingleGeneExperimentsQuery
 };

@@ -74,7 +74,7 @@ const StyledSearchHeader = styled.div`
         width: 45px;
         height: 35px;
         right: 0;
-        top: 33px;
+        top: 10px;
         background: ${(props) => (props.page === 'home' ? colors.dark_teal_heading : colors.light_blue_bg)};
         display:none;
         opacity:0.7;
@@ -97,16 +97,15 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    padding-top: 50px;
-    height: 70px;
-    margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '6vh')};
+    height: 50px;
+    margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '30px')};
     
     display: flex;
     justify-content: center;
 
     .container {
+        font-size: 14px;
         width: 85%;
-        padding-bottom: 30px;
         border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
 
         display: flex;
@@ -114,8 +113,9 @@ const StyledNavBar = styled.div`
         align-items: center;
     }
     .logo {
-        width: calc(5vw + 150px);
+        width: calc(5vw + 100px);
         max-width: 200px;
+        padding-top: 5px;
     }
     /* mobile */
     @media only screen and (max-width: 1081px) {
@@ -148,15 +148,13 @@ const StyledLinkDropdowns = styled.div`
         color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
         font-family: 'Rubik', sans-serif;
         font-weight: 400;
-        font-size: calc(0.4vw + 0.9em);
+        font-size: 14px;
         letter-spacing: 0.5px;
         background: transparent;
         border: none;
-        padding: 13px 0;
 
         a {
             color: ${colors.dark_teal_heading};
-            font-size: calc(0.3vw + 0.8em);
             text-align:left;
         }
     }
@@ -179,8 +177,8 @@ const StyledLinkDropdowns = styled.div`
  */
 const StyledSearchButton = styled.button`
     border-radius:50%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background: ${colors.light_blue_bg};
     display:flex;
     justify-content: center;
@@ -189,7 +187,7 @@ const StyledSearchButton = styled.button`
     border: none;
 
     img {
-      width:15px;
+      width:10px;
     }
     
     &:focus {

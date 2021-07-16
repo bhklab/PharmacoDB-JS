@@ -12,6 +12,7 @@ const getDatasetCountsQuery = gql`
       cell_count
       experiment_count
       compound_tested_count
+      tissue_tested_count
     }
   }
 `;
@@ -29,7 +30,21 @@ const getDatasetsQuery = gql`
 `;
 
 /**
- * @returns - The query returns an Array of object with the dataset object, count, type 
+ * @param { Number } datasetId - dataset id of the dataset to be queried.
+ * @returns - all the information returns by the dataset query,
+ * id, and name for the dataset.
+ */
+const getDatasetQuery = gql`
+  query getSingleDataset($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * @returns - The query returns an Array of object with the dataset object, count, type
  * and an array of objects containing the id and name of the cell lines belonging to that dataset.
  */
 const getCellLinesGroupedByDatasetQuery = gql`
@@ -49,10 +64,37 @@ const getCellLinesGroupedByDatasetQuery = gql`
   }
 `;
 
+const getDatasetCellLinesQuery = gql`
+  query getDatasetCellLinesQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      cells_tested {
+        id
+        name
+      }
+    }
+  }
+`;
 
+const getDatasetCompoundQuery = gql`
+  query getDatasetCompoundQuery($datasetId: Int!) {
+    dataset(datasetId: $datasetId) {
+      id,
+      name,
+      compounds_tested {
+        id
+        name
+      }
+    }
+  }
+`;
 
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
-  getCellLinesGroupedByDatasetQuery
+  getDatasetQuery,
+  getCellLinesGroupedByDatasetQuery,
+  getDatasetCellLinesQuery,
+  getDatasetCompoundQuery
 };

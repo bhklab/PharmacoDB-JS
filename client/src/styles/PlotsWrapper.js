@@ -10,6 +10,13 @@ const PlotsWrapper = styled.div`
   .plot {
     width: calc(50% - 10px);
   }
+
+  @media only screen and (max-width: 765px) {
+    flex-direction: column;
+    .plot {
+      width: 100%;
+    }
+  }
 `;
 
 export default PlotsWrapper;

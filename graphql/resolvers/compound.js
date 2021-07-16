@@ -49,23 +49,29 @@ const transformSynonyms = data => {
 const transformCompounds = data => {
     return data.map(compound => {
         const {
-            drug_id,
-            drug_name,
-            drug_uid,
+            id,
+            name,
+            compound_uid,
             smiles,
             inchikey,
             pubchem,
-            fda_status
+            fda_status,
+            dataset_id,
+            dataset_name,
         } = compound;
         return {
-            id: drug_id,
-            name: drug_name,
-            uid: drug_uid,
+            id,
+            name,
+            uid: compound_uid,
             annotation: {
                 smiles: smiles,
                 inchikey: inchikey,
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status)
+            },
+            dataset: {
+                id: dataset_id,
+                name: dataset_name,
             }
         };
     });
@@ -79,18 +85,23 @@ const transformCompounds = data => {
  * @param {Array} subtypes
  */
 const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
-    const transformedCompound = transformCompounds(compoundData);
-    const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
-    const targets = subtypes.includes('targets') ? await compound_target({
-        compoundId: compoundId,
-        compoundName: compoundName
-    }) : '';
-
-    return {
-        compound: transformedCompound[0],
-        synonyms: transformedSynonyms,
-        targets: targets['targets']
-    };
+    try {
+        const transformedCompound = transformCompounds(compoundData);
+        const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
+        const targets = subtypes.includes('targets') ? await compound_target({
+            compoundId: compoundId,
+            compoundName: compoundName
+        }) : '';
+        const output = {
+            compound: transformedCompound[0],
+            synonyms: transformedSynonyms,
+            targets: targets['targets']
+        };
+        return output;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
 };
 
 /**
@@ -101,19 +112,19 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
 const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
-        .select('drugs.drug_id as compound_id',
-            'drugs.drug_name as compound_name',
-            'source_drug_names.drug_name as source_compound_name',
-            'datasets.dataset_name as dataset_name')
-        .from('drugs')
-        .join('source_drug_names', 'drugs.drug_id', 'source_drug_names.drug_id')
-        .join('sources', 'sources.source_id', 'source_drug_names.source_id')
-        .join('datasets', 'datasets.dataset_id', 'sources.dataset_id');
+        .select('compound.id as compound_id',
+            'compound.name as compound_name',
+            'compound_synonym.compound_name as source_compound_name',
+            'dataset.name as dataset_name')
+        .from('compound')
+        .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
+        .join('dataset_compound', 'dataset_compound.compound_id', 'compound.id')
+        .join('dataset', 'dataset.id', 'dataset_compound.dataset_id');
     // return sub query based on the compoundId or compoundName.
     if (compoundId) {
-        return await query.where('drugs.drug_id', compoundId);
+        return await query.where('compound.id', compoundId);
     } else if (compoundName) {
-        return await query.where('drugs.drug_name', compoundName);
+        return await query.where('compound.name', compoundName);
     }
 };
 
@@ -124,14 +135,14 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
  */
 const compoundQuery = async (compoundId, compoundName, subtypes) => {
     // the base query.
-    let baseQuery = knex.select().from('drugs');
+    let baseQuery = knex.select().from('compound');
     // if the subtypes contains annotation type
-    if (subtypes.includes('annotation')) baseQuery = baseQuery.join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
+    if (subtypes.includes('annotation')) baseQuery = baseQuery.join('compound_annotation', 'compound.id', 'compound_annotation.compound_id');
     // return value.
     if (compoundId) {
-        return baseQuery.where('drugs.drug_id', compoundId);
+        return baseQuery.where('compound.id', compoundId);
     } else if (compoundName) {
-        return baseQuery.where('drugs.drug_name', compoundName);
+        return baseQuery.where('compound.name', compoundName);
     }
 };
 
@@ -149,19 +160,31 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+
+        // select fields.
+        const selectFields = ['c.id as id', 'c.name as name'];
+        // add dataset detail to the list of knex columns to select.
+        if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
+        // add compound annotation to the list of knex columns to select.
+        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey');
+
         // query to get the data for all the compounds.
-        let query = knex
-            .select()
-            .from('drugs');
-        // add a join to grab the drug annotations in case it's queried by the user.
-        if (listOfFields.includes('annotation')) query = query.join('drug_annots', 'drugs.drug_id', 'drug_annots.drug_id');
+        let query = knex.select(...selectFields).from('compound as c');
+        // add a join to grab the compound annotations in case it's queried by the user.
+        if (listOfFields.includes('annotation')) query = query.join('compound_annotation as ca', 'ca.compound_id', 'c.id');
+        // add a join to grab the dataset information if it's been queried by the user.
+        if (listOfFields.includes('dataset')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
+            .join('dataset as d', 'dc.dataset_id', 'd.id');
+
         // if the user has not queried to get all the compound, 
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
+
         // execute the query.
         const compounds = await query;
+
         // return the transformed data.
         return transformCompounds(compounds);
     } catch (err) {

@@ -1,7 +1,9 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
 import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
 import colors from '../../styles/colors';
+import { getDatasetsQuery } from '../../queries/dataset';
 
 const config = {
   responsive: true,
@@ -48,19 +50,29 @@ const generatePlotlyData = (data) => {
  * @component
  * @example
  *
- * return (
+ * returns (
  *   <Plot data={[plotlyData]} layout={layout} config={config} />
  * )
  */
 const DatasetHorizontalPlot = (props) => {
   const { data, xaxis, title } = props;
+
+  // add datasets with 0 experiments to the plot
+  const { loading, error, data: allDatasets } = useQuery(getDatasetsQuery);
+  if (allDatasets) {
+    allDatasets.datasets.forEach((dataset) => {
+      let exist = false;
+      data.forEach((d) => { if (d.name === dataset.name) exist = true; });
+      if (!exist) data.push({ name: dataset.name, count: 0, color: '#ffffff' });
+    });
+  }
+
   // sorts data by count values
   data.sort((dataset1, dataset2) => dataset2.count - dataset1.count);
   const plotlyData = generatePlotlyData(data);
-
   const layout = {
     autoresize: true,
-    height: 530,
+    height: 400,
     margin: {
       t: 20,
       b: 50,
@@ -72,8 +84,8 @@ const DatasetHorizontalPlot = (props) => {
       title: {
         text: xaxis,
         font: {
-          size: 16,
-          family: 'Robot Slab, serif',
+          size: 12,
+          family: 'arial',
 
         },
         standoff: 10,
@@ -85,7 +97,7 @@ const DatasetHorizontalPlot = (props) => {
   };
   return (
     <div className="plot">
-      <h4>{title}</h4>
+      <h5>{title}</h5>
       <Plot data={[plotlyData]} layout={layout} config={config} />
     </div>
   );

@@ -821,6 +821,140 @@ exports[`Experiments renders correctly with a mocked query and test the componen
               },
               "variables": Object {},
             },
+            Object {
+              "callback": [Function],
+              "optimistic": true,
+              "previousResult": [Function],
+              "query": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllDatasets",
+                    },
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "datasets",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                                "selectionSet": undefined,
+                              },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "name",
+                                },
+                                "selectionSet": undefined,
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 71,
+                  "start": 0,
+                },
+              },
+              "variables": Object {},
+            },
+            Object {
+              "callback": [Function],
+              "optimistic": true,
+              "previousResult": [Function],
+              "query": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllDatasets",
+                    },
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "datasets",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                                "selectionSet": undefined,
+                              },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "name",
+                                },
+                                "selectionSet": undefined,
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 71,
+                  "start": 0,
+                },
+              },
+              "variables": Object {},
+            },
           },
         },
         "clearStoreCallbacks": Array [],
@@ -1485,6 +1619,140 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                   "kind": "Document",
                   "loc": Object {
                     "end": 132,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
                     "start": 0,
                   },
                 },
@@ -2161,11 +2429,145 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                   },
                   "variables": Object {},
                 },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
               },
             },
           },
           "fetchQueryRejectFns": Map {},
-          "idCounter": 9,
+          "idCounter": 13,
           "inFlightLinkObservables": Map {
             Object {
               "definitions": Array [
@@ -3142,6 +3544,140 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                     "kind": "Document",
                     "loc": Object {
                       "end": 132,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+                Object {
+                  "callback": [Function],
+                  "optimistic": true,
+                  "previousResult": [Function],
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
                       "start": 0,
                     },
                   },
@@ -4334,6 +4870,486 @@ exports[`Experiments renders correctly with a mocked query and test the componen
               },
               "subscriptions": Set {},
             },
+            "9" => Object {
+              "cancel": [Function],
+              "document": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllDatasets",
+                    },
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "datasets",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                                "selectionSet": undefined,
+                              },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "name",
+                                },
+                                "selectionSet": undefined,
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 71,
+                  "start": 0,
+                },
+              },
+              "invalidated": false,
+              "lastRequestId": 10,
+              "listeners": Set {
+                [Function],
+              },
+              "newData": null,
+              "observableQuery": ObservableQuery {
+                "_subscriber": [Function],
+                "isTornDown": false,
+                "lastResult": Object {
+                  "data": Object {
+                    "datasets": Array [
+                      Object {
+                        "id": 1,
+                        "name": "CCLE",
+                      },
+                      Object {
+                        "id": 2,
+                        "name": "CTRPv2",
+                      },
+                      Object {
+                        "id": 3,
+                        "name": "FIMM",
+                      },
+                      Object {
+                        "id": 4,
+                        "name": "gCSI",
+                      },
+                      Object {
+                        "id": 5,
+                        "name": "GDSC1000",
+                      },
+                      Object {
+                        "id": 6,
+                        "name": "GRAY",
+                      },
+                      Object {
+                        "id": 7,
+                        "name": "UHNBreast",
+                      },
+                    ],
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "lastResultSnapshot": Object {
+                  "data": Object {
+                    "datasets": Array [
+                      Object {
+                        "id": 1,
+                        "name": "CCLE",
+                      },
+                      Object {
+                        "id": 2,
+                        "name": "CTRPv2",
+                      },
+                      Object {
+                        "id": 3,
+                        "name": "FIMM",
+                      },
+                      Object {
+                        "id": 4,
+                        "name": "gCSI",
+                      },
+                      Object {
+                        "id": 5,
+                        "name": "GDSC1000",
+                      },
+                      Object {
+                        "id": 6,
+                        "name": "GRAY",
+                      },
+                      Object {
+                        "id": 7,
+                        "name": "UHNBreast",
+                      },
+                    ],
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "observers": Set {
+                  SubscriptionObserver {
+                    "_subscription": Subscription {
+                      "_cleanup": [Function],
+                      "_observer": Object {
+                        "error": [Function],
+                        "next": [Function],
+                      },
+                      "_queue": undefined,
+                      "_state": "ready",
+                    },
+                  },
+                },
+                "options": Object {
+                  "context": undefined,
+                  "displayName": "Query",
+                  "metadata": Object {
+                    "reactComponent": Object {
+                      "displayName": "Query",
+                    },
+                  },
+                  "notifyOnNetworkStatusChange": false,
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+                "queryId": "9",
+                "queryManager": [Circular],
+                "queryName": "getAllDatasets",
+                "shouldSubscribe": true,
+                "subscriptions": Set {},
+                "variables": Object {},
+              },
+              "subscriptions": Set {},
+            },
+            "11" => Object {
+              "cancel": [Function],
+              "document": Object {
+                "definitions": Array [
+                  Object {
+                    "directives": Array [],
+                    "kind": "OperationDefinition",
+                    "name": Object {
+                      "kind": "Name",
+                      "value": "getAllDatasets",
+                    },
+                    "operation": "query",
+                    "selectionSet": Object {
+                      "kind": "SelectionSet",
+                      "selections": Array [
+                        Object {
+                          "alias": undefined,
+                          "arguments": Array [],
+                          "directives": Array [],
+                          "kind": "Field",
+                          "name": Object {
+                            "kind": "Name",
+                            "value": "datasets",
+                          },
+                          "selectionSet": Object {
+                            "kind": "SelectionSet",
+                            "selections": Array [
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "id",
+                                },
+                                "selectionSet": undefined,
+                              },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "name",
+                                },
+                                "selectionSet": undefined,
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    "variableDefinitions": Array [],
+                  },
+                ],
+                "kind": "Document",
+                "loc": Object {
+                  "end": 71,
+                  "start": 0,
+                },
+              },
+              "invalidated": false,
+              "lastRequestId": 12,
+              "listeners": Set {
+                [Function],
+              },
+              "newData": null,
+              "observableQuery": ObservableQuery {
+                "_subscriber": [Function],
+                "isTornDown": false,
+                "lastResult": Object {
+                  "data": Object {
+                    "datasets": Array [
+                      Object {
+                        "id": 1,
+                        "name": "CCLE",
+                      },
+                      Object {
+                        "id": 2,
+                        "name": "CTRPv2",
+                      },
+                      Object {
+                        "id": 3,
+                        "name": "FIMM",
+                      },
+                      Object {
+                        "id": 4,
+                        "name": "gCSI",
+                      },
+                      Object {
+                        "id": 5,
+                        "name": "GDSC1000",
+                      },
+                      Object {
+                        "id": 6,
+                        "name": "GRAY",
+                      },
+                      Object {
+                        "id": 7,
+                        "name": "UHNBreast",
+                      },
+                    ],
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "lastResultSnapshot": Object {
+                  "data": Object {
+                    "datasets": Array [
+                      Object {
+                        "id": 1,
+                        "name": "CCLE",
+                      },
+                      Object {
+                        "id": 2,
+                        "name": "CTRPv2",
+                      },
+                      Object {
+                        "id": 3,
+                        "name": "FIMM",
+                      },
+                      Object {
+                        "id": 4,
+                        "name": "gCSI",
+                      },
+                      Object {
+                        "id": 5,
+                        "name": "GDSC1000",
+                      },
+                      Object {
+                        "id": 6,
+                        "name": "GRAY",
+                      },
+                      Object {
+                        "id": 7,
+                        "name": "UHNBreast",
+                      },
+                    ],
+                  },
+                  "loading": false,
+                  "networkStatus": 7,
+                  "stale": false,
+                },
+                "observers": Set {
+                  SubscriptionObserver {
+                    "_subscription": Subscription {
+                      "_cleanup": [Function],
+                      "_observer": Object {
+                        "error": [Function],
+                        "next": [Function],
+                      },
+                      "_queue": undefined,
+                      "_state": "ready",
+                    },
+                  },
+                },
+                "options": Object {
+                  "context": undefined,
+                  "displayName": "Query",
+                  "metadata": Object {
+                    "reactComponent": Object {
+                      "displayName": "Query",
+                    },
+                  },
+                  "notifyOnNetworkStatusChange": false,
+                  "query": Object {
+                    "definitions": Array [
+                      Object {
+                        "directives": Array [],
+                        "kind": "OperationDefinition",
+                        "name": Object {
+                          "kind": "Name",
+                          "value": "getAllDatasets",
+                        },
+                        "operation": "query",
+                        "selectionSet": Object {
+                          "kind": "SelectionSet",
+                          "selections": Array [
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                        "variableDefinitions": Array [],
+                      },
+                    ],
+                    "kind": "Document",
+                    "loc": Object {
+                      "end": 71,
+                      "start": 0,
+                    },
+                  },
+                  "variables": Object {},
+                },
+                "queryId": "11",
+                "queryManager": [Circular],
+                "queryName": "getAllDatasets",
+                "shouldSubscribe": true,
+                "subscriptions": Set {},
+                "variables": Object {},
+              },
+              "subscriptions": Set {},
+            },
           },
           "queryDeduplication": true,
           "queryStore": QueryStore {
@@ -4430,6 +5446,79 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                   "kind": "Document",
                   "loc": Object {
                     "end": 139,
+                    "start": 0,
+                  },
+                },
+                "graphQLErrors": Array [],
+                "metadata": Object {
+                  "reactComponent": Object {
+                    "displayName": "Query",
+                  },
+                },
+                "networkError": null,
+                "networkStatus": 7,
+                "previousVariables": null,
+                "variables": Object {},
+              },
+              "11": Object {
+                "document": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
                     "start": 0,
                   },
                 },
@@ -4792,6 +5881,79 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 },
                 "networkError": null,
                 "networkStatus": 8,
+                "previousVariables": null,
+                "variables": Object {},
+              },
+              "9": Object {
+                "document": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
+                    "start": 0,
+                  },
+                },
+                "graphQLErrors": Array [],
+                "metadata": Object {
+                  "reactComponent": Object {
+                    "displayName": "Query",
+                  },
+                },
+                "networkError": null,
+                "networkStatus": 7,
                 "previousVariables": null,
                 "variables": Object {},
               },
@@ -5461,6 +6623,140 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 },
                 "variables": Object {},
               },
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
+              Object {
+                "callback": [Function],
+                "optimistic": true,
+                "previousResult": [Function],
+                "query": Object {
+                  "definitions": Array [
+                    Object {
+                      "directives": Array [],
+                      "kind": "OperationDefinition",
+                      "name": Object {
+                        "kind": "Name",
+                        "value": "getAllDatasets",
+                      },
+                      "operation": "query",
+                      "selectionSet": Object {
+                        "kind": "SelectionSet",
+                        "selections": Array [
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                      "variableDefinitions": Array [],
+                    },
+                  ],
+                  "kind": "Document",
+                  "loc": Object {
+                    "end": 71,
+                    "start": 0,
+                  },
+                },
+                "variables": Object {},
+              },
             },
           },
         },
@@ -5551,7 +6847,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                       "height": "23px",
                       "position": "fixed",
                       "right": "10px",
-                      "top": "40px",
+                      "top": "15px",
                       "width": "27px",
                     },
                     "bmCross": Object {
@@ -5850,7 +7146,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                               "height": "23px",
                               "position": "fixed",
                               "right": "10px",
-                              "top": "40px",
+                              "top": "15px",
                               "width": "27px",
                             },
                             "bmCross": Object {
@@ -5978,7 +7274,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             "height": "23px",
                             "position": "fixed",
                             "right": "10px",
-                            "top": "40px",
+                            "top": "15px",
                             "width": "27px",
                           },
                           "bmCross": Object {
@@ -6021,7 +7317,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             "height": "23px",
                             "position": "fixed",
                             "right": "10px",
-                            "top": "40px",
+                            "top": "15px",
                             "width": "27px",
                             "zIndex": 1000,
                           }
@@ -6107,7 +7403,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 page="experiments"
               >
                 <div
-                  className="sc-AxjAm awKSx"
+                  className="sc-AxjAm eZRzfY"
                 >
                   <div
                     className="burger-bg"
@@ -6121,7 +7417,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                       page="experiments"
                     >
                       <div
-                        className="sc-AxirZ iGaWxx header"
+                        className="sc-AxirZ gqFuQr header"
                       >
                         <div
                           className="container"
@@ -6149,7 +7445,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                             page="experiments"
                           >
                             <div
-                              className="sc-AxiKw hOQNuo"
+                              className="sc-AxiKw jtJoTX"
                             >
                               <Dropdown
                                 additionLabel="Add "
@@ -6852,7 +8148,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                 onClick={[Function]}
                               >
                                 <button
-                                  className="sc-AxhCb bVxjJp search-button"
+                                  className="sc-AxhCb dHCVpc search-button"
                                   onClick={[Function]}
                                 >
                                   <img
@@ -8416,11 +9712,11 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                 className="page"
               >
                 <div
-                  className="sc-AxhUy jvCWcX page"
+                  className="sc-AxhUy fCPmkz page"
                 >
                   <styled.div>
                     <div
-                      className="sc-AxgMl gXIWvf"
+                      className="sc-AxgMl YDVZs"
                     >
                       <DatasetHorizontalPlot
                         data={
@@ -8542,7 +9838,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                   ],
                                   "title": Object {
                                     "font": Object {
-                                      "family": "Robot Slab, serif",
+                                      "family": "arial",
                                       "size": 16,
                                     },
                                     "standoff": 10,
@@ -8700,7 +9996,7 @@ exports[`Experiments renders correctly with a mocked query and test the componen
                                   ],
                                   "title": Object {
                                     "font": Object {
-                                      "family": "Robot Slab, serif",
+                                      "family": "arial",
                                       "size": 16,
                                     },
                                     "standoff": 10,

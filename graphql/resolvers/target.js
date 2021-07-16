@@ -7,16 +7,16 @@ const knex = require('../../db/knex');
  */
 const targetQuery = async (compoundId, compoundName) => {
     // main query.
-    const query = knex.distinct('t.target_name')
-        .select('d.drug_name', 'dt.target_id', 'dt.drug_id')
-        .from('drug_targets as dt')
-        .join('targets as t', 't.target_id', 'dt.target_id')
-        .join('drugs as d', 'd.drug_id', 'dt.drug_id');
+    const query = knex.distinct('t.name as target_name')
+        .select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id')
+        .from('compound_target as ct')
+        .join('target as t', 't.id', 'ct.target_id')
+        .join('compound as c', 'c.id', 'ct.compound_id');
     // subquery.
     if (compoundId) {
-        return query.where('d.drug_id', compoundId);
+        return query.where('c.id', compoundId);
     } else if (compoundName) {
-        return query.where('d.drug_name', compoundName);
+        return query.where('c.name', compoundName);
     }
 };
 
@@ -44,12 +44,12 @@ const compound_target = async (args) => {
         const {
             target_id,
             target_name,
-            drug_name,
-            drug_id
+            compound_name,
+            compound_id
         } = target;
         if (!i) {
-            returnObject['compound_id'] = drug_id;
-            returnObject['compound_name'] = drug_name;
+            returnObject['compound_id'] = compound_id;
+            returnObject['compound_name'] = compound_name;
             returnObject['targets'] = [];
         }
         returnObject['targets'].push({

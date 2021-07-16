@@ -3,8 +3,7 @@ import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
-import generateSelectOptions from '../../utils/generateSelectOptions';
-import { calculateMedian, calculateAbsoluteDeviation } from '../../utils/statistics';
+import { formatExperimentPlotData, runPlotDataAnalysis } from '../../utils/plotProcessing';
 import colors from '../../styles/colors';
 
 // plotly config
@@ -37,76 +36,6 @@ const baseLayout = {
   },
   bargap: 0,
   showlegend: false,
-};
-
-/**
- * A helper function that creates an array of values out of profile object
- * @param {Object} dataObj - profiles data object that has AAC and IC50 profiles for different datasets
- * @param {String} profile - a selected profile, can be AAC or IC50
- * @returns {Array} - returns array of numbers
- */
-const retrieveProfiles = (dataObj, profile, dataset) => {
-  const output = [];
-  Object.keys(dataObj).forEach((datasetProfile) => {
-    // filters out null values
-    if (dataObj[datasetProfile][profile] === null) return;
-    // only populates output array if there is a matching dataset or dataset are acceptable
-    if (dataset === 'All' || dataset === datasetProfile) {
-      output.push(dataObj[datasetProfile][profile]);
-    }
-  });
-  return output;
-};
-
-/**
- * A helper function that formats raw experiment data to be subsequently processed be rendering functions
- * @param {Array} experiments - experiments data from the API call
- * @returns {Object} - returns an object with cell_names as keys. Every cell line has three subfields: id, name and profiles. Profiles is an object of datasets where each dataset has two fields, AAC and IC50
- * @example
- * return { '697': {id: 1, name: '697', profiles: {CCLE: { AAC:0.4732, IC50: 0.1278 }, ...}}, ...}
- */
-const formatCellData = (experiments) => {
-  const cellObj = {};
-  experiments.forEach((experiment) => {
-    const { __typename, ...profile } = experiment.profile;
-    const { cell_line, dataset } = experiment;
-    if (!cellObj[cell_line.name]) {
-      cellObj[cell_line.name] = {
-        id: cell_line.id,
-        name: cell_line.name,
-        profiles: { [dataset.name]: profile },
-      };
-    } else {
-      cellObj[experiment.cell_line.name].profiles[experiment.dataset.name] = profile;
-    }
-  });
-  return cellObj;
-};
-
-/**
- *
- * @param {Array} data - experiments data from the API call
- * @returns {Array} - returns an array of profile and dataset options respectively that can be used by react-select
- * @example
- * return [[{value: 'CCLE', label: 'CCLE'}, ...],[...]]
- */
-const generateOptions = (data) => {
-  const profileOptions = Object.keys(data[0].profile);
-  const datasetOptions = ['All', ...new Set(data.map((el) => el.dataset.name))];
-  return [generateSelectOptions(profileOptions), generateSelectOptions(datasetOptions)];
-};
-
-/**
- * Helper function that creates data for the gap between low and high values for the plot
- * @param {Number} distance - sets how many empty bars should be in the gap
- * @returns {Array} - returns an array of objects with value, name and label properties
- */
-const generateEmptySpace = (distance) => {
-  const output = [];
-  for (let i = 0; i < distance; i += 1) {
-    output.push({ value: 0, name: i, label: '' });
-  }
-  return output;
 };
 
 /**
@@ -164,32 +93,6 @@ const generateRenderData = (data, dataset, profile) => {
 };
 
 /**
- * Function that calculates median, deviation values, sorts data and creates a subset that will be further rendered
- * @param {Object} data - data object that has cell lines and their dataset profiles in it
- * @param {String} dataset - selected dataset
- * @param {String} profile - selected profile
- * @returns {Object} - returns an array of objects (max length is 63) with value, deviation, name and label properties
- */
-const runDataAnalysis = (data, dataset, profile) => {
-  // calculates median and deviation values and sort cell lines based on median
-  const calculatedData = [];
-  Object.values(data).forEach((el) => {
-    const profiles = retrieveProfiles(el.profiles, profile, dataset);
-    // updates calculated data only if there is at list one profile
-    if (profiles.length > 0) {
-      const value = calculateMedian(profiles);
-      const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
-      calculatedData.push({
-        value, deviation, name: el.name, label: el.name,
-      });
-    }
-  });
-  calculatedData.sort((a, b) => b.value - a.value);
-  // returns calculatedData or a subset of first and last 30 items from calculated data along with some few empty datapoints to create a gap if there too many dataoints
-  return calculatedData.length > 60 ? [...calculatedData.slice(0, 30), ...generateEmptySpace(3), ...calculatedData.slice(calculatedData.length - 30, calculatedData.length)] : calculatedData;
-};
-
-/**
  * Waterfall plot that shows cell line profiles (AAC or IC50) for different datasets
  *
  * @component
@@ -200,46 +103,50 @@ const runDataAnalysis = (data, dataset, profile) => {
  * )
  */
 const ProfileCellLine = (props) => {
-  const { data, compound } = props;
+  const {
+    data, compound, profileOptions, datasetOptions,
+  } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
   // preformats the data and creates selection options for datasets and profiles
-  const formattedData = useMemo(() => formatCellData(data), [data]);
-  const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
+  const formattedData = useMemo(() => formatExperimentPlotData(data, 'cell_line'), [data]);
+
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
-    const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
+    const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'cell_line');
     setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
-  }, [selectedProfile, selectedDataset]);
+  }, [selectedProfile, selectedDataset, formattedData]);
   return (
     <div className="plot">
       <StyledSelectorContainer>
         <div className="selector-container">
-          <h4>Select Dataset </h4>
+          <div className='label'>Dataset:</div>
           <Select
+            className='selector'
             defaultValue={{ value: selectedDataset, label: selectedDataset }}
             options={datasetOptions}
             onChange={(e) => setSelectedDataset(e.value)}
           />
         </div>
         <div className="selector-container">
-          <h4>Select Profile </h4>
+          <div className='label'>Profile:</div>
           <Select
+            className='selector'
             defaultValue={{ value: selectedProfile, label: selectedProfile }}
             options={profileOptions}
             onChange={(e) => setSelectedProfile(e.value)}
           />
         </div>
       </StyledSelectorContainer>
-      <h3>
+      <h4>
         {compound}
         ,
         {' '}
         {selectedProfile}
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
-      </h3>
+      </h4>
       <Plot data={plotData} layout={layout} config={config} />
       <div className="notifications">
         {notifications.subset ? (
@@ -283,6 +190,18 @@ ProfileCellLine.propTypes = {
         AAC: PropTypes.number,
         IC50: PropTypes.number,
       }).isRequired,
+    }),
+  ).isRequired,
+  profileOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    }),
+  ).isRequired,
+  datasetOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
     }),
   ).isRequired,
   compound: PropTypes.string.isRequired,
