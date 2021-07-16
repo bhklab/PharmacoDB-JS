@@ -3,6 +3,14 @@ import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
+import styled from 'styled-components';
+
+// styling the upset plot.
+const UpsetPlotStyle = styled.div`
+    width: 800px;
+    overflow: auto;
+    margin-bottom: 50px;
+`;
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
@@ -23,7 +31,7 @@ const margin = {
  */
 const yScale = (min = 0, max, height) => d3.scaleLinear()
     .domain([min, max])
-    .range([height / 2, 0])
+    .range([height / 1.75, 0])
     .nice();
 
 /**
@@ -57,7 +65,7 @@ const yAxis = (svg, scale) => svg
 const xAxis = (svg, scale, height) => svg
     .append('g')
     .attr('id', 'x-axis')
-    .attr('transform', `translate(${margin.left * 1.5}, ${height / 2})`)
+    .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.75})`)
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
 
 /**
@@ -77,7 +85,7 @@ const appendRectangles = (svg, data, scale, height) => {
 
     keys.forEach((key, i) => {
         rectangles.append('rect')
-            .attr('height', height / 2 - scale(data[key].count))
+            .attr('height', height / 1.75 - scale(data[key].count))
             .attr('width', CIRCLE_RADIUS * 2)
             .attr('x', `${(margin.left * 1.8) + (i * CIRCLE_RADIUS * 3)}`)
             .attr('y', scale(data[key].count))
@@ -108,7 +116,7 @@ const circleAxis = (svg, datasets, height) => {
     for (let i = 0; i < datasets.length; i++) {
         circleText.append('text')
             .attr('text-anchor', 'end')
-            .attr('transform', `translate(${margin.left * 1.5}, ${height / 2 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
+            .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.75 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
             .attr('id', `text-circle-${datasets[i]}`)
             .text(`${datasets[i]}`);
     }
@@ -137,7 +145,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
         for (let j = 0; j < datasets.length; j++) {
             // append circles.
             circles.append('circle')
-                .attr('transform', `translate(${margin.left * 2}, ${height / 2 + CIRCLE_RADIUS * 3})`)
+                .attr('transform', `translate(${margin.left * 2}, ${height / 1.75 + CIRCLE_RADIUS * 3})`)
                 .style('fill', set.keys.includes(datasets[j]) ? `${colors.dark_teal_heading}` : `${colors.silver}`)
                 .attr('r', CIRCLE_RADIUS)
                 .attr('cx', i * CIRCLE_RADIUS * 3)
@@ -147,7 +155,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
 
         // append line to the upset circles.
         circles.append('line')
-            .attr('transform', `translate(${margin.left * 2}, ${height / 2 + CIRCLE_RADIUS * 3})`)
+            .attr('transform', `translate(${margin.left * 2}, ${height / 1.75 + CIRCLE_RADIUS * 3})`)
             .attr('x1', i * CIRCLE_RADIUS * 3)
             .attr('y1', datasets.indexOf(set.keys[0]) * CIRCLE_RADIUS * 3)
             .attr('x2', i * CIRCLE_RADIUS * 3)
@@ -166,7 +174,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
     const width = CIRCLE_RADIUS * 3.1 * Object.keys(data).length;
-    const height = 700 - margin.top - margin.bottom;
+    const height = 600 - margin.top - margin.bottom;
 
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
@@ -215,9 +223,9 @@ const UpsetPlot = ({ data, datasets }) => {
         createUpsetPlot(data, datasets);
     })
     return (
-        <div style={{ width: 800, overflow: 'auto' }} >
+        <UpsetPlotStyle>
             <div id='upsetplot' />
-        </div>
+        </UpsetPlotStyle>
     )
 };
 
