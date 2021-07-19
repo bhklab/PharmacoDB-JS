@@ -9,6 +9,11 @@ const PlotsWrapper = styled.div`
 
   .plot {
     width: calc(50% - 10px);
+    .download-button {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   @media only screen and (max-width: 765px) {
