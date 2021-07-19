@@ -100,7 +100,8 @@ const DatasetHorizontalPlot = (props) => {
     <div className="plot">
       <h5>{title}</h5>
       <Plot divId={plotId} data={[plotlyData]} layout={layout} config={config} />
-      <div className='download-button'>
+      <div className='download-buttons'>
+        <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
         <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
       </div>
     </div>

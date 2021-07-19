@@ -9,10 +9,13 @@ const PlotsWrapper = styled.div`
 
   .plot {
     width: calc(50% - 10px);
-    .download-button {
+    .download-buttons {
       width: 100%;
       display: flex;
       justify-content: flex-end;
+      .left {
+        margin-right: 5px;
+      }
     }
   }
 

@@ -57,7 +57,10 @@ const DownloadButton = (props) => {
                 FileSaver.saveAs(csvData, `${filename}.csv`);
                 break;
             case 'png':
-                Plotly.downloadImage(plotId, {scale: 2, filename: filename});
+                Plotly.downloadImage(plotId, {format: 'png', scale: 2, filename: filename});
+                break;
+            case 'svg':
+                Plotly.downloadImage(plotId, {format: 'svg', scale: 2, filename: filename});
                 break;
             default:
                 break;
@@ -78,6 +81,6 @@ DownloadButton.propTypes = {
     mode: PropTypes.string.isRequired, // accepts 'csv' or 'png'
     filename: PropTypes.string.isRequired, 
     plotId: PropTypes.string // id of the plot to be downloaded
-  };
+};
 
 export default DownloadButton;
