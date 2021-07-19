@@ -20,6 +20,14 @@ const DRUG_SUMMARY_COLUMNS = [
     {
         Header: 'Datasets',
         accessor: 'dataset',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.datasetObj;
+            return(datasets.map((obj, i) => (
+                <span key={i}>
+                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                </span>)
+            ));
+        }
     },
     {
         Header: 'Experiments',
@@ -37,15 +45,22 @@ const formatDrugSummaryData = (data) => {
     data.experiments.forEach((experiment) => {
         const compoundName = experiment.compound.name;
         const datasetName = experiment.dataset.name;
+        const datasetId = experiment.dataset.id;
+        const datasetObj = [];
         if (compoundObj[compoundName]) {
             if (!compoundObj[compoundName].datasets.includes(datasetName))
+            {
                 compoundObj[compoundName].datasets.push(datasetName);
+                compoundObj[compoundName].datasetObj.push({name: datasetName, id:datasetId});
+                datasetObj.sort((a, b) => a - b);
+            }
             compoundObj[compoundName].numExperiments += 1;
         } else {
             compoundObj[compoundName] = {
                 compound: compoundName,
                 compoundId: experiment.compound.id,
                 datasets: [datasetName],
+                datasetObj : [{name: datasetName, id:datasetId}],
                 numExperiments: 1,
             };
         }
@@ -56,6 +71,7 @@ const formatDrugSummaryData = (data) => {
             compoundId: x.compoundId,
             compound: x.compound,
             dataset: x.datasets.join(', '),
+            datasetObj: x.datasetObj,
             experiment_id: x.numExperiments,
         }));
     }
@@ -87,7 +103,6 @@ const CompoundsSummaryTable = (props) => {
         data: {},
         loaded: false,
     });
-    console.log(experiment);
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
@@ -97,7 +112,7 @@ const CompoundsSummaryTable = (props) => {
             });
         }
     }, [queryData]);
-
+    console.log(formatDrugSummaryData(queryData));
     return (
         <React.Fragment>
             {

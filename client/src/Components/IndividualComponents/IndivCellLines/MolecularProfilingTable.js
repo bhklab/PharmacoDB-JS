@@ -9,7 +9,7 @@ import Loading from '../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
 
 
-const parseTableData = (data) => {
+const generateTableData = (data) => {
     // prepare returned data from api for molecular profiling table
     const dataObject = {}
     if (data && data.length>0) data.forEach((x)=> {
@@ -64,7 +64,7 @@ const MolecularProfilingTable = (props) => {
                 loading ?
                     <Loading />
                     :
-                    <Table columns={COLUMNS(data["mol_cell"])} data={parseTableData(data["mol_cell"])} center={true} />
+                    <Table columns={COLUMNS(data["mol_cell"])} data={generateTableData(data["mol_cell"])} center={true} />
             }
             {
                 error && <p>An error occurred</p>
