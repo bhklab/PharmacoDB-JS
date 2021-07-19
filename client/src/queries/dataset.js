@@ -69,7 +69,10 @@ const getDatasetCellLinesQuery = gql`
     dataset(datasetId: $datasetId) {
       id,
       name,
-      cells_tested
+      cells_tested {
+        id
+        name
+      }
     }
   }
 `;
@@ -79,7 +82,10 @@ const getDatasetCompoundQuery = gql`
     dataset(datasetId: $datasetId) {
       id,
       name,
-      compounds_tested
+      compounds_tested {
+        id
+        name
+      }
     }
   }
 `;

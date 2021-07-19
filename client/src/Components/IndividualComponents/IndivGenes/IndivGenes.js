@@ -2,13 +2,13 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
+import PlotSection from './PlotSection';
 
 import {
   StyledIndivPage,
@@ -31,9 +31,10 @@ const LINK_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-  { label: 'Synonyms', name: 'synonyms' },
-  { label: 'Links', name: 'links' }, 
-  { label: 'Plots', name: 'plots' }
+  { label: 'Synonyms and Links', name: 'synonyms' },
+  { label: 'Plots', name: 'plots' },
+  { label: 'Drugs Summary', name: 'drugsSummary' },
+  { label: 'Top Drugs', name: 'topDrugs' }
 ];
 
 /**
@@ -122,7 +123,6 @@ const IndivGenes = (props) => {
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
   const linkData = React.useMemo(() => formatLinkData(data), [data]);
-  console.log('data:', data);
 
   /**
    * 
@@ -157,22 +157,34 @@ const IndivGenes = (props) => {
                     <div className="content">
                       {
                         display === 'synonyms' &&
-                        <Element className="section" name="synonyms">
-                          <h3>Synonyms</h3>
-                          <Table columns={synonymColumns} data={synonymData} disablePagination />
-                        </Element>
-                      }
-                      {
-                        display === 'links' &&
-                        <Element className="section" name="links">
-                          <h3>Links</h3>
-                          <Table columns={linkColumns} data={linkData} disablePagination />
-                        </Element>
+                        <React.Fragment>
+                          <Element className="section" name="synonyms">
+                            <div className='section-title'>Synonyms and Links</div>
+                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                          </Element>
+                          <Element className="section" name="links">
+                            <div className='section-title'>Links</div>
+                            <Table columns={linkColumns} data={linkData} disablePagination />
+                          </Element>
+                        </React.Fragment>
                       }
                       {
                         display === 'plots' &&
                         <Element>
-                          <h3>Plots</h3>
+                          <div className='section-title'>Plots</div>
+                          {/* <PlotSection gene={gene.data} /> */}
+                        </Element>
+                      }
+                      {
+                        display === 'drugsSummary' &&
+                        <Element>
+                          <div className='section-title'>Drugs Summary</div>
+                        </Element>
+                      }
+                      {
+                        display === 'topDrugs' &&
+                        <Element>
+                          <div className='section-title'>Top Drugs</div>
                         </Element>
                       }
                     </div>

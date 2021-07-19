@@ -2,17 +2,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
+// import TableSection from './TableSection';
+import CellLineSummaryTable from './Tables/CellLineSummaryTable';
+import DrugSummaryTable from './Tables/DrugSummaryTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
+import convertToTitleCase from '../../../utils/convertToTitleCase';
 
 const ANNOTATION_COLUMNS = [
     {
@@ -36,7 +38,7 @@ const SIDE_LINKS = [
  * Format name strings containing underscores or being PascalCased
  */
 const formatName = (string) =>
-    string.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, ' $1');
+    convertToTitleCase(string.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, '$1'));
 
 /**
  * Format data for the annotation table
@@ -55,14 +57,15 @@ const formatAnnotationData = (data) => {
             const existing = output.filter((v) => v.sources === item.sources);
             if (existing.length) {
                 const existingIndex = output.indexOf(existing[0]);
-                output[existingIndex].name = output[existingIndex].name.concat(
-                    `, ${item.name}`
-                );
+                output[existingIndex].name = output[existingIndex].name.concat(item.name);
             } else {
                 if (typeof item.name === 'string') item.name = [item.name];
                 output.push(item);
             }
         });
+        output.forEach(item => {
+            item.name = [...new Set(item.name)].join(', ');
+        })
         return output;
     }
     return null;
@@ -102,6 +105,7 @@ const IndivTissues = (props) => {
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
+            console.log(queryData);
             setTissue({
                 data: queryData.tissue,
                 loaded: true,
@@ -153,18 +157,24 @@ const createSideLink = (link, i) => (
                                     <Table columns={annotationColumns} data={annotationData} disablePagination />
                                 </Element>
                             }
-                            <Element>
-                                <PlotSection 
-                                    display={display}
-                                    tissue={({ id: data.id, name: formatName(data.name) })} 
-                                />
-                            </Element>
-                            <Element>
-                                <TableSection 
-                                    display={display}
-                                    tissue={({ id: data.id, name: formatName(data.name) })} 
-                                />
-                            </Element>
+                            {
+                                display === 'barPlots' &&
+                                <Element>
+                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'cellLineSummary' &&
+                                <Element>
+                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'drugSummary' &&
+                                <Element>
+                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
                         </div>
                     </div>
                 </div>

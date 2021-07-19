@@ -217,6 +217,7 @@ const IndivDatasets = (props) => {
                         </Element>
                       }
                       {
+                        display === 'barPlots' &&
                         <Element>
                           <PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} display={display} />
                         </Element>

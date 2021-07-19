@@ -226,7 +226,7 @@ const dataset = async (args, parent, info) => {
             } = dataset;
             // data object.
             const data = {};
-
+            console.log(cells);
             data['id'] = dataset_id;
             data['name'] = dataset_name;
             if (listOfFields.includes('cell_count')) data['cell_count'] = cell_count[dataset_name].count;
@@ -235,8 +235,8 @@ const dataset = async (args, parent, info) => {
             if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count[dataset_name].count;
 
             if (dataset_id === datasetId || dataset_name === datasetName) {
-                if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => value['cell_name']);
-                if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => value['compound_name']);
+                if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({id: value['cell_id'], name: value['cell_name']}));
+                if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({id: value['compound_id'], name: value['compound_name']}));
 
                 returnData.unshift(data);
             } else {

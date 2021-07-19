@@ -14,4 +14,5 @@ export default {
   pale_teal: '#ddeded',
   white_smoke: '#E8e8e8',
   pale_tint: '#F2F9F8',
+  silver: '#C0C0C0',
 };
