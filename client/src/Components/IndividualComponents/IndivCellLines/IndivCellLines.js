@@ -6,6 +6,7 @@ import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
+import { getDatasetsQuery } from '../../../queries/dataset'
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
@@ -19,6 +20,15 @@ const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
         accessor: 'sources',
+        // Cell: (item) => {
+        //     let datasets = item.cell.row.original.datasetObj;
+        //     return(datasets.map((obj, i) => (
+        //             <span key={i}>
+        //         <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+        //     </span>
+        //         )
+        //     ));
+        // }
     },
     {
         Header: 'Names Used',
@@ -29,7 +39,6 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
-  // {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -39,11 +48,15 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the cell line API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
+    if (data.synonyms) {
+        console.log("fortamSYno", data);
+        const tableData =  data.synonyms.map((x) => ({
             name: x.name,
-            sources: x.source.join(', '),
+            sources: x.source.join(', ')
         }));
+        // add the used name of cell line in database
+        tableData.push( {name: data.name, sources: "PharmacoGx"});
+        return tableData;
     }
     return null;
 };
@@ -115,7 +128,6 @@ const IndivCellLines = (props) => {
         data: {},
         loaded: false,
     });
-
     // A section to display on the page
     const [display, setDisplay] = useState('data');
 
@@ -131,7 +143,8 @@ const IndivCellLines = (props) => {
 
     // destructuring the cellLine object.
     const { data } = cellLine;
-
+    const { loading : load, error: err, data: datasets } = useQuery(getDatasetsQuery);
+    console.log(datasets);
   /**
    *
    * @param {String} link
@@ -146,9 +159,10 @@ const IndivCellLines = (props) => {
 
   // formatted data for synonyms annotation table
   const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [data.synonyms]);
+  const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
   const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
+  console.log(synonymData)
   return (cellLine.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -176,7 +190,7 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                            <Table columns={synonymColumns} data={synonymData}/>
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>

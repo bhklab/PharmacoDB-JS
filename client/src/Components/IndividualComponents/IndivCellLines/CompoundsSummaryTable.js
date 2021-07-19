@@ -70,7 +70,6 @@ const formatDrugSummaryData = (data) => {
         return Object.values(compoundObj).map((x) => ({
             compoundId: x.compoundId,
             compound: x.compound,
-            dataset: x.datasets.join(', '),
             datasetObj: x.datasetObj,
             experiment_id: x.numExperiments,
         }));
