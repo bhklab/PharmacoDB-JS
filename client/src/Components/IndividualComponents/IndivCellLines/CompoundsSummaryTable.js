@@ -9,11 +9,13 @@ import Loading from '../../UtilComponents/Loading';
 import ProfileCompound from '../../Plots/ProfileCompound';
 import Table from '../../UtilComponents/Table/Table';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
+import { Link } from 'react-router-dom';
 
 const DRUG_SUMMARY_COLUMNS = [
     {
         Header: 'Compounds',
         accessor: 'compound',
+        Cell: (item) => (<Link to={`/compounds/${item.row.original.compoundId}`}>{item.value}</Link>),
     },
     {
         Header: 'Datasets',
@@ -42,6 +44,7 @@ const formatDrugSummaryData = (data) => {
         } else {
             compoundObj[compoundName] = {
                 compound: compoundName,
+                compoundId: experiment.compound.id,
                 datasets: [datasetName],
                 numExperiments: 1,
             };
@@ -50,6 +53,7 @@ const formatDrugSummaryData = (data) => {
     // assign values of collected compound data to the columns
     if (data) {
         return Object.values(compoundObj).map((x) => ({
+            compoundId: x.compoundId,
             compound: x.compound,
             dataset: x.datasets.join(', '),
             experiment_id: x.numExperiments,
