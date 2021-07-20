@@ -5,7 +5,7 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
- * 
+ *
  *  @param {Array} - takes an array of object like below
  *      [{
  *          compound_id: 526,
@@ -42,7 +42,7 @@ const transformSynonyms = data => {
 };
 
 /**
- * 
+ *
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
@@ -78,13 +78,24 @@ const transformCompounds = data => {
 };
 
 /**
+ * @returns {Array} - Returns a list of datasets' names and ids
+ */
+const datasetsQuery = async () => {
+    const query = knex
+        .select(['d.name as name','d.id as id'])
+        .from('dataset as d')
+    return query;
+};
+
+/**
  * @param {number} compoundId
  * @param {string} compoundName
- * @param {Array} compoundData 
- * @param {Array} compoundSynonyms 
+ * @param {Array} compoundData
+ * @param {Array} compoundSynonyms
  * @param {Array} subtypes
  */
 const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
+    const datasets = await datasetsQuery();
     try {
         const transformedCompound = transformCompounds(compoundData);
         const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
@@ -95,7 +106,8 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
         const output = {
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,
-            targets: targets['targets']
+            targets: targets['targets'],
+            datasets: datasets,
         };
         return output;
     } catch (err) {
@@ -176,7 +188,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         if (listOfFields.includes('dataset')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
             .join('dataset as d', 'dc.dataset_id', 'd.id');
 
-        // if the user has not queried to get all the compound, 
+        // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);

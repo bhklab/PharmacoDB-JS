@@ -19,7 +19,19 @@ import StyledWrapper from '../../../styles/utils';
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'sources',
+        accessor: 'datasetObj',
+        Cell: (item) => {
+            let datasets = item.row.original.datasetObj;
+            return(datasets.map((obj, i) => (
+                    obj.id? (
+                            <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                        ) :
+                        (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -54,12 +66,34 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        const synonymData = data.synonyms.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', '),
-        }));
-        synonymData.push({name:data.compound.name , sources:["PharmacoGx"]});
-        return synonymData;
+        // define datasetId object to find id of sources
+        const datasetId = {};
+        data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
+        // collect source ids and initiate dataset objects to store sources
+        const tableData = []
+        for (let x of data.synonyms) {
+            const datasetObj = [];
+            for (let item of x.source){
+                datasetObj.push({name:item, id:datasetId[item]});
+            }
+            tableData.push({name: x.name, datasetObj: datasetObj});
+        }
+        // merge sources with same synonyms
+        const returnList = [];
+        for (let x of tableData){
+            const index = returnList.findIndex((item) => item.name === x.name )
+            if (index === -1)  returnList.push(x);
+            else
+                for (let source of x.datasetObj)
+                    returnList[index].datasetObj.push({name: source['name'], id: source['id']});
+        }
+        console.log('dasdad',tableData);
+        // const synonymData = data.synonyms.map((x) => ({
+        //     name: x.name,
+        //     sources: x.source.join(', '),
+        // }));
+        returnList.push({name:data.compound.name , datasetObj:[{name: "PharmacoGx", id: ""}]});
+        return returnList;
     }
     return null;
 };
@@ -117,7 +151,6 @@ const IndivCompounds = (props) => {
         data: {},
         loaded: false,
     });
-
     // A section to display on the page
     const [display, setDisplay] = useState('synonyms');
 

@@ -50,8 +50,10 @@ const transformCellLines = data => {
     return Object.values(finalData);
 };
 
+/**
+ * @returns {Array} - Returns a list of datasets' names and ids
+ */
 const datasetsQuery = async () => {
-    // main query.
     const query = knex
         .select(['d.name as name','d.id as id'])
         .from('dataset as d')
