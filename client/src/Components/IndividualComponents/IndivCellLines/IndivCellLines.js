@@ -15,22 +15,22 @@ import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageSty
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
-    {
-        Header: 'Sources',
-        accessor: 'sources',
-    },
-    {
-        Header: 'Names Used',
-        accessor: 'name',
-    },
+  {
+    Header: 'Sources',
+    accessor: 'sources',
+  },
+  {
+    Header: 'Names Used',
+    accessor: 'name',
+  },
 ];
 
 const SIDE_LINKS = [
-  {label: 'Cell Line Data', name: 'data'},
-  {label: 'Bar Plot', name: 'barPlot'},
-  {label: 'AAC (Compounds)', name: 'aacCompounds'},
-  {label: 'Drugs Summary', name: 'drugsSummary'},
-  {label: 'Molecular Profiling', name: 'molecularProfiling'}
+  { label: 'Cell Line Data', name: 'data' },
+  { label: 'Bar Plot', name: 'barPlot' },
+  { label: 'AAC (Compounds)', name: 'aacCompounds' },
+  { label: 'Drugs Summary', name: 'drugsSummary' },
+  { label: 'Molecular Profiling', name: 'molecularProfiling' }
 ];
 
 /**
@@ -38,13 +38,13 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the cell line API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', '),
-        }));
-    }
-    return null;
+  if (data) {
+    return data.map((x) => ({
+      name: x.name,
+      sources: x.source.join(', '),
+    }));
+  }
+  return null;
 };
 
 /**
@@ -52,24 +52,24 @@ const formatSynonymData = (data) => {
  * @param {Array} data diseases data from the cell line API
  */
 const formatDiseaseData = (data) => {
-    if (data) {
-        const ncit_path =
-            'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
-        return data.map((x) =>
-            x
-                ? {
-                      key: x.split('; ')[1],
-                      name: x,
-                      source: ncit_path + x.split('; ')[1],
-                  }
-                : {
-                      key: null,
-                      name: 'N/A',
-                      source: null,
-                  }
-        );
-    }
-    return null;
+  if (data) {
+    const ncit_path =
+      'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
+    return data.map((x) =>
+      x
+        ? {
+          key: x.split('; ')[1],
+          name: x,
+          source: ncit_path + x.split('; ')[1],
+        }
+        : {
+          key: null,
+          name: 'N/A',
+          source: null,
+        }
+    );
+  }
+  return null;
 };
 
 /**
@@ -77,15 +77,15 @@ const formatDiseaseData = (data) => {
  * @param {Array} data link data from the cell line API
  */
 const formatLinkData = (data) => {
-    if (data) {
-        const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
-        return {
-            key: data,
-            path: cellosaurus_path + data,
-            source: 'Cellosaurus',
-        };
-    }
-    return null;
+  if (data) {
+    const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
+    return {
+      key: data,
+      path: cellosaurus_path + data,
+      source: 'Cellosaurus',
+    };
+  }
+  return null;
 };
 
 /**
@@ -99,48 +99,48 @@ const formatLinkData = (data) => {
  * )
  */
 const IndivCellLines = (props) => {
-    // parameter.
-    const {
-        match: { params },
-    } = props;
+  // parameter.
+  const {
+    match: { params },
+  } = props;
 
-    // query to get the data for the single cell line.
-    const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
-        variables: { cellId: parseInt(params.id) },
-    });
+  // query to get the data for the single cell line.
+  const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
+    variables: { cellId: parseInt(params.id) },
+  });
 
-    // load data from query into state
-    const [cellLine, setCellLine] = useState({
-        data: {},
-        loaded: false,
-    });
+  // load data from query into state
+  const [cellLine, setCellLine] = useState({
+    data: {},
+    loaded: false,
+  });
 
-    // A section to display on the page
-    const [display, setDisplay] = useState('data');
+  // A section to display on the page
+  const [display, setDisplay] = useState('data');
 
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            setCellLine({
-                data: queryData.cell_line,
-                loaded: true,
-            });
-        }
-    }, [queryData]);
+  // to set the state on the change of the data.
+  useEffect(() => {
+    if (queryData !== undefined) {
+      setCellLine({
+        data: queryData.cell_line,
+        loaded: true,
+      });
+    }
+  }, [queryData]);
 
-    // destructuring the cellLine object.
-    const { data } = cellLine;
+  // destructuring the cellLine object.
+  const { data } = cellLine;
 
   /**
    * 
    * @param {String} link 
    */
   const createSideLink = (link, i) => (
-      <li key={i} className={display === link.name ? 'selected': undefined}>
-          <button type='button' onClick={() => setDisplay(link.name)}>
-              {link.label}
-          </button>
-      </li>
+    <li key={i} className={display === link.name ? 'selected' : undefined}>
+      <button type='button' onClick={() => setDisplay(link.name)}>
+        {link.label}
+      </button>
+    </li>
   );
 
   // formatted data for synonyms annotation table
@@ -156,13 +156,13 @@ const IndivCellLines = (props) => {
             : (
               <StyledIndivPage className="indiv-cellLines">
                 <div className='heading'>
-                    <span className='title'>{data.name}</span>
-                    <span className='attributes'>
-                        Tissue Type:  
+                  <span className='title'>{data.name}</span>
+                  <span className='attributes'>
+                    Tissue Type:
                         <span className='value highlight'>
-                          {data.tissue.name}
-                        </span>
+                      {data.tissue.name}
                     </span>
+                  </span>
                 </div>
                 <div className='wrapper'>
                   <StyledSidebarList>
@@ -192,9 +192,9 @@ const IndivCellLines = (props) => {
                         </React.Fragment>
                       }
                       <Element>
-                        <PlotSection 
+                        <PlotSection
                           display={display}
-                          cellLine={({ id: data.id, name: data.name })} 
+                          cellLine={({ id: data.id, name: data.name })}
                         />
                       </Element>
                       {
@@ -222,14 +222,14 @@ const IndivCellLines = (props) => {
 };
 
 IndivCellLines.propTypes = {
-    /**
-     * IndivCellLines' param id
-     */
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-        }).isRequired,
+  /**
+   * IndivCellLines' param id
+   */
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
 };
 
 export default IndivCellLines;
