@@ -6,7 +6,6 @@ import { Link, Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
-import { getDatasetsQuery } from '../../../queries/dataset'
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
