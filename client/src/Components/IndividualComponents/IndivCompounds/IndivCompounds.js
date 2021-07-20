@@ -87,11 +87,6 @@ const formatSynonymData = (data) => {
                 for (let source of x.datasetObj)
                     returnList[index].datasetObj.push({name: source['name'], id: source['id']});
         }
-        console.log('dasdad',tableData);
-        // const synonymData = data.synonyms.map((x) => ({
-        //     name: x.name,
-        //     sources: x.source.join(', '),
-        // }));
         returnList.push({name:data.compound.name , datasetObj:[{name: "PharmacoGx", id: ""}]});
         return returnList;
     }
@@ -106,20 +101,23 @@ const formatAnnotationData = (data) => {
     const modifiedData = [];
     if (data) {
         const { annotation } = data;
-        modifiedData.push(
-            {
-                db: 'SMILES',
-                identifier: annotation.smiles,
-            },
-            {
-                db: 'InChiKey',
-                identifier: annotation.inchikey,
-            },
-            {
-                db: 'PubChem ID',
-                identifier: annotation.pubchem,
-            }
-        );
+        if (annotation.smiles) modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, })
+        if (annotation.inchikey) modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, })
+        if (annotation.pubchem) modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, })
+        // modifiedData.push(
+        //     {
+        //         db: 'SMILES',
+        //         identifier: annotation.smiles,
+        //     },
+        //     {
+        //         db: 'InChiKey',
+        //         identifier: annotation.inchikey,
+        //     },
+        //     {
+        //         db: 'PubChem ID',
+        //         identifier: annotation.pubchem,
+        //     }
+        // );
     }
     return modifiedData;
 };
