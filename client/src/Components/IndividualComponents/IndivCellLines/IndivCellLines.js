@@ -55,6 +55,7 @@ const formatSynonymData = (data) => {
         // define datasetId object to find id of sources
         const datasetId = {};
         data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
+        // collect source ids and initiate dataset objects to store sources
         const tableData = []
         for (let x of data.synonyms) {
                 const datasetObj = [];
@@ -63,11 +64,19 @@ const formatSynonymData = (data) => {
                 }
             tableData.push({name: x.name, datasetObj: datasetObj});
             }
-
-        const pharmacoObj = { name: data.name, datasetObj: [{name: "PharmacoGx", id: ""}]};
+        // merge sources with same synonyms
+        const returnList = [];
+        for (let x of tableData){
+            const index = returnList.findIndex((item) => item.name === x.name )
+            if (index === -1)  returnList.push(x);
+            else
+                for (let source of x.datasetObj)
+                    returnList[index].datasetObj.push({name: source['name'], id: source['id']});
+        }
         // add the used name of cell line in database
-        tableData.push(pharmacoObj);
-        return tableData;
+        const pharmacoObj = { name: data.name, datasetObj: [{name: "PharmacoGx", id: ""}]};
+        returnList.push(pharmacoObj);
+        return returnList;
     }
     return null;
 };
@@ -196,7 +205,7 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={synonymColumns} data={synonymData}/>
+                            <Table columns={synonymColumns} data={synonymData} />
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
