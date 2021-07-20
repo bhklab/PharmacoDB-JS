@@ -21,6 +21,9 @@ const cellLineDetailType = `
         tissue: Tissue!
         """synonyms (name) in different datasets"""
         synonyms: [SourceAnnotation!]
+        """list of datasets names and ids"""
+        datasets: [Generic]!
+        """diseases from cellosaurus"""
         diseases: [String]
         """accession id from cellosaurus"""
         accessions: String

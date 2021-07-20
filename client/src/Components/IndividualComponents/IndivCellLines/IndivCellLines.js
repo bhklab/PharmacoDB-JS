@@ -19,16 +19,19 @@ import StyledWrapper from '../../../styles/utils';
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'sources',
-        // Cell: (item) => {
-        //     let datasets = item.cell.row.original.datasetObj;
-        //     return(datasets.map((obj, i) => (
-        //             <span key={i}>
-        //         <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-        //     </span>
-        //         )
-        //     ));
-        // }
+        accessor: 'datasetObj',
+        Cell: (item) => {
+            let datasets = item.row.original.datasetObj;
+            return(datasets.map((obj, i) => (
+                obj.id? (
+                    <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                ) :
+                    (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -49,13 +52,21 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        console.log("fortamSYno", data);
-        const tableData =  data.synonyms.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', ')
-        }));
+        // define datasetId object to find id of sources
+        const datasetId = {};
+        data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
+        const tableData = []
+        for (let x of data.synonyms) {
+                const datasetObj = [];
+                for (let item of x.source){
+                    datasetObj.push({name:item, id:datasetId[item]});
+                }
+            tableData.push({name: x.name, datasetObj: datasetObj});
+            }
+
+        const pharmacoObj = { name: data.name, datasetObj: [{name: "PharmacoGx", id: ""}]};
         // add the used name of cell line in database
-        tableData.push( {name: data.name, sources: "PharmacoGx"});
+        tableData.push(pharmacoObj);
         return tableData;
     }
     return null;
@@ -117,12 +128,10 @@ const IndivCellLines = (props) => {
     const {
         match: { params },
     } = props;
-
     // query to get the data for the single cell line.
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
         variables: { cellId: parseInt(params.id) },
     });
-
     // load data from query into state
     const [cellLine, setCellLine] = useState({
         data: {},
@@ -143,8 +152,6 @@ const IndivCellLines = (props) => {
 
     // destructuring the cellLine object.
     const { data } = cellLine;
-    const { loading : load, error: err, data: datasets } = useQuery(getDatasetsQuery);
-    console.log(datasets);
   /**
    *
    * @param {String} link
@@ -162,7 +169,6 @@ const IndivCellLines = (props) => {
   const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
   const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
-  console.log(synonymData)
   return (cellLine.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>

@@ -50,6 +50,14 @@ const transformCellLines = data => {
     return Object.values(finalData);
 };
 
+const datasetsQuery = async () => {
+    // main query.
+    const query = knex
+        .select(['d.name as name','d.id as id'])
+        .from('dataset as d')
+    return query;
+};
+
 /**
  * Returns a transformed array of objects.
  * @param {Array} data
@@ -57,7 +65,7 @@ const transformCellLines = data => {
  */
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
-const transformSingleCellLine = data => {
+const transformSingleCellLine = (data, datasets) => {
     let returnObject = {};
     const source_cell_name_list = [];
     data.forEach((row, i) => {
@@ -104,6 +112,7 @@ const transformSingleCellLine = data => {
             }
         }
     });
+    returnObject['datasets'] = datasets;
     return returnObject;
 };
 
@@ -188,8 +197,9 @@ const cell_line = async args => {
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);
         }
+        const datasets = await datasetsQuery();
         // return the transformed data.
-        return transformSingleCellLine(cell_line);
+        return transformSingleCellLine(cell_line, datasets);
     } catch (err) {
         console.log(err);
         return err;

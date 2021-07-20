@@ -41,6 +41,10 @@ const getCellLineQuery = gql`
         name
         source
       }
+      datasets {
+        id
+        name
+      }
     }
   }
 `;
