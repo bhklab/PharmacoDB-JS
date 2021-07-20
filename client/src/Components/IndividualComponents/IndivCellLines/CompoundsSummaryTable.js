@@ -111,7 +111,6 @@ const CompoundsSummaryTable = (props) => {
             });
         }
     }, [queryData]);
-    console.log(formatDrugSummaryData(queryData));
     return (
         <React.Fragment>
             {

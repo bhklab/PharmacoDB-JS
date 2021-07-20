@@ -67,10 +67,12 @@ const formatSynonymData = (data) => {
         const returnList = [];
         for (let x of tableData){
             const index = returnList.findIndex((item) => item.name === x.name )
-            if (index === -1)  returnList.push(x);
-            else
+            if (index === -1) {
+                returnList.push(x);
+            } else {
                 for (let source of x.datasetObj)
                     returnList[index].datasetObj.push({name: source['name'], id: source['id']});
+            }
         }
         // add the used name of cell line in database
         const pharmacoObj = { name: data.name, datasetObj: [{name: "PharmacoGx", id: ""}]};
