@@ -55,6 +55,10 @@ const StyledIndivPage = styled.div`
       margin-bottom: 10px;
       color: ${colors.dark_teal_heading};
     }
+    .download-button {
+      display: flex;
+      justify-content: flex-end;
+    }
     .text {
       font-size: 12px;
     }

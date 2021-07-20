@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import colors from '../../styles/colors';
 import { getDatasetsQuery } from '../../queries/dataset';
+import DownloadButton from '../UtilComponents/DownloadButton';
 
 const config = {
   responsive: true,
@@ -55,7 +56,7 @@ const generatePlotlyData = (data) => {
  * )
  */
 const DatasetHorizontalPlot = (props) => {
-  const { data, xaxis, title } = props;
+  const { plotId, data, xaxis, title } = props;
 
   // add datasets with 0 experiments to the plot
   const { loading, error, data: allDatasets } = useQuery(getDatasetsQuery);
@@ -98,7 +99,11 @@ const DatasetHorizontalPlot = (props) => {
   return (
     <div className="plot">
       <h5>{title}</h5>
-      <Plot data={[plotlyData]} layout={layout} config={config} />
+      <Plot divId={plotId} data={[plotlyData]} layout={layout} config={config} />
+      <div className='download-buttons'>
+        <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
+        <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
+      </div>
     </div>
   );
 };
