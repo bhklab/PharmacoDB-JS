@@ -10,8 +10,8 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import CompoundsSummaryTable from './CompoundsSummaryTable';
-import MolecularProfilingTable from './MolecularProfilingTable';
+import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
+import MolecularProfilingTable from './Tables/MolecularProfilingTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 

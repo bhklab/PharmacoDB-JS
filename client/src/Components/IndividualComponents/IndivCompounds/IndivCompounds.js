@@ -9,6 +9,7 @@ import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
+import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
 
 import {
     StyledIndivPage,
@@ -82,10 +83,12 @@ const formatSynonymData = (data) => {
         const returnList = [];
         for (let x of tableData){
             const index = returnList.findIndex((item) => item.name === x.name )
-            if (index === -1)  returnList.push(x);
-            else
+            if (index === -1) {
+                returnList.push(x);
+            } else {
                 for (let source of x.datasetObj)
                     returnList[index].datasetObj.push({name: source['name'], id: source['id']});
+            }
         }
         returnList.push({name:data.compound.name , datasetObj:[{name: "PharmacoGx", id: ""}]});
         return returnList;
@@ -101,23 +104,15 @@ const formatAnnotationData = (data) => {
     const modifiedData = [];
     if (data) {
         const { annotation } = data;
-        if (annotation.smiles) modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, })
-        if (annotation.inchikey) modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, })
-        if (annotation.pubchem) modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, })
-        // modifiedData.push(
-        //     {
-        //         db: 'SMILES',
-        //         identifier: annotation.smiles,
-        //     },
-        //     {
-        //         db: 'InChiKey',
-        //         identifier: annotation.inchikey,
-        //     },
-        //     {
-        //         db: 'PubChem ID',
-        //         identifier: annotation.pubchem,
-        //     }
-        // );
+        if (annotation.smiles) {
+            modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, });
+        }
+        if (annotation.inchikey) {
+            modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
+        }
+        if (annotation.pubchem) {
+            modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, });
+        }
     }
     return modifiedData;
 };
@@ -189,7 +184,6 @@ const IndivCompounds = (props) => {
             </button>
         </li>
     );
-
     return compound.loaded ? (
         <Layout page={data.compound.name}>
             <StyledWrapper>
@@ -260,6 +254,25 @@ const IndivCompounds = (props) => {
                                             }}
                                         />
                                     </Element>
+                                    {
+                                        display === 'cellSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Cell Line Summary</div>
+                                            <CellLinesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'tissueSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Tissue Summary</div>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'molFeature' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Molecular Features</div>
+                                        </Element>
+                                    }
                                 </div>
                             </div>
                         </div>

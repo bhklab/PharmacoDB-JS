@@ -3,9 +3,9 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getMolCellQuery } from '../../../queries/mol';
-import Table from '../../UtilComponents/Table/Table';
-import Loading from '../../UtilComponents/Loading';
+import { getMolCellQuery } from '../../../../queries/mol';
+import Table from '../../../UtilComponents/Table/Table';
+import Loading from '../../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
 
 /**
@@ -32,7 +32,6 @@ const generateTableData = (data) => {
                 dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g, "").toLowerCase()] = x['num_prof'];
             }
         )}
-    }
     const tableData = []
     for (const [key, value] of Object.entries(dataObject)) {
         tableData.push({id: key, dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })

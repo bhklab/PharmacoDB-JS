@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
-import dataset_colors from '../../../styles/dataset_colors';
-import Loading from '../../UtilComponents/Loading';
-import ProfileCompound from '../../Plots/ProfileCompound';
-import Table from '../../UtilComponents/Table/Table';
-import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
+import { getSingleCellLineExperimentsQuery } from '../../../../queries/experiments';
+import dataset_colors from '../../../../styles/dataset_colors';
+import Loading from '../../../UtilComponents/Loading';
+import ProfileCompound from '../../../Plots/ProfileCompound';
+import Table from '../../../UtilComponents/Table/Table';
+import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import { Link } from 'react-router-dom';
 
 const DRUG_SUMMARY_COLUMNS = [
