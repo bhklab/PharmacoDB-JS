@@ -40,10 +40,12 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
-    {label: 'Anotated Targets', name: 'targets'},
     {label: 'Bar Plots', name: 'barplots'},
     {label: 'AAC (Cell Lines)', name: 'aacCells'},
     {label: 'AAC (Tissues)', name: 'aacTissues'},
+    {label: 'Cell Line Summary', name: 'cellSummary'},
+    {label: 'Tissue Summary', name: 'tissueSummary'},
+    {label: 'Molecular Features', name: 'molFeature'},
 ];
 
 /**
@@ -51,11 +53,13 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the compound API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
+    if (data.synonyms) {
+        const synonymData = data.synonyms.map((x) => ({
             name: x.name,
             sources: x.source.join(', '),
         }));
+        synonymData.push({name:data.compound.name , sources:["PharmacoGx"]});
+        return synonymData;
     }
     return null;
 };
@@ -132,7 +136,7 @@ const IndivCompounds = (props) => {
 
     // formatted data for synonyms annotation table
     const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-    const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [
+    const synonymData = React.useMemo(() => formatSynonymData(data), [
         data.synonyms,
     ]);
 
@@ -144,8 +148,8 @@ const IndivCompounds = (props) => {
     );
 
     /**
-     * 
-     * @param {String} link 
+     *
+     * @param {String} link
      */
     const createSideLink = (link, i) => (
         <li key={i} className={display === link.name ? 'selected': undefined}>
@@ -167,7 +171,7 @@ const IndivCompounds = (props) => {
                         <div className='heading'>
                             <span className='title'>{data.compound.name}</span>
                             <span className='attributes'>
-                                FDA Approval Status:  
+                                FDA Approval Status:
                                 <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
                                     {data.compound.annotation.fda_status}
                                 </span>
