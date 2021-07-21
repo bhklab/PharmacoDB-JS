@@ -35,8 +35,8 @@ const DRUG_SUMMARY_COLUMNS = [
 ];
 
 /**
- * Format data for the synonyms table
- * @param {Array} data synonym data from the cell line API
+ * Format data for the compound summary table
+ * @param {Array} data compound summary data from the experiment API
  */
 const generateTableData = (data) => {
   let tableData = { ready: false, compound: [], numCompounds: 0, numDataset: 0 };
@@ -90,7 +90,6 @@ const CompoundsSummaryTable = (props) => {
 
   const { loading, data: queryData,} = useQuery(getSingleCellLineExperimentsQuery, {
       variables: { cellLineId: cellLine.id },
-      // fetchPolicy: "network-only",
       onCompleted: (data) => {
         console.log(data);
         let parsed = generateTableData(data.experiments)
@@ -151,16 +150,6 @@ const CompoundsSummaryTable = (props) => {
               </React.Fragment>
         }
       </React.Fragment>
-    //   <React.Fragment>
-    //   {
-    //             loading
-    //               ? <Loading />
-    //               : <Table columns={DRUG_SUMMARY_COLUMNS} data={generateTableData(queryData)} center />
-    //         }
-    //   {
-    //             error && <p>An error occurred</p>
-    //         }
-    // </React.Fragment>
   );
 };
 

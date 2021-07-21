@@ -67,33 +67,23 @@ const PlotSection = (props) => {
             {compoundsData.length ? (
                 <React.Fragment>
                     {
-                        display === 'barPlot' ?
-                            loading ? <Loading />
-                            :
-                            <DatasetHorizontalPlot
-                                plotId={`${name}Compounds`}
-                                data={compoundsData}
-                                xaxis="# of compounds"
-                                title={`Number of compounds tested with ${name} (per dataset)`}
-                            />
-                            :
-                        ''
-                    }
-                    {
-                        display === 'aacCompounds' ?
-                            loading ? <Loading />
-                            :
-                            <ProfileCompound
-                                cellLine={name}
-                                data={data.experiments}
-                            />
+                        loading ? <Loading />
                         :
-                        ''
+                        <DatasetHorizontalPlot
+                            plotId={`${name}Compounds`}
+                            data={compoundsData}
+                            xaxis="# of compounds"
+                            title={`Number of compounds tested with ${name} (per dataset)`}
+                        />
                     }
                 </React.Fragment>
-            ) : (
-                <p></p>
-            )}
+            ) :
+                display === 'barPlot' ?
+                    (
+                        <p>No data available to plot this cell line.</p>
+                    )
+            : ''
+            }
         </React.Fragment>
     );
 };

@@ -2,12 +2,11 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
@@ -163,7 +162,6 @@ const IndivCellLines = (props) => {
     // destructuring the cellLine object.
     const { data } = cellLine;
   /**
-   *
    * @param {String} link
    */
   const createSideLink = (link, i) => (
@@ -231,8 +229,7 @@ const IndivCellLines = (props) => {
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
-                          {/*<div className='section-title'>Drugs Summary</div>*/}
-                          <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name })} />
+                          <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name, display })} />
                         </Element>
                       }
                       {
