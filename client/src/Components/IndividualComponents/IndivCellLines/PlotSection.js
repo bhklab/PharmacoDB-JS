@@ -63,14 +63,15 @@ const PlotSection = (props) => {
     }
 
     return (
-        <>
+        <React.Fragment>
             {compoundsData.length ? (
-                <>
+                <React.Fragment>
                     {
                         display === 'barPlot' ?
                             loading ? <Loading />
                             :
                             <DatasetHorizontalPlot
+                                plotId={`${name}Compounds`}
                                 data={compoundsData}
                                 xaxis="# of compounds"
                                 title={`Number of compounds tested with ${name} (per dataset)`}
@@ -89,11 +90,11 @@ const PlotSection = (props) => {
                         :
                         ''
                     }
-                </>
+                </React.Fragment>
             ) : (
                 <p></p>
             )}
-        </>
+        </React.Fragment>
     );
 };
 

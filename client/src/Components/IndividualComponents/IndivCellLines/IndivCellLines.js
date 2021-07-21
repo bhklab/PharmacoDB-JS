@@ -231,7 +231,7 @@ const IndivCellLines = (props) => {
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
-                          <div className='section-title'>Drugs Summary</div>
+                          {/*<div className='section-title'>Drugs Summary</div>*/}
                           <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }

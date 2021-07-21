@@ -85,7 +85,7 @@ const transformSingleCellLine = (data, datasets) => {
         if (!i) {
             returnObject['id'] = cell_id;
             returnObject['name'] = cell_name;
-            returnObject['diseases'] = diseases.split('|||');
+            returnObject['diseases'] = diseases ? diseases.split('|||') : diseases;
             returnObject['accessions'] = accessions;
             returnObject['tissue'] = {
                 id: tissue_id,
