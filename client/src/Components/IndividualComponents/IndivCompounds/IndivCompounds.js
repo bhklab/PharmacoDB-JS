@@ -11,6 +11,7 @@ import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
 import TissuesSummaryTable from './Tables/TissuesSummaryTable'
+import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
 
 import {
     StyledIndivPage,
@@ -273,6 +274,7 @@ const IndivCompounds = (props) => {
                                         display === 'molFeature' &&
                                         <Element className="section">
                                             <div className='section-title'>Molecular Features</div>
+                                            <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })}/>
                                         </Element>
                                     }
                                 </div>

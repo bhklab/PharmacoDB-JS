@@ -11,7 +11,7 @@ import Table from '../../../UtilComponents/Table/Table';
 import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import { Link } from 'react-router-dom';
 
-const DRUG_SUMMARY_COLUMNS = [
+const CELL_SUMMARY_COLUMNS = [
     {
         Header: 'Cell Line',
         accessor: 'cellLineObj',
@@ -55,8 +55,9 @@ const DRUG_SUMMARY_COLUMNS = [
 ];
 
 /**
- * Format data for the synonyms table
- * @param {Array} data synonym data from the compound API
+ * Format data for the cell Line summary table
+ * @param {Array} data from experiment API for a given compound
+ * @returns {Array} Object of cellLines, datasets, and tissues for the table
  */
 const formatCellSummaryData = (data) => {
     // collect data of datasets, tissues and number of experiments for each cell line
@@ -134,7 +135,7 @@ const CellLinesSummaryTable = (props) => {
                 loading ?
                     <Loading />
                     :
-                    <Table columns={DRUG_SUMMARY_COLUMNS} data={formatCellSummaryData(queryData)} center={true} />
+                    <Table columns={CELL_SUMMARY_COLUMNS} data={formatCellSummaryData(queryData)} center={true} />
             }
             {
                 error && <p>An error occurred</p>

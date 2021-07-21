@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 const TISSUE_SUMMARY_COLUMNS = [
     {
-        Header: 'Tissue Type',
+        Header: 'Tissue',
         accessor: 'tissueObj',
         Cell: (item) => {
             let tissues = item.row.original.tissueObj;
@@ -43,8 +43,9 @@ const TISSUE_SUMMARY_COLUMNS = [
 ];
 
 /**
- * Format data for the synonyms table
- * @param {Array} data synonym data from the experiment API
+ * Format data for the tissue summary table
+ * @param {Array} data from experiment API for a given compound
+ * @returns {Array} Object of formatted data for the table
  */
 const formatTissueSummaryData = (data) => {
     // collect data of datasets and number of experiments for each tissue
@@ -80,13 +81,13 @@ const formatTissueSummaryData = (data) => {
 };
 
 /**
- * Section that display Cell Line Summary table for the individual compound page.
+ * Section that displays Tissue Summary table for the individual compound page.
  *
  * @component
  * @example
  *
  * returns (
- *   <CellLinesSummaryTable/>
+ *   <TissuesSummaryTable/>
  * )
  */
 const TissuesSummaryTable = (props) => {
