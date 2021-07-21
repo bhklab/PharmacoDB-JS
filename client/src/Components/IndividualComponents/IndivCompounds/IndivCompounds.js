@@ -10,6 +10,7 @@ import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
+import TissuesSummaryTable from './Tables/TissuesSummaryTable'
 
 import {
     StyledIndivPage,
@@ -63,7 +64,7 @@ const SIDE_LINKS = [
 
 /**
  * Format data for the synonyms table
- * @param {Array} data synonym data from the compound API
+ * @param {Array} data synonym data from the experiment API
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
@@ -265,6 +266,7 @@ const IndivCompounds = (props) => {
                                         display === 'tissueSummary' &&
                                         <Element className="section">
                                             <div className='section-title'>Tissue Summary</div>
+                                            <TissuesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
                                         </Element>
                                     }
                                     {
