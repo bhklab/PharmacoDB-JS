@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueExperimentsQuery } from '../../../queries/experiments';
@@ -34,7 +34,7 @@ const CELL_LINE_SUMMARY_COLUMNS = [
  * @param {Array} data drug summary and cell line summary data from the experiment API
  */
 const generateTablesData = (data) => {
-  if (data.experiments) {
+  if (data && data.experiments) {
     const compoundObj = {};
     const cellLineObj = {};
     let allDatasets = 0;
@@ -81,14 +81,7 @@ const formatDrugSummaryData = (compounds) => {
  */
 const formatCellLineSummaryData = (cellLines) => {
   if (cellLines) {
-    return Object.values(cellLines).map((x) => ({
-      cellLine:
-        <div style={{ textAlign: 'center' }}>
-          {' '}
-          {x.cellLine}
-          {' '}
-        </div>,
-    }));
+    return Object.values(cellLines).map((x) => ({cellLine: x.cellLine}));
   }
   return null;
 };
@@ -104,81 +97,67 @@ const formatCellLineSummaryData = (cellLines) => {
  * )
  */
 const TableSection = (props) => {
-  const { tissue } = props;
+  const { display, tissue } = props;
   const { id } = tissue;
-  const { loading, error, data: queryData } = useQuery(getSingleTissueExperimentsQuery, {
+  const { loading, error, data } = useQuery(getSingleTissueExperimentsQuery, {
     variables: { tissueId: id },
   });
-  // load data from query into state
-  const [experiment, setExperiment] = useState({
-    data: {},
-    loaded: false,
-  });
-  // to set the state on the change of the data.
-  useEffect(() => {
-    if (queryData !== undefined) {
-      setExperiment({
-        data: queryData.experiments,
-        loaded: true,
-      });
-    }
-  }, [queryData]);
-  if (loading) {
-    return <Loading />;
-  }
+  const { cellLine, compound, numDataset, numCompounds } = useMemo(() => generateTablesData(data), [data]);
+
   if (error) {
     return <p> Error! </p>;
   }
-  const { data } = experiment;
-  const {
-    cellLine, compound, numDataset, numCompounds,
-  } = generateTablesData(queryData);
-  return (data ? (
+
+  return (
     <>
       {
-        queryData !== undefined
-          ? (
-            <>
-              <h3>Cell Line Summary</h3>
-              <h4>
-                <p align="center">
-                  Cell lines of
-                  {' '}
-                  {tissue.name}
-                  {' '}
-                  tissue type
-                </p>
-              </h4>
-              <p align="center">
-                {cellLine.length}
-                {' '}
-                cell line(s) of this tissue type are currently recorded in database.
-              </p>
-              <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} />
-              <h3>Drugs Summary</h3>
-              <h4>
-                <p align="center">
-                  Compounds tested with
-                  {' '}
-                  {tissue.name}
-                </p>
-              </h4>
-              <p align="center">
-                {numCompounds}
-                {' '}
-                compounds have been tested with this tissue, using data from
-                {' '}
-                {numDataset}
-                {' '}
-                dataset(s).
-              </p>
-              <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compound)} />
-            </>
-          )
-          : <p> Loading... </p>
+        display === 'cellLineSummary' &&
+        loading ? <Loading />
+        :
+        <React.Fragment>
+          <h4>
+            <p align="center">
+              Cell lines of
+              {' '}
+              {tissue.name}
+              {' '}
+              tissue type
+            </p>
+          </h4>
+          <p align="center">
+            {cellLine.length}
+            {' '}
+            cell line(s) of this tissue type are currently recorded in database.
+          </p>
+          <Table columns={CELL_LINE_SUMMARY_COLUMNS} data={formatCellLineSummaryData(cellLine)} center={true} />
+        </React.Fragment>
+      }
+      {
+        display === 'drugSummary' &&
+        loading ? <Loading />
+        :
+        <React.Fragment>
+          <h4>
+            <p align="center">
+              Compounds tested with
+              {' '}
+              {tissue.name}
+            </p>
+          </h4>
+          <p align="center">
+            {numCompounds}
+            {' '}
+            compounds have been tested with this tissue, using data from
+            {' '}
+            {numDataset}
+            {' '}
+            dataset(s).
+          </p>
+          <Table columns={DRUG_SUMMARY_COLUMNS} data={formatDrugSummaryData(compound)} />
+        </React.Fragment>
       }
     </>
-  ) : null);
+  );
 };
 
 TableSection.propTypes = {

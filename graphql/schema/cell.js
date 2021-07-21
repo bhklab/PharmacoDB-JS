@@ -7,7 +7,7 @@ const cellLineType = `
         """cell line's tissue type"""
         tissue: Tissue!
         """dataset information of the cell line"""
-        dataset: Generic!
+        dataset: [Generic!]
     }
 `;
 
@@ -29,5 +29,5 @@ const cellLineDetailType = `
 
 module.exports = {
     cellLineType,
-    cellLineDetailType,
+    cellLineDetailType
 };

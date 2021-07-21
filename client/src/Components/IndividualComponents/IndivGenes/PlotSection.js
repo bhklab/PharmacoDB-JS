@@ -1,13 +1,12 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useMemo }from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleGeneExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
-import ProfileCompound from '../../Plots/ProfileCompound';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
@@ -51,24 +50,27 @@ const PlotSection = (props) => {
   const { loading, error, data } = useQuery(getSingleGeneExperimentsQuery, {
     variables: { geneId: id },
   });
+  const geneDatasets = data ? data.gene_drugs : [];
+  const geneInDatasets = useMemo(() => generateCountPlotData(geneDatasets), [geneDatasets]);
   if (loading) {
     return <Loading />;
   }
   if (error) {
+    console.log(error);
     return <p> Error! </p>;
   }
-  const [compoundsData] = generateCountPlotData(data.experiments);
+  
   return (
     <>
       {
-          compoundsData.length
+          geneInDatasets.length
             ? (
               <>
-                <DatasetHorizontalPlot
+                {/* <DatasetHorizontalPlot
                   data={compoundsData}
                   xaxis="# of compounds"
                   title={`Number of compounds tested targeting ${name} (per dataset)`}
-                />
+                /> */}
               </>
             )
             : <p> No data is available for plotting this gene. </p>

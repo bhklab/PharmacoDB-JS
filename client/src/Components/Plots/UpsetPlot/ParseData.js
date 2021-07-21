@@ -3,53 +3,9 @@ import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import UpsetPlot from './UpsetPlot';
 
-const datasets1 = ["gCSI", "GDSC_v1", "CCLE", "CTRPv2", "UHNBreast", "GRAY", "FIMM"];
-// create data for the upset plot.
-const dataset = {
-    set1: {
-        keys: ['CCLE', 'CTRPv2', 'FIMM'],
-        values: ['x', 'y', 'z', 'd'],
-        count: 4,
-    },
-    set2: {
-        keys: ['CCLE'],
-        values: ['x'],
-        count: 1,
-    },
-    set3: {
-        keys: ['CCLE', 'CTRPv2'],
-        values: ['x', 'y', 'z'],
-        count: 3,
-    },
-    set4: {
-        keys: ['CCLE', 'FIMM'],
-        values: ['x', 'y', 'd'],
-        count: 3,
-    },
-    set5: {
-        keys: ['CTRPv2', 'FIMM'],
-        values: ['x', 'y', 'z', 'd', 'p'],
-        count: 5,
-    },
-    set6: {
-        keys: ['CTRPv2', 'FIMM'],
-        values: ['x', 'y'],
-        count: 2,
-    },
-    set7: {
-        keys: ['CTRPv2', 'UHNBreast'],
-        values: ['x', 'y', 'z'],
-        count: 3,
-    },
-    set8: {
-        keys: ['CTRPv2', 'GRAY'],
-        values: ['x', 'y', 'z', 'd'],
-        count: 4,
-    },
-}
 
 /**
- * 
+ * Parses the data and prepare an object for each dataset and all the related types in the dataset.
  * @param {Array} data - input data that has to be parsed.
  */
 const parseCellLineData = (data) => {
@@ -57,11 +13,13 @@ const parseCellLineData = (data) => {
     let dataObject = {};
     // iterate through the data to prepare the data Object.
     data.forEach((element) => {
-        if (dataObject[element.dataset.name]) {
-            dataObject[element.dataset.name].push(element.name);
-        } else {
-            dataObject[element.dataset.name] = [element.name];
-        }
+        element.dataset.forEach(dataset => {
+            if (!dataObject[dataset.name]) {
+                dataObject[dataset.name] = [element.name]
+            } else if (dataObject[dataset.name]) {
+                dataObject[dataset.name].push(element.name);
+            }
+        })
     });
     // this is set each key to unique list of data type.
     Object.keys(dataObject).forEach((key) => {
@@ -102,26 +60,29 @@ const createAllSubsets = (set, set_size) => {
 const createUpsetPlotData = (data, subsets) => {
     const finalObject = {};
     subsets.forEach((subset, i) => {
-        const uniqueValues = [];
         if (subset.length > 0) {
             // union of the data.
             // subset.forEach(el => uniqueValues.push(...data[el]));
 
             // intersection
-            const result = subset.reduce((acc, cur) => {
-                if (typeof (acc) === "string") {
-                    console.log(data[acc].filter((el) => data[cur].includes(el)));
-                    return data[acc].filter((el) => data[cur].includes(el));
-                } else {
-                    return acc.filter((el) => data[cur].includes(el));
-                }
-            });
+            let result = [];
+            if (subset.length === 1) {
+                result = data[subset[0]];
+            } else {
+                result = subset.reduce((acc, cur) => {
+                    if (typeof (acc) === "string") {
+                        return data[acc].filter((el) => data[cur].includes(el));
+                    } else {
+                        return acc.filter((el) => data[cur].includes(el));
+                    }
+                });
+            }
 
             // append the object to final object variable.
             finalObject[`set${i}`] = {
                 keys: subset,
-                values: [...new Set(uniqueValues)],
-                count: uniqueValues.length,
+                values: [...new Set(result)],
+                count: result.length,
             }
         }
     })
@@ -150,8 +111,8 @@ const ParseData = () => {
     }, [data])
 
     return (
-        // datasets.length > 0 ? <UpsetPlot data={parsedCellData} datasets={datasets} /> : ''
-        datasets.length > 0 ? <UpsetPlot data={dataset} datasets={datasets1} /> : ''
+        datasets.length > 0 ? <UpsetPlot data={parsedCellData} datasets={datasets} /> : ''
+        // datasets.length > 0 ? <UpsetPlot data={dataset} datasets={datasets1} /> : ''
     )
 };
 

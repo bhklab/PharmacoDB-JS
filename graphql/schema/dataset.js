@@ -10,6 +10,8 @@ const datasetType = `
         cell_count: Int
         """number of experiments in the dataset"""
         experiment_count: Int 
+        """number of tissues in the dataset"""
+        tissue_tested_count: Int 
     }
 `;
 
@@ -28,9 +30,9 @@ const datasetDetailType = `
         """number of experiments held across the dataset"""
         experiment_count: Int!
         """cell line names tested in the dataset"""
-        cells_tested: [String!]
+        cells_tested: [CellLine!]
         """compound names tested in the dataset"""
-        compounds_tested: [String!]
+        compounds_tested: [Compound!]
     }
 `;
 

@@ -2,17 +2,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
-import { StyledIndivPage, StyledSidebar } from '../../../styles/IndivPageStyles';
+// import TableSection from './TableSection';
+import CellLineSummaryTable from './Tables/CellLineSummaryTable';
+import DrugSummaryTable from './Tables/DrugSummaryTable';
+import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
+import convertToTitleCase from '../../../utils/convertToTitleCase';
 
 const ANNOTATION_COLUMNS = [
     {
@@ -25,13 +27,18 @@ const ANNOTATION_COLUMNS = [
     },
 ];
 
-const SIDE_LINKS = ['Annotations', 'Plots'];
+const SIDE_LINKS = [
+    { label: 'Annotations', name: 'annotations' },
+    { label: 'Bar Plots', name: 'barPlots'},
+    { label: 'Cell Line summary', name: 'cellLineSummary' },
+    { label: 'Drug Summary', name: 'drugSummary' }
+];
 
 /**
  * Format name strings containing underscores or being PascalCased
  */
 const formatName = (string) =>
-    string.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, ' $1');
+    convertToTitleCase(string.replaceAll(/_/g, ' ').replace(/([A-Z][a-z])/g, '$1'));
 
 /**
  * Format data for the annotation table
@@ -50,37 +57,19 @@ const formatAnnotationData = (data) => {
             const existing = output.filter((v) => v.sources === item.sources);
             if (existing.length) {
                 const existingIndex = output.indexOf(existing[0]);
-                output[existingIndex].name = output[existingIndex].name.concat(
-                    `, ${item.name}`
-                );
+                output[existingIndex].name = output[existingIndex].name.concat(item.name);
             } else {
                 if (typeof item.name === 'string') item.name = [item.name];
                 output.push(item);
             }
         });
+        output.forEach(item => {
+            item.name = [...new Set(item.name)].join(', ');
+        })
         return output;
     }
     return null;
 };
-
-/**
- *
- * @param {String} link
- */
-const createSideLink = (link) => (
-    <Link
-        key={link}
-        className="link"
-        activeClass="selected"
-        to={`${SnakeCase(link)}`}
-        spy
-        smooth
-        duration={200}
-        offset={-400}
-    >
-        {link}
-    </Link>
-);
 
 /**
  * Parent component for the individual tissue page.
@@ -110,9 +99,13 @@ const IndivTissues = (props) => {
         loaded: false,
     });
 
+    // A section to display on the page
+    const [display, setDisplay] = useState('annotations');
+
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
+            console.log(queryData);
             setTissue({
                 data: queryData.tissue,
                 loaded: true,
@@ -125,6 +118,19 @@ const IndivTissues = (props) => {
   // formatted data for annotation table
   const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
   const annotationData = React.useMemo(() => formatAnnotationData(data.synonyms), [data.synonyms]);
+
+  /**
+ * 
+ * @param {String} link 
+ */
+const createSideLink = (link, i) => (
+    <li key={i} className={display === link.name ? 'selected': undefined}>
+        <button type='button' onClick={() => setDisplay(link.name)}>
+            {link.label}
+        </button>
+    </li>
+);
+
   return (tissue.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -132,22 +138,45 @@ const IndivTissues = (props) => {
           : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-tissues">
-                <h1>{formatName(data.name)}</h1>
-                <StyledSidebar>
-                  {SIDE_LINKS.map((link) => createSideLink(link))}
-                </StyledSidebar>
-                <div className="container">
-                  <div className="content">
-                    <Element className="section" name="annotations">
-                      <h3>Annotations</h3>
-                      <Table columns={annotationColumns} data={annotationData} disablePagination />
-                    </Element>
-                    <Element name="plots" className="section temp">
-                      <h3>Plots</h3>
-                      <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
-                      <TableSection tissue={({ id: data.id, name: formatName(data.name) })} />
-                    </Element>
-                  </div>
+                <div className='heading'>
+                    <span className='title'>{formatName(data.name)}</span>
+                    <span className='attributes'>
+                        
+                    </span>
+                </div>
+                <div className='wrapper'>
+                    <StyledSidebarList>
+                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                    </StyledSidebarList>
+                    <div className="container">
+                        <div className="content">
+                            {
+                                display === 'annotations' &&
+                                <Element className="section" name="annotations">
+                                    <div className='section-title'>Annotations</div>
+                                    <Table columns={annotationColumns} data={annotationData} disablePagination />
+                                </Element>
+                            }
+                            {
+                                display === 'barPlots' &&
+                                <Element>
+                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'cellLineSummary' &&
+                                <Element>
+                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                            {
+                                display === 'drugSummary' &&
+                                <Element>
+                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                </Element>
+                            }
+                        </div>
+                    </div>
                 </div>
               </StyledIndivPage>
             ))}

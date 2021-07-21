@@ -110,30 +110,32 @@ const ProfileTissue = (props) => {
     <div className="plot">
       <StyledSelectorContainer>
         <div className="selector-container">
-          <h4>Select Dataset </h4>
+          <div className='label'>Dataset:</div>
           <Select
+            className='selector'
             defaultValue={{ value: selectedDataset, label: selectedDataset }}
             options={datasetOptions}
             onChange={(e) => setSelectedDataset(e.value)}
           />
         </div>
         <div className="selector-container">
-          <h4>Select Profile </h4>
+          <div className='label'>Profile:</div>
           <Select
+            className='selector'
             defaultValue={{ value: selectedProfile, label: selectedProfile }}
             options={profileOptions}
             onChange={(e) => setSelectedProfile(e.value)}
           />
         </div>
       </StyledSelectorContainer>
-      <h3>
+      <h4>
         {compound}
         ,
         {' '}
         {selectedProfile}
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
-      </h3>
+      </h4>
       <Plot data={plotData} layout={layout} config={config} />
     </div>
   );

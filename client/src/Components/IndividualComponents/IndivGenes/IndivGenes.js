@@ -2,17 +2,17 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getGeneQuery } from '../../../queries/gene';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
+import PlotSection from './PlotSection';
 
 import {
   StyledIndivPage,
-  StyledSidebar,
+  StyledSidebarList,
 } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -30,7 +30,12 @@ const LINK_COLUMNS = [
   },
 ];
 
-const SIDE_LINKS = ['Synonyms', 'Links', 'Plots'];
+const SIDE_LINKS = [
+  { label: 'Synonyms and Links', name: 'synonyms' },
+  { label: 'Plots', name: 'plots' },
+  { label: 'Drugs Summary', name: 'drugsSummary' },
+  { label: 'Top Drugs', name: 'topDrugs' }
+];
 
 /**
  * Format data for synonym and link tables
@@ -71,25 +76,6 @@ const formatLinkData = (data) => {
 };
 
 /**
- *
- * @param {String} link
- */
-const createSideLink = (link) => (
-  <Link
-    key={link}
-    className="link"
-    activeClass="selected"
-    to={`${SnakeCase(link)}`}
-    spy
-    smooth
-    duration={200}
-    offset={-400}
-  >
-    {link}
-  </Link>
-);
-
-/**
  * Parent component for the individual gene page.
  *
  * @component
@@ -114,6 +100,9 @@ const IndivGenes = (props) => {
     loaded: false,
   });
 
+  // A section to display on the page
+  const [display, setDisplay] = useState('synonyms');
+
   // to set the state on the change of the data.
   useEffect(() => {
     if (queryData !== undefined) {
@@ -134,6 +123,19 @@ const IndivGenes = (props) => {
   // formatted data for links annotation table
   const linkColumns = React.useMemo(() => LINK_COLUMNS, []);
   const linkData = React.useMemo(() => formatLinkData(data), [data]);
+
+  /**
+   * 
+   * @param {String} link 
+   */
+  const createSideLink = (link, i) => (
+    <li key={i} className={display === link.name ? 'selected': undefined}>
+        <button type='button' onClick={() => setDisplay(link.name)}>
+            {link.label}
+        </button>
+    </li>
+  );
+
   return (gene.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -141,23 +143,51 @@ const IndivGenes = (props) => {
           : (error ? (<NotFoundContent />)
             : (
               <StyledIndivPage className="indiv-genes">
-                <h1>{data.name}</h1>
-                <StyledSidebar>
-                  {SIDE_LINKS.map((link) => createSideLink(link))}
-                </StyledSidebar>
-                <div className="container">
-                  <div className="content">
-                    <Element className="section" name="synonyms">
-                      <h3>Synonyms</h3>
-                      <Table columns={synonymColumns} data={synonymData} disablePagination />
-                    </Element>
-                    <Element className="section" name="links">
-                      <h3>Links</h3>
-                      <Table columns={linkColumns} data={linkData} disablePagination />
-                    </Element>
-                    <Element className="section" name="plots">
-                      <h3>Plots</h3>
-                    </Element>
+                <div className='heading'>
+                    <span className='title'>{data.name}</span>
+                    <span className='attributes'>
+                        
+                    </span>
+                </div>
+                <div className='wrapper'>
+                  <StyledSidebarList>
+                    {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                  </StyledSidebarList>
+                  <div className="container">
+                    <div className="content">
+                      {
+                        display === 'synonyms' &&
+                        <React.Fragment>
+                          <Element className="section" name="synonyms">
+                            <div className='section-title'>Synonyms and Links</div>
+                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                          </Element>
+                          <Element className="section" name="links">
+                            <div className='section-title'>Links</div>
+                            <Table columns={linkColumns} data={linkData} disablePagination />
+                          </Element>
+                        </React.Fragment>
+                      }
+                      {
+                        display === 'plots' &&
+                        <Element>
+                          <div className='section-title'>Plots</div>
+                          {/* <PlotSection gene={gene.data} /> */}
+                        </Element>
+                      }
+                      {
+                        display === 'drugsSummary' &&
+                        <Element>
+                          <div className='section-title'>Drugs Summary</div>
+                        </Element>
+                      }
+                      {
+                        display === 'topDrugs' &&
+                        <Element>
+                          <div className='section-title'>Top Drugs</div>
+                        </Element>
+                      }
+                    </div>
                   </div>
                 </div>
               </StyledIndivPage>

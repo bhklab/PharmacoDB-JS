@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getCellLinesQuery } from '../../../queries/cell';
@@ -45,7 +45,7 @@ const generateCountPlotData = (experiments) => {
  * )
  */
 const PlotSection = (props) => {
-    const { cellLine } = props;
+    const { display, cellLine } = props;
     const { id, name } = cellLine;
 
     const { loading, error, data } = useQuery(
@@ -53,28 +53,50 @@ const PlotSection = (props) => {
             fetchPolicy: "network-only",
             }
     );
-    if (loading) {
-        return <Loading />;
-    }
+
+    const cellLineData = data? data.experiments : [];
+    const [compoundsData] = useMemo(() => generateCountPlotData(cellLineData), [cellLineData]);
+
     if (error) {
         return <p> Error! </p>;
     }
+<<<<<<< HEAD
     // if (!loading) console.log(data.cell_lines);
     let count = 0
     data.cell_lines.forEach((x)=>
         (x["dataset"]["name"]==="CCLE") ? count +=1 : count = count)
     console.log(count)
     const [compoundsData] = generateCountPlotData(data.experiments);
+=======
+    
+>>>>>>> 8b8743eedd245db5faf7db10d95bcfc5c8beb7a4
     return (
         <>
             {compoundsData.length ? (
                 <>
-                    <DatasetHorizontalPlot
-                        data={compoundsData}
-                        xaxis="# of compounds"
-                        title={`Number of compounds tested with ${name} (per dataset)`}
-                    />
-                    <ProfileCompound cellLine={name} data={data.experiments} />
+                    {
+                        display === 'barPlot' ?
+                            loading ? <Loading />
+                            :
+                            <DatasetHorizontalPlot
+                                data={compoundsData}
+                                xaxis="# of compounds"
+                                title={`Number of compounds tested with ${name} (per dataset)`}
+                            />
+                            :
+                        ''
+                    }
+                    {
+                        display === 'aacCompounds' ?
+                            loading ? <Loading />
+                            :
+                            <ProfileCompound 
+                                cellLine={name} 
+                                data={data.experiments} 
+                            />
+                        :
+                        ''
+                    }
                 </>
             ) : (
                 <p> No data is available for plotting this cell line. </p>

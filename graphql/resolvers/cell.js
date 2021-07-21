@@ -8,7 +8,11 @@ const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
  * @returns {Array} - transformed array of objects.
  */
 const transformCellLines = data => {
-    return data.map(cell => {
+    // object to store the final result.
+    const finalData = {};
+
+    // preparing the transformed data.
+    data.forEach(cell => {
         const {
             cell_id,
             cell_name,
@@ -17,20 +21,33 @@ const transformCellLines = data => {
             dataset_id,
             dataset_name,
         } = cell;
-        const output = {
-            id: cell_id,
-            name: cell_name,
-            tissue: {
-                id: tissue_id,
-                name: tissue_name,
-            },
-            dataset: {
-                id: dataset_id,
-                name: dataset_name,
+
+        if (finalData[cell_id]) {
+            const isPresent = finalData[cell_id]['dataset'].filter(el => el.name === dataset_name);
+            if (isPresent.length === 0) {
+                finalData[cell_id]['dataset'].push({
+                    id: dataset_id,
+                    name: dataset_name,
+                });
             }
-        };
-        return output;
+        } else {
+            finalData[cell_id] = {
+                id: cell_id,
+                name: cell_name,
+                tissue: {
+                    id: tissue_id,
+                    name: tissue_name,
+                },
+                dataset: [{
+                    id: dataset_id,
+                    name: dataset_name,
+                }]
+            };
+        }
     });
+
+    // return the final data.
+    return Object.values(finalData);
 };
 
 /**
