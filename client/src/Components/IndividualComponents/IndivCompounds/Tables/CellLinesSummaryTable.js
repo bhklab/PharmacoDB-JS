@@ -14,20 +14,27 @@ import { Link } from 'react-router-dom';
 const DRUG_SUMMARY_COLUMNS = [
     {
         Header: 'Cell Line',
-        accessor: 'cellLineName',
-        // Cell: (item) => (<Link to={`/compounds/${item.row.original.compoundId}`}>{item.value}</Link>),
+        accessor: 'cellLineObj',
+        Cell: (item) => {
+            let cellLines = item.row.original.cellLineObj;
+            return(cellLines.map((obj, i) => (
+                <span key={i}>
+                    <a href={`/cell_lines/${obj.id}`}>{obj.name}</a>{ i + 1 < cellLines.length ? ', ' : ''}
+                </span>)
+            ));
+        }
     },
     {
         Header: 'Tissue Type',
         accessor: 'tissue',
-        // Cell: (item) => {
-        //     let tissues = item.cell.row.original.tissueObj;
-        //     return(tissues.map((obj, i) => (
-        //         <span key={i}>
-        //             <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
-        //         </span>)
-        //     ));
-        // }
+        Cell: (item) => {
+            let tissues = item.row.original.tissueObj;
+            return(tissues.map((obj, i) => (
+                <span key={i}>
+                    <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
+                </span>)
+            ));
+        }
     },
     {
         Header: 'Datasets',
@@ -49,14 +56,13 @@ const DRUG_SUMMARY_COLUMNS = [
 
 /**
  * Format data for the synonyms table
- * @param {Array} data synonym data from the cell line API
+ * @param {Array} data synonym data from the compound API
  */
 const formatCellSummaryData = (data) => {
-    // collect data of datasets and number of experiments for each cell line
+    // collect data of datasets, tissues and number of experiments for each cell line
     const cellLineObj = {};
     data.experiments.forEach((experiment) => {
         const {cell_line, tissue, dataset} = experiment;
-        console.log("12121",cell_line, tissue, dataset)
         const datasetObj = [];
         if (cellLineObj[cell_line.name]) {
             if (!cellLineObj[cell_line.name].datasets.includes(dataset.name))
@@ -68,10 +74,10 @@ const formatCellSummaryData = (data) => {
             cellLineObj[cell_line.name].numExperiments += 1;
         } else {
             cellLineObj[cell_line.name] = {
-                cellLineObj: [{name : cell_line.name, id : cell_line.id}],
+                cellObj: [{name : cell_line.name, id : cell_line.id}],
                 datasets: [dataset.name],
-                tissueObj: {name : [tissue.name], id : dataset.id},
-                datasetObj : [{name : dataset.name, id : dataset.id}],
+                tissueObj: [{name : [tissue.name], id : tissue.id}],
+                datasetObj : [{name : [dataset.name], id : dataset.id}],
                 numExperiments: 1,
             };
         }
@@ -79,9 +85,8 @@ const formatCellSummaryData = (data) => {
     // assign values of collected compound data to the columns
     if (data) {
         return Object.values(cellLineObj).map((x) => ({
-            cellLineId: x.cellLineId,
-            cellLine: x.cellLine,
-            tissueObj: x.tissue,
+            cellLineObj: x.cellObj,
+            tissueObj: x.tissueObj,
             datasetObj: x.datasetObj,
             experiment_id: x.numExperiments,
         }));
@@ -90,13 +95,13 @@ const formatCellSummaryData = (data) => {
 };
 
 /**
- * Section that display plots for the individual cell Line page.
+ * Section that display Cell Line Summary table for the individual compound page.
  *
  * @component
  * @example
  *
  * returns (
- *   <PlotSection/>
+ *   <CellLinesSummaryTable/>
  * )
  */
 const CellLinesSummaryTable = (props) => {
@@ -123,7 +128,6 @@ const CellLinesSummaryTable = (props) => {
             });
         }
     }, [queryData]);
-    console.log(queryData);
     return (
         <React.Fragment>
             {
