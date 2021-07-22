@@ -18,7 +18,7 @@ const test = (server) => {
         this.timeout(10000);
         request(server)
             .post('/graphql')
-            .send({ query: geneCompoundQueries.geneCompoundSearchByGeneQuery })
+            .send({ query: geneCompoundQueries.geneCompoundTissueQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);

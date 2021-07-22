@@ -1,4 +1,4 @@
-const geneCompoundSearchByGeneQuery = `
+const geneCompoundTissueQuery = `
   {
     gene_compound_tissue(geneId: 94) {
       id
@@ -48,5 +48,5 @@ const geneCompoundSearchByGeneQuery = `
 
 
 module.exports = {
-    geneCompoundSearchByGeneQuery,
+    geneCompoundTissueQuery,
 };
