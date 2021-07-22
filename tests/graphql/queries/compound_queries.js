@@ -45,7 +45,7 @@ const singleCompoundTestQuery = `
 
 const paclitaxelCompoundTestQuery = `
     {
-        compound(compoundId: 641) {
+        compound(compoundId: 642) {
             compound {
                 id 
                 name 
