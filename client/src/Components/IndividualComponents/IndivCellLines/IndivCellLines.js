@@ -220,12 +220,15 @@ const IndivCellLines = (props) => {
                           </Element>
                         </React.Fragment>
                       }
-                      <Element>
-                        <PlotSection
-                          display={display}
-                          cellLine={({ id: data.id, name: data.name })}
-                        />
-                      </Element>
+                      {
+                        display === 'barPlot' &&
+                        <Element>
+                            <PlotSection
+                                display={display}
+                                cellLine={({id: data.id, name: data.name})}
+                            />
+                        </Element>
+                      }
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
