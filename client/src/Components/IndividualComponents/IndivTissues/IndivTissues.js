@@ -165,13 +165,13 @@ const createSideLink = (link, i) => (
                             }
                             {
                                 display === 'cellLineSummary' &&
-                                <Element>
+                                <Element className="section">
                                     <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
                                 </Element>
                             }
                             {
                                 display === 'drugSummary' &&
-                                <Element>
+                                <Element className="section">
                                     <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
                                 </Element>
                             }

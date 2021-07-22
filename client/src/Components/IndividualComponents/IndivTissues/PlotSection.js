@@ -79,6 +79,7 @@ const PlotSection = (props) => {
                         :
                         <PlotsWrapper>
                             <DatasetHorizontalPlot
+                                plotId={`${name}CellLines`}
                                 data={cellLinesData}
                                 xaxis="# of cell lines"
                                 title={`Number of cell lines of ${name
@@ -86,6 +87,7 @@ const PlotSection = (props) => {
                                     .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
                             />
                             <DatasetHorizontalPlot
+                                plotId={`${name}Compounds`}
                                 data={compoundsData}
                                 xaxis="# of compounds"
                                 title={`Number of compounds tested with ${name

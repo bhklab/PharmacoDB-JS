@@ -52,7 +52,7 @@ const generateCountPlotData = (datasets, id) => {
  * )
  */
 const PlotSection = (props) => {
-  const { dataset, display } = props;
+  const { dataset } = props;
   const [plots, setPlots] = useState({
     cells: [],
     tissues: [],
@@ -79,11 +79,13 @@ const PlotSection = (props) => {
         <React.Fragment>
           <PlotsWrapper>
             <DatasetHorizontalPlot
+              plotId={`${dataset.name}CellLinesPlot`}
               data={plots.cells}
               xaxis="# of cell lines"
               title={`Number of cell lines tested across datasets`}
             />
             <DatasetHorizontalPlot
+              plotId={`${dataset.name}TissuesPlot`}
               data={plots.tissues}
               xaxis="# of tissues"
               title={`Number of tissues tested across datasets`}
@@ -91,11 +93,13 @@ const PlotSection = (props) => {
           </PlotsWrapper>
           <PlotsWrapper>
             <DatasetHorizontalPlot
+              plotId={`${dataset.name}CompoundsPlot`}
               data={plots.compounds}
               xaxis="# of compounds"
               title={`Number of compounds tested across datasets`}
             />
             <DatasetHorizontalPlot
+              plotId={`${dataset.name}ExperimentsPlot`}
               data={plots.experiments}
               xaxis="# of experiments"
               title={`Number of experiments held across datasets`}
