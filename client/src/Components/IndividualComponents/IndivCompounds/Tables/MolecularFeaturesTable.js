@@ -19,38 +19,14 @@ const MOLECULAR_FEATURES_COLUMNS = [
     {
         Header: 'Gene',
         accessor: 'gene',
-        // Cell: (item) => {
-        //     let datasets = item.cell.row.original.datasetObj;
-        //     return(datasets.map((obj, i) => (
-        //         <span key={i}>
-        //             <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-        //         </span>)
-        //     ));
-        // }
     },
     {
         Header: 'Dataset',
         accessor: 'dataset',
-        // Cell: (item) => {
-        //     let datasets = item.cell.row.original.datasetObj;
-        //     return(datasets.map((obj, i) => (
-        //         <span key={i}>
-        //             <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-        //         </span>)
-        //     ));
-        // }
     },
     {
         Header: 'Tissue',
         accessor: 'tissue',
-        // Cell: (item) => {
-        //     let tissues = item.row.original.tissueObj;
-        //     return(tissues.map((obj, i) => (
-        //         <span key={i}>
-        //             <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
-        //         </span>)
-        //     ));
-        // }
     },
     {
         Header: 'Stat',
@@ -68,7 +44,7 @@ const MOLECULAR_FEATURES_COLUMNS = [
 
 /**
  * Format data for the molecular features table
- * @param {Array} data from
+ * @param {Array} data from experiment (has to be changed to gene_compound_tissue_dataset)
  * @returns {Array} Object of formatted data for the table
  */
 const formatMolFeaturesData = (data) => {

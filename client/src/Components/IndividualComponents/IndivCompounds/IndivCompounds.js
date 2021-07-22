@@ -12,11 +12,7 @@ import PlotSection from './PlotSection';
 import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
 import TissuesSummaryTable from './Tables/TissuesSummaryTable'
 import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
-
-import {
-    StyledIndivPage,
-    StyledSidebarList
-} from '../../../styles/IndivPageStyles';
+import {StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
@@ -26,10 +22,11 @@ const SYNONYM_COLUMNS = [
         Cell: (item) => {
             let datasets = item.row.original.datasetObj;
             return(datasets.map((obj, i) => (
-                    obj.id? (
+                    obj.id? 
+                        (
                             <span key={i}>
-                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-                    </span>
+                                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                            </span>
                         ) :
                         (<span key={i}>{obj.name}</span>)
                 )
@@ -134,8 +131,6 @@ const IndivCompounds = (props) => {
     const {
         match: { params },
     } = props;
-    // const compoundId = parseInt(params.id);
-
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
         variables: { compoundId: parseInt(params.id) },
@@ -176,7 +171,7 @@ const IndivCompounds = (props) => {
     );
 
     /**
-     *
+     * 
      * @param {String} link
      */
     const createSideLink = (link, i) => (
