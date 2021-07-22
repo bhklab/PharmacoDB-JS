@@ -19,6 +19,8 @@ const compoundType = `
         uid: String!
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
+        """dataset information object"""
+        dataset: Generic!
     }
 `;
 
