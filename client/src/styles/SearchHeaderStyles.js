@@ -97,14 +97,14 @@ const StyledSearchHeader = styled.div`
 const StyledNavBar = styled.div`
     position: static;
     width: 100%;
-    height: 50px;
+    height: clamp(50px, calc(4vw + 5px), 70px);
     margin-bottom: ${(props) => (props.page === 'home' ? 'auto' : '30px')};
     
     display: flex;
     justify-content: center;
 
     .container {
-        font-size: 14px;
+        font-size: clamp(14px, calc(1vw + 2px), 18px);
         width: 85%;
         border-bottom: ${(props) => (props.page === 'home' ? 'none' : `3px solid ${colors.light_blue_bg}`)};
 
@@ -113,7 +113,7 @@ const StyledNavBar = styled.div`
         align-items: center;
     }
     .logo {
-        width: calc(5vw + 100px);
+        width: calc(5vw + 150px);
         max-width: 200px;
         padding-top: 5px;
     }
@@ -148,7 +148,7 @@ const StyledLinkDropdowns = styled.div`
         color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
         font-family: 'Rubik', sans-serif;
         font-weight: 400;
-        font-size: 14px;
+        font-size: clamp(14px, calc(1vw + 2px), 18px);
         letter-spacing: 0.5px;
         background: transparent;
         border: none;

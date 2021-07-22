@@ -22,13 +22,13 @@ const StyledButton = styled.button`
     padding: 0.2rem 0.4rem 0.1rem 0.4rem;
     background-color: #ffffff;
     border: 1px solid ${colors.light_blue};
-    font-size: 14px;
+    font-size: clamp(12px, calc(1vw + 1px), 14px);
     color: ${colors.light_blue};
     cursor: pointer;
 
     .download-icon {
         margin-left: 3px;
-        font-size: 14px;
+        font-size: clamp(12px, calc(1vw + 1px), 14px);
     }
 
     :hover {
