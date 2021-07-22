@@ -78,8 +78,9 @@ const PlotSection = (props) => {
                     }
                 </React.Fragment>
             ) :
-                display === 'barPlot' ?
+                display === 'barPlot'?
                     (
+                        loading ? <Loading /> :
                         <p>No data available to plot this cell line.</p>
                     )
             : ''
