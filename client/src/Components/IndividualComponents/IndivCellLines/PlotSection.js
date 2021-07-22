@@ -81,7 +81,7 @@ const PlotSection = (props) => {
                 display === 'barPlot'?
                     (
                         loading ? <Loading /> :
-                        <p>No data available to plot this cell line.</p>
+                        <p>No data is available to plot this cell line.</p>
                     )
             : ''
             }
