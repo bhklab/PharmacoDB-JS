@@ -2,7 +2,7 @@
  * Cell Queries to be used for graphql.test.js
  */
 
-const multipleCellsTestQuery = `
+const cellsKeysTestQuery = `
     { 
         cell_lines { 
             id 
@@ -15,7 +15,7 @@ const multipleCellsTestQuery = `
     }
 `;
 
-const singleCellTestQuery = `
+const cellKeysTestQuery = `
     {
         cell_line(cellId: 1) {
             id,
@@ -33,6 +33,6 @@ const singleCellTestQuery = `
 `;
 
 module.exports = {
-    multipleCellsTestQuery,
-    singleCellTestQuery
+    cellsKeysTestQuery,
+    cellKeysTestQuery
 };

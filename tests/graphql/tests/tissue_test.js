@@ -27,7 +27,7 @@ const test = (server) => {
         request(server)
             .post('/graphql')
             .send({ query: tissueQueries.multipleTissuesTestQuery })
-            // .expect(200)
+            .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const { tissues } = res.body.data;
@@ -45,7 +45,7 @@ const test = (server) => {
         request(server)
             .post('/graphql')
             .send({ query: tissueQueries.singleTissueTestQuery })
-            // .expect(200)
+            .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const { tissue } = res.body.data;

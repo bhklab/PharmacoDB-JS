@@ -13,7 +13,7 @@ const multipleTissuesTestQuery = `
 
 const singleTissueTestQuery = `
   {
-    tissue(tissueId: 7) {
+    tissue(tissueId: 1) {
       id
       name
       synonyms {

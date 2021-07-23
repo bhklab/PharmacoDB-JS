@@ -42,7 +42,7 @@ const singleExperimentTestQuery = `
         DSS2
         DSS3
       }
-      dose_response {
+      dose_responses {
         dose
         response
       }
@@ -51,7 +51,7 @@ const singleExperimentTestQuery = `
 `;
 const multipleExperimentsTestQuery = `
   {
-    experiments(page: 1, per_page: 50) {
+    experiments(page:1, per_page: 50) {
       id
       cell_line {
         id
@@ -89,7 +89,7 @@ const multipleExperimentsTestQuery = `
         DSS2
         DSS3
       }
-      dose_response {
+      dose_responses {
         dose
         response
       }
@@ -116,14 +116,14 @@ const singleCompoundExperimentsTestQuery = `
         id
         name
       }
-        compound {
+    	compound {
         id
         name
         annotation {
-            pubchem
-            smiles
-            fda_status
-            inchikey
+          pubchem
+          smiles
+          fda_status
+          inchikey
         }
       }
       profile {

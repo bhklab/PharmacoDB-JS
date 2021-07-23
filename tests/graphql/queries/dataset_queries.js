@@ -2,7 +2,7 @@
  *  Dataset Queries to be used for graphql.test.js
  */
 
-const multipleDatasetsTestQuery = `
+const allDatasetsTestQuery = `
   query allDatasets {
     datasets {
       id
@@ -23,19 +23,13 @@ query singleDataset {
     tissue_tested_count
     compound_tested_count
     experiment_count
-    cells_tested {
-      id
-      name
-    }
-    compounds_tested {
-      id
-      name
-    }
+    cells_tested
+    compounds_tested
   }
 }
 `;
 
 module.exports = {
-    multipleDatasetsTestQuery,
+    allDatasetsTestQuery,
     singleDatasetTestQuery
 };

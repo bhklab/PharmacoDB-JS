@@ -16,7 +16,7 @@ const test = (server) => {
     it('Returns "id" and "name" properties along with tissue type object of all cell lines in the database', done => {
         request(server)
             .post('/graphql')
-            .send({ query: cellQueries.multipleCellsTestQuery })
+            .send({ query: cellQueries.cellsKeysTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -39,7 +39,7 @@ const test = (server) => {
     it('Returns a cell_line annotation object based on the id input', done => {
         request(server)
             .post('/graphql')
-            .send({ query: cellQueries.singleCellTestQuery })
+            .send({ query: cellQueries.cellKeysTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
