@@ -94,7 +94,7 @@ const test = (server) => {
                 if (err) return done(err);
                 const compound = res.body.data.compound.compound;
                 expect(compound.id).to.equal(526);
-                expect(compound.name).to.equal('paclitaxel');
+                expect(compound.name).to.equal('ML312');
                 return done();
             });
     });
