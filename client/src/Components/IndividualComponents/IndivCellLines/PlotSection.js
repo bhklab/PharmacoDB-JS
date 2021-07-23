@@ -64,9 +64,9 @@ const PlotSection = (props) => {
     }
 
     return (
-        <>
+        <React.Fragment>
             {compoundsData.length ? (
-                <>
+                <React.Fragment>
                     {
                         display === 'barPlot' ?
                             loading ? <Loading />
@@ -90,11 +90,16 @@ const PlotSection = (props) => {
                             :
                             ''
                     }
-                </>
+                </React.Fragment>
             ) : (
-                <p> No data is available for plotting this cell line. </p>
+                display === 'barPlot'?
+                    loading ? <Loading /> :
+                    (
+                        <p>No data available to plot this cell line.</p>
+                    ):
+                    ''
             )}
-        </>
+        </React.Fragment>
     );
 };
 
