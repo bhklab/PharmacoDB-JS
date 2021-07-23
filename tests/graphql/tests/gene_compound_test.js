@@ -5,7 +5,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
-const geneCompoundQueries = require('../queries/gene_drug_queries');
+const geneCompoundQueries = require('../queries/gene_compound_queries');
 const { isNullOrBoolean, isNullOrNumber } = require('./helper');
 
 /**
@@ -14,7 +14,7 @@ const { isNullOrBoolean, isNullOrNumber } = require('./helper');
  */
 const test = (server) => {
     // test gene_compounds data for a given gene
-    it('Data coming from gene_compound API route contains all experimental data for a single gene along with detailed information about dataset, tissue, gene and compound', function (done) {
+    it('Data coming from gene_compound_tissue API route contains all experimental data for a single gene along with detailed information about dataset, tissue, gene and compound', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
@@ -34,9 +34,9 @@ const test = (server) => {
 const testGeneCompoundData = (res, done) => {
     const { gene_compound_tissue } = res.body.data;
     expect(gene_compound_tissue).to.be.an('array').that.have.lengthOf.above(0);
-    gene_compound_tissue.every(compound_drug => {
-        expect(compound_drug).to.have.all.keys('id', 'estimate', 'lower', 'upper', 'n', 'tstat', 'fstat', 'pvalue', 'df', 'fdr', 'FWER_gene', 'FWER_compound', 'FWER_all', 'BF_p_all', 'sens_stat', 'mDataType', 'tested_in_human_trials', 'in_clinical_trials', 'gene', 'compound', 'tissue');
-        const { id, estimate, lower, upper, n, tstat, fstat, pvalue, df, fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all, mDataType, tested_in_human_trials, in_clinical_trials, gene, compound, tissue } = compound_drug;
+    gene_compound_tissue.every(element => {
+        expect(element).to.have.all.keys('id', 'estimate', 'lower', 'upper', 'n', 'tstat', 'fstat', 'pvalue', 'df', 'fdr', 'FWER_gene', 'FWER_compound', 'FWER_all', 'BF_p_all', 'sens_stat', 'mDataType', 'tested_in_human_trials', 'in_clinical_trials', 'gene', 'compound', 'tissue');
+        const { id, estimate, lower, upper, n, tstat, fstat, pvalue, df, fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all, mDataType, tested_in_human_trials, in_clinical_trials, gene, compound, tissue } = element;
         // checks the format of experimental data
         expect(id).to.be.a('number');
         expect(estimate).to.be.a('number');

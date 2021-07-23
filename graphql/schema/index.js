@@ -8,7 +8,7 @@ const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { genericType } = require('./generic');
-const { geneCompoundType } = require('./gene_compound');
+const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
@@ -70,8 +70,9 @@ const schema = `
      including the name of source and datasets it's present in"""
     ${tissueDetailType}
 
-    "Compoundcompound Type"
+    "Gene Compound table Types"
     ${geneCompoundType}
+    ${geneCompoundTissueType}
 
     "Profile Type"
     ${profileType}

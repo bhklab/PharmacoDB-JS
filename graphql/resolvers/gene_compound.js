@@ -7,77 +7,47 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
-const transformGeneDrugs = data => {
-    return data.map(compound_drug => {
+const transformGeneCompounds = (data) => {
+    return data.map(compound_compound => {
         const {
-            id,
-            drug_id,
-            estimate,
-            se,
-            n,
-            tstat,
-            fstat,
-            pvalue,
-            df,
-            fdr,
-            FWER_genes,
-            FWER_drugs,
-            FWER_all,
-            BF_p_all,
-            mDataType,
-            level,
-            drug_like_molecule,
-            in_clinical_trials,
-            dataset_id,
-            dataset_name,
-            drug_name,
-            smiles,
-            inchikey,
-            pubchem,
-            fda_status,
-            tissue_id,
-            tissue_name,
-            gene_id,
-            gene_name,
-            ensg,
-            gene_seq_start,
-            gene_seq_end
-        } = compound_drug;
+            gct_id, compound_id, estimate, lower, upper,
+            n, tstat, fstat, pvalue, df,
+            fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
+            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name,
+            smiles, inchikey, pubchem, fda_status, tissue_id,
+            tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end
+        } = compound_compound;
         return {
-            id,
+            id: gct_id,
             estimate,
-            se,
+            lower,
+            upper,
             n,
             tstat,
             fstat,
             pvalue,
             df,
             fdr,
-            FWER_genes,
-            FWER_drugs,
+            FWER_gene,
+            FWER_compound,
             FWER_all,
             BF_p_all,
+            sens_stat,
             mDataType,
-            level,
-            drug_like_molecule,
+            tested_in_human_trials,
             in_clinical_trials,
             gene: {
                 id: gene_id,
                 name: gene_name,
                 annotation: {
                     gene_id,
-                    ensg,
                     gene_seq_start,
                     gene_seq_end
                 }
             },
-            dataset: {
-                id: dataset_id,
-                name: dataset_name
-            },
             compound: {
-                id: drug_id,
-                name: drug_name,
+                id: compound_id,
+                name: compound_name,
                 annotation: {
                     smiles,
                     inchikey,
@@ -104,67 +74,72 @@ const transformGeneDrugs = data => {
  * @param {number} [args.per_page = 20] - Total values per page.
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not.
  */
-const gene_drugs = async (args, context, info) => {
+const gene_compound_tissue = async (args, context, info) => {
+    // arguments
     const { geneId, compoundId, page = 1, per_page = 20, all = false } = args;
-    if (!geneId && !compoundId) throw new Error('Ivalid input! Query must include geneId or compoundId');
+
+    // check if the gene or compound id is passed?
+    if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
+
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
         const listOfFields = retrieveFields(info);
         // creates list of columns and list of subtypes for the knex query builder based on the fields requested by graphQL client
         const columns = [];
         const subtypes = [];
+
         listOfFields.forEach(el => {
             switch (el.name) {
-                case 'dataset':
-                    columns.push(...['datasets.dataset_id as dataset_id', 'dataset_name']);
-                    subtypes.push(el.name);
-                    break;
                 case 'gene':
-                    columns.push(...['genes.gene_id as gene_id', 'gene_name', 'ensg', 'gene_seq_start',
-                        'gene_seq_end']);
+                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end']);
                     subtypes.push(el.name);
                     break;
                 case 'compound':
-                    columns.push(...['drugs.drug_id as drug_id', 'drug_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    columns.push(...['compound.id as compound_id', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
                     subtypes.push(el.name);
                     break;
                 case 'tissue':
-                    columns.push(...['tissues.tissue_id as tissue_id', 'tissue_name']);
+                    columns.push(...['tissue.id as tissue_id', 'tissue.name as tissue_name']);
                     subtypes.push(el.name);
+                    break;
+                case 'id':
+                    columns.push('GD.id as gct_id');
                     break;
                 default:
                     columns.push(el.name);
                     break;
             }
         });
-        let query = knex.select(columns);
+
+        let query = knex.select(columns).from('gene_compound_tissue as GD');
         // chooses table to select from
-        query = geneId ? query.from('gene_drugs as GD') : query.from('drug_genes as GD');
+        // query = geneId ? query.from('gene_compound_tissue as GD') : query.from('compound_genes as GD');
+        // query = query.from('gene_compound_tissue as GD');
         if (geneId) query = query.where({ 'GD.gene_id': geneId });
         if (compoundId) query = geneId
-            ? query.andWhere({ 'GD.drug_id': compoundId })
-            : query.where({ 'GD.drug_id': compoundId });
+            ? query.andWhere({ 'GD.compound_id': compoundId })
+            : query.where({ 'GD.compound_id': compoundId });
         if (!all) query = query.limit(limit).offset(offset);
+
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-                case 'dataset':
-                    query = query.join('datasets', 'datasets.dataset_id', 'GD.dataset_id');
-                    break;
                 case 'gene':
-                    query = query.join('genes', 'genes.gene_id', 'GD.gene_id');
+                    query = query.join('gene', 'gene.id', 'GD.gene_id')
+                        .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
                     break;
                 case 'compound':
-                    query = query.join('drugs', 'drugs.drug_id', 'GD.drug_id')
-                        .join('drug_annots', 'drug_annots.drug_id', 'GD.drug_id');
+                    query = query.join('compound', 'compound.id', 'GD.compound_id')
+                        .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
                     break;
                 case 'tissue':
-                    query = query.join('tissues', 'tissues.tissue_id', 'GD.tissue_id');
+                    query = query.join('tissue', 'tissue.id', 'GD.tissue_id');
                     break;
             }
         });
-        const geneDrugResults = await query;
-        return transformGeneDrugs(geneDrugResults);
+        // transform and return the data.
+        const geneCompoundResults = await query;
+        return transformGeneCompounds(geneCompoundResults);
     } catch (err) {
         console.log(err);
         throw err;
@@ -172,5 +147,5 @@ const gene_drugs = async (args, context, info) => {
 };
 
 module.exports = {
-    gene_drugs
+    gene_compound_tissue
 };
