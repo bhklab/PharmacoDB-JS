@@ -129,10 +129,10 @@ const IndivGenes = (props) => {
    * @param {String} link 
    */
   const createSideLink = (link, i) => (
-    <li key={i} className={display === link.name ? 'selected': undefined}>
-        <button type='button' onClick={() => setDisplay(link.name)}>
-            {link.label}
-        </button>
+    <li key={i} className={display === link.name ? 'selected' : undefined}>
+      <button type='button' onClick={() => setDisplay(link.name)}>
+        {link.label}
+      </button>
     </li>
   );
 
@@ -144,10 +144,9 @@ const IndivGenes = (props) => {
             : (
               <StyledIndivPage className="indiv-genes">
                 <div className='heading'>
-                    <span className='title'>{data.name}</span>
-                    <span className='attributes'>
-                        
-                    </span>
+                  <span className='title'>{data.name}</span>
+                  <span className='attributes'>
+                  </span>
                 </div>
                 <div className='wrapper'>
                   <StyledSidebarList>
