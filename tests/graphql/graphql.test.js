@@ -62,8 +62,8 @@ describe('Tests: GraphQL API', () => {
         require('./tests/experiment_test').test(server);
     });
 
-    // tests for CompoundDrug API routes
-    describe('CompoundDrug API Routes', () => {
-        require('./tests/gene_drug_test').test(server);
+    // tests for geneCompound API routes
+    describe('geneCompound API Routes', () => {
+        require('./tests/gene_compound_test').test(server);
     });
 });
