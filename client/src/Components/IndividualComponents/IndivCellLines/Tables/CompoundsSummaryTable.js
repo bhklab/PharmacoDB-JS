@@ -97,8 +97,8 @@ const CompoundsSummaryTable = (props) => {
         setCSV(parsed.compound.map(item => ({
           cellLineId: cellLine.id,
           cellLineName: cellLine.name,
-          compound: item.compound,
           compoundId: item.id,
+          compoundName: item.compound,
           dataset: item.dataset,
           numExperiments: item.num_experiments,
         })));

@@ -72,6 +72,7 @@ const PlotSection = (props) => {
                             loading ? <Loading />
                                 :
                                 <DatasetHorizontalPlot
+                                    plotId={`${name}Compounds`}
                                     data={compoundsData}
                                     xaxis="# of compounds"
                                     title={`Number of compounds tested with ${name} (per dataset)`}
