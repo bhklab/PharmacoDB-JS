@@ -13,7 +13,7 @@ const DRUG_SUMMARY_COLUMNS = [
   {
     Header: 'Compounds',
     accessor: 'compound',
-    Cell: (item) => (<Link to={`/compounds/${item.row.original.compoundId}`}>{item.value}</Link>),
+    Cell: (item) => (<Link to={`/compounds/${item.row.original.id}`}>{item.value}</Link>),
   },
   {
     Header: 'Datasets',
@@ -98,7 +98,7 @@ const CompoundsSummaryTable = (props) => {
           cellLineId: cellLine.id,
           cellLineName: cellLine.name,
           compoundId: item.id,
-          compoundName: item.compound,
+          compound: item.compound,
           dataset: item.dataset,
           numExperiments: item.num_experiments,
         })));
