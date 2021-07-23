@@ -85,7 +85,7 @@ const DatasetHorizontalPlot = (props) => {
       title: {
         text: xaxis,
         font: {
-          size: 12,
+          size: 14,
           family: 'arial',
 
         },
