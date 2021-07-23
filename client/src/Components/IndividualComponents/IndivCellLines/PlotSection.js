@@ -1,3 +1,4 @@
+
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react';
@@ -63,29 +64,37 @@ const PlotSection = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             {compoundsData.length ? (
-                <React.Fragment>
+                <>
                     {
-                        loading ? <Loading />
-                        :
-                        <DatasetHorizontalPlot
-                            plotId={`${name}Compounds`}
-                            data={compoundsData}
-                            xaxis="# of compounds"
-                            title={`Number of compounds tested with ${name} (per dataset)`}
-                        />
+                        display === 'barPlot' ?
+                            loading ? <Loading />
+                                :
+                                <DatasetHorizontalPlot
+                                    data={compoundsData}
+                                    xaxis="# of compounds"
+                                    title={`Number of compounds tested with ${name} (per dataset)`}
+                                />
+                            :
+                            ''
                     }
-                </React.Fragment>
-            ) :
-                display === 'barPlot'?
-                    (
-                        loading ? <Loading /> :
-                        <p>No data is available to plot this cell line.</p>
-                    )
-            : ''
-            }
-        </React.Fragment>
+                    {
+                        display === 'aacCompounds' ?
+                            loading ? <Loading />
+                                :
+                                <ProfileCompound
+                                    cellLine={name}
+                                    data={data.experiments}
+                                />
+                            :
+                            ''
+                    }
+                </>
+            ) : (
+                <p> No data is available for plotting this cell line. </p>
+            )}
+        </>
     );
 };
 
