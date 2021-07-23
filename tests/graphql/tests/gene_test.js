@@ -36,7 +36,7 @@ const test = (server) => {
     });
 
     // test for a single gene route
-    it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "ensg", "gene_seq_start", "gene_seq_end"', function (done) {
+    it('Returns "id", "name" properties of the first gene in the database along with "annotation" object that contains "gene_id", "symbol", "gene_seq_start", "gene_seq_end"', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
@@ -49,7 +49,7 @@ const test = (server) => {
                 expect(gene.id).to.be.a('number');
                 expect(gene.name).to.be.string;
                 expect(gene.annotation).to.be.an('object');
-                expect(gene.annotation).to.have.all.keys('gene_id', 'ensg', 'gene_seq_start', 'gene_seq_end');
+                expect(gene.annotation).to.have.all.keys('gene_id', 'symbol', 'gene_seq_start', 'gene_seq_end');
                 return done();
             });
     });

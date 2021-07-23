@@ -1,44 +1,40 @@
-const geneDrugSearchByGeneQuery = `
+const geneCompoundTissueQuery = `
   {
-    gene_drugs(geneId: 1) {
+    gene_compound_tissue(geneId: 94) {
       id
       estimate
-      se
+      lower
+      upper
       n
       tstat
       fstat
       pvalue
       df
       fdr
-      FWER_genes
-      FWER_drugs
+      FWER_gene
+      FWER_compound
       FWER_all
       BF_p_all
+      sens_stat
       mDataType
-      level
-      drug_like_molecule
+      tested_in_human_trials
       in_clinical_trials
-      dataset {
-        id
-        name
-      }
       gene {
         id
         name
         annotation {
           gene_id
-          ensg
           gene_seq_start
           gene_seq_end
         }
       }
       compound {
         id
-        name,
+        name
         annotation {
-          smiles,
-          fda_status,
-          pubchem,
+          smiles
+          fda_status
+          pubchem
           inchikey
         }
       }
@@ -50,61 +46,7 @@ const geneDrugSearchByGeneQuery = `
   }
 `;
 
-const geneDrugSearchByDrugQuery = `
-  {
-    gene_drugs(compoundId: 2) {
-      id
-      estimate
-      se
-      n
-      tstat
-      fstat
-      pvalue
-      df
-      fdr
-      FWER_genes
-      FWER_drugs
-      FWER_all
-      BF_p_all
-      mDataType
-      level
-      drug_like_molecule
-      in_clinical_trials
-      dataset {
-        id
-        name
-      }
-      gene {
-        id
-        name
-        annotation {
-          gene_id
-          ensg
-          gene_seq_start
-          gene_seq_end
-        }
-      }
-      compound {
-        id
-        name,
-        annotation {
-          smiles,
-          fda_status,
-          pubchem,
-          inchikey
-        }
-      }
-     tissue {
-        id
-        name
-      }
-    }
-  }
-`;
-
-
 
 module.exports = {
-    geneDrugSearchByGeneQuery,
-    geneDrugSearchByDrugQuery
+    geneCompoundTissueQuery,
 };

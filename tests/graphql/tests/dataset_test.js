@@ -16,7 +16,7 @@ const test = (server) => {
         this.timeout(30000);
         request(server)
             .post('/graphql')
-            .send({ query: datasetQueries.allDatasetsTestQuery })
+            .send({ query: datasetQueries.multipleDatasetsTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -37,7 +37,7 @@ const test = (server) => {
             });
     });
 
-    it('Test to validate data from a single dataset with Compound Id 2 ie "CTRPv2" as the argument', function(done) {
+    it('Test to validate data from a single dataset with Compound Id 2 ie "CTRPv2" as the argument', function (done) {
         this.timeout(30000);
         request(server)
             .post('/graphql')
@@ -47,7 +47,7 @@ const test = (server) => {
                 if (err) return done(err);
                 const { dataset: values } = res.body.data;
                 values.every(dataset => {
-                    if(dataset.id === 2) {
+                    if (dataset.id === 2) {
                         // expect cells_tested to be a string.
                         expect(dataset.cells_tested).to.be.an('array').that.have.lengthOf.above(0);
                         // expect compounds_tested to be a string.
@@ -82,6 +82,6 @@ const test = (server) => {
     });
 };
 
-module.exports= {
+module.exports = {
     test
 };
