@@ -65,7 +65,7 @@ const csvData = (data) => {
         cellLineName: item.cellLineObj[0].name,
         tissueId: item.tissueObj[0].id,
         tissueName: item.tissueObj[0].name,
-        dataset: item.datasetObj[0].name,
+        dataset: item.dataset,
         numExperiments: item.num_experiments,
     }));
 };
@@ -105,6 +105,7 @@ const formatCellSummaryData = (data) => {
             cellLineObj: x.cellObj,
             tissueObj: x.tissueObj,
             datasetObj: x.datasetObj,
+            dataset: x.datasets,
             num_experiments: x.numExperiments,
         }));
     }
