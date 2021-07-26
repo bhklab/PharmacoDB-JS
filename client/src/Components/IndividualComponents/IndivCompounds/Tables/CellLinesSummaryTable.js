@@ -17,7 +17,7 @@ const CELL_SUMMARY_COLUMNS = [
         Header: 'Cell Line',
         accessor: 'cellLineObj',
         Cell: (item) => {
-            let cellLines = item.row.original.cellLineObj;
+            let cellLines = item.row.original.cellLine;
             return(cellLines.map((obj, i) => (
                 <span key={i}>
                     <a href={`/cell_lines/${obj.id}`}>{obj.name}</a>{ i + 1 < cellLines.length ? ', ' : ''}
@@ -29,7 +29,7 @@ const CELL_SUMMARY_COLUMNS = [
         Header: 'Tissue Type',
         accessor: 'tissue',
         Cell: (item) => {
-            let tissues = item.row.original.tissueObj;
+            let tissues = item.row.original.tissue;
             return(tissues.map((obj, i) => (
                 <span key={i}>
                     <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
@@ -41,7 +41,7 @@ const CELL_SUMMARY_COLUMNS = [
         Header: 'Datasets',
         accessor: 'dataset',
         Cell: (item) => {
-            let datasets = item.cell.row.original.datasetObj;
+            let datasets = item.cell.row.original.datasetList;
             return(datasets.map((obj, i) => (
                 <span key={i}>
                     <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
@@ -56,60 +56,45 @@ const CELL_SUMMARY_COLUMNS = [
 ];
 
 /**
- * csv
- */
-const csvData = (data) => {
-    console.log(data);
-    return data.map(item => ({
-        cellLineId: item.cellLineObj[0].id,
-        cellLineName: item.cellLineObj[0].name,
-        tissueId: item.tissueObj[0].id,
-        tissueName: item.tissueObj[0].name,
-        dataset: item.dataset,
-        numExperiments: item.num_experiments,
-    }));
-};
-
-/**
  * Format data for the cell Line summary table
  * @param {Array} data from experiment API for a given compound
  * @returns {Array} Object of cellLines, datasets, and tissues for the table
  */
-const formatCellSummaryData = (data) => {
+const generateTableData = (data) => {
     // collect data of datasets, tissues and number of experiments for each cell line
-    const cellLineObj = {};
-    data.experiments.forEach((experiment) => {
-        const {cell_line, tissue, dataset} = experiment;
-        const datasetObj = [];
-        if (cellLineObj[cell_line.name]) {
-            if (!cellLineObj[cell_line.name].datasets.includes(dataset.name))
-            {
-                cellLineObj[cell_line.name].datasets.push(dataset.name);
-                cellLineObj[cell_line.name].datasetObj.push({name : dataset.name, id : dataset.id});
-                datasetObj.sort((a, b) => a - b);
-            }
-            cellLineObj[cell_line.name].numExperiments += 1;
-        } else {
-            cellLineObj[cell_line.name] = {
-                cellObj: [{name : cell_line.name, id : cell_line.id}],
-                datasets: [dataset.name],
-                tissueObj: [{name : [tissue.name], id : tissue.id}],
-                datasetObj : [{name : [dataset.name], id : dataset.id}],
-                numExperiments: 1,
-            };
-        }
-    });
-    // assign values of collected compound data to the columns
+    let tableData = { ready: false, cellLine: [], numCellLines: 0, numDataset: 0 };
     if (data) {
-        return Object.values(cellLineObj).map((x) => ({
-            cellLineObj: x.cellObj,
-            tissueObj: x.tissueObj,
-            datasetObj: x.datasetObj,
-            dataset: x.datasets,
-            num_experiments: x.numExperiments,
-        }));
+        let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
+        let uniqueCellLines = [...new Set(data.map(item => item.cell_line.id))];
+        let cellLines = [];
+        for(let id of uniqueCellLines){
+            let experiments = data.filter(item => item.cell_line.id === id);
+
+            let datasets = experiments.map(item => item.dataset);
+            let datasetIds = [...new Set(datasets.map(item => item.id))];
+            let datasetList = [];
+            for(let id of datasetIds){
+                let found = datasets.find(item => item.id === id);
+                datasetList.push(found);
+            }
+            datasetList.sort((a, b) => a - b);
+
+            cellLines.push({
+                cellLine: [experiments[0].cell_line],
+                dataset: datasetList.map(item => item.name).join(' '),
+                tissue: [experiments[0].tissue],
+                num_experiments: experiments.length,
+                id: experiments[0].cell_line.id,
+                datasetList: datasetList
+            });
+        }
+        cellLines.sort((a, b) => b.num_experiments - a.num_experiments);
+        tableData.cellLine = cellLines;
+        tableData.numCellLines = uniqueCellLines.length;
+        tableData.numDataset = uniqueDatasets.length;
+        tableData.ready = true;
     }
-    return null;
+    return tableData;
 };
 
 /**
@@ -124,10 +109,27 @@ const formatCellSummaryData = (data) => {
  */
 const CellLinesSummaryTable = (props) => {
     const { compound } = props;
+    const [tableData, setTableData] = useState({ ready: false, cellLine: [], numCellLines: 0, numDataset: 0 });
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
+
     const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
         variables: { compoundId: compound.id },
+        onCompleted: (data) => {
+            console.log(data);
+            let parsed = generateTableData(data.experiments);
+            setTableData(parsed);
+            setCSV(parsed.cellLine.map(item => ({
+                compoundId: compound.id,
+                compoundName: compound.name,
+                cellLineId: item.id,
+                cellLine: item.cellLine[0].name,
+                tissueId: item.tissue[0].id,
+                tissueName: item.tissue[0].name,
+                dataset: item.dataset,
+                numExperiments: item.num_experiments,
+            })));
+        },
         onError: (err) => {
             setError(true);
         }
@@ -146,26 +148,34 @@ const CellLinesSummaryTable = (props) => {
             });
         }
     }, [queryData]);
-    csvData(formatCellSummaryData(queryData));
+    if(! (loading || !tableData.ready ) ) console.log("12", tableData, csv);
     return (
         <React.Fragment>
             {
                 error && <p> Error! </p>
             }
             {
-                loading ?
+                loading || !tableData.ready ?
                     <Loading />
                     :
                     <React.Fragment>
+                        <h4>
+                            <p align="center">
+                                { `Compounds tested with ${compound.name}` }
+                            </p>
+                        </h4>
+                        <p align="center">
+                            { ` compounds have been tested with this cell line, using data from  dataset(s).` }
+                        </p>
                         <div className='download-button'>
                             <DownloadButton
                                 label='CSV'
-                                data={csvData(formatCellSummaryData(queryData))}
+                                data={csv}
                                 mode='csv'
                                 filename={`${compound.name} - cellLines`}
                             />
                         </div>
-                        <Table columns={CELL_SUMMARY_COLUMNS} data={formatCellSummaryData(queryData)}/>
+                        <Table columns={CELL_SUMMARY_COLUMNS} data={tableData.cellLine}/>
                     </React.Fragment>
             }
         </React.Fragment>

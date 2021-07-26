@@ -19,7 +19,7 @@ const DRUG_SUMMARY_COLUMNS = [
     Header: 'Datasets',
     accessor: 'dataset',
     Cell: (item) => {
-      const datasets = item.cell.row.original.dataset;
+      const datasets = item.cell.row.original.datasetList;
       return (datasets.map((obj, i) => (
         <span key={i}>
           <a href={`/datasets/${obj.id}`}>{obj.name}</a>
@@ -49,19 +49,19 @@ const generateTableData = (data) => {
 
       let datasets = experiments.map(item => item.dataset);
       let datasetIds = [...new Set(datasets.map(item => item.id))];
-      let dataset = [];
+      let datasetList = [];
       for(let id of datasetIds){
         let found = datasets.find(item => item.id === id);
-        dataset.push(found);
+        datasetList.push(found);
       }
-      dataset.sort((a, b) => a - b);
+      datasetList.sort((a, b) => a - b);
 
       compounds.push({
         compound: experiments[0].compound.name,
-        dataset: dataset.map(item => item.name).join(' '),
+        dataset: datasetList.map(item => item.name).join(' '),
         num_experiments: experiments.length,
         id: experiments[0].compound.id,
-        dataset: dataset
+        datasetList: datasetList
       });
     }
     compounds.sort((a, b) => b.num_experiments - a.num_experiments);
@@ -121,6 +121,7 @@ const CompoundsSummaryTable = (props) => {
       });
     }
   }, [queryData]);
+  if(! (loading || !tableData.ready )) console.log(tableData, csv);
   return (
       <React.Fragment>
         {
