@@ -9,6 +9,7 @@ import Loading from '../../../UtilComponents/Loading';
 import ProfileCompound from '../../../Plots/ProfileCompound';
 import Table from '../../../UtilComponents/Table/Table';
 import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
+import DownloadButton from '../../../UtilComponents/DownloadButton';
 import { Link } from 'react-router-dom';
 
 const CELL_SUMMARY_COLUMNS = [
@@ -50,9 +51,24 @@ const CELL_SUMMARY_COLUMNS = [
     },
     {
         Header: 'Experiments',
-        accessor: 'experiment_id',
+        accessor: 'num_experiments',
     },
 ];
+
+/**
+ * csv
+ */
+const csvData = (data) => {
+    console.log(data);
+    return data.map(item => ({
+        cellLineId: item.cellLineObj[0].id,
+        cellLineName: item.cellLineObj[0].name,
+        tissueId: item.tissueObj[0].id,
+        tissueName: item.tissueObj[0].name,
+        dataset: item.datasetObj[0].name,
+        numExperiments: item.num_experiments,
+    }));
+};
 
 /**
  * Format data for the cell Line summary table
@@ -89,7 +105,7 @@ const formatCellSummaryData = (data) => {
             cellLineObj: x.cellObj,
             tissueObj: x.tissueObj,
             datasetObj: x.datasetObj,
-            experiment_id: x.numExperiments,
+            num_experiments: x.numExperiments,
         }));
     }
     return null;
@@ -107,13 +123,13 @@ const formatCellSummaryData = (data) => {
  */
 const CellLinesSummaryTable = (props) => {
     const { compound } = props;
-    const { id, name } = compound;
-    const {
-        loading,
-        error,
-        data: queryData,
-    } = useQuery(getSingleCompoundExperimentsQuery, {
-        variables: { compoundId: id },
+    const [csv, setCSV] = useState([]);
+    const [error, setError] = useState(false);
+    const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
+        variables: { compoundId: compound.id },
+        onError: (err) => {
+            setError(true);
+        }
     });
     // load data from query into state
     const [experiment, setExperiment] = useState({
@@ -129,16 +145,27 @@ const CellLinesSummaryTable = (props) => {
             });
         }
     }, [queryData]);
+    csvData(formatCellSummaryData(queryData));
     return (
         <React.Fragment>
+            {
+                error && <p> Error! </p>
+            }
             {
                 loading ?
                     <Loading />
                     :
-                    <Table columns={CELL_SUMMARY_COLUMNS} data={formatCellSummaryData(queryData)} center={true} />
-            }
-            {
-                error && <p>An error occurred</p>
+                    <React.Fragment>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={csvData(formatCellSummaryData(queryData))}
+                                mode='csv'
+                                filename={`${compound.name} - cellLines`}
+                            />
+                        </div>
+                        <Table columns={CELL_SUMMARY_COLUMNS} data={formatCellSummaryData(queryData)}/>
+                    </React.Fragment>
             }
         </React.Fragment>
     );

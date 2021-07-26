@@ -19,7 +19,7 @@ const DRUG_SUMMARY_COLUMNS = [
     Header: 'Datasets',
     accessor: 'dataset',
     Cell: (item) => {
-      const datasets = item.cell.row.original.datasetObj;
+      const datasets = item.cell.row.original.dataset;
       return (datasets.map((obj, i) => (
         <span key={i}>
           <a href={`/datasets/${obj.id}`}>{obj.name}</a>
@@ -44,24 +44,24 @@ const generateTableData = (data) => {
     let uniqueCompounds = [...new Set(data.map(item => item.compound.id))];
     let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
     let compounds = [];
-    for(let id of uniqueCompounds){
+    for (let id of uniqueCompounds) {
       let experiments = data.filter(item => item.compound.id === id);
 
       let datasets = experiments.map(item => item.dataset);
       let datasetIds = [...new Set(datasets.map(item => item.id))];
-      let datasetObj = [];
+      let dataset = [];
       for(let id of datasetIds){
         let found = datasets.find(item => item.id === id);
-        datasetObj.push(found);
+        dataset.push(found);
       }
-      datasetObj.sort((a, b) => a - b);
+      dataset.sort((a, b) => a - b);
 
       compounds.push({
         compound: experiments[0].compound.name,
-        dataset: datasetObj.map(item => item.name).join(' '),
+        dataset: dataset.map(item => item.name).join(' '),
         num_experiments: experiments.length,
         id: experiments[0].compound.id,
-        datasetObj: datasetObj
+        dataset: dataset
       });
     }
     compounds.sort((a, b) => b.num_experiments - a.num_experiments);
@@ -92,7 +92,7 @@ const CompoundsSummaryTable = (props) => {
       variables: { cellLineId: cellLine.id },
       onCompleted: (data) => {
         console.log(data);
-        let parsed = generateTableData(data.experiments)
+        let parsed = generateTableData(data.experiments);
         setTableData(parsed);
         setCSV(parsed.compound.map(item => ({
           cellLineId: cellLine.id,
@@ -136,7 +136,7 @@ const CompoundsSummaryTable = (props) => {
                   </p>
                 </h4>
                 <p align="center">
-                  { `${tableData.numCompounds} compounds have been tested with this tissue, using data from ${tableData.numDataset} dataset(s).` }
+                  { `${tableData.numCompounds} compounds have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).` }
                 </p>
                 <div className='download-button'>
                   <DownloadButton
