@@ -121,7 +121,6 @@ const CompoundsSummaryTable = (props) => {
       });
     }
   }, [queryData]);
-  if(! (loading || !tableData.ready )) console.log(tableData, csv);
   return (
       <React.Fragment>
         {

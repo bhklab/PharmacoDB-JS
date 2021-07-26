@@ -15,27 +15,13 @@ import { Link } from 'react-router-dom';
 const CELL_SUMMARY_COLUMNS = [
     {
         Header: 'Cell Line',
-        accessor: 'cellLineObj',
-        Cell: (item) => {
-            let cellLines = item.row.original.cellLine;
-            return(cellLines.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/cell_lines/${obj.id}`}>{obj.name}</a>{ i + 1 < cellLines.length ? ', ' : ''}
-                </span>)
-            ));
-        }
+        accessor: 'cellLine',
+        Cell: (item) => (<Link to={`/cell_lines/${item.row.original.id}`}>{item.value}</Link>),
     },
     {
         Header: 'Tissue Type',
         accessor: 'tissue',
-        Cell: (item) => {
-            let tissues = item.row.original.tissue;
-            return(tissues.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
-                </span>)
-            ));
-        }
+        Cell: (item) => (<Link to={`/tissues/${item.row.original.tissue.id}`}>{item.row.original.tissue.name}</Link>),
     },
     {
         Header: 'Datasets',
@@ -80,9 +66,9 @@ const generateTableData = (data) => {
             datasetList.sort((a, b) => a - b);
 
             cellLines.push({
-                cellLine: [experiments[0].cell_line],
+                cellLine: experiments[0].cell_line.name,
                 dataset: datasetList.map(item => item.name).join(' '),
-                tissue: [experiments[0].tissue],
+                tissue: experiments[0].tissue,
                 num_experiments: experiments.length,
                 id: experiments[0].cell_line.id,
                 datasetList: datasetList
@@ -123,9 +109,9 @@ const CellLinesSummaryTable = (props) => {
                 compoundId: compound.id,
                 compoundName: compound.name,
                 cellLineId: item.id,
-                cellLine: item.cellLine[0].name,
-                tissueId: item.tissue[0].id,
-                tissueName: item.tissue[0].name,
+                cellLine: item.cellLine,
+                tissueId: item.tissue.id,
+                tissueName: item.tissue.name,
                 dataset: item.dataset,
                 numExperiments: item.num_experiments,
             })));
@@ -148,7 +134,6 @@ const CellLinesSummaryTable = (props) => {
             });
         }
     }, [queryData]);
-    if(! (loading || !tableData.ready ) ) console.log("12", tableData, csv);
     return (
         <React.Fragment>
             {
