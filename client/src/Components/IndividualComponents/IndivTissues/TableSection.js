@@ -26,6 +26,7 @@ const CELL_LINE_SUMMARY_COLUMNS = [
   {
     Header: 'Cell Line',
     accessor: 'cellLine',
+    center: true,
   },
 ];
 

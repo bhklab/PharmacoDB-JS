@@ -159,8 +159,8 @@ const Biomarker = (props) => {
     const [display, setDisplay] = useState('gene_info');
 
     /**
-        * @param {String} link
-    */
+     * @param {String} link
+     */
     const createSideLink = (link, i) => (
         <li key={i} className={display === link.name ? 'selected' : undefined}>
             <button type='button' onClick={() => setDisplay(link.name)}>

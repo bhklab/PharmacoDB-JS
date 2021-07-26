@@ -1,3 +1,4 @@
+
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react';
@@ -61,39 +62,45 @@ const PlotSection = (props) => {
     if (error) {
         return <p> Error! </p>;
     }
-    
+
     return (
-        <>
+        <React.Fragment>
             {compoundsData.length ? (
-                <>
+                <React.Fragment>
                     {
                         display === 'barPlot' ?
                             loading ? <Loading />
+                                :
+                                <DatasetHorizontalPlot
+                                    plotId={`${name}Compounds`}
+                                    data={compoundsData}
+                                    xaxis="# of compounds"
+                                    title={`Number of compounds tested with ${name} (per dataset)`}
+                                />
                             :
-                            <DatasetHorizontalPlot
-                                data={compoundsData}
-                                xaxis="# of compounds"
-                                title={`Number of compounds tested with ${name} (per dataset)`}
-                            />
-                            :
-                        ''
+                            ''
                     }
                     {
                         display === 'aacCompounds' ?
                             loading ? <Loading />
+                                :
+                                <ProfileCompound
+                                    cellLine={name}
+                                    data={data.experiments}
+                                />
                             :
-                            <ProfileCompound 
-                                cellLine={name} 
-                                data={data.experiments} 
-                            />
-                        :
-                        ''
+                            ''
                     }
-                </>
+                </React.Fragment>
             ) : (
-                <p> No data is available for plotting this cell line. </p>
+                display === 'barPlot'?
+                    loading ? <Loading /> :
+                    (
+                        <p>No data available to plot this cell line.</p>
+                    ):
+                    ''
             )}
-        </>
+        </React.Fragment>
     );
 };
 

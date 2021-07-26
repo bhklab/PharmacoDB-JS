@@ -47,6 +47,10 @@ const getCompoundQuery = gql`
         id
         name
       }
+      datasets {
+        id
+        name
+      }
     }
   }
 `;

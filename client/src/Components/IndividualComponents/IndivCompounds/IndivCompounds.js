@@ -9,17 +9,29 @@ import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-
-import {
-    StyledIndivPage,
-    StyledSidebarList
-} from '../../../styles/IndivPageStyles';
+import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
+import TissuesSummaryTable from './Tables/TissuesSummaryTable'
+import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
+import {StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'sources',
+        accessor: 'datasetObj',
+        Cell: (item) => {
+            let datasets = item.row.original.datasetObj;
+            return(datasets.map((obj, i) => (
+                    obj.id? 
+                        (
+                            <span key={i}>
+                                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                            </span>
+                        ) :
+                        (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -40,22 +52,45 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
-    {label: 'Anotated Targets', name: 'targets'},
     {label: 'Bar Plots', name: 'barplots'},
     {label: 'AAC (Cell Lines)', name: 'aacCells'},
     {label: 'AAC (Tissues)', name: 'aacTissues'},
+    {label: 'Cell Line Summary', name: 'cellSummary'},
+    {label: 'Tissue Summary', name: 'tissueSummary'},
+    {label: 'Molecular Features', name: 'molFeature'},
 ];
 
 /**
  * Format data for the synonyms table
- * @param {Array} data synonym data from the compound API
+ * @param {Array} data synonym data from the experiment API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', '),
-        }));
+    if (data.synonyms) {
+        // define datasetId object to find id of sources
+        const datasetId = {};
+        data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
+        // collect source ids and initiate dataset objects to store sources
+        const tableData = []
+        for (let x of data.synonyms) {
+            const datasetObj = [];
+            for (let item of x.source){
+                datasetObj.push({name:item, id:datasetId[item]});
+            }
+            tableData.push({name: x.name, datasetObj: datasetObj});
+        }
+        // merge sources with same synonyms
+        const returnList = [];
+        for (let x of tableData){
+            const index = returnList.findIndex((item) => item.name === x.name )
+            if (index === -1) {
+                returnList.push(x);
+            } else {
+                for (let source of x.datasetObj)
+                    returnList[index].datasetObj.push({name: source['name'], id: source['id']});
+            }
+        }
+        returnList.push({name:data.compound.name , datasetObj:[{name: "PharmacoGx", id: ""}]});
+        return returnList;
     }
     return null;
 };
@@ -68,20 +103,15 @@ const formatAnnotationData = (data) => {
     const modifiedData = [];
     if (data) {
         const { annotation } = data;
-        modifiedData.push(
-            {
-                db: 'SMILES',
-                identifier: annotation.smiles,
-            },
-            {
-                db: 'InChiKey',
-                identifier: annotation.inchikey,
-            },
-            {
-                db: 'PubChem ID',
-                identifier: annotation.pubchem,
-            }
-        );
+        if (annotation.smiles) {
+            modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, });
+        }
+        if (annotation.inchikey) {
+            modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
+        }
+        if (annotation.pubchem) {
+            modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, });
+        }
     }
     return modifiedData;
 };
@@ -101,8 +131,6 @@ const IndivCompounds = (props) => {
     const {
         match: { params },
     } = props;
-    // const compoundId = parseInt(params.id);
-
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
         variables: { compoundId: parseInt(params.id) },
@@ -113,7 +141,6 @@ const IndivCompounds = (props) => {
         data: {},
         loaded: false,
     });
-
     // A section to display on the page
     const [display, setDisplay] = useState('synonyms');
 
@@ -132,7 +159,7 @@ const IndivCompounds = (props) => {
 
     // formatted data for synonyms annotation table
     const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-    const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [
+    const synonymData = React.useMemo(() => formatSynonymData(data), [
         data.synonyms,
     ]);
 
@@ -145,7 +172,7 @@ const IndivCompounds = (props) => {
 
     /**
      * 
-     * @param {String} link 
+     * @param {String} link
      */
     const createSideLink = (link, i) => (
         <li key={i} className={display === link.name ? 'selected': undefined}>
@@ -154,7 +181,6 @@ const IndivCompounds = (props) => {
             </button>
         </li>
     );
-
     return compound.loaded ? (
         <Layout page={data.compound.name}>
             <StyledWrapper>
@@ -167,7 +193,7 @@ const IndivCompounds = (props) => {
                         <div className='heading'>
                             <span className='title'>{data.compound.name}</span>
                             <span className='attributes'>
-                                FDA Approval Status:  
+                                FDA Approval Status:
                                 <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
                                     {data.compound.annotation.fda_status}
                                 </span>
@@ -225,6 +251,27 @@ const IndivCompounds = (props) => {
                                             }}
                                         />
                                     </Element>
+                                    {
+                                        display === 'cellSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Cell Line Summary</div>
+                                            <CellLinesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'tissueSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Tissue Summary</div>
+                                            <TissuesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'molFeature' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Molecular Features</div>
+                                            <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
                                 </div>
                             </div>
                         </div>
