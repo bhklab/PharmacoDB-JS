@@ -7,6 +7,7 @@ import { getDatasetCountsQuery } from '../../../queries/dataset';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import Loading from '../../UtilComponents/Loading';
+import Error from '../../UtilComponents/Error';
 import colors from '../../../styles/colors';
 
 /**
@@ -71,10 +72,9 @@ const PlotSection = (props) => {
   return (
     <>
       {
-        error && <p> Error! </p>
-      }
-      {
-        loading ? (<Loading />)
+        loading ? <Loading />
+        :
+        error ? <Error />
         :
         <React.Fragment>
           <PlotsWrapper>

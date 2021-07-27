@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueCompoundsQuery } from '../../../../queries/experiments';
 import Loading from '../../../UtilComponents/Loading';
+import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
@@ -83,7 +84,7 @@ const DrugSummaryTable = (props) => {
         // fetchPolicy: "network-only",
         onCompleted: (data) => {
             console.log(data);
-            let parsed = generateTableData(data.experiments)
+            let parsed = generateTableData(data.experiments);
             setTableData(parsed);
             setCSV(parsed.compound.map(item => ({
                 tissueId: tissue.id,
@@ -94,7 +95,7 @@ const DrugSummaryTable = (props) => {
                 numExperiments: item.num_experiments,
             })));
         },
-        onError: (err) => {
+        onError: () => {
             setError(true);
         }
     });
@@ -102,10 +103,9 @@ const DrugSummaryTable = (props) => {
     return(
         <React.Fragment>
             {
-                error && <p> Error! </p>
-            }
-            {
                 loading || !tableData.ready ? <Loading />
+                :
+                error ? <Error />
                 :
                 <React.Fragment>
                     <h4>
