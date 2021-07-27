@@ -146,11 +146,11 @@ const CellLinesSummaryTable = (props) => {
                     <React.Fragment>
                         <h4>
                             <p align="center">
-                                { `Compounds tested with ${compound.name}` }
+                                { `Cell lines tested with ${compound.name}` }
                             </p>
                         </h4>
                         <p align="center">
-                            { ` compounds have been tested with this cell line, using data from  dataset(s).` }
+                            { `${tableData.numCellLines} cell line(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).` }
                         </p>
                         <div className='download-button'>
                             <DownloadButton

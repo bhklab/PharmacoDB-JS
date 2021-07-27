@@ -136,7 +136,7 @@ const CompoundsSummaryTable = (props) => {
                   </p>
                 </h4>
                 <p align="center">
-                  { `${tableData.numCompounds} compounds have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).` }
+                  { `${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).` }
                 </p>
                 <div className='download-button'>
                   <DownloadButton

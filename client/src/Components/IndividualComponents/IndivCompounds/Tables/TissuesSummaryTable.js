@@ -9,26 +9,20 @@ import Loading from '../../../UtilComponents/Loading';
 import ProfileCompound from '../../../Plots/ProfileCompound';
 import Table from '../../../UtilComponents/Table/Table';
 import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
+import DownloadButton from '../../../UtilComponents/DownloadButton';
 import { Link } from 'react-router-dom';
 
 const TISSUE_SUMMARY_COLUMNS = [
     {
         Header: 'Tissue',
-        accessor: 'tissueObj',
-        Cell: (item) => {
-            let tissues = item.row.original.tissueObj;
-            return(tissues.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/tissues/${obj.id}`}>{obj.name}</a>{ i + 1 < tissues.length ? ', ' : ''}
-                </span>)
-            ));
-        }
+        accessor: 'tissue',
+        Cell: (item) => (<Link to={`/tissues/${item.row.original.id}`}>{item.value}</Link>),
     },
     {
         Header: 'Datasets',
         accessor: 'dataset',
         Cell: (item) => {
-            let datasets = item.cell.row.original.datasetObj;
+            let datasets = item.cell.row.original.datasetList;
             return(datasets.map((obj, i) => (
                 <span key={i}>
                     <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
@@ -38,7 +32,7 @@ const TISSUE_SUMMARY_COLUMNS = [
     },
     {
         Header: 'Experiments',
-        accessor: 'experiment_id',
+        accessor: 'num_experiments',
     },
 ];
 
@@ -49,35 +43,38 @@ const TISSUE_SUMMARY_COLUMNS = [
  */
 const formatTissueSummaryData = (data) => {
     // collect data of datasets and number of experiments for each tissue
-    const tissuesObj = {};
-    data.experiments.forEach((experiment) => {
-        const {tissue, dataset} = experiment;
-        const datasetObj = [];
-        if (tissuesObj[tissue.name]) {
-            if (!tissuesObj[tissue.name].datasets.includes(dataset.name)) {
-                tissuesObj[tissue.name].datasets.push(dataset.name);
-                tissuesObj[tissue.name].datasetObj.push({name : dataset.name, id : dataset.id});
-                datasetObj.sort((a, b) => a - b);
-            }
-            tissuesObj[tissue.name].numExperiments += 1;
-        } else {
-            tissuesObj[tissue.name] = {
-                tissueObj: [{name : [tissue.name], id : tissue.id}],
-                datasets: [dataset.name],
-                datasetObj : [{name : [dataset.name], id : dataset.id}],
-                numExperiments: 1,
-            };
-        }
-    });
-    // assign values of collected tissue data to the columns
+    let tableData = { ready: false, tissue: [], numTissues: 0, numDataset: 0 };
     if (data) {
-        return Object.values(tissuesObj).map((x) => ({
-            tissueObj: x.tissueObj,
-            datasetObj: x.datasetObj,
-            experiment_id: x.numExperiments,
-        }));
+        let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
+        let uniqueTissues = [...new Set(data.map(item => item.tissue.id))];
+        let tissues = [];
+        for(let id of uniqueTissues){
+            let experiments = data.filter(item => item.tissue.id === id);
+
+            let datasets = experiments.map(item => item.dataset);
+            let datasetIds = [...new Set(datasets.map(item => item.id))];
+            let datasetList = [];
+            for(let id of datasetIds){
+                let found = datasets.find(item => item.id === id);
+                datasetList.push(found);
+            }
+            datasetList.sort((a, b) => a - b);
+
+            tissues.push({
+                tissue: experiments[0].tissue.name,
+                dataset: datasetList.map(item => item.name).join(' '),
+                num_experiments: experiments.length,
+                id: experiments[0].tissue.id,
+                datasetList: datasetList
+            });
+        }
+        tissues.sort((a, b) => b.num_experiments - a.num_experiments);
+        tableData.tissue = tissues;
+        tableData.numTissues = uniqueTissues.length;
+        tableData.numDataset = uniqueDatasets.length;
+        tableData.ready = true;
     }
-    return null;
+    return tableData;
 };
 
 /**
@@ -92,13 +89,26 @@ const formatTissueSummaryData = (data) => {
  */
 const TissuesSummaryTable = (props) => {
     const { compound } = props;
-    const { id, name } = compound;
-    const {
-        loading,
-        error,
-        data: queryData,
-    } = useQuery(getSingleCompoundExperimentsQuery, {
-        variables: { compoundId: id },
+    const [tableData, setTableData] = useState({ ready: false, tissue: [], numTissues: 0, numDataset: 0 });
+    const [csv, setCSV] = useState([]);
+    const [error, setError] = useState(false);
+    const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
+        variables: { compoundId: compound.id },
+        onCompleted: (data) => {
+            let parsed = formatTissueSummaryData(data.experiments);
+            setTableData(parsed);
+            setCSV(parsed.tissue.map(item => ({
+                compoundId: compound.id,
+                compoundName: compound.name,
+                tissueId: item.id,
+                tissueName: item.tissue,
+                dataset: item.dataset,
+                numExperiments: item.num_experiments,
+            })));
+        },
+        onError: (err) => {
+            setError(true);
+        }
     });
     // load data from query into state
     const [experiment, setExperiment] = useState({
@@ -117,13 +127,31 @@ const TissuesSummaryTable = (props) => {
     return (
         <React.Fragment>
             {
+                error && <p> Error! </p>
+            }
+            {
                 loading ?
                     <Loading />
                     :
-                    <Table columns={TISSUE_SUMMARY_COLUMNS} data={formatTissueSummaryData(queryData)} center={true} />
-            }
-            {
-                error && <p>An error occurred</p>
+                    <React.Fragment>
+                        <h4>
+                            <p align="center">
+                                { `Tissues tested with ${compound.name}` }
+                            </p>
+                        </h4>
+                        <p align="center">
+                            { `${tableData.numTissues} tissue(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).` }
+                        </p>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={csv}
+                                mode='csv'
+                                filename={`${compound.name} - tissues`}
+                            />
+                        </div>
+                        <Table columns={TISSUE_SUMMARY_COLUMNS} data={tableData.tissue}/>
+                    </React.Fragment>
             }
         </React.Fragment>
     );
