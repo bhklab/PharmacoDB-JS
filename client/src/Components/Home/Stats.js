@@ -114,14 +114,14 @@ const Stats = () => (
       <div key={statistics[type].name} className="item-container">
         <Link to={statistics[type].link}>
           <img alt={statistics[type].value} src={`${statistics[type].image}`} />
+          <div className="text">
+            <span className="big">
+              {`${statistics[type].value}`}
+            </span>
+            <br />
+            {`${statistics[type].name}`}
+          </div>
         </Link>
-        <div className="text">
-          <span className="big">
-            {`${statistics[type].value}`}
-          </span>
-          <br />
-          {`${statistics[type].name}`}
-        </div>
       </div>
     ))}
   </StyledStats>
