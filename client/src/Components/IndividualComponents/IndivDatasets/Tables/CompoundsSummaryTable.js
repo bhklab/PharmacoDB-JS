@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { getDatasetCompoundQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
+import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const parseTableData = (data, datasetId, datasetName) => {
@@ -43,8 +44,9 @@ const CompoundsSummaryTable = (props) => {
     return(
         <React.Fragment>
             {
-                loading ?
-                <Loading />
+                loading ? <Loading />
+                :
+                error ? <Error />
                 :
                 <React.Fragment>
                     <div className='download-button'>
@@ -52,9 +54,6 @@ const CompoundsSummaryTable = (props) => {
                     </div>
                     <Table columns={columns} data={compounds} />
                 </React.Fragment>
-            }
-            {
-                error && <p>An error occurred</p>
             }
         </React.Fragment>
     );

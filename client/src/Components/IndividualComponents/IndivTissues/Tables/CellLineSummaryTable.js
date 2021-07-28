@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleTissueCellLinesQuery } from '../../../../queries/experiments';
 import Loading from '../../../UtilComponents/Loading';
+import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
@@ -49,16 +50,17 @@ const CellLineSummaryTable = (props) => {
         onCompleted: (data) => {
             setCellLines(generateTableData(tissue, data));
         },
-        onError: () => {setError(true)}
+        onError: () => {
+            setError(true);
+        }
     });
 
     return(
         <React.Fragment>
             {
-                error && <p> Error! </p>
-            }
-            {
                 loading ? <Loading />
+                :
+                error ? <Error />
                 :
                 <React.Fragment>
                     <h4>

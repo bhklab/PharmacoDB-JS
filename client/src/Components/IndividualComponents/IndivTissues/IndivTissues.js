@@ -1,15 +1,16 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
+import Loading from '../../UtilComponents/Loading';
+import Error from '../../UtilComponents/Error';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-// import TableSection from './TableSection';
 import CellLineSummaryTable from './Tables/CellLineSummaryTable';
 import DrugSummaryTable from './Tables/DrugSummaryTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
@@ -86,103 +87,106 @@ const IndivTissues = (props) => {
     const {
         match: { params },
     } = props;
-    // const tissueId = parseInt(params.id);
-
-    // query to get the data for the single tissue.
-    const { loading, error, data: queryData } = useQuery(getTissueQuery, {
-        variables: { tissueId: parseInt(params.id) },
-    });
 
     // load data from query into state
     const [tissue, setTissue] = useState({
         data: {},
-        loaded: false,
+        ready: false,
+        notFound: false,
+        error: false
     });
 
     // A section to display on the page
     const [display, setDisplay] = useState('annotations');
 
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            console.log(queryData);
-            setTissue({
-                data: queryData.tissue,
-                loaded: true,
-            });
+    const { loading } = useQuery(getTissueQuery, {
+        variables: { tissueId: parseInt(params.id) },
+        onCompleted: (data) => {
+            console.log(data);
+            if (data.tissue.name !== 'empty') {
+                setTissue({...tissue, data: data.tissue, ready: true});
+            }else{
+                setTissue({...tissue, notFound: true});
+            }
+        },
+        onError: () => {
+            setTissue({...tissue, error: true})
         }
-    }, [queryData]);
+    });
 
-  // destructuring the tissue object.
-  const { data } = tissue;
-  // formatted data for annotation table
-  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
-  const annotationData = React.useMemo(() => formatAnnotationData(data.synonyms), [data.synonyms]);
+    /**
+     * 
+     * @param {String} link 
+     */
+    const createSideLink = (link, i) => (
+        <li key={i} className={display === link.name ? 'selected': undefined}>
+            <button type='button' onClick={() => setDisplay(link.name)}>
+                {link.label}
+            </button>
+        </li>
+    );
 
-  /**
- * 
- * @param {String} link 
- */
-const createSideLink = (link, i) => (
-    <li key={i} className={display === link.name ? 'selected': undefined}>
-        <button type='button' onClick={() => setDisplay(link.name)}>
-            {link.label}
-        </button>
-    </li>
-);
-
-  return (tissue.loaded ? (
-    <Layout page={data.name}>
-      <StyledWrapper>
-        {loading ? (<p>Loading...</p>)
-          : (error ? (<NotFoundContent />)
-            : (
-              <StyledIndivPage className="indiv-tissues">
-                <div className='heading'>
-                    <span className='title'>{formatName(data.name)}</span>
-                    <span className='attributes'>
-                        
-                    </span>
-                </div>
-                <div className='wrapper'>
-                    <StyledSidebarList>
-                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                    </StyledSidebarList>
-                    <div className="container">
-                        <div className="content">
-                            {
-                                display === 'annotations' &&
-                                <Element className="section" name="annotations">
-                                    <div className='section-title'>Annotations</div>
-                                    <Table columns={annotationColumns} data={annotationData} disablePagination />
-                                </Element>
-                            }
-                            {
-                                display === 'barPlots' &&
-                                <Element>
-                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
-                            {
-                                display === 'cellLineSummary' &&
-                                <Element className="section">
-                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
-                            {
-                                display === 'drugSummary' &&
-                                <Element className="section">
-                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
+    return (
+        <Layout page={tissue.data.name}>
+            <StyledWrapper>
+            {
+                loading ? <Loading />
+                :
+                tissue.notFound ? <NotFoundContent />
+                :
+                tissue.error ? <Error />
+                :
+                tissue.ready &&
+                <StyledIndivPage className="indiv-tissues">
+                    <div className='heading'>
+                        <span className='title'>{formatName(tissue.data.name)}</span>
+                        <span className='attributes'>
+                            
+                        </span>
+                    </div>
+                    <div className='wrapper'>
+                        <StyledSidebarList>
+                            {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                        </StyledSidebarList>
+                        <div className="container">
+                            <div className="content">
+                                {
+                                    display === 'annotations' &&
+                                    <Element className="section" name="annotations">
+                                        <div className='section-title'>Annotations</div>
+                                        <Table 
+                                            columns={ANNOTATION_COLUMNS} 
+                                            data={formatAnnotationData(tissue.data.synonyms)} 
+                                            disablePagination 
+                                        />
+                                    </Element>
+                                }
+                                {
+                                    display === 'barPlots' &&
+                                    <Element>
+                                        <PlotSection tissue={({ id: tissue.data.id, name: formatName(tissue.data.name) })} />
+                                    </Element>
+                                }
+                                {
+                                    display === 'cellLineSummary' &&
+                                    <Element className="section">
+                                        <CellLineSummaryTable tissue={({ id: tissue.data.id, name: formatName(tissue.data.name) })} />
+                                    </Element>
+                                }
+                                {
+                                    display === 'drugSummary' &&
+                                    <Element className="section">
+                                        <DrugSummaryTable tissue={({ id: tissue.data.id, name: formatName(tissue.data.name) })} />
+                                    </Element>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-              </StyledIndivPage>
-            ))}
-      </StyledWrapper>
-    </Layout>
-  ) : null);
+                </StyledIndivPage>
+            }
+            </StyledWrapper>
+        </Layout>
+    );
 };
 
 IndivTissues.propTypes = {

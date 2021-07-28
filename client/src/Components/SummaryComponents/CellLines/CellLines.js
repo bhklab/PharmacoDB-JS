@@ -7,6 +7,7 @@ import Layout from '../../UtilComponents/Layout';
 import PieChart from '../../Plots/PieChart';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../UtilComponents/Loading';
+import convertToTitleCase from '../../../utils/convertToTitleCase';
 
 const tableColumns = [
   {
@@ -17,6 +18,7 @@ const tableColumns = [
   {
     Header: 'Tissue',
     accessor: 'tissue',
+    Cell: (row) => (<Link to={`/tissues/${row.row.original.tissue_id}`}>{row.value}</Link>)
   },
 ];
 
@@ -32,7 +34,8 @@ const getTableData = (data) => {
       return {
         id,
         name: name.replace(/_/g, ' '),
-        tissue: tissue.name,
+        tissue: convertToTitleCase(tissue.name),
+        tissue_id: tissue.id
       };
     });
   }
