@@ -97,6 +97,47 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
 };
 
 /**
+ * Returns a transformed array of objects.
+ * @param {Array} data
+ * @returns {Array} - transformed array of objects.
+ */
+const transformTissues = data => {
+    // object to store the final result.
+    const finalData = {};
+    console.log("data",data)
+    // preparing the transformed data.
+    data.forEach(tissue => {
+        const {
+            id,
+            name,
+            dataset_id,
+            dataset_name,
+        } = tissue;
+
+        if (finalData[id]) {
+            const isPresent = finalData[id]['dataset'].filter(el => el.name === dataset_name);
+            if (isPresent.length === 0) {
+                finalData[id]['dataset'].push({
+                    id: dataset_id,
+                    name: dataset_name,
+                });
+            }
+        } else {
+            finalData[id] = {
+                id: id,
+                name: name,
+                dataset: [{
+                    id: dataset_id,
+                    name: dataset_name,
+                }]
+            };
+        }
+    });
+    // return the final data.
+    return Object.values(finalData);
+};
+
+/**
  *
  * @param {Array} tissue
  * @param {Array} cell_count
@@ -204,15 +245,16 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
         }
         // awaits for the query.
         const tissues = await query;
-        // returns the transformed object.
-        return tissues.map(({ id, name, dataset_id, dataset_name }) => ({
-            id,
-            name,
-            dataset: {
-                id: dataset_id,
-                name: dataset_name,
-            }
-        }));
+        // return the transformed data.
+        return transformTissues(tissues);
+        // return tissues.map(({ id, name, dataset_id, dataset_name }) => ({
+        //     id,
+        //     name,
+        //     dataset: {
+        //         id: dataset_id,
+        //         name: dataset_name,
+        //     }
+        // }));
     } catch (err) {
         console.log(err);
         throw err;
