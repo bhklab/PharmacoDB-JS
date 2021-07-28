@@ -30,6 +30,14 @@ const geneCompoundTissueType = `
     }
 `;
 
+// gene compound dataset type using gene compound variable and additional dataset field.
+const geneCompoundDatasetType = `
+    type GeneCompoundDataset {
+       ${geneCompound}
+       dataset: Dataset!
+    }
+`;
+
 // gene compound type using gene compound variable.
 const geneCompoundType = `
     type GeneCompound {
@@ -40,5 +48,6 @@ const geneCompoundType = `
 
 module.exports = {
     geneCompoundTissueType,
+    geneCompoundDatasetType,
     geneCompoundType
 };

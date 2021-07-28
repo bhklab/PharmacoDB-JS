@@ -65,17 +65,17 @@ const formatSynonymData = (data) => {
   return null;
 };
 
-/**
- * Format data for link table
- * @param data link data from the gene API
- */
-const formatLinkData = (data) => {
-  if (data) {
-    const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
-    return formatTableLinks(data.name, link);
-  }
-  return null;
-};
+  /**
+   * Format data for link table
+   * @param data link data from the gene API
+   */
+  const formatLinkData = (data) => {
+    if (data) {
+      const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
+      return formatTableLinks(data.name, link);
+    }
+    return null;
+  };
 
 /**
  * Parent component for the individual gene page.
@@ -124,7 +124,7 @@ const IndivGenes = (props) => {
     onError: () => {
         setGene({...gene, error: true});
     }
-});
+  });
 
   /**
    * 
@@ -175,9 +175,9 @@ const IndivGenes = (props) => {
                   }
                   {
                     display === 'plots' &&
-                    <Element>
+                    <Element className='section'>
                       <div className='section-title'>Plots</div>
-                      {/* <PlotSection gene={gene.data} /> */}
+                      <PlotSection gene={gene.data} />
                     </Element>
                   }
                   {
