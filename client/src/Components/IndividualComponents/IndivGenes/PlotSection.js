@@ -45,10 +45,9 @@ const generateCountPlotData = (experiments) => {
  */
 const PlotSection = (props) => {
   const { gene } = props;
-  const { id, name } = gene;
 
   const { loading, error, data } = useQuery(getSingleGeneExperimentsQuery, {
-    variables: { geneId: id },
+    variables: { geneId: gene.id },
   });
   const geneDatasets = data ? data.gene_drugs : [];
   const geneInDatasets = useMemo(() => generateCountPlotData(geneDatasets), [geneDatasets]);
