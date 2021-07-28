@@ -247,14 +247,6 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
         const tissues = await query;
         // return the transformed data.
         return transformTissues(tissues);
-        // return tissues.map(({ id, name, dataset_id, dataset_name }) => ({
-        //     id,
-        //     name,
-        //     dataset: {
-        //         id: dataset_id,
-        //         name: dataset_name,
-        //     }
-        // }));
     } catch (err) {
         console.log(err);
         throw err;
