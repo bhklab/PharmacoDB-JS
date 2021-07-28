@@ -12,13 +12,12 @@ const compoundQueries = require('../queries/compound_queries');
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {
-
     // test for all compound route. Checks Compound Graphql type
-    it('Returns "id" and "name" properties of all compounds in the database', function(done) {
+    it('Returns "id" and "name" properties of all compounds in the database', function (done) {
         this.timeout(10000);
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundsKeysTestQuery })
+            .send({ query: compoundQueries.multipleCompoundsTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -26,7 +25,7 @@ const test = (server) => {
                 // expects to see an array of at least 500
                 expect(compounds).to.be.an('array').that.have.lengthOf.at.least(500);
                 // checks individual compounds in the list
-                compounds.every(compound => {
+                compounds.every((compound) => {
                     const { id, name, annotation } = compound;
                     expect(compound).to.have.all.keys('id', 'name', 'annotation');
                     expect(id).to.be.a('number');
@@ -39,10 +38,10 @@ const test = (server) => {
     });
 
     // test for all compound route. Checks SingleCompound Graphql type
-    it('Returns a compound object based on a compound ID input.', done => {
+    it('Returns a compound object based on a compound ID input.', (done) => {
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundKeysTestQuery })
+            .send({ query: compoundQueries.singleCompoundTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
@@ -52,11 +51,15 @@ const test = (server) => {
                 expect(compound).to.have.keys('compound', 'synonyms', 'targets');
 
                 // checks compound object of a SingleCompound type
-                expect(compound.compound).to.be.an('object').that.has.all.keys('id', 'name', 'annotation');
-                const {id, name, annotation } = compound.compound;
+                expect(compound.compound)
+                    .to.be.an('object')
+                    .that.has.all.keys('id', 'name', 'annotation');
+                const { id, name, annotation } = compound.compound;
                 expect(id).to.be.a('number');
                 expect(name).to.be.string;
-                expect(annotation).to.be.an('object').that.has.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
+                expect(annotation)
+                    .to.be.an('object')
+                    .that.has.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
                 const { smiles, inchikey, pubchem, fda_status } = annotation;
                 expect(smiles).to.be.string;
                 expect(inchikey).to.be.string;
@@ -67,7 +70,7 @@ const test = (server) => {
 
                 // checks the format of list of targets
                 expect(targets).to.be.an('array').that.have.lengthOf.above(0);
-                targets.every(target => {
+                targets.every((target) => {
                     expect(target).to.have.all.keys('id', 'name');
                     expect(target.id).to.be.a('number');
                     expect(target.name).to.be.string;
@@ -75,8 +78,10 @@ const test = (server) => {
 
                 // checks synonyms array
                 expect(synonyms).to.be.an('array').that.have.lengthOf.above(0);
-                synonyms.every(synonym => {
-                    expect(synonym).to.be.an('object').that.has.all.keys('name', 'source');
+                synonyms.every((synonym) => {
+                    expect(synonym)
+                        .to.be.an('object')
+                        .that.has.all.keys('name', 'source');
                     expect(synonym.name).to.be.string;
                     expect(synonym.source).to.be.an('array').that.has.lengthOf.above(0);
                 });
@@ -85,22 +90,21 @@ const test = (server) => {
             });
     });
 
-    it('Returns a compound object for paclitaxel.', done => {
+    it('Returns a compound object for paclitaxel.', (done) => {
         request(server)
             .post('/graphql')
-            .send({ query: compoundQueries.compoundQueryPaclitaxel })
+            .send({ query: compoundQueries.paclitaxelCompoundTestQuery })
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const compound = res.body.data.compound.compound;
-                expect(compound.id).to.equal(526);
-                expect(compound.name).to.equal('ML312');
+                expect(compound.id).to.equal(642);
+                expect(compound.name).to.equal('Paclitaxel');
                 return done();
             });
     });
-
 };
 
-module.exports= {
-    test
+module.exports = {
+    test,
 };

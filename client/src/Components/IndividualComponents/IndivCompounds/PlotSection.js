@@ -81,7 +81,7 @@ const PlotSection = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {
         display === 'barplots' ?
           loading ? <Loading />
@@ -133,7 +133,7 @@ const PlotSection = (props) => {
         :
         ''
       }
-    </>
+    </React.Fragment>
   );
 };
 
