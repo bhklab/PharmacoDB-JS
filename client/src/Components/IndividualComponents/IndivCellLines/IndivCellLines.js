@@ -17,15 +17,15 @@ import StyledWrapper from '../../../styles/utils';
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'datasetObj',
+        accessor: 'sources',
         Cell: (item) => {
-            let datasets = item.row.original.datasetObj;
+            let datasets = item.cell.row.original.source;
             return(datasets.map((obj, i) => (
                 obj.id? (
                     <span key={i}>
                         <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
                     </span>
-                ) :
+                    ) :
                     (<span key={i}>{obj.name}</span>)
                 )
             ));
@@ -50,33 +50,9 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        // define datasetId object to find id of sources
-        const datasetId = {};
-        data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
-        // collect source ids and initiate dataset objects to store sources
-        const tableData = []
-        for (let x of data.synonyms) {
-                const datasetObj = [];
-                for (let item of x.source){
-                    datasetObj.push({name:item, id:datasetId[item]});
-                }
-            tableData.push({name: x.name, datasetObj: datasetObj});
-            }
-        // merge sources with same synonyms
-        const returnList = [];
-        for (let x of tableData){
-            const index = returnList.findIndex((item) => item.name === x.name )
-            if (index === -1) {
-                returnList.push(x);
-            } else {
-                for (let source of x.datasetObj)
-                    returnList[index].datasetObj.push({name: source['name'], id: source['id']});
-            }
-        }
-        // add the used name of cell line in database
-        const pharmacoObj = { name: data.name, datasetObj: [{name: "PharmacoGx", id: ""}]};
-        returnList.push(pharmacoObj);
-        return returnList;
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
     }
     return null;
 };
@@ -172,8 +148,7 @@ const IndivCellLines = (props) => {
       </li>
   );
 
-  // formatted data for synonyms annotation table
-  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
+  // formatted data of diseases and links
   const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
   const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
@@ -204,7 +179,7 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={synonymColumns} data={synonymData} />
+                            <Table columns={SYNONYM_COLUMNS} data={synonymData} />
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>

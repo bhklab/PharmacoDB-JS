@@ -26,7 +26,10 @@ const singleCellTestQuery = `
             }
             synonyms {
                 name
-                source
+                source {
+                    id,
+                    name
+                }
             }
         }
     }
