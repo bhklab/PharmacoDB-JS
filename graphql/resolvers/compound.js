@@ -27,15 +27,16 @@ const transformSynonyms = data => {
     data.map((value, i) => {
         const {
             source_compound_name,
+            dataset_id,
             dataset_name
         } = value;
-        if (!i || !Object.keys(returnList).includes(source_compound_name)) {
+        if (!i || !Object.keys(returnList).includes(source_compound_name.trim())) {
             returnList[source_compound_name] = {
                 name: source_compound_name,
-                source: [dataset_name]
+                source: [{'id': dataset_id, 'name': dataset_name}]
             };
-        } else if (Object.keys(returnList).includes(source_compound_name)) {
-            returnList[source_compound_name]['source'].push(dataset_name);
+        } else if (Object.keys(returnList).includes(source_compound_name.trim())) {
+            returnList[source_compound_name.trim()]['source'].push({'id': dataset_id, 'name': dataset_name});
         }
     });
     return Object.values(returnList);
@@ -95,7 +96,6 @@ const datasetsQuery = async () => {
  * @param {Array} subtypes
  */
 const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
-    const datasets = await datasetsQuery();
     try {
         const transformedCompound = transformCompounds(compoundData);
         const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
@@ -107,7 +107,6 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,
             targets: targets['targets'],
-            datasets: datasets,
         };
         return output;
     } catch (err) {
@@ -127,6 +126,7 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
         .select('compound.id as compound_id',
             'compound.name as compound_name',
             'compound_synonym.compound_name as source_compound_name',
+            'dataset.id as dataset_id',
             'dataset.name as dataset_name')
         .from('compound')
         .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')

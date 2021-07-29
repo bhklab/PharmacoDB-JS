@@ -33,7 +33,10 @@ const singleCompoundTestQuery = `
             }
     		synonyms {
               name
-              source
+              source {
+                    id,
+                    name
+                }
             }
     		targets {
               id
