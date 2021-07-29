@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_compound';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
@@ -41,17 +42,17 @@ const TopDrugsTable = (props) => {
         {
             Header: `Compound`,
             accessor: 'compound',
-            Cell: (item) => <a href={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</a>
+            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</Link>
         },
         {
             Header: `Dataset`,
             accessor: 'dataset',
-            Cell: (item) => <a href={`/datasets/${item.cell.row.original.dataset_id}`}>{item.value}</a>
+            Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset_id}`}>{item.value}</Link>
         },
         {
             Header: `Tissue`,
             accessor: 'tissue',
-            Cell: (item) => <a href={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</a>
+            Cell: (item) => <Link to={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</Link>
         },
         {
             Header: `Stat`,
@@ -60,10 +61,12 @@ const TopDrugsTable = (props) => {
         {
             Header: `Standardized Coefficient`,
             accessor: 'standardized_coef',
+            Cell: (item) => item.value.toFixed(2)
         },
         {
             Header: `Nominal ANOVA p-value`,
             accessor: 'pvalue',
+            Cell: (item) => item.value.toExponential(2)
         }
     ];
 

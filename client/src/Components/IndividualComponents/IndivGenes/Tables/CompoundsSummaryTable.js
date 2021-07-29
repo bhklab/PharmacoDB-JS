@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
@@ -52,7 +53,7 @@ const CompoundsSummaryTable = (props) => {
             Header: `Compounds`,
             accessor: 'compound',
             center: true,
-            Cell: (item) => <a href={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</a>
+            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</Link>
         },
         {
             Header: `Datasets`,
@@ -64,7 +65,7 @@ const CompoundsSummaryTable = (props) => {
                 return(
                     datasets.map((item, i) => (
                         <span key={i}>
-                            <a href={`/datasets/${ids[i]}`}>{item}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                            <Link to={`/datasets/${ids[i]}`}>{item}</Link>{ i + 1 < datasets.length ? ', ' : ''}
                         </span>
                     ))
                 )
