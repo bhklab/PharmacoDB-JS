@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 // variable storing the gene compound fields.
 const geneCompound = `
     id
+    pvalue_analytic
     n
     gene {
         id
@@ -20,7 +21,7 @@ const geneCompound = `
  */
  const getGeneCompoundDatasetQuery = gql`
     query getGeneCompoundDataset($geneId: Int) {
-        gene_compound_dataset(geneId: $geneId) {
+        gene_compound_dataset(geneId: $geneId, all: true) {
             ${geneCompound}
             dataset {
                 id

@@ -11,7 +11,7 @@ const transformGeneCompounds = (data) => {
     return data.map(compound_compound => {
         const {
             gct_id, compound_id, estimate, lower, upper,
-            n, tstat, fstat, pvalue, df,
+            n, tstat, fstat, pvalue, pvalue_analytic, df,
             fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
             sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name,
             smiles, inchikey, pubchem, fda_status, tissue_id,
@@ -27,6 +27,7 @@ const transformGeneCompounds = (data) => {
             tstat,
             fstat,
             pvalue,
+            pvalue_analytic,
             df,
             fdr,
             FWER_gene,

@@ -34,6 +34,7 @@ const geneCompoundTissueType = `
 const geneCompoundDatasetType = `
     type GeneCompoundDataset {
        ${geneCompound}
+       pvalue_analytic: Float
        dataset: Dataset!
     }
 `;

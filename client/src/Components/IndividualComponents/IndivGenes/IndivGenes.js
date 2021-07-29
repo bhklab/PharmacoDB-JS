@@ -11,6 +11,7 @@ import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
+import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
 
 import {
   StyledIndivPage,
@@ -182,13 +183,14 @@ const IndivGenes = (props) => {
                   }
                   {
                     display === 'drugsSummary' &&
-                    <Element>
-                      <div className='section-title'>Drugs Summary</div>
+                    <Element className='section'>
+                      <div className='section-title'>Compounds Summary</div>
+                      <CompoundsSummaryTable gene={gene.data} />
                     </Element>
                   }
                   {
                     display === 'topDrugs' &&
-                    <Element>
+                    <Element className='section'>
                       <div className='section-title'>Top Drugs</div>
                     </Element>
                   }
