@@ -18,7 +18,10 @@ const singleTissueTestQuery = `
       name
       synonyms {
         name
-        source
+        source {
+          id
+          name
+        }
       }
       cell_count {
         dataset {

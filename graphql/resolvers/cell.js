@@ -67,7 +67,7 @@ const datasetsQuery = async () => {
  */
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
-const transformSingleCellLine = (data, datasets) => {
+const transformSingleCellLine = (data) => {
     let returnObject = {};
     const source_cell_name_list = [];
     data.forEach((row, i) => {
@@ -77,6 +77,7 @@ const transformSingleCellLine = (data, datasets) => {
             tissue_id,
             tissue_name,
             source_cell_name,
+            dataset_id,
             dataset_name,
             diseases,
             accessions
@@ -93,28 +94,26 @@ const transformSingleCellLine = (data, datasets) => {
             };
             returnObject['synonyms'] = [{
                 name: source_cell_name,
-                source: [dataset_name]
+                source: [{'id': dataset_id, 'name': dataset_name}]
             }];
-            if (!source_cell_name_list.includes(source_cell_name)) {
-                source_cell_name_list.push(source_cell_name);
-            }
+            source_cell_name_list.push(source_cell_name);
         } else {
             // for all other elements.
             if (!source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].push({
                     name: source_cell_name,
-                    source: [dataset_name]
+                    source: [{'id': dataset_id, 'name': dataset_name}]
                 });
+                source_cell_name_list.push(source_cell_name);
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push(dataset_name);
+                        returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
                     }
                 });
             }
         }
     });
-    returnObject['datasets'] = datasets;
     return returnObject;
 };
 
@@ -184,6 +183,7 @@ const cell_line = async args => {
                 'tissue.id as tissue_id',
                 'tissue.name as tissue_name',
                 'cell_synonym.cell_name as source_cell_name',
+                'dataset.id as dataset_id',
                 'dataset.name as dataset_name',
                 'cellosaurus.di as diseases',
                 'cellosaurus.accession as accessions')
@@ -199,9 +199,8 @@ const cell_line = async args => {
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);
         }
-        const datasets = await datasetsQuery();
         // return the transformed data.
-        return transformSingleCellLine(cell_line, datasets);
+        return transformSingleCellLine(cell_line);
     } catch (err) {
         console.log(err);
         return err;

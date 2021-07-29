@@ -18,15 +18,15 @@ import StyledWrapper from '../../../styles/utils';
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'datasetObj',
+        accessor: 'source',
         Cell: (item) => {
-            let datasets = item.row.original.datasetObj;
+            let datasets = item.cell.row.original.source;
+            console.log("@@@@",datasets);
             return(datasets.map((obj, i) => (
-                    obj.id? 
-                        (
+                    obj.id? (
                             <span key={i}>
-                                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-                            </span>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
                         ) :
                         (<span key={i}>{obj.name}</span>)
                 )
@@ -66,31 +66,9 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        // define datasetId object to find id of sources
-        const datasetId = {};
-        data.datasets.forEach((x) => { datasetId[x.name] = x.id ; })
-        // collect source ids and initiate dataset objects to store sources
-        const tableData = []
-        for (let x of data.synonyms) {
-            const datasetObj = [];
-            for (let item of x.source){
-                datasetObj.push({name:item, id:datasetId[item]});
-            }
-            tableData.push({name: x.name, datasetObj: datasetObj});
-        }
-        // merge sources with same synonyms
-        const returnList = [];
-        for (let x of tableData){
-            const index = returnList.findIndex((item) => item.name === x.name )
-            if (index === -1) {
-                returnList.push(x);
-            } else {
-                for (let source of x.datasetObj)
-                    returnList[index].datasetObj.push({name: source['name'], id: source['id']});
-            }
-        }
-        returnList.push({name:data.compound.name , datasetObj:[{name: "PharmacoGx", id: ""}]});
-        return returnList;
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.compound.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
     }
     return null;
 };
@@ -171,7 +149,7 @@ const IndivCompounds = (props) => {
     );
 
     /**
-     * 
+     *
      * @param {String} link
      */
     const createSideLink = (link, i) => (
@@ -211,7 +189,7 @@ const IndivCompounds = (props) => {
                                             <Element className="section" name="synonyms">
                                                 <div className='section-title'>Synonyms</div>
                                                 <Table
-                                                    columns={synonymColumns}
+                                                    columns={SYNONYM_COLUMNS}
                                                     data={synonymData}
                                                     disablePagination
                                                 />

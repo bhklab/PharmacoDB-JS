@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
+import Layout from '../../UtilComponents/Layout';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
@@ -95,9 +96,9 @@ const PlotSection = (props) => {
             ) : (
                 display === 'barPlot'?
                     loading ? <Loading /> :
-                    (
-                        <p>No data available to plot this cell line.</p>
-                    ):
+                        (
+                            <h6 align="center">No data is available to plot this cell line.</h6>
+                        ):
                     ''
             )}
         </React.Fragment>

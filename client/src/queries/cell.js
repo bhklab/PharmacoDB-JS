@@ -39,11 +39,10 @@ const getCellLineQuery = gql`
       }
       synonyms {
         name
-        source
-      }
-      datasets {
-        id
-        name
+        source {
+          id
+          name
+        }
       }
     }
   }
