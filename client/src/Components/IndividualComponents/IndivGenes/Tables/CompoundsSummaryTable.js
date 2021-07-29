@@ -7,7 +7,7 @@ import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
-const parseTableData = (data) => {
+const parseTableData = (data, gene) => {
     let tableData = {
         data: [],
         numCompounds: 0,
@@ -30,6 +30,8 @@ const parseTableData = (data) => {
                 datasets.push(dataset);
             }
             tableData.data.push({
+                gene_id: gene.id,
+                gene_name: gene.name,
                 compound_id: filtered[0].compound.id,
                 compound: filtered[0].compound.name,
                 datasets: datasets.map(item => item.name).join(', '),
@@ -81,7 +83,7 @@ const CompoundsSummaryTable = (props) => {
     const { loading } = useQuery(getGeneCompoundDatasetQuery, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
-            setTableData(parseTableData(data.gene_compound_dataset));
+            setTableData(parseTableData(data.gene_compound_dataset, gene));
         },
         onError: (err) => {
             console.log(err);

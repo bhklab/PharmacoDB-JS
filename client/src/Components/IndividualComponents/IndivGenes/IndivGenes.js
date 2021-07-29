@@ -12,6 +12,7 @@ import Error from '../../UtilComponents/Error';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
+import TopDrugsTable from './Tables/TopDrugsTable';
 
 import {
   StyledIndivPage,
@@ -192,6 +193,7 @@ const IndivGenes = (props) => {
                     display === 'topDrugs' &&
                     <Element className='section'>
                       <div className='section-title'>Top Drugs</div>
+                      <TopDrugsTable gene={gene.data} />
                     </Element>
                   }
                 </div>
