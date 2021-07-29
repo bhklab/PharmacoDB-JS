@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getDatasetCellLinesQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
+import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
@@ -47,15 +48,15 @@ const CellLineSummaryTable = (props) => {
                 loading ?
                 <Loading />
                 :
+                error ?
+                <Error message='this is a test message' />
+                :
                 <React.Fragment>
                     <div className='download-button'>
                         <DownloadButton label='CSV' data={cellLines} mode='csv' filename={`${dataset.name} - cell lines`} />
                     </div>
                     <Table columns={columns} data={cellLines} center={true} />
                 </React.Fragment>
-            }
-            {
-                error && <p>An error occurred</p>
             }
         </React.Fragment>
     );
