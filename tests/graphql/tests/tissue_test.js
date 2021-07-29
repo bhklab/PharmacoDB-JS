@@ -61,6 +61,12 @@ const test = (server) => {
                     expect(synonym).to.have.all.keys('name', 'source');
                     expect(synonym.name).to.be.string;
                     expect(synonym.source).to.be.an('array').that.have.lengthOf.above(0);
+                    // checks source array format
+                    synonym.source.every(source => {
+                        expect(source).to.have.all.keys('id', 'name');
+                        expect(source.id).to.be.a('number');
+                        expect(source.name).to.be.string;
+                    });
                 });
 
                 // checks cell_count array format

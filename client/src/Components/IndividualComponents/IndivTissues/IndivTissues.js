@@ -22,9 +22,12 @@ const ANNOTATION_COLUMNS = [
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
             return(datasets.map((obj, i) => (
+                obj.id? (
                     <span key={i}>
-                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-            </span>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                    ) :
+                    (<span key={i}>{obj.name}</span>)
                 )
             ));
         }
@@ -53,29 +56,10 @@ const formatName = (string) =>
  * @param {Array} data annotation data from the tissue API
  */
 const formatAnnotationData = (data) => {
-    if (data) {
-        console.log(data)
-        // join list of tissue source value into sources, split PascalCase names, and replace _ s
-        const jsources = data.map((x) => ({
-            name: formatName(x.name),
-            sources: x.source['name'],
-        }));
-        // merge tissue names that have same source
-        const output = [];
-        jsources.forEach((item) => {
-            const existing = output.filter((v) => v.sources === item.sources);
-            if (existing.length) {
-                const existingIndex = output.indexOf(existing[0]);
-                output[existingIndex].name = output[existingIndex].name.concat(item.name);
-            } else {
-                if (typeof item.name === 'string') item.name = [item.name];
-                output.push(item);
-            }
-        });
-        output.forEach(item => {
-            item.name = [...new Set(item.name)].join(', ');
-        })
-        return output;
+    if (data.synonyms) {
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
     }
     return null;
 };
@@ -135,7 +119,7 @@ const createSideLink = (link, i) => (
         </button>
     </li>
 );
-
+const synonymData = React.useMemo(() => formatAnnotationData(data), [data]);
   return (tissue.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -159,7 +143,7 @@ const createSideLink = (link, i) => (
                                 display === 'annotations' &&
                                 <Element className="section" name="annotations">
                                     <div className='section-title'>Annotations</div>
-                                    <Table columns={ANNOTATION_COLUMNS} data={data.synonyms} disablePagination />
+                                    <Table columns={ANNOTATION_COLUMNS} data={synonymData} disablePagination />
                                 </Element>
                             }
                             {
