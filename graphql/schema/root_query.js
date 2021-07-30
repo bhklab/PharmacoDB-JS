@@ -88,6 +88,8 @@ const RootQuery = `type RootQuery {
         Root Queries for gene_compound tables.
     """
     gene_compound_tissue(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundTissue!]!
+    gene_compound_dataset(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundDataset!]!
+    gene_compound_tissue_dataset(geneId: Int, compoundId: Int, tissueId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundTissueDataset!]!
 
 
     """
