@@ -7,18 +7,25 @@ const targetType = `
     }
 `;
 
+// const compoundTargetType = `
+//     type CompoundTarget {
+//         """compound id in the database"""
+//         compound_id: Int!
+//         """compound name in the database"""
+//         compound_name: String!
+//         """target object"""
+//         targets: [Target]
+//     }
+// `;
+
 const compoundTargetType = `
     type CompoundTarget {
-        """compound id in the database"""
         compound_id: Int!
-        """compound name in the database"""
-        compound_name: String!
-        """target object"""
-        targets: [Target]
+        target_id: Int!
     }
 `;
 
 module.exports = {
     targetType,
-    compoundTargetType
+    compoundTargetType,
 };

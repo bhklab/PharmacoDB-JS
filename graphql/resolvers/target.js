@@ -17,6 +17,8 @@ const targetQuery = async (compoundId, compoundName) => {
         return query.where('c.id', compoundId);
     } else if (compoundName) {
         return query.where('c.name', compoundName);
+    } else {
+        return query;
     }
 };
 
@@ -33,34 +35,58 @@ const targetQuery = async (compoundId, compoundName) => {
  * }
  */
 const compound_target = async (args) => {
-    const {
-        compoundId,
-        compoundName
-    } = args;
-    const returnObject = {};
-    const targets = await targetQuery(compoundId, compoundName);
-
-    targets.forEach((target, i) => {
+    try {
         const {
-            target_id,
-            target_name,
-            compound_name,
-            compound_id
-        } = target;
-        if (!i) {
-            returnObject['compound_id'] = compound_id;
-            returnObject['compound_name'] = compound_name;
-            returnObject['targets'] = [];
-        }
-        returnObject['targets'].push({
-            id: target_id,
-            name: target_name
+            compoundId,
+            compoundName
+        } = args;
+        const returnObject = {};
+        const targets = await targetQuery(compoundId, compoundName);
+    
+        targets.forEach((target, i) => {
+            const {
+                target_id,
+                target_name,
+                compound_name,
+                compound_id
+            } = target;
+            if (!i) {
+                returnObject['compound_id'] = compound_id;
+                returnObject['compound_name'] = compound_name;
+                returnObject['targets'] = [];
+            }
+            returnObject['targets'].push({
+                id: target_id,
+                name: target_name
+            });
         });
-    });
-    return returnObject;
+        return returnObject;
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+
 };
 
+const compound_targets = async (args) => {
+    try {
+        const query = knex.select('compound_id', 'target_id').from('compound_target');
+        const compoundTargets = await query;
+        let data = [];
+        compoundTargets.forEach(target => {
+            data.push({
+                compound_id: target.compound_id,
+                target_id: target.target_id
+            });
+        });
+        return data;
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 module.exports = {
-    compound_target
+    compound_target,
+    compound_targets
 };
