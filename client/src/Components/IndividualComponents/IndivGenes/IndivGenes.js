@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
@@ -128,6 +128,10 @@ const IndivGenes = (props) => {
     }
   });
 
+  useEffect(() => {
+    console.log(gene);
+  }, [gene]);
+
   /**
    * 
    * @param {String} link 
@@ -141,7 +145,7 @@ const IndivGenes = (props) => {
   );
 
   return (
-    <Layout page={gene.data.name}>
+    <Layout page={gene.loaded ? gene.data.annotation.symbol : ''}>
       <StyledWrapper>
         {
           loading ? <Loading />
@@ -150,15 +154,18 @@ const IndivGenes = (props) => {
           :
           gene.error ? <Error />
           :
+          gene.loaded &&
           <StyledIndivPage className="indiv-genes">
             <div className='heading'>
-              <span className='title'>{gene.data.name}</span>
+              <span className='title'>{gene.data.annotation.symbol}</span>
               <span className='attributes'>
               </span>
             </div>
             <div className='wrapper'>
               <StyledSidebarList>
-                {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                {
+                  SIDE_LINKS.map((link, i) => createSideLink(link, i))
+                }
               </StyledSidebarList>
               <div className="container">
                 <div className="content">

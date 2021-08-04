@@ -91,10 +91,11 @@ const TopDrugsTable = (props) => {
                 :
                 error ? <Error />
                 :
+                tableData.length > 0 &&
                 <React.Fragment>
                     <h4>
                         <p align="center">
-                            { `Top compounds associated with response to ${gene.name}` }
+                            { `Top compounds associated with response to ${gene.annotation.symbol}` }
                         </p>
                     </h4>
                     <div className='download-button'>
@@ -102,7 +103,7 @@ const TopDrugsTable = (props) => {
                             label='CSV' 
                             data={tableData} 
                             mode='csv' 
-                            filename={`${gene.name} - top compounds`} 
+                            filename={`${gene.annotation.symbol} - top compounds`} 
                         />
                     </div>
                     <Table columns={columns} data={tableData} />
