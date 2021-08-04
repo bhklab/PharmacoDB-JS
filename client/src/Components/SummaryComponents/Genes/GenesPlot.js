@@ -41,17 +41,10 @@ const GenesPlot = () => {
     const [error, setError] = useState(false);
 
     const parsePlotData = (data) => {
-        let compounds = data.map(item => item.compound_id);
-        compounds = [...new Set(compounds)];
-        let compoundTargets = [];
-        for(let compound of compounds){
-            let filtered = data.filter(item => item.compound_id === compound);
-            compoundTargets.push({
-                compoundId: compound,
-                numTargets: filtered.length
-            });
-        }
-
+        let compoundTargets = data.map(item => ({
+            compound_id: item.compound_id,
+            numTargets: item.targets.length
+        }));
         let targetNums = compoundTargets.map(item => item.numTargets);
         targetNums = [...new Set(targetNums)];       
         let parsed = [];

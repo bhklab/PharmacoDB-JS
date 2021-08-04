@@ -45,7 +45,9 @@ const getCompoundTargetsQuery = gql`
     query getCompoundTargets {
         compound_targets {
             compound_id
-            target_id
+            targets {
+                id
+            }
         }
     }
 `;

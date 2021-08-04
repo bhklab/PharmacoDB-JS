@@ -70,15 +70,25 @@ const compound_target = async (args) => {
 
 const compound_targets = async (args) => {
     try {
-        const query = knex.select('compound_id', 'target_id').from('compound_target');
+        const query = knex.select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 't.name as target_name')
+            .from('compound_target as ct')
+            .join('target as t', 't.id', 'ct.target_id')
+            .join('compound as c', 'c.id', 'ct.compound_id');
         const compoundTargets = await query;
         let data = [];
-        compoundTargets.forEach(target => {
+        let compoundIds = compoundTargets.map(item => item.compound_id);
+        compoundIds = [...new Set(compoundIds)];
+        for(let compoundId of compoundIds){
+            let filtered = compoundTargets.filter(item => item.compound_id === compoundId);
             data.push({
-                compound_id: target.compound_id,
-                target_id: target.target_id
+                compound_id: compoundId,
+                compound_name: filtered[0].compound_name,
+                targets: filtered.map(item => ({
+                    id: item.target_id,
+                    name: item.target_name
+                }))
             });
-        });
+        }
         return data;
     } catch(err) {
         console.log(err);
