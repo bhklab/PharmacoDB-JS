@@ -128,10 +128,6 @@ const IndivGenes = (props) => {
     }
   });
 
-  useEffect(() => {
-    console.log(gene);
-  }, [gene]);
-
   /**
    * 
    * @param {String} link 
