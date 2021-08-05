@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
 
     h1, h2, h3, h4 {
         color: ${colors.dark_teal_heading};
-        font-family: 'Roboto Slab', serif;
+        font-family: Raleway, sans-serif;
         text-align: center;
     }
 

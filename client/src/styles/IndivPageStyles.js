@@ -11,9 +11,12 @@ const StyledIndivPage = styled.div`
     align-items: center;
     color: ${colors.dark_teal_heading};
     .title {
+      color: ${colors.dark_pink_highlight};
       font-size: clamp(32px, calc(2vw + 10px), 44px);
       font-weight: bold;
       margin-left: 20%;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
     .attributes {
       .value {
