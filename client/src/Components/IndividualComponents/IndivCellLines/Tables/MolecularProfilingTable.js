@@ -1,6 +1,4 @@
-/* eslint-disable radix */
-/* eslint-disable no-nested-ternary */
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getMolCellQuery } from '../../../../queries/mol';
@@ -15,6 +13,7 @@ import { Link } from 'react-router-dom';
  * available on the database for a given cellLine
  */
 const generateTableData = (data) => {
+    let tableData = { ready: false, molProf: []};
     const dataObject = {}
     if (data && data.length>0) {
         data.forEach((x) => {
@@ -32,10 +31,13 @@ const generateTableData = (data) => {
                 dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g, "").toLowerCase()] = x['num_prof'];
             }
         )}
-    const tableData = []
+    const molProf = [];
     for (const [key, value] of Object.entries(dataObject)) {
-        tableData.push({id: key, dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })
+        molProf.push({id: key, dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })
     }
+    tableData.molProf = molProf;
+    tableData.ready = true;
+    console.log(tableData)
     return tableData;
 }
 
@@ -74,20 +76,43 @@ const COLUMNS = (data) => {
  */
 const MolecularProfilingTable = (props) => {
     const { cellLine } = props;
-    const { loading, error, data } = useQuery(getMolCellQuery, {
-        variables: { cellLineId: cellLine.id}
-    });
+    const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
+    const [error, setError] = useState(false);
 
+    const { loading, data } = useQuery(getMolCellQuery, {
+        variables: { cellLineId: cellLine.id},
+        onCompleted: (data) => {
+            console.log(data);
+            let parsed = generateTableData(data["mol_cell"]);
+            setTableData(parsed);
+        },
+        onError: (err) => {
+            setError(true);
+        }
+    });
     return(
         <React.Fragment>
             {
-                loading ?
-                    <Loading />
-                    :
-                    <Table columns={COLUMNS(data["mol_cell"])} data={generateTableData(data["mol_cell"])} center={true} />
+                error && <p>An error occurred</p>
             }
             {
-                error && <p>An error occurred</p>
+                loading || !tableData.ready ? <Loading />
+                    :
+                    <React.Fragment>
+                        <h4>
+                            <p align="center">
+                                { `Available Molecular Profiling in PharmacoGx` }
+                            </p>
+                        </h4>
+                        <p align="center">
+                            { `# of profiles of each type per dataset` }
+                        </p>
+                        {
+                            tableData.molProf.length?
+                                <Table columns={COLUMNS(data["mol_cell"])} data={tableData.molProf} center={true} />
+                                :''
+                        }
+                    </React.Fragment>
             }
         </React.Fragment>
     );
