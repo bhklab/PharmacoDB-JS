@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { getSingleTissueExperimentsQuery } from '../../../queries/experiments';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
+import Error from '../../UtilComponents/Error';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 
@@ -66,41 +67,35 @@ const PlotSection = (props) => {
     const tissuesData = data ? data.experiments : [];
     const [compoundsData, cellLinesData] = useMemo(() => generateCountPlotData(tissuesData), [tissuesData]);
 
-    if (error) {
-        return <p> Error! </p>;
-    }
-
     return (
         <>
-            {id ? (
-                <>
-                    {
-                        loading ? <Loading />
-                        :
-                        <PlotsWrapper>
-                            <DatasetHorizontalPlot
-                                data={cellLinesData}
-                                xaxis="# of cell lines"
-                                title={`Number of cell lines of ${name
-                                    .replaceAll(/_/g, ' ')
-                                    .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
-                            />
-                            <DatasetHorizontalPlot
-                                data={compoundsData}
-                                xaxis="# of compounds"
-                                title={`Number of compounds tested with ${name
-                                    .replaceAll(/_/g, ' ')
-                                    .replace(
-                                        /([A-Z][a-z])/g,
-                                        ' $1'
-                                    )} cell lines (per dataset)`}
-                            />
-                        </PlotsWrapper>
-                    }
-                </>
-            ) : (
-                <p> No data is available for plotting this tissue. </p>
-            )}
+            {
+                loading ? <Loading />
+                :
+                error ? <Error />
+                :
+                <PlotsWrapper>
+                    <DatasetHorizontalPlot
+                        plotId={`${name}CellLines`}
+                        data={cellLinesData}
+                        xaxis="# of cell lines"
+                        title={`Number of cell lines of ${name
+                            .replaceAll(/_/g, ' ')
+                            .replace(/([A-Z][a-z])/g, ' $1')} (per dataset)`}
+                    />
+                    <DatasetHorizontalPlot
+                        plotId={`${name}Compounds`}
+                        data={compoundsData}
+                        xaxis="# of compounds"
+                        title={`Number of compounds tested with ${name
+                            .replaceAll(/_/g, ' ')
+                            .replace(
+                                /([A-Z][a-z])/g,
+                                ' $1'
+                            )} cell lines (per dataset)`}
+                    />
+                </PlotsWrapper>
+            }
         </>
     );
 };

@@ -20,5 +20,5 @@ const compoundTargetType = `
 
 module.exports = {
     targetType,
-    compoundTargetType
+    compoundTargetType,
 };

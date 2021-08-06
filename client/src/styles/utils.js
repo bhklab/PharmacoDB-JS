@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
     width: 85%;
 
     & > * {
-        width: 80%;
+        width: 85%;
 
         @media only screen and (max-width: 1081px) { 
             width: 85%;
@@ -19,7 +19,7 @@ const StyledWrapper = styled.div`
 
     h1, h2, h3, h4 {
         color: ${colors.dark_teal_heading};
-        font-family: 'Roboto Slab', serif;
+        font-family: Raleway, sans-serif;
         text-align: center;
     }
 

@@ -12,6 +12,7 @@ const getGenesQuery = gql`
             name
             annotation {
                 gene_id
+                symbol
                 gene_seq_start
                 gene_seq_end
             }
@@ -40,4 +41,19 @@ const getGeneQuery = gql`
     }
 `;
 
-export { getGenesQuery, getGeneQuery };
+const getCompoundTargetsQuery = gql`
+    query getCompoundTargets {
+        compound_targets {
+            compound_id
+            targets {
+                id
+            }
+        }
+    }
+`;
+
+export { 
+    getGenesQuery, 
+    getGeneQuery, 
+    getCompoundTargetsQuery 
+};

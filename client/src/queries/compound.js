@@ -41,7 +41,10 @@ const getCompoundQuery = gql`
       }
       synonyms {
         name
-        source
+        source {
+          id
+          name
+        }
       }
       targets {
         id

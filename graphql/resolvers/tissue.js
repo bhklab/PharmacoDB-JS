@@ -79,6 +79,7 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
             .select('tissue.id as tissue_id',
                 'tissue.name as tissue_name',
                 'tissue_synonym.tissue_name as source_tissue_name',
+                'dataset.id as dataset_id',
                 'dataset.name as dataset_name')
             .from('tissue')
             .leftJoin('tissue_synonym', 'tissue.id', 'tissue_synonym.tissue_id')
@@ -97,6 +98,46 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
 };
 
 /**
+ * Returns a transformed array of objects.
+ * @param {Array} data
+ * @returns {Array} - transformed array of objects.
+ */
+const transformTissues = data => {
+    // object to store the final result.
+    const finalData = {};
+    // preparing the transformed data.
+    data.forEach(tissue => {
+        const {
+            id,
+            name,
+            dataset_id,
+            dataset_name,
+        } = tissue;
+
+        if (finalData[id]) {
+            const isPresent = finalData[id]['dataset'].filter(el => el.name === dataset_name);
+            if (isPresent.length === 0) {
+                finalData[id]['dataset'].push({
+                    id: dataset_id,
+                    name: dataset_name,
+                });
+            }
+        } else {
+            finalData[id] = {
+                id: id,
+                name: name,
+                dataset: [{
+                    id: dataset_id,
+                    name: dataset_name,
+                }]
+            };
+        }
+    });
+    // return the final data.
+    return Object.values(finalData);
+};
+
+/**
  *
  * @param {Array} tissue
  * @param {Array} cell_count
@@ -111,7 +152,6 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         name: 'empty',
         synonyms: []
     };
-
     const source_tissue_name_list = [];
     // looping through each data point.
     tissue.forEach((row, i) => {
@@ -120,10 +160,10 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
             returnObject.name = row.tissue_name;
             return returnObject;
         }
-
         const {
             tissue_id,
             tissue_name,
+            dataset_id,
             dataset_name
         } = row;
         let {
@@ -138,7 +178,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
             returnObject['name'] = tissue_name;
             returnObject['synonyms'].push({
                 name: source_tissue_name,
-                source: [dataset_name]
+                source: [{'id': dataset_id, 'name': dataset_name}]
             });
             returnObject['cell_count'] = cell_count.map(value => {
                 return {
@@ -158,20 +198,19 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
                     count: value.total
                 };
             });
-            if (!source_tissue_name_list.includes(source_tissue_name)) {
-                source_tissue_name_list.push(source_tissue_name);
-            }
+            source_tissue_name_list.push(source_tissue_name);
         } else {
             // for all other elements.
             if (!source_tissue_name_list.includes(source_tissue_name)) {
                 returnObject['synonyms'].push({
                     name: source_tissue_name,
-                    source: [dataset_name]
+                    source: [{'id': dataset_id, 'name': dataset_name}]
                 });
+                source_tissue_name_list.push(source_tissue_name);
             } else if (source_tissue_name_list.includes(source_tissue_name)) {
-                returnObject['synonyms'].forEach((val, i) => {
+                returnObject['synonyms'].forEach((val, index) => {
                     if (val['name'] === source_tissue_name) {
-                        returnObject['synonyms'][i]['source'].push(dataset_name);
+                        returnObject['synonyms'][index]['source'].push({'id': dataset_id, 'name': dataset_name});
                     }
                 });
             }
@@ -204,15 +243,8 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
         }
         // awaits for the query.
         const tissues = await query;
-        // returns the transformed object.
-        return tissues.map(({ id, name, dataset_id, dataset_name }) => ({
-            id,
-            name,
-            dataset: {
-                id: dataset_id,
-                name: dataset_name,
-            }
-        }));
+        // return the transformed data.
+        return transformTissues(tissues);
     } catch (err) {
         console.log(err);
         throw err;

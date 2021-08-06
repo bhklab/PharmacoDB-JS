@@ -2,15 +2,15 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
+import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
+import MolecularProfilingTable from './Tables/MolecularProfilingTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -18,6 +18,18 @@ const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
         accessor: 'sources',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.source;
+            return(datasets.map((obj, i) => (
+                obj.id? (
+                    <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                    ) :
+                    (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -28,7 +40,6 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
-  {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -38,11 +49,10 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the cell line API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', '),
-        }));
+    if (data.synonyms) {
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
     }
     return null;
 };
@@ -103,18 +113,15 @@ const IndivCellLines = (props) => {
     const {
         match: { params },
     } = props;
-
     // query to get the data for the single cell line.
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
         variables: { cellId: parseInt(params.id) },
     });
-
     // load data from query into state
     const [cellLine, setCellLine] = useState({
         data: {},
         loaded: false,
     });
-
     // A section to display on the page
     const [display, setDisplay] = useState('data');
 
@@ -130,10 +137,8 @@ const IndivCellLines = (props) => {
 
     // destructuring the cellLine object.
     const { data } = cellLine;
-
   /**
-   * 
-   * @param {String} link 
+   * @param {String} link
    */
   const createSideLink = (link, i) => (
       <li key={i} className={display === link.name ? 'selected': undefined}>
@@ -143,9 +148,8 @@ const IndivCellLines = (props) => {
       </li>
   );
 
-  // formatted data for synonyms annotation table
-  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [data.synonyms]);
+  // formatted data of diseases and links
+  const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
   const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
   return (cellLine.loaded ? (
@@ -158,7 +162,7 @@ const IndivCellLines = (props) => {
                 <div className='heading'>
                     <span className='title'>{data.name}</span>
                     <span className='attributes'>
-                        Tissue Type:  
+                        Tissue Type:
                         <span className='value highlight'>
                           {data.tissue.name}
                         </span>
@@ -175,7 +179,7 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                            <Table columns={SYNONYM_COLUMNS} data={synonymData} />
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
@@ -191,24 +195,26 @@ const IndivCellLines = (props) => {
                           </Element>
                         </React.Fragment>
                       }
-                      <Element>
-                        <PlotSection 
-                          display={display}
-                          cellLine={({ id: data.id, name: data.name })} 
-                        />
-                      </Element>
+                      {
+                        display === 'barPlot' &&
+                        <Element>
+                            <PlotSection
+                                display={display}
+                                cellLine={({id: data.id, name: data.name})}
+                            />
+                        </Element>
+                      }
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
-                          <div className='section-title'>Drugs Summary</div>
-                          <TableSection cellLine={({ id: data.id, name: data.name })} />
+                          <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name, display })} />
                         </Element>
                       }
                       {
                         display === 'molecularProfiling' &&
                         <Element className="section">
                           <div className='section-title'>Molecular Profiling</div>
-                          {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
+                            <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }
                     </div>

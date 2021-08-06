@@ -5,14 +5,16 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getDatasetCellLinesQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
+import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
+import DownloadButton from '../../../UtilComponents/DownloadButton';
 
-const parseTableData = (data, datasetId) => {
+const parseTableData = (datasetName, data, datasetId) => {
     console.log(data);
     let cellLines = []
     if (data && typeof data !== 'undefined') {
         let cells = data.dataset.find(item => item.id === datasetId).cells_tested;
-        cellLines = cells.map(item => ({cellLine: item.name, id: item.id}));
+        cellLines = cells.map(item => ({dataset: datasetName, id: item.id, cellLine: item.name}));
     }
     return cellLines;
 }
@@ -35,7 +37,7 @@ const CellLineSummaryTable = (props) => {
         variables: { datasetId: dataset.id },
         fetchPolicy: "network-only",
         onCompleted: (data) => {
-            setCellLines(parseTableData(data, dataset.id));
+            setCellLines(parseTableData(dataset.name, data, dataset.id));
         },
         onError: () => {setError(true)}
     });
@@ -46,10 +48,15 @@ const CellLineSummaryTable = (props) => {
                 loading ?
                 <Loading />
                 :
-                <Table columns={columns} data={cellLines} center={true} />
-            }
-            {
-                error && <p>An error occurred</p>
+                error ?
+                <Error message='this is a test message' />
+                :
+                <React.Fragment>
+                    <div className='download-button'>
+                        <DownloadButton label='CSV' data={cellLines} mode='csv' filename={`${dataset.name} - cell lines`} />
+                    </div>
+                    <Table columns={columns} data={cellLines} center={true} />
+                </React.Fragment>
             }
         </React.Fragment>
     );

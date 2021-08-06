@@ -129,6 +129,7 @@ const getSingleTissueCompoundsQuery = gql`
   }
 `;
 
+// ToDO: gene drugs graphql request end point is not available.
 const getSingleGeneExperimentsQuery = gql`
   query getSingleGeneExperiments($geneId: Int!) {
     gene_drugs(geneId: $geneId, all: true) {

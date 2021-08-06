@@ -9,17 +9,28 @@ import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-
-import {
-    StyledIndivPage,
-    StyledSidebarList
-} from '../../../styles/IndivPageStyles';
+import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
+import TissuesSummaryTable from './Tables/TissuesSummaryTable'
+import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
+import {StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
-        accessor: 'sources',
+        accessor: 'source',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.source;
+            return(datasets.map((obj, i) => (
+                    obj.id? (
+                            <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                        ) :
+                        (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -40,22 +51,23 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
-    {label: 'Anotated Targets', name: 'targets'},
     {label: 'Bar Plots', name: 'barplots'},
     {label: 'AAC (Cell Lines)', name: 'aacCells'},
     {label: 'AAC (Tissues)', name: 'aacTissues'},
+    {label: 'Cell Line Summary', name: 'cellSummary'},
+    {label: 'Tissue Summary', name: 'tissueSummary'},
+    {label: 'Molecular Features', name: 'molFeature'},
 ];
 
 /**
  * Format data for the synonyms table
- * @param {Array} data synonym data from the compound API
+ * @param {Array} data synonym data from the experiment API
  */
 const formatSynonymData = (data) => {
-    if (data) {
-        return data.map((x) => ({
-            name: x.name,
-            sources: x.source.join(', '),
-        }));
+    if (data.synonyms) {
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.compound.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
     }
     return null;
 };
@@ -68,20 +80,15 @@ const formatAnnotationData = (data) => {
     const modifiedData = [];
     if (data) {
         const { annotation } = data;
-        modifiedData.push(
-            {
-                db: 'SMILES',
-                identifier: annotation.smiles,
-            },
-            {
-                db: 'InChiKey',
-                identifier: annotation.inchikey,
-            },
-            {
-                db: 'PubChem ID',
-                identifier: annotation.pubchem,
-            }
-        );
+        if (annotation.smiles) {
+            modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, });
+        }
+        if (annotation.inchikey) {
+            modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
+        }
+        if (annotation.pubchem) {
+            modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, });
+        }
     }
     return modifiedData;
 };
@@ -101,8 +108,6 @@ const IndivCompounds = (props) => {
     const {
         match: { params },
     } = props;
-    // const compoundId = parseInt(params.id);
-
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
         variables: { compoundId: parseInt(params.id) },
@@ -113,7 +118,6 @@ const IndivCompounds = (props) => {
         data: {},
         loaded: false,
     });
-
     // A section to display on the page
     const [display, setDisplay] = useState('synonyms');
 
@@ -132,7 +136,7 @@ const IndivCompounds = (props) => {
 
     // formatted data for synonyms annotation table
     const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-    const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [
+    const synonymData = React.useMemo(() => formatSynonymData(data), [
         data.synonyms,
     ]);
 
@@ -144,8 +148,8 @@ const IndivCompounds = (props) => {
     );
 
     /**
-     * 
-     * @param {String} link 
+     *
+     * @param {String} link
      */
     const createSideLink = (link, i) => (
         <li key={i} className={display === link.name ? 'selected': undefined}>
@@ -154,7 +158,6 @@ const IndivCompounds = (props) => {
             </button>
         </li>
     );
-
     return compound.loaded ? (
         <Layout page={data.compound.name}>
             <StyledWrapper>
@@ -167,7 +170,7 @@ const IndivCompounds = (props) => {
                         <div className='heading'>
                             <span className='title'>{data.compound.name}</span>
                             <span className='attributes'>
-                                FDA Approval Status:  
+                                FDA Approval Status:
                                 <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
                                     {data.compound.annotation.fda_status}
                                 </span>
@@ -185,22 +188,26 @@ const IndivCompounds = (props) => {
                                             <Element className="section" name="synonyms">
                                                 <div className='section-title'>Synonyms</div>
                                                 <Table
-                                                    columns={synonymColumns}
+                                                    columns={SYNONYM_COLUMNS}
                                                     data={synonymData}
                                                     disablePagination
                                                 />
                                             </Element>
-                                            <Element
-                                                className="section"
-                                                name="external_ids"
-                                            >
-                                                <div className='section-title'>External IDs</div>
-                                                <Table
-                                                    columns={annotationColumns}
-                                                    data={annotationData}
-                                                    disablePagination
-                                                />
-                                            </Element>
+                                            {
+                                                annotationData.length > 0 ?
+                                                    <Element
+                                                        className="section"
+                                                        name="external_ids"
+                                                    >
+                                                        <div className='section-title'>External IDs</div>
+                                                        <Table
+                                                            columns={annotationColumns}
+                                                            data={annotationData}
+                                                            disablePagination
+                                                        />
+                                                    </Element> :
+                                                    ''
+                                            }
                                         </React.Fragment>
                                     }
                                     {
@@ -225,6 +232,27 @@ const IndivCompounds = (props) => {
                                             }}
                                         />
                                     </Element>
+                                    {
+                                        display === 'cellSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Cell Line Summary</div>
+                                            <CellLinesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'tissueSummary' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Tissue Summary</div>
+                                            <TissuesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
+                                    {
+                                        display === 'molFeature' &&
+                                        <Element className="section">
+                                            <div className='section-title'>Molecular Features</div>
+                                            <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })}/>
+                                        </Element>
+                                    }
                                 </div>
                             </div>
                         </div>

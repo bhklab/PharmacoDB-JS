@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { getCompoundsQuery } from '../../queries/compound';
 import { getTissuesQuery } from '../../queries/tissue';
 import { getCellLinesQuery } from '../../queries/cell';
+import { getDatasetsQuery } from '../../queries/dataset';
 import MenuList from './MenuList';
 
 import colors from '../../styles/colors';
@@ -88,11 +89,13 @@ const SearchBar = (props) => {
     compounds: [],
     tissues: [],
     cell_lines: [],
+    datasets: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
     compounds: false,
     tissues: false,
     cell_lines: false,
+    datasets: false,
   });
 
   // various states for select:
@@ -185,6 +188,7 @@ const SearchBar = (props) => {
   const compoundsData = useQuery(getCompoundsQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
   const cellsData = useQuery(getCellLinesQuery).data;
+  const datasetsData = useQuery(getDatasetsQuery).data;
 
   /**
    * Load data in
@@ -195,13 +199,15 @@ const SearchBar = (props) => {
       compounds: compoundsData ? compoundsData.compounds : [],
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
+      datasets: datasetsData ? datasetsData.datasets : [],
     });
     setDataLoaded({
       compounds: !!compoundsData,
       tissues: !!tissuesData,
       cell_lines: !!cellsData,
+      datasets: !!datasetsData,
     });
-  }, [compoundsData, tissuesData, cellsData]);
+  }, [compoundsData, tissuesData, cellsData, datasetsData]);
 
   useEffect(() => {
     // if all values of loaded are true

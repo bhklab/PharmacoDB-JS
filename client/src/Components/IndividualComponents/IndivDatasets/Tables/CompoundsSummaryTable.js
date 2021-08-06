@@ -1,16 +1,18 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getDatasetCompoundQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
+import Error from '../../../UtilComponents/Error';
+import DownloadButton from '../../../UtilComponents/DownloadButton';
 
-const parseTableData = (data, datasetId) => {
+const parseTableData = (data, datasetId, datasetName) => {
     if (typeof data !== 'undefined') {
         let compounds = data.dataset.find(item => item.id === datasetId).compounds_tested;
-        return compounds.map(item => ({compound: item.name, id: item.id}));
+        return compounds.map(item => ({dataset: datasetName, id: item.id, compound: item.name}));
     }
     return [];
 }
@@ -34,7 +36,7 @@ const CompoundsSummaryTable = (props) => {
         fetchPolicy: "network-only",
         onCompleted: (data) => {
             console.log(data);
-            setCompounds(parseTableData(data, dataset.id));
+            setCompounds(parseTableData(data, dataset.id, dataset.name));
         },
         onError: () => {setError(true)}
     });
@@ -42,13 +44,16 @@ const CompoundsSummaryTable = (props) => {
     return(
         <React.Fragment>
             {
-                loading ?
-                <Loading />
+                loading ? <Loading />
                 :
-                <Table columns={columns} data={compounds} />
-            }
-            {
-                error && <p>An error occurred</p>
+                error ? <Error />
+                :
+                <React.Fragment>
+                    <div className='download-button'>
+                        <DownloadButton label='CSV' data={compounds} mode='csv' filename={`${dataset.name} - compounds`} />
+                    </div>
+                    <Table columns={columns} data={compounds} />
+                </React.Fragment>
             }
         </React.Fragment>
     );

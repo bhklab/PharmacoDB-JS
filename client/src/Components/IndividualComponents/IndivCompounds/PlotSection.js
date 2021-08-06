@@ -81,18 +81,20 @@ const PlotSection = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {
         display === 'barplots' ?
           loading ? <Loading />
           :
           <PlotsWrapper>
             <DatasetHorizontalPlot
+              plotId={`${name}CellLines`}
               data={cellLinesData}
               xaxis="# of cell lines"
               title={`Number of cell lines tested with ${name} (per dataset)`}
             />
             <DatasetHorizontalPlot
+              plotId={`${name}Tissues`}
               data={tissuesData}
               xaxis="# of tissues"
               title={`Number of tissues tested with ${name} (per dataset)`}
@@ -105,12 +107,16 @@ const PlotSection = (props) => {
         display === 'aacCells' ?
           loading ? <Loading />
           :
-          <ProfileCellLine
-            compound={name}
-            data={experimentalData}
-            profileOptions={profileOptions}
-            datasetOptions={datasetOptions}
-          />
+          <PlotsWrapper single={true}>
+            <ProfileCellLine
+              plotId={`${name}CellLinesACC`}
+              compound={name}
+              data={experimentalData}
+              profileOptions={profileOptions}
+              datasetOptions={datasetOptions}
+              title={`${name}: ACC`}
+            />
+          </PlotsWrapper>
         :
         ''
       }
@@ -118,16 +124,20 @@ const PlotSection = (props) => {
         display === 'aacTissues' ?
           loading ? <Loading />
           :
-          <ProfileTissue
-            compound={name}
-            data={experimentalData}
-            profileOptions={profileOptions}
-            datasetOptions={datasetOptions}
-          />
+          <PlotsWrapper single={true}>
+            <ProfileTissue
+              plotId={`${name}TissuesACC`}
+              compound={name}
+              data={experimentalData}
+              profileOptions={profileOptions}
+              datasetOptions={datasetOptions}
+              title={`${name}: ACC`}
+            />
+          </PlotsWrapper>
         :
         ''
       }
-    </>
+    </React.Fragment>
   );
 };
 

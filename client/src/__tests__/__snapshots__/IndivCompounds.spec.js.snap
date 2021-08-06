@@ -234,6 +234,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                               ],
                             },
                           },
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
                         ],
                       },
                     },
@@ -283,7 +320,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 421,
+              "end": 470,
               "start": 0,
             },
           },
@@ -592,6 +629,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                   ],
                                 },
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "datasets",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -641,7 +715,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 421,
+                  "end": 470,
                   "start": 0,
                 },
               },
@@ -657,7 +731,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
         "link": MockLink {
           "addTypename": false,
           "mockedResponsesByKey": Object {
-            "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+            "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n    datasets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
           },
         },
         "localState": LocalState {
@@ -924,6 +998,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -973,7 +1084,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },
@@ -1258,6 +1369,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -1307,7 +1455,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -1324,7 +1472,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
           "link": MockLink {
             "addTypename": false,
             "mockedResponsesByKey": Object {
-              "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
+              "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n    datasets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [],
             },
           },
           "localState": LocalState {
@@ -1591,6 +1739,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -1640,7 +1825,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -1887,6 +2072,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                   ],
                                 },
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "datasets",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -1936,7 +2158,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 421,
+                  "end": 470,
                   "start": 0,
                 },
               },
@@ -2210,6 +2432,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -2259,7 +2518,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -2510,6 +2769,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -2559,7 +2855,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },
@@ -2848,6 +3144,43 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -2897,7 +3230,7 @@ exports[`IndivCompounds renders correctly with a mocked query and a valid id pro
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },
@@ -3186,6 +3519,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                               ],
                             },
                           },
+                          Object {
+                            "alias": undefined,
+                            "arguments": Array [],
+                            "directives": Array [],
+                            "kind": "Field",
+                            "name": Object {
+                              "kind": "Name",
+                              "value": "datasets",
+                            },
+                            "selectionSet": Object {
+                              "kind": "SelectionSet",
+                              "selections": Array [
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "id",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "name",
+                                  },
+                                  "selectionSet": undefined,
+                                },
+                              ],
+                            },
+                          },
                         ],
                       },
                     },
@@ -3235,7 +3605,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
             ],
             "kind": "Document",
             "loc": Object {
-              "end": 421,
+              "end": 470,
               "start": 0,
             },
           },
@@ -3544,6 +3914,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                   ],
                                 },
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "datasets",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -3593,7 +4000,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 421,
+                  "end": 470,
                   "start": 0,
                 },
               },
@@ -3609,7 +4016,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
         "link": MockLink {
           "addTypename": false,
           "mockedResponsesByKey": Object {
-            "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+            "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n    datasets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
               Object {
                 "request": Object {
                   "query": Object {
@@ -3839,6 +4246,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -3888,7 +4332,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -4195,6 +4639,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -4244,7 +4725,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },
@@ -4529,6 +5010,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -4578,7 +5096,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -4819,6 +5337,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                 ],
                               },
                             },
+                            Object {
+                              "alias": undefined,
+                              "arguments": Array [],
+                              "directives": Array [],
+                              "kind": "Field",
+                              "name": Object {
+                                "kind": "Name",
+                                "value": "datasets",
+                              },
+                              "selectionSet": Object {
+                                "kind": "SelectionSet",
+                                "selections": Array [
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "id",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "name",
+                                    },
+                                    "selectionSet": undefined,
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -4868,7 +5423,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
               ],
               "kind": "Document",
               "loc": Object {
-                "end": 421,
+                "end": 470,
                 "start": 0,
               },
             } => Map {},
@@ -4876,7 +5431,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
           "link": MockLink {
             "addTypename": false,
             "mockedResponsesByKey": Object {
-              "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
+              "{\\"query\\":\\"query getSingleCompound($compoundId: Int, $compoundName: String) {\\\\n  singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {\\\\n    compound {\\\\n      id\\\\n      name\\\\n      annotation {\\\\n        smiles\\\\n        inchikey\\\\n        pubchem\\\\n        fda_status\\\\n      }\\\\n    }\\\\n    synonyms {\\\\n      name\\\\n      source\\\\n    }\\\\n    targets {\\\\n      id\\\\n      name\\\\n    }\\\\n    datasets {\\\\n      id\\\\n      name\\\\n    }\\\\n  }\\\\n}\\\\n\\"}": Array [
                 Object {
                   "request": Object {
                     "query": Object {
@@ -5106,6 +5661,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                         ],
                                       },
                                     },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "datasets",
+                                      },
+                                      "selectionSet": Object {
+                                        "kind": "SelectionSet",
+                                        "selections": Array [
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "id",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                          Object {
+                                            "alias": undefined,
+                                            "arguments": Array [],
+                                            "directives": Array [],
+                                            "kind": "Field",
+                                            "name": Object {
+                                              "kind": "Name",
+                                              "value": "name",
+                                            },
+                                            "selectionSet": undefined,
+                                          },
+                                        ],
+                                      },
+                                    },
                                   ],
                                 },
                               },
@@ -5155,7 +5747,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                       ],
                       "kind": "Document",
                       "loc": Object {
-                        "end": 421,
+                        "end": 470,
                         "start": 0,
                       },
                     },
@@ -5462,6 +6054,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -5511,7 +6140,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -5758,6 +6387,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                   ],
                                 },
                               },
+                              Object {
+                                "alias": undefined,
+                                "arguments": Array [],
+                                "directives": Array [],
+                                "kind": "Field",
+                                "name": Object {
+                                  "kind": "Name",
+                                  "value": "datasets",
+                                },
+                                "selectionSet": Object {
+                                  "kind": "SelectionSet",
+                                  "selections": Array [
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "id",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                    Object {
+                                      "alias": undefined,
+                                      "arguments": Array [],
+                                      "directives": Array [],
+                                      "kind": "Field",
+                                      "name": Object {
+                                        "kind": "Name",
+                                        "value": "name",
+                                      },
+                                      "selectionSet": undefined,
+                                    },
+                                  ],
+                                },
+                              },
                             ],
                           },
                         },
@@ -5807,7 +6473,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                 ],
                 "kind": "Document",
                 "loc": Object {
-                  "end": 421,
+                  "end": 470,
                   "start": 0,
                 },
               },
@@ -5837,6 +6503,10 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
       source
     }
     targets {
+      id
+      name
+    }
+    datasets {
       id
       name
     }
@@ -6097,6 +6767,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                       ],
                                     },
                                   },
+                                  Object {
+                                    "alias": undefined,
+                                    "arguments": Array [],
+                                    "directives": Array [],
+                                    "kind": "Field",
+                                    "name": Object {
+                                      "kind": "Name",
+                                      "value": "datasets",
+                                    },
+                                    "selectionSet": Object {
+                                      "kind": "SelectionSet",
+                                      "selections": Array [
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "id",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                        Object {
+                                          "alias": undefined,
+                                          "arguments": Array [],
+                                          "directives": Array [],
+                                          "kind": "Field",
+                                          "name": Object {
+                                            "kind": "Name",
+                                            "value": "name",
+                                          },
+                                          "selectionSet": undefined,
+                                        },
+                                      ],
+                                    },
+                                  },
                                 ],
                               },
                             },
@@ -6146,7 +6853,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                     ],
                     "kind": "Document",
                     "loc": Object {
-                      "end": 421,
+                      "end": 470,
                       "start": 0,
                     },
                   },
@@ -6397,6 +7104,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -6446,7 +7190,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },
@@ -6735,6 +7479,43 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                                     ],
                                   },
                                 },
+                                Object {
+                                  "alias": undefined,
+                                  "arguments": Array [],
+                                  "directives": Array [],
+                                  "kind": "Field",
+                                  "name": Object {
+                                    "kind": "Name",
+                                    "value": "datasets",
+                                  },
+                                  "selectionSet": Object {
+                                    "kind": "SelectionSet",
+                                    "selections": Array [
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "id",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                      Object {
+                                        "alias": undefined,
+                                        "arguments": Array [],
+                                        "directives": Array [],
+                                        "kind": "Field",
+                                        "name": Object {
+                                          "kind": "Name",
+                                          "value": "name",
+                                        },
+                                        "selectionSet": undefined,
+                                      },
+                                    ],
+                                  },
+                                },
                               ],
                             },
                           },
@@ -6784,7 +7565,7 @@ exports[`IndivCompounds renders correctly with a mocked query and an invalid id 
                   ],
                   "kind": "Document",
                   "loc": Object {
-                    "end": 421,
+                    "end": 470,
                     "start": 0,
                   },
                 },

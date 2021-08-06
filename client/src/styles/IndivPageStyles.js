@@ -11,9 +11,12 @@ const StyledIndivPage = styled.div`
     align-items: center;
     color: ${colors.dark_teal_heading};
     .title {
-      font-size: 32px;
+      color: ${colors.dark_pink_highlight};
+      font-size: clamp(32px, calc(2vw + 10px), 44px);
       font-weight: bold;
-      margin-left: 18%;
+      margin-left: 20%;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
     .attributes {
       .value {
@@ -28,14 +31,15 @@ const StyledIndivPage = styled.div`
   .wrapper {
     width: 100%;
     display: flex;
+    flex-direction: row;
   }
 
   .container {
     width: 100%;
     margin-top: 10px;
-    margin-left: 20px;
+    margin-left: 25px;
     color: ${colors.dark_gray_text};
-    font-size: calc(0.4vw + 9px);
+    font-size: calc(1vw + 9px);
     
     display:flex;
     align-items: flex-end;
@@ -50,13 +54,21 @@ const StyledIndivPage = styled.div`
     width: 100%;
     margin-bottom: 50px;
     .section-title {
-      font-size: 18px;
+      font-size: clamp(18px, calc(1vw + 3px), 28px);
       font-weight: bold;
       margin-bottom: 10px;
       color: ${colors.dark_teal_heading};
     }
+    p {
+      font-size: clamp(14px, calc(1vw + 2px), 18px);
+    }
+    .download-button {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 5px;
+    }
     .text {
-      font-size: 12px;
+      font-size: clamp(12px, calc(1vw + 1px), 16px);
     }
   }
   .temp {
@@ -70,6 +82,17 @@ const StyledIndivPage = styled.div`
 
   // full size container when too small
   @media only screen and (max-width: 765px) {
+    .heading {
+      .title {
+        margin-left: 0px;
+      }
+    }
+    .container {
+      margin-left: 0px;
+    }
+    .wrapper {
+      flex-direction: column;
+    }
     .content {
       width: 100% !important;
     }
@@ -80,6 +103,7 @@ const StyledIndivPage = styled.div`
       text-align: center;
       margin-top: 15px;
       color: ${colors.dark_teal_heading};
+      font-size: clamp(14px, calc(1vw + 2px), 18px);
     }
   }
 `;
@@ -89,7 +113,6 @@ const StyledSidebar = styled.div`
   margin-top: 5vh;
   padding: 5px 0px;
   position:fixed;
-
   .link {
     display:block;
     color: ${colors.dark_teal_heading};
@@ -110,7 +133,6 @@ const StyledSidebar = styled.div`
     color: ${colors.dark_pink_highlight};
     border-right: 5px solid ${colors.dark_pink_highlight};
   }
-
   // hide sidebar when too small
   @media only screen and (max-width: 765px) {
     display:none;
@@ -118,7 +140,7 @@ const StyledSidebar = styled.div`
 `;
 
 const StyledSidebarList = styled.ul`
-  width: 20%;
+  width: 25%;
   padding: 5px 0px;
 
   list-style-type: none;
@@ -132,9 +154,9 @@ const StyledSidebarList = styled.ul`
       text-align: right;
       padding-top: 15px;
       padding-bottom: 15px;
-      padding-right: 20px;
+      padding-right: 15px;
       color: ${colors.dark_teal_heading};
-      font-size: 14px;
+      font-size: clamp(12px, calc(1vw + 2px), 16px);
       font-family: Raleway, sans-serif;
       // letter-spacing: 1px;
     }
@@ -152,7 +174,20 @@ const StyledSidebarList = styled.ul`
 
   // hide sidebar when too small
   @media only screen and (max-width: 765px) {
-    display:none;
+    width: 100%;
+    li {
+      display: inline-block;
+      button {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-right: 10px;
+      }
+    }
+    .selected {
+      button {
+        border: none;
+      }
+    }
 }
 `;
 

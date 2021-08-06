@@ -85,15 +85,18 @@ const RootQuery = `type RootQuery {
 
 
     """
-        Root Queries for gene_drugs.
+        Root Queries for gene_compound tables.
     """
-    gene_drugs(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [CompoundDrug!]!
+    gene_compound_tissue(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundTissue!]!
+    gene_compound_dataset(geneId: Int, compoundId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundDataset!]!
+    gene_compound_tissue_dataset(geneId: Int, compoundId: Int, tissueId: Int, page: Int, per_page: Int, all: Boolean): [GeneCompoundTissueDataset!]!
 
 
     """
         Root Queries for targets.
     """
     compound_target(compoundId: Int!): CompoundTarget!
+    compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
 
 
     """
@@ -111,6 +114,14 @@ const RootQuery = `type RootQuery {
         One of the parameters has to be passed either an ID or the tissue Name
     """
     tissue(tissueId: Int, tissueName: String): TissueDetail!
+    
+        """
+        Root Query to get a mol cell detail.
+        'cellId' is the id of the cell in the database and is an optional field.
+        'cellName' is the name of the cell in the database and is also an optional field.
+        One of the parameters has to be passed either an ID or the cell Name
+    """
+    mol_cell(cellLineId: Int, cellLineName: String): [Mol]!
 }`;
 
 module.exports = {

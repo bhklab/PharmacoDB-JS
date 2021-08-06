@@ -1,7 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
 import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
@@ -14,7 +13,6 @@ import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
 
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
-import { getDatasetQuery } from '../../../queries/dataset';
 
 const SIDE_LINKS = [
   { label: 'Dataset Information', name: 'info' },
@@ -102,44 +100,32 @@ const formatDataType = (data) => {
 const IndivDatasets = (props) => {
   // parameter.
   const { match: { params } } = props;
-  // const datasetId = parseInt(params.id);
 
-  // query to get the data for the single dataset.
-  const { loading, error, data: queryData } = useQuery(getDatasetQuery, {
-    variables: { datasetId: parseInt(params.id) },
-  });
-
-  // load data from query into state
   const [dataset, setDataset] = useState({
-    data: {},
-    loaded: false,
+    resources: [],
+    publications: [],
+    datatypes: [],
+    notFound: false
   });
 
   // A section to display on the page
   const [display, setDisplay] = useState('info');
 
-  // read dataset data from json file
-  const datasetInfo = datasets[params.id];
-
   // to set the state on the change of the data.
   useEffect(() => {
-    if (queryData !== undefined) {
+    // read dataset data from json file
+    const selected = datasets[params.id];
+    if(selected){
       setDataset({
-        data: queryData.dataset,
-        loaded: true,
+        ...selected,
+        resources: formatResouceData(selected.resource),
+        publications: formatPublicationData(selected.pub),
+        datatypes: formatDataType(selected.dtype)
       });
+    }else{
+      setDataset({...dataset, notFound: true});
     }
-  }, [queryData]);
-
-  // destructuring the compound object.
-  const { data } = dataset;
-  const pharmacoLink = `https://pharmacodb.ca/pharmacogx?pgx=${params.id}`;
-  const resources = React.useMemo(() => formatResouceData(datasetInfo.resource), [datasetInfo.resource]);
-  const publications = React.useMemo(() => formatPublicationData(datasetInfo.pub), [datasetInfo.pub]);
-  // formatted data for data type table
-  const datatypeColumns = React.useMemo(() => DATATYPE_COLUMNS, []);
-  const datatypeData = React.useMemo(() => formatDataType(datasetInfo.dtype), [datasetInfo.dtype]);
-
+  }, []);
 
   /**
    * 
@@ -153,95 +139,96 @@ const IndivDatasets = (props) => {
     </li>
   );
 
-  return (dataset.loaded ? (
-    <Layout page={data[0].name}>
+  return (
+    <Layout page={dataset.name}>
       <StyledWrapper>
-        {loading ? (<p>Loading...</p>)
-          : (error ? (<NotFoundContent />)
-            : (
-              <StyledIndivPage className="indiv-compounds">
-                <div className='heading'>
-                    <span className='title'>{data[0].name}</span>
+        {
+          dataset.notFound ?
+          <NotFoundContent />
+          :
+          <StyledIndivPage className="indiv-compounds">
+            <div className='heading'>
+                <span className='title'>{dataset.name}</span>
+            </div>
+            <div className='wrapper'>
+              <StyledSidebarList>
+                {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+              </StyledSidebarList>
+              <div className="container">
+                <div className="content">
+                  {
+                    display === 'info' &&
+                    <React.Fragment>
+                      <Element className="section" name="acronym">
+                        <div className='section-title'>Acronym</div>
+                        {dataset.acr_ref ? (<div className="text"><a href={dataset.acr_ref}>{dataset.acr}</a></div>)
+                          : (<div className="text">{dataset.acr}</div>)}
+                      </Element>
+                      <Element className="section" name="description">
+                        <div className='section-title'>Description</div>
+                        <div className="text">{dataset.des}</div>
+                      </Element>
+                      <Element className="section" name="publications">
+                        <div className='section-title'>Publications</div>
+                        <div className="text">{dataset.publications}</div>
+                      </Element>
+                      <Element className="section" name="pharmacogx">
+                        <div className='section-title'>PharmacoGx</div>
+                        <div className="text">
+                          <a href={`https://pharmacodb.ca/pharmacogx?pgx=${params.id}`} target="_blank">
+                            PharmacoSet object for:
+                            {' '}
+                            {dataset.name}
+                          </a>
+                        </div>
+                      </Element>
+                    </React.Fragment>
+                  }
+                  {
+                    display === 'resources' &&
+                    <Element className="section" name="resources">
+                      <div className='section-title'>Resources</div>
+                      <div className="text">{dataset.resources}</div>
+                    </Element>
+                  }
+                  {
+                    display === 'datatype' &&
+                    <Element className="section" name="data_type">
+                      <div className='section-title'>Data Types</div>
+                      <Table 
+                        pivotBy={['type']} 
+                        columns={DATATYPE_COLUMNS} 
+                        data={dataset.datatypes} 
+                        disablePagination 
+                      />
+                    </Element>
+                  }
+                  {
+                    display === 'barPlots' &&
+                    <Element>
+                      <PlotSection dataset={({ id: dataset.id, name: dataset.name })} display={display} />
+                    </Element>
+                  }
+                  {
+                    display === 'cellLines' &&
+                    <Element className="section" name="cellLines">
+                      <CellLineSummaryTable dataset={({ id: dataset.id, name: dataset.name })} />
+                    </Element>
+                  }
+                  {
+                    display === 'compounds' &&
+                    <Element className="section" name="cellLines">
+                      <CompoundsSummaryTable dataset={({ id: dataset.id, name: dataset.name })} />
+                    </Element>
+                  }
                 </div>
-                <div className='wrapper'>
-                  <StyledSidebarList>
-                    {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                  </StyledSidebarList>
-                  <div className="container">
-                    <div className="content">
-                      {
-                        display === 'info' &&
-                        <React.Fragment>
-                          <Element className="section" name="acronym">
-                            <div className='section-title'>Acronym</div>
-                            {datasetInfo.acr_ref ? (<div className="text"><a href={datasetInfo.acr_ref}>{datasetInfo.acr}</a></div>)
-                              : (<div className="text">{datasetInfo.acr}</div>)}
-                          </Element>
-                          <Element className="section" name="description">
-                            <div className='section-title'>Description</div>
-                            <div className="text">{datasetInfo.des}</div>
-                          </Element>
-                          <Element className="section" name="publications">
-                            <div className='section-title'>Publications</div>
-                            <div className="text">{publications}</div>
-                          </Element>
-                          <Element className="section" name="pharmacogx">
-                            <div className='section-title'>PharmacoGx</div>
-                            <div className="text">
-                              <a href={pharmacoLink} target="_blank">
-                                PharmacoSet object for:
-                                {' '}
-                                {datasetInfo.name}
-                              </a>
-                            </div>
-                          </Element>
-                        </React.Fragment>
-                      }
-                      {
-                        display === 'resources' &&
-                        <Element className="section" name="resources">
-                          <div className='section-title'>Resources</div>
-                          <div className="text">{resources}</div>
-                        </Element>
-                      }
-                      {
-                        display === 'datatype' &&
-                        <Element className="section" name="data_type">
-                          <div className='section-title'>Data Types</div>
-                          <Table 
-                            pivotBy={['type']} 
-                            columns={datatypeColumns} 
-                            data={datatypeData} 
-                            disablePagination 
-                          />
-                        </Element>
-                      }
-                      {
-                        display === 'barPlots' &&
-                        <Element>
-                          <PlotSection dataset={({ id: datasetInfo.id, name: datasetInfo.name })} display={display} />
-                        </Element>
-                      }
-                      {
-                        display === 'cellLines' &&
-                        <Element className="section" name="cellLines">
-                          <CellLineSummaryTable dataset={({ id: datasetInfo.id, name: datasetInfo.name })} />
-                        </Element>
-                      }
-                      {
-                        display === 'compounds' &&
-                        <Element className="section" name="cellLines">
-                          <CompoundsSummaryTable dataset={({ id: datasetInfo.id, name: datasetInfo.name })} />
-                        </Element>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </StyledIndivPage>
-            ))}
+              </div>
+            </div>
+          </StyledIndivPage>
+        }
       </StyledWrapper>
     </Layout>
-  ) : null);
+  );
 };
 
 IndivDatasets.propTypes = {
