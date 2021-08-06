@@ -193,17 +193,21 @@ const IndivCompounds = (props) => {
                                                     disablePagination
                                                 />
                                             </Element>
-                                            <Element
-                                                className="section"
-                                                name="external_ids"
-                                            >
-                                                <div className='section-title'>External IDs</div>
-                                                <Table
-                                                    columns={annotationColumns}
-                                                    data={annotationData}
-                                                    disablePagination
-                                                />
-                                            </Element>
+                                            {
+                                                annotationData.length > 0 ?
+                                                    <Element
+                                                        className="section"
+                                                        name="external_ids"
+                                                    >
+                                                        <div className='section-title'>External IDs</div>
+                                                        <Table
+                                                            columns={annotationColumns}
+                                                            data={annotationData}
+                                                            disablePagination
+                                                        />
+                                                    </Element> :
+                                                    ''
+                                            }
                                         </React.Fragment>
                                     }
                                     {

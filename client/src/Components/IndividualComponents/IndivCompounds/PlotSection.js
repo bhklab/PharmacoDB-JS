@@ -107,14 +107,16 @@ const PlotSection = (props) => {
         display === 'aacCells' ?
           loading ? <Loading />
           :
-          <ProfileCellLine
-            plotId={`${name}CellLinesACC`}
-            compound={name}
-            data={experimentalData}
-            profileOptions={profileOptions}
-            datasetOptions={datasetOptions}
-            title={`${name}: ACC`}
-          />
+          <PlotsWrapper single={true}>
+            <ProfileCellLine
+              plotId={`${name}CellLinesACC`}
+              compound={name}
+              data={experimentalData}
+              profileOptions={profileOptions}
+              datasetOptions={datasetOptions}
+              title={`${name}: ACC`}
+            />
+          </PlotsWrapper>
         :
         ''
       }
@@ -122,14 +124,16 @@ const PlotSection = (props) => {
         display === 'aacTissues' ?
           loading ? <Loading />
           :
-          <ProfileTissue
-            plotId={`${name}TissuesACC`}
-            compound={name}
-            data={experimentalData}
-            profileOptions={profileOptions}
-            datasetOptions={datasetOptions}
-            title={`${name}: ACC`}
-          />
+          <PlotsWrapper single={true}>
+            <ProfileTissue
+              plotId={`${name}TissuesACC`}
+              compound={name}
+              data={experimentalData}
+              profileOptions={profileOptions}
+              datasetOptions={datasetOptions}
+              title={`${name}: ACC`}
+            />
+          </PlotsWrapper>
         :
         ''
       }
