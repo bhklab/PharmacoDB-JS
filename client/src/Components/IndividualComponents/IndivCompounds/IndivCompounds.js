@@ -21,7 +21,6 @@ const SYNONYM_COLUMNS = [
         accessor: 'source',
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
-            console.log("@@@@",datasets);
             return(datasets.map((obj, i) => (
                     obj.id? (
                             <span key={i}>
