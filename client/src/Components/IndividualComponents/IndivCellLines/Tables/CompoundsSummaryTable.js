@@ -1,5 +1,3 @@
-/* eslint-disable radix */
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
@@ -138,15 +136,21 @@ const CompoundsSummaryTable = (props) => {
                 <p align="center">
                   { `${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).` }
                 </p>
-                <div className='download-button'>
-                  <DownloadButton
-                      label='CSV'
-                      data={csv}
-                      mode='csv'
-                      filename={`${cellLine.name} - compounds`}
-                  />
-                </div>
-                <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+                {
+                  tableData.compound.length?
+                    <React.Fragment>
+                      <div className='download-button'>
+                    <DownloadButton
+                        label='CSV'
+                        data={csv}
+                        mode='csv'
+                        filename={`${cellLine.name} - compounds`}
+                    />
+                  </div>
+                      <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+                    </React.Fragment>
+                    :''
+                }
               </React.Fragment>
         }
       </React.Fragment>

@@ -21,7 +21,6 @@ const SYNONYM_COLUMNS = [
         accessor: 'source',
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
-            console.log("@@@@",datasets);
             return(datasets.map((obj, i) => (
                     obj.id? (
                             <span key={i}>
@@ -194,17 +193,21 @@ const IndivCompounds = (props) => {
                                                     disablePagination
                                                 />
                                             </Element>
-                                            <Element
-                                                className="section"
-                                                name="external_ids"
-                                            >
-                                                <div className='section-title'>External IDs</div>
-                                                <Table
-                                                    columns={annotationColumns}
-                                                    data={annotationData}
-                                                    disablePagination
-                                                />
-                                            </Element>
+                                            {
+                                                annotationData.length > 0 ?
+                                                    <Element
+                                                        className="section"
+                                                        name="external_ids"
+                                                    >
+                                                        <div className='section-title'>External IDs</div>
+                                                        <Table
+                                                            columns={annotationColumns}
+                                                            data={annotationData}
+                                                            disablePagination
+                                                        />
+                                                    </Element> :
+                                                    ''
+                                            }
                                         </React.Fragment>
                                     }
                                     {

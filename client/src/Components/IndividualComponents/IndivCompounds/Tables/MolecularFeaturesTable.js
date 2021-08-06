@@ -1,84 +1,72 @@
-/* eslint-disable radix */
-/* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getSingleCompoundExperimentsQuery } from '../../../../queries/experiments';
-import dataset_colors from '../../../../styles/dataset_colors';
+import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_compound';
 import Loading from '../../../UtilComponents/Loading';
-import ProfileCompound from '../../../Plots/ProfileCompound';
 import Table from '../../../UtilComponents/Table/Table';
-import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import { Link } from 'react-router-dom';
+import DownloadButton from '../../../UtilComponents/DownloadButton';
+import Error from '../../../UtilComponents/Error';
 
-const MOLECULAR_FEATURES_COLUMNS = [
+const parseTableData = (data, compound) => {
+    let tableData = [];
+    if(typeof data !== 'undefined'){
+        let filtered = data.filter(item => !!item.pvalue_analytic);
+        tableData = filtered.map(item => ({
+            compound_id: compound.id,
+            compound: compound.name,
+            feature_type: item.mDataType,
+            gene_id: item.gene.id,
+            gene: item.gene.name,
+            dataset_id: item.dataset.id,
+            dataset: item.dataset.name,
+            tissue_id: item.tissue.id,
+            tissue: item.tissue.name,
+            stat: item.sens_stat,
+            standardized_coef: item.estimate,
+            pvalue: item.pvalue_analytic
+        }));
+        tableData.sort((a, b) => a.pvalue - b.pvalue);
+    }
+    return tableData;
+}
+
+const COLUMNS = [
     {
         Header: 'Feature Type',
-        accessor: 'featureType',
+        accessor: 'feature_type',
     },
     {
         Header: 'Gene',
         accessor: 'gene',
+        Cell: (item) => <Link to={`/genes/${item.cell.row.original.gene_id}`}>{item.value}</Link>
     },
     {
-        Header: 'Dataset',
+        Header: `Dataset`,
         accessor: 'dataset',
+        Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset_id}`}>{item.value}</Link>
     },
     {
-        Header: 'Tissue',
+        Header: `Tissue`,
         accessor: 'tissue',
+        Cell: (item) => <Link to={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</Link>
     },
     {
         Header: 'Stat',
         accessor: 'stat',
     },
     {
-        Header: 'Standardized Coefficient',
-        accessor: 'standCoef',
+        Header: `Standardized Coefficient`,
+        accessor: 'standardized_coef',
+        Cell: (item) => item.value.toFixed(2)
     },
     {
-        Header: 'Nominal ANOVA p-value',
-        accessor: 'anovaPval',
+        Header: `Nominal ANOVA p-value`,
+        accessor: 'pvalue',
+        Cell: (item) => item.value.toExponential(2)
     },
 ];
 
-/**
- * Format data for the molecular features table
- * @param {Array} data from experiment (has to be changed to gene_compound_tissue_dataset)
- * @returns {Array} Object of formatted data for the table
- */
-const formatMolFeaturesData = (data) => {
-    // collect data of datasets and number of experiments for each tissue
-    const tissuesObj = {};
-    data.experiments.forEach((experiment) => {
-        const {tissue, dataset} = experiment;
-        const datasetObj = [];
-        if (tissuesObj[tissue.name]) {
-            if (!tissuesObj[tissue.name].datasets.includes(dataset.name)) {
-                tissuesObj[tissue.name].datasets.push(dataset.name);
-                tissuesObj[tissue.name].datasetObj.push({name : dataset.name, id : dataset.id});
-                datasetObj.sort((a, b) => a - b);
-            }
-            tissuesObj[tissue.name].numExperiments += 1;
-        } else {
-            tissuesObj[tissue.name] = {
-                tissueObj: [{name : [tissue.name], id : tissue.id}],
-                datasets: [dataset.name],
-                datasetObj : [{name : [dataset.name], id : dataset.id}],
-                numExperiments: 1,
-            };
-        }
-    });
-    // assign values of collected tissue data to the columns
-    if (data) {
-        return Object.values(tissuesObj).map((x) => ({
-            tissueObj: x.tissueObj,
-            datasetObj: x.datasetObj,
-            experiment_id: x.numExperiments,
-        }));
-    }
-    return null;
-};
 
 /**
  * Section that displays Tissue Summary table for the individual compound page.
@@ -92,38 +80,45 @@ const formatMolFeaturesData = (data) => {
  */
 const MolecularFeaturesTable = (props) => {
     const { compound } = props;
-    const { id, name } = compound;
-    const {
-        loading,
-        error,
-        data: queryData,
-    } = useQuery(getSingleCompoundExperimentsQuery, {
-        variables: { compoundId: id },
-    });
-    // load data from query into state
-    const [experiment, setExperiment] = useState({
-        data: {},
-        loaded: false,
-    });
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            setExperiment({
-                data: queryData.experiments,
-                loaded: true,
-            });
+    const [tableData, setTableData] = useState([]);
+    const [error, setError] = useState(false);
+
+    const { loading } = useQuery(getGeneCompoundTissueDatasetQuery, {
+        variables: { compoundId: compound.id },
+        onCompleted: (data) => {
+            console.log("!@!@",data);
+            setTableData(parseTableData(data.gene_compound_tissue_dataset, compound));
+        },
+        onError: (err) => {
+            console.log(err);
+            setError(true);
         }
-    }, [queryData]);
+    });
+
     return (
         <React.Fragment>
             {
-                loading ?
-                    <Loading />
+                loading ? <Loading />
                     :
-                    <Table columns={MOLECULAR_FEATURES_COLUMNS} data={formatMolFeaturesData(queryData)} center={true} />
-            }
-            {
-                error && <p>An error occurred</p>
+                    error ? <Error />
+                        :
+                        tableData.length > 0 &&
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    { `Top molecular features associated with response to ${compound.name}` }
+                                </p>
+                            </h4>
+                            <div className='download-button'>
+                                <DownloadButton
+                                    label='CSV'
+                                    data={tableData}
+                                    mode='csv'
+                                    filename={`${compound.name} - top molecular features`}
+                                />
+                            </div>
+                            <Table columns={COLUMNS} data={tableData} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );
