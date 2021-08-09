@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
     width: 85%;
 
     & > * {
-        width: 80%;
+        width: 85%;
 
         @media only screen and (max-width: 1081px) { 
             width: 85%;

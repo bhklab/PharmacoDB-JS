@@ -11,7 +11,7 @@ const TableStyles = styled.div`
     border-spacing: 0;
     border: 1px solid ${colors.white_smoke};
     width: 100%;
-    font-size: 12px;
+    font-size: clamp(12px, calc(1vw + 1px), 14px);
 
     th,
     td {
@@ -112,7 +112,7 @@ const TableStyles = styled.div`
     justify-content: space-between;
     width: 100%;
     align-items: center;
-
+    font-size: clamp(12px, calc(1vw + 1px), 16px);
     .show-page {
       width: 30%;
       text-align: right;
