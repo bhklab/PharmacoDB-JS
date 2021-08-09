@@ -75,25 +75,25 @@ const StyledStats = styled.div`
  */
 const statistics = {
   datasets: {
-    name: 'datasets', value: '7', image: datasetsImg, link: '/datasets',
+    name: 'datasets', value: '8', image: datasetsImg, link: '/datasets',
   },
   tissues: {
-    name: 'tissues', value: '41', image: tissuesImg, link: '/tissues',
+    name: 'tissues', value: '30', image: tissuesImg, link: '/tissues',
   },
   cells: {
-    name: 'cell-lines', value: '1,691', image: cellsImg, link: '/cell_lines',
+    name: 'cell-lines', value: '1,676', image: cellsImg, link: '/cell_lines',
   },
   experiments: {
     name: 'experiments',
-    value: '650,894',
+    value: '102,9712',
     image: experimentsImg,
     link: '/experiments',
   },
   genes: {
-    name: 'genes', value: '19,933', image: genesImg, link: '/genes',
+    name: 'genes', value: '60,859', image: genesImg, link: '/genes',
   },
   compounds: {
-    name: 'compounds', value: '759', image: compoundsImg, link: '/compounds',
+    name: 'compounds', value: '920', image: compoundsImg, link: '/compounds',
   },
 };
 
