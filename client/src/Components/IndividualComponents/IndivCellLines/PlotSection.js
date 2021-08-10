@@ -1,9 +1,11 @@
+
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
+import Layout from '../../UtilComponents/Layout';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
@@ -61,39 +63,45 @@ const PlotSection = (props) => {
     if (error) {
         return <p> Error! </p>;
     }
-    
+
     return (
-        <>
+        <React.Fragment>
             {compoundsData.length ? (
-                <>
+                <React.Fragment>
                     {
                         display === 'barPlot' ?
                             loading ? <Loading />
+                                :
+                                <DatasetHorizontalPlot
+                                    plotId={`${name}Compounds`}
+                                    data={compoundsData}
+                                    xaxis="# of compounds"
+                                    title={`Number of compounds tested with ${name} (per dataset)`}
+                                />
                             :
-                            <DatasetHorizontalPlot
-                                data={compoundsData}
-                                xaxis="# of compounds"
-                                title={`Number of compounds tested with ${name} (per dataset)`}
-                            />
-                            :
-                        ''
+                            ''
                     }
                     {
                         display === 'aacCompounds' ?
                             loading ? <Loading />
+                                :
+                                <ProfileCompound
+                                    cellLine={name}
+                                    data={data.experiments}
+                                />
                             :
-                            <ProfileCompound 
-                                cellLine={name} 
-                                data={data.experiments} 
-                            />
-                        :
-                        ''
+                            ''
                     }
-                </>
+                </React.Fragment>
             ) : (
-                <p> No data is available for plotting this cell line. </p>
+                display === 'barPlot'?
+                    loading ? <Loading /> :
+                        (
+                            <h6 align="center">No data is available to plot this cell line.</h6>
+                        ):
+                    ''
             )}
-        </>
+        </React.Fragment>
     );
 };
 

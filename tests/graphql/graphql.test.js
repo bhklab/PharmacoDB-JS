@@ -5,14 +5,14 @@
 
 /**
  * This describe block encompasses tests for the GrahQL API.
- * 
- * Individual test cases for each API is organized in a separate file under the test() function, 
+ *
+ * Individual test cases for each API is organized in a separate file under the test() function,
  * and is called in a nested describe block.
- * 
- * Each test is executed with brandnew server instance, but uses the same knex connection pool, 
+ *
+ * Each test is executed with brandnew server instance, but uses the same knex connection pool,
  * since destroying knex connection pool is an irreversible operation.
- * 
- * This allows the test cases for each API to be organized in separate fles, 
+ *
+ * This allows the test cases for each API to be organized in separate fles,
  * but called under one describe block using shared knex connection pool.
  */
 describe('Tests: GraphQL API', () => {
@@ -63,7 +63,7 @@ describe('Tests: GraphQL API', () => {
     });
 
     // tests for geneCompound API routes
-    //     describe('geneCompound API Routes', () => {
-    //         require('./tests/gene_compound_test').test(server);
-    //     });
+    describe('geneCompound API Routes', () => {
+        require('./tests/gene_compound_test').test(server);
+    });
 });

@@ -51,13 +51,23 @@ const transformCellLines = data => {
 };
 
 /**
+ * @returns {Array} - Returns a list of datasets' names and ids
+ */
+const datasetsQuery = async () => {
+    const query = knex
+        .select(['d.name as name','d.id as id'])
+        .from('dataset as d')
+    return query;
+};
+
+/**
  * Returns a transformed array of objects.
  * @param {Array} data
  * @returns {Object} - transformed object.
  */
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
-const transformSingleCellLine = data => {
+const transformSingleCellLine = (data) => {
     let returnObject = {};
     const source_cell_name_list = [];
     data.forEach((row, i) => {
@@ -67,6 +77,7 @@ const transformSingleCellLine = data => {
             tissue_id,
             tissue_name,
             source_cell_name,
+            dataset_id,
             dataset_name,
             diseases,
             accessions
@@ -75,7 +86,7 @@ const transformSingleCellLine = data => {
         if (!i) {
             returnObject['id'] = cell_id;
             returnObject['name'] = cell_name;
-            returnObject['diseases'] = diseases.split('|||');
+            returnObject['diseases'] = diseases ? diseases.split('|||') : diseases;
             returnObject['accessions'] = accessions;
             returnObject['tissue'] = {
                 id: tissue_id,
@@ -83,22 +94,21 @@ const transformSingleCellLine = data => {
             };
             returnObject['synonyms'] = [{
                 name: source_cell_name,
-                source: [dataset_name]
+                source: [{'id': dataset_id, 'name': dataset_name}]
             }];
-            if (!source_cell_name_list.includes(source_cell_name)) {
-                source_cell_name_list.push(source_cell_name);
-            }
+            source_cell_name_list.push(source_cell_name);
         } else {
             // for all other elements.
             if (!source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].push({
                     name: source_cell_name,
-                    source: [dataset_name]
+                    source: [{'id': dataset_id, 'name': dataset_name}]
                 });
+                source_cell_name_list.push(source_cell_name);
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push(dataset_name);
+                        returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
                     }
                 });
             }
@@ -173,6 +183,7 @@ const cell_line = async args => {
                 'tissue.id as tissue_id',
                 'tissue.name as tissue_name',
                 'cell_synonym.cell_name as source_cell_name',
+                'dataset.id as dataset_id',
                 'dataset.name as dataset_name',
                 'cellosaurus.di as diseases',
                 'cellosaurus.accession as accessions')

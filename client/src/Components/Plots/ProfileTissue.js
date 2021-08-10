@@ -2,9 +2,11 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+import colors from '../../styles/colors';
+import DownloadButton from '../UtilComponents/DownloadButton';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import { formatExperimentPlotData, runPlotDataAnalysis } from '../../utils/plotProcessing';
-import colors from '../../styles/colors';
+
 
 // plotly config
 const config = {
@@ -94,7 +96,7 @@ const generateRenderData = (data, dataset, profile) => {
  */
 const ProfileTissue = (props) => {
   const {
-    data, compound, profileOptions, datasetOptions,
+    plotId, data, compound, profileOptions, datasetOptions, title
   } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
@@ -136,7 +138,11 @@ const ProfileTissue = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot data={plotData} layout={layout} config={config} />
+      <Plot divId={plotId} data={plotData} layout={layout} config={config} />
+      <div className='download-buttons'>
+        <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
+        <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
+      </div>
     </div>
   );
 };

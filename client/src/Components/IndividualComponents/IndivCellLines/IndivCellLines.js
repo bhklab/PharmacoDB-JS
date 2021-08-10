@@ -2,35 +2,46 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Link, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
-import SnakeCase from '../../../utils/convertToSnakeCase';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import TableSection from './TableSection';
+import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
+import MolecularProfilingTable from './Tables/MolecularProfilingTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
-  {
-    Header: 'Sources',
-    accessor: 'sources',
-  },
-  {
-    Header: 'Names Used',
-    accessor: 'name',
-  },
+    {
+        Header: 'Sources',
+        accessor: 'sources',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.source;
+            return(datasets.map((obj, i) => (
+                obj.id? (
+                    <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>
+                    ) :
+                    (<span key={i}>{obj.name}</span>)
+                )
+            ));
+        }
+    },
+    {
+        Header: 'Names Used',
+        accessor: 'name',
+    },
 ];
 
 const SIDE_LINKS = [
-  { label: 'Cell Line Data', name: 'data' },
-  { label: 'Bar Plot', name: 'barPlot' },
-  { label: 'AAC (Compounds)', name: 'aacCompounds' },
-  { label: 'Drugs Summary', name: 'drugsSummary' },
-  { label: 'Molecular Profiling', name: 'molecularProfiling' }
+  {label: 'Cell Line Data', name: 'data'},
+  {label: 'Bar Plot', name: 'barPlot'},
+  {label: 'Drugs Summary', name: 'drugsSummary'},
+  {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
 
 /**
@@ -38,13 +49,12 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the cell line API
  */
 const formatSynonymData = (data) => {
-  if (data) {
-    return data.map((x) => ({
-      name: x.name,
-      sources: x.source.join(', '),
-    }));
-  }
-  return null;
+    if (data.synonyms) {
+        const returnObj = data.synonyms;
+        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        return returnObj;
+    }
+    return null;
 };
 
 /**
@@ -52,24 +62,24 @@ const formatSynonymData = (data) => {
  * @param {Array} data diseases data from the cell line API
  */
 const formatDiseaseData = (data) => {
-  if (data) {
-    const ncit_path =
-      'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
-    return data.map((x) =>
-      x
-        ? {
-          key: x.split('; ')[1],
-          name: x,
-          source: ncit_path + x.split('; ')[1],
-        }
-        : {
-          key: null,
-          name: 'N/A',
-          source: null,
-        }
-    );
-  }
-  return null;
+    if (data) {
+        const ncit_path =
+            'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
+        return data.map((x) =>
+            x
+                ? {
+                      key: x.split('; ')[1],
+                      name: x,
+                      source: ncit_path + x.split('; ')[1],
+                  }
+                : {
+                      key: null,
+                      name: 'N/A',
+                      source: null,
+                  }
+        );
+    }
+    return null;
 };
 
 /**
@@ -77,15 +87,15 @@ const formatDiseaseData = (data) => {
  * @param {Array} data link data from the cell line API
  */
 const formatLinkData = (data) => {
-  if (data) {
-    const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
-    return {
-      key: data,
-      path: cellosaurus_path + data,
-      source: 'Cellosaurus',
-    };
-  }
-  return null;
+    if (data) {
+        const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
+        return {
+            key: data,
+            path: cellosaurus_path + data,
+            source: 'Cellosaurus',
+        };
+    }
+    return null;
 };
 
 /**
@@ -99,53 +109,47 @@ const formatLinkData = (data) => {
  * )
  */
 const IndivCellLines = (props) => {
-  // parameter.
-  const {
-    match: { params },
-  } = props;
+    // parameter.
+    const {
+        match: { params },
+    } = props;
+    // query to get the data for the single cell line.
+    const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
+        variables: { cellId: parseInt(params.id) },
+    });
+    // load data from query into state
+    const [cellLine, setCellLine] = useState({
+        data: {},
+        loaded: false,
+    });
+    // A section to display on the page
+    const [display, setDisplay] = useState('data');
 
-  // query to get the data for the single cell line.
-  const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
-    variables: { cellId: parseInt(params.id) },
-  });
+    // to set the state on the change of the data.
+    useEffect(() => {
+        if (queryData !== undefined) {
+            setCellLine({
+                data: queryData.cell_line,
+                loaded: true,
+            });
+        }
+    }, [queryData]);
 
-  // load data from query into state
-  const [cellLine, setCellLine] = useState({
-    data: {},
-    loaded: false,
-  });
-
-  // A section to display on the page
-  const [display, setDisplay] = useState('data');
-
-  // to set the state on the change of the data.
-  useEffect(() => {
-    if (queryData !== undefined) {
-      setCellLine({
-        data: queryData.cell_line,
-        loaded: true,
-      });
-    }
-  }, [queryData]);
-
-  // destructuring the cellLine object.
-  const { data } = cellLine;
-
+    // destructuring the cellLine object.
+    const { data } = cellLine;
   /**
-   * 
-   * @param {String} link 
+   * @param {String} link
    */
   const createSideLink = (link, i) => (
-    <li key={i} className={display === link.name ? 'selected' : undefined}>
-      <button type='button' onClick={() => setDisplay(link.name)}>
-        {link.label}
-      </button>
-    </li>
+      <li key={i} className={display === link.name ? 'selected': undefined}>
+          <button type='button' onClick={() => setDisplay(link.name)}>
+              {link.label}
+          </button>
+      </li>
   );
 
-  // formatted data for synonyms annotation table
-  const synonymColumns = React.useMemo(() => SYNONYM_COLUMNS, []);
-  const synonymData = React.useMemo(() => formatSynonymData(data.synonyms), [data.synonyms]);
+  // formatted data of diseases and links
+  const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
   const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
   return (cellLine.loaded ? (
@@ -156,13 +160,13 @@ const IndivCellLines = (props) => {
             : (
               <StyledIndivPage className="indiv-cellLines">
                 <div className='heading'>
-                  <span className='title'>{data.name}</span>
-                  <span className='attributes'>
-                    Tissue Type:
+                    <span className='title'>{data.name}</span>
+                    <span className='attributes'>
+                        Tissue Type:
                         <span className='value highlight'>
-                      {data.tissue.name}
+                          {data.tissue.name}
+                        </span>
                     </span>
-                  </span>
                 </div>
                 <div className='wrapper'>
                   <StyledSidebarList>
@@ -175,7 +179,7 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={synonymColumns} data={synonymData} disablePagination />
+                            <Table columns={SYNONYM_COLUMNS} data={synonymData} />
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
@@ -191,24 +195,26 @@ const IndivCellLines = (props) => {
                           </Element>
                         </React.Fragment>
                       }
-                      <Element>
-                        <PlotSection
-                          display={display}
-                          cellLine={({ id: data.id, name: data.name })}
-                        />
-                      </Element>
+                      {
+                        display === 'barPlot' &&
+                        <Element>
+                            <PlotSection
+                                display={display}
+                                cellLine={({id: data.id, name: data.name})}
+                            />
+                        </Element>
+                      }
                       {
                         display === 'drugsSummary' &&
                         <Element className="section">
-                          <div className='section-title'>Drugs Summary</div>
-                          <TableSection cellLine={({ id: data.id, name: data.name })} />
+                          <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name, display })} />
                         </Element>
                       }
                       {
                         display === 'molecularProfiling' &&
                         <Element className="section">
                           <div className='section-title'>Molecular Profiling</div>
-                          {/*<Table columns={molecularProfColumns} data={synonymData} disablePagination />*/}
+                            <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }
                     </div>
@@ -222,14 +228,14 @@ const IndivCellLines = (props) => {
 };
 
 IndivCellLines.propTypes = {
-  /**
-   * IndivCellLines' param id
-   */
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+    /**
+     * IndivCellLines' param id
+     */
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.string.isRequired,
+        }).isRequired,
     }).isRequired,
-  }).isRequired,
 };
 
 export default IndivCellLines;

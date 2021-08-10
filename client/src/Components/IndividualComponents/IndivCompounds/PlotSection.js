@@ -81,18 +81,20 @@ const PlotSection = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {
         display === 'barplots' ?
           loading ? <Loading />
           :
           <PlotsWrapper>
             <DatasetHorizontalPlot
+              plotId={`${name}CellLines`}
               data={cellLinesData}
               xaxis="# of cell lines"
               title={`Number of cell lines tested with ${name} (per dataset)`}
             />
             <DatasetHorizontalPlot
+              plotId={`${name}Tissues`}
               data={tissuesData}
               xaxis="# of tissues"
               title={`Number of tissues tested with ${name} (per dataset)`}
@@ -106,10 +108,12 @@ const PlotSection = (props) => {
           loading ? <Loading />
           :
           <ProfileCellLine
+            plotId={`${name}CellLinesACC`}
             compound={name}
             data={experimentalData}
             profileOptions={profileOptions}
             datasetOptions={datasetOptions}
+            title={`${name}: ACC`}
           />
         :
         ''
@@ -119,15 +123,17 @@ const PlotSection = (props) => {
           loading ? <Loading />
           :
           <ProfileTissue
+            plotId={`${name}TissuesACC`}
             compound={name}
             data={experimentalData}
             profileOptions={profileOptions}
             datasetOptions={datasetOptions}
+            title={`${name}: ACC`}
           />
         :
         ''
       }
-    </>
+    </React.Fragment>
   );
 };
 

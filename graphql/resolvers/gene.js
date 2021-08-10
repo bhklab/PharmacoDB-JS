@@ -76,7 +76,7 @@ const gene = async (args, parent, info) => {
     } = args;
     // throw error if neither of the arguments are passed.
     if (!geneId && !geneName) {
-        throw new Error('Please specify atleast one of the ID or the Name of the Gene you want to query!');
+        throw new Error('Please specify at least one of the ID or the Name of the Gene you want to query!');
     }
     try {
         // extracts list of fields requested by the client

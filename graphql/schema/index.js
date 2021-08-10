@@ -8,13 +8,14 @@ const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { genericType } = require('./generic');
-const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
+const { geneCompoundTissueType, geneCompoundDatasetType, geneCompoundTissueDatasetType, geneCompoundType } = require('./gene_compound');
 const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
+const { molType} = require('./mol');
 
 
 // schema definition.
@@ -73,9 +74,14 @@ const schema = `
     "Gene Compound table Types"
     ${geneCompoundType}
     ${geneCompoundTissueType}
+    ${geneCompoundDatasetType}
+    ${geneCompoundTissueDatasetType}
 
     "Profile Type"
     ${profileType}
+    
+    "Mol Type"
+    ${molType}
 
     "Root Query"
     ${RootQuery}

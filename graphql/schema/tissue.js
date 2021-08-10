@@ -1,9 +1,11 @@
 const tissueType = `
     type Tissue {
+        """tissue id in the database"""
         id: Int!
+        """tissue name in the database"""
         name: String!
         """dataset information object"""
-        dataset: Generic!
+        dataset: [Generic!]
     }
 `;
 

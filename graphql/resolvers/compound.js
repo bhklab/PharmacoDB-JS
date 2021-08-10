@@ -5,7 +5,7 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
- * 
+ *
  *  @param {Array} - takes an array of object like below
  *      [{
  *          compound_id: 526,
@@ -27,22 +27,23 @@ const transformSynonyms = data => {
     data.map((value, i) => {
         const {
             source_compound_name,
+            dataset_id,
             dataset_name
         } = value;
-        if (!i || !Object.keys(returnList).includes(source_compound_name)) {
+        if (!i || !Object.keys(returnList).includes(source_compound_name.trim())) {
             returnList[source_compound_name] = {
                 name: source_compound_name,
-                source: [dataset_name]
+                source: [{'id': dataset_id, 'name': dataset_name}]
             };
-        } else if (Object.keys(returnList).includes(source_compound_name)) {
-            returnList[source_compound_name]['source'].push(dataset_name);
+        } else if (Object.keys(returnList).includes(source_compound_name.trim())) {
+            returnList[source_compound_name.trim()]['source'].push({'id': dataset_id, 'name': dataset_name});
         }
     });
     return Object.values(returnList);
 };
 
 /**
- * 
+ *
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
  */
@@ -78,10 +79,20 @@ const transformCompounds = data => {
 };
 
 /**
+ * @returns {Array} - Returns a list of datasets' names and ids
+ */
+const datasetsQuery = async () => {
+    const query = knex
+        .select(['d.name as name','d.id as id'])
+        .from('dataset as d')
+    return query;
+};
+
+/**
  * @param {number} compoundId
  * @param {string} compoundName
- * @param {Array} compoundData 
- * @param {Array} compoundSynonyms 
+ * @param {Array} compoundData
+ * @param {Array} compoundSynonyms
  * @param {Array} subtypes
  */
 const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
@@ -95,7 +106,7 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
         const output = {
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,
-            targets: targets['targets']
+            targets: targets['targets'],
         };
         return output;
     } catch (err) {
@@ -115,6 +126,7 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
         .select('compound.id as compound_id',
             'compound.name as compound_name',
             'compound_synonym.compound_name as source_compound_name',
+            'dataset.id as dataset_id',
             'dataset.name as dataset_name')
         .from('compound')
         .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
@@ -176,7 +188,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         if (listOfFields.includes('dataset')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
             .join('dataset as d', 'dc.dataset_id', 'd.id');
 
-        // if the user has not queried to get all the compound, 
+        // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);

@@ -79,11 +79,15 @@ const test = (server) => {
                 // checks synonyms array
                 expect(synonyms).to.be.an('array').that.have.lengthOf.above(0);
                 synonyms.every((synonym) => {
-                    expect(synonym)
-                        .to.be.an('object')
-                        .that.has.all.keys('name', 'source');
+                    expect(synonym).to.be.an('object').that.has.all.keys('name', 'source');
                     expect(synonym.name).to.be.string;
-                    expect(synonym.source).to.be.an('array').that.has.lengthOf.above(0);
+                    expect(synonym.source).to.be.an('array').that.have.lengthOf.above(0);
+                    // checks source array format
+                    synonym.source.every(source => {
+                        expect(source).to.have.all.keys('id', 'name');
+                        expect(source.id).to.be.a('number');
+                        expect(source.name).to.be.string;
+                    });
                 });
 
                 return done();

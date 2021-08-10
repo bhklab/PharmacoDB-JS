@@ -9,7 +9,6 @@ import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-// import TableSection from './TableSection';
 import CellLineSummaryTable from './Tables/CellLineSummaryTable';
 import DrugSummaryTable from './Tables/DrugSummaryTable';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
@@ -20,6 +19,15 @@ const ANNOTATION_COLUMNS = [
     {
         Header: 'Sources',
         accessor: 'sources',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.source;
+            return(datasets.map((obj, i) => (
+                    <span key={i}>
+                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+            </span>
+                )
+            ));
+        }
     },
     {
         Header: 'Names Used',
@@ -46,10 +54,11 @@ const formatName = (string) =>
  */
 const formatAnnotationData = (data) => {
     if (data) {
+        console.log(data)
         // join list of tissue source value into sources, split PascalCase names, and replace _ s
         const jsources = data.map((x) => ({
             name: formatName(x.name),
-            sources: x.source.join(', '),
+            sources: x.source['name'],
         }));
         // merge tissue names that have same source
         const output = [];
@@ -86,7 +95,6 @@ const IndivTissues = (props) => {
     const {
         match: { params },
     } = props;
-    // const tissueId = parseInt(params.id);
 
     // query to get the data for the single tissue.
     const { loading, error, data: queryData } = useQuery(getTissueQuery, {
@@ -113,76 +121,73 @@ const IndivTissues = (props) => {
         }
     }, [queryData]);
 
-  // destructuring the tissue object.
-  const { data } = tissue;
-  // formatted data for annotation table
-  const annotationColumns = React.useMemo(() => ANNOTATION_COLUMNS, []);
-  const annotationData = React.useMemo(() => formatAnnotationData(data.synonyms), [data.synonyms]);
+    // destructuring the tissue object.
+    const { data } = tissue;
 
-  /**
- * 
- * @param {String} link 
- */
-const createSideLink = (link, i) => (
-    <li key={i} className={display === link.name ? 'selected': undefined}>
-        <button type='button' onClick={() => setDisplay(link.name)}>
-            {link.label}
-        </button>
-    </li>
-);
+    /**
+     *
+     * @param {String} link
+     */
+    const createSideLink = (link, i) => (
+        <li key={i} className={display === link.name ? 'selected': undefined}>
+            <button type='button' onClick={() => setDisplay(link.name)}>
+                {link.label}
+            </button>
+        </li>
+    );
 
-  return (tissue.loaded ? (
-    <Layout page={data.name}>
-      <StyledWrapper>
-        {loading ? (<p>Loading...</p>)
-          : (error ? (<NotFoundContent />)
-            : (
-              <StyledIndivPage className="indiv-tissues">
-                <div className='heading'>
-                    <span className='title'>{formatName(data.name)}</span>
-                    <span className='attributes'>
-                        
+    return (tissue.loaded ? (
+        <Layout page={data.name}>
+            <StyledWrapper>
+                {loading ? (<p>Loading...</p>)
+                    : (error ? (<NotFoundContent />)
+                        : (
+                            <StyledIndivPage className="indiv-tissues">
+                                <div className='heading'>
+                                    <span className='title'>{formatName(data.name)}</span>
+                                    <span className='attributes'>
+
                     </span>
-                </div>
-                <div className='wrapper'>
-                    <StyledSidebarList>
-                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                    </StyledSidebarList>
-                    <div className="container">
-                        <div className="content">
-                            {
-                                display === 'annotations' &&
-                                <Element className="section" name="annotations">
-                                    <div className='section-title'>Annotations</div>
-                                    <Table columns={annotationColumns} data={annotationData} disablePagination />
-                                </Element>
-                            }
-                            {
-                                display === 'barPlots' &&
-                                <Element>
-                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
-                            {
-                                display === 'cellLineSummary' &&
-                                <Element className="section">
-                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
-                            {
-                                display === 'drugSummary' &&
-                                <Element className="section">
-                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
-                                </Element>
-                            }
-                        </div>
-                    </div>
-                </div>
-              </StyledIndivPage>
-            ))}
-      </StyledWrapper>
-    </Layout>
-  ) : null);
+                                </div>
+                                <div className='wrapper'>
+                                    <StyledSidebarList>
+                                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                                    </StyledSidebarList>
+                                    <div className="container">
+                                        <div className="content">
+                                            {
+                                                display === 'annotations' &&
+                                                <Element className="section" name="annotations">
+                                                    <div className='section-title'>Annotations</div>
+                                                    <Table columns={ANNOTATION_COLUMNS} data={data.synonyms} disablePagination />
+                                                </Element>
+                                            }
+                                            {
+                                                display === 'barPlots' &&
+                                                <Element>
+                                                    <PlotSection tissue={({ id: data.id, name: formatName(data.name) })} />
+                                                </Element>
+                                            }
+                                            {
+                                                display === 'cellLineSummary' &&
+                                                <Element className="section">
+                                                    <CellLineSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                                </Element>
+                                            }
+                                            {
+                                                display === 'drugSummary' &&
+                                                <Element className="section">
+                                                    <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
+                                                </Element>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </StyledIndivPage>
+                        ))}
+            </StyledWrapper>
+        </Layout>
+    ) : null);
 };
 
 IndivTissues.propTypes = {
