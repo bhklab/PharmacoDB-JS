@@ -68,6 +68,18 @@ const xAxis = (svg, scale, height) => svg
     .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5})`)
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
 
+
+const appendTextYAxis = (svg, height) => svg
+    .append('g')
+    .attr('id', 'y-axis-text')
+    .attr('transform', `rotate(-90)`)
+    .append('text')
+    .attr('x', -200)
+    .attr('y', 0)
+    .attr('stroke', `${colors.dark_teal_heading}`)
+    .style("font-size", 13)
+    .text("Number of cell lines");
+
 /**
  * append the rectangles to the bar chart (bars)
  * @param {Object} svg - svg canvas object.
@@ -133,6 +145,7 @@ const circleAxis = (svg, datasets, height) => {
             .attr('text-anchor', 'end')
             .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
             .attr('id', `text-circle-${datasets[i]}`)
+            .attr('font-size', 12)
             .text(`${datasets[i]}`);
     }
 };
@@ -216,6 +229,9 @@ const createUpsetPlot = (data, datasets) => {
     xAxis(svg, scaleXAxis, height);
     // create y axis.
     yAxis(svg, scaleYAxis);
+
+    // append text to the y axis.
+    appendTextYAxis(svg, height);
 
     // append rectangle for the bar chart.
     appendRectangles(svg, sortedData, scaleYAxis, height);
