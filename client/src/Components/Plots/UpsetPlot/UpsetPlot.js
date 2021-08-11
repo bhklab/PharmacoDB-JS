@@ -5,15 +5,17 @@ import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
 
+// circle radius.
+const CIRCLE_RADIUS = 8;
+// canvas id.
+const CANVAS_ID = 'upsetplot-canvas';
+
 // styling the upset plot.
 const UpsetPlotStyle = styled.div`
     width: 800px;
     overflow: auto;
     margin-bottom: 50px;
 `;
-
-// circle radius.
-const CIRCLE_RADIUS = 8;
 
 // margin for the svg element.
 const margin = {
@@ -218,7 +220,7 @@ const createUpsetPlot = (data, datasets) => {
     const sortedDataLength = Object.keys(sortedData).length;
 
     // svg canvas.
-    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot' })
+    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID })
 
     // create scale for x axis.
     const scaleXAxis = xScale(0, sortedDataLength, width);
@@ -249,6 +251,8 @@ const createUpsetPlot = (data, datasets) => {
  */
 const UpsetPlot = ({ data, datasets }) => {
     useEffect(() => {
+        // remove the alrady existing upset plot.
+        d3.select(`#${CANVAS_ID}`).remove();
         // create upset plot.
         createUpsetPlot(data, datasets);
     })
