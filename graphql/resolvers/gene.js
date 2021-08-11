@@ -69,7 +69,7 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
  * Returns the transformed data for all the queried gene in the database.
  * @param {Object} args
  */
-const gene = async (args, parent, info) => {
+const gene = async (args) => {
     const {
         geneId,
         geneName
@@ -79,20 +79,17 @@ const gene = async (args, parent, info) => {
         throw new Error('Please specify at least one of the ID or the Name of the Gene you want to query!');
     }
     try {
-        // extracts list of fields requested by the client
-        const listOfFields = retrieveFields(info).map(el => el.name);
         // gene query.
         let query = knex
             .select()
-            .from('gene');
-        // add a join to grab the gene annotations in case it's queried by the user.
-        if (listOfFields.includes('annotation')) query = query.join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
+            .from('gene')
+            .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
         // final query based on the input args.
         let gene;
         if (geneId) {
             gene = await query.where('gene.id', geneId);
-        } else if (geneName) {
-            gene = await query.where('gene.name', geneName);
+        } else if (geneName) { // using symbol column from the gene annotation table as it's being used as the gene name.
+            gene = await query.where('gene_annotation.symbol', geneName);
         }
         // transforming the rowdatapacket object.
         gene = transformObject(gene);
