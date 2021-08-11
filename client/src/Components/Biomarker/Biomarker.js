@@ -56,7 +56,8 @@ const data = [
 const SIDE_LINKS = [
     { label: 'Gene Information', name: 'gene_info' },
     { label: 'Compound Information', name: 'compound_info' },
-    { label: 'Plots', name: 'plots' },
+    { label: 'Forest Plot', name: 'forest_plot' },
+    { label: 'Manhattan Plot', name: 'manhattan_plot' },
 ];
 
 // gene information columns.
@@ -249,10 +250,15 @@ const Biomarker = (props) => {
                                     </Element>
                                 }
                                 {
-                                    display === 'plots' &&
-                                    <Element className="section" name="forest_plots">
-                                        <div className='section-title'>Plots</div>
+                                    display === 'forest_plot' &&
+                                    <Element className="section" name="forest_plot">
                                         <ForestPlot />
+                                    </Element>
+                                }
+                                {
+                                    display === 'manhattan_plot' &&
+                                    <Element className="section" name="manhattan_plot">
+                                        <div />
                                     </Element>
                                 }
                             </div>

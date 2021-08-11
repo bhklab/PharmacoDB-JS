@@ -190,7 +190,8 @@ const appendDatasetName = (svg) => {
         .attr('x', 10)
         .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
-        .text('Dataset Name');
+        .text('Dataset Name')
+        .attr('font-size', '22px');
 
     // append dataset name.
     data.forEach((element, i) => {
@@ -201,7 +202,8 @@ const appendDatasetName = (svg) => {
             .attr('x', 10)
             .attr('y', (i * height) / data_length + height / data_length)
             .attr('fill', `${colors.dark_gray_text}`)
-            .text(`${element.dataset_name}`);
+            .text(`${element.dataset_name}`)
+            .attr('font-size', '18px');
     });
 };
 
@@ -218,7 +220,8 @@ const appendEstimateText = (svg) => {
         .attr('x', (width * 3) / 4 + 10)
         .attr('y', 0)
         .attr('fill', `${colors.dark_gray_text}`)
-        .text('Estimate');
+        .text('Estimate')
+        .attr('font-size', '22px');
 
     // append dataset name.
     data.forEach((element, i) => {
@@ -232,7 +235,8 @@ const appendEstimateText = (svg) => {
             .attr('fill', `${colors.dark_gray_text}`).text(`(
                 ${(element.estimate - MULTIPLIER * element.se).toFixed(2)}, 
                 ${(element.estimate + MULTIPLIER * element.se).toFixed(2)}
-            )`);
+            )`)
+            .attr('font-size', '18px');
     });
 };
 
@@ -258,7 +262,7 @@ const createForestPlot = (margin, height, width) => {
     // create the circles for the plot.
     createCircles(svg, xScale, circleScale);
     // create polygon/rhombus.
-    createPolygon(svg, xScale);
+    // createPolygon(svg, xScale);
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg);
     // append estimate as text to the svg.
