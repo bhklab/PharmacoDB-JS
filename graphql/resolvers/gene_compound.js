@@ -15,7 +15,7 @@ const transformGeneCompounds = (data) => {
             fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
             sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name,
             smiles, inchikey, pubchem, fda_status, tissue_id,
-            tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end, 
+            tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end,
             dataset_id, dataset_name
         } = compound_compound;
         return {
@@ -82,10 +82,10 @@ const transformGeneCompounds = (data) => {
  */
 const gene_compound_tissue = async (args, context, info) => {
     // arguments
-    const { geneId, compoundId, page = 1, per_page = 20, all = false } = args;
+    const { geneId, compoundId, tissueId, page = 1, per_page = 20, all = false } = args;
 
     // check if the gene or compound id is passed?
-    if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
+    if (!geneId && !compoundId && tissueId) throw new Error('Invalid input! Query must include geneId and compoundId and tissueId');
 
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
@@ -173,7 +173,7 @@ const gene_compound_dataset = async (args, context, info) => {
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
         const listOfFields = retrieveFields(info);
-        
+
         // creates list of columns and list of subtypes for the knex query builder based on the fields requested by graphQL client
         const columns = [];
         const subtypes = [];
@@ -316,11 +316,11 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
                     break;
             }
         });
-        
+
         // transform and return the data.
         const geneCompoundResults = await query;
         return transformGeneCompounds(geneCompoundResults);
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }
