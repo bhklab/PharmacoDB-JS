@@ -22,13 +22,14 @@ const defaultHeight = 600 - defaultMargin.top - defaultMargin.bottom;
  * @returns - an svg canvas with the given height and width.
  */
 const createSvgCanvas = (
-    { height = defaultHeight, width = defaultWidth, margin = defaultMargin, id = '' }
+    { height = defaultHeight, width = defaultWidth, margin = defaultMargin, id = '', canvasId = 'canvas' }
 ) => {
     return (
         select(`#${id}`)
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
+            .attr('id', canvasId)
             .append('g')
             .attr('transform',
                 'translate(' + margin.left + ',' + margin.top + ')')

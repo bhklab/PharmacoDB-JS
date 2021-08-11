@@ -5,15 +5,17 @@ import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
 
+// circle radius.
+const CIRCLE_RADIUS = 8;
+// canvas id.
+const CANVAS_ID = 'upsetplot-canvas';
+
 // styling the upset plot.
 const UpsetPlotStyle = styled.div`
     width: 800px;
     overflow: auto;
     margin-bottom: 50px;
 `;
-
-// circle radius.
-const CIRCLE_RADIUS = 8;
 
 // margin for the svg element.
 const margin = {
@@ -67,6 +69,18 @@ const xAxis = (svg, scale, height) => svg
     .attr('id', 'x-axis')
     .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5})`)
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
+
+
+const appendTextYAxis = (svg, height) => svg
+    .append('g')
+    .attr('id', 'y-axis-text')
+    .attr('transform', `rotate(-90)`)
+    .append('text')
+    .attr('x', -200)
+    .attr('y', 0)
+    .attr('stroke', `${colors.dark_teal_heading}`)
+    .style("font-size", 13)
+    .text("Number of cell lines");
 
 /**
  * append the rectangles to the bar chart (bars)
@@ -133,6 +147,7 @@ const circleAxis = (svg, datasets, height) => {
             .attr('text-anchor', 'end')
             .attr('transform', `translate(${margin.left * 1.5}, ${height / 1.5 + ((i + 1) * CIRCLE_RADIUS * 3.1)})`)
             .attr('id', `text-circle-${datasets[i]}`)
+            .attr('font-size', 12)
             .text(`${datasets[i]}`);
     }
 };
@@ -205,7 +220,7 @@ const createUpsetPlot = (data, datasets) => {
     const sortedDataLength = Object.keys(sortedData).length;
 
     // svg canvas.
-    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot' })
+    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID })
 
     // create scale for x axis.
     const scaleXAxis = xScale(0, sortedDataLength, width);
@@ -216,6 +231,9 @@ const createUpsetPlot = (data, datasets) => {
     xAxis(svg, scaleXAxis, height);
     // create y axis.
     yAxis(svg, scaleYAxis);
+
+    // append text to the y axis.
+    appendTextYAxis(svg, height);
 
     // append rectangle for the bar chart.
     appendRectangles(svg, sortedData, scaleYAxis, height);
@@ -233,6 +251,8 @@ const createUpsetPlot = (data, datasets) => {
  */
 const UpsetPlot = ({ data, datasets }) => {
     useEffect(() => {
+        // remove the alrady existing upset plot.
+        d3.select(`#${CANVAS_ID}`).remove();
         // create upset plot.
         createUpsetPlot(data, datasets);
     })
