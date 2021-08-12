@@ -8,7 +8,6 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  * @returns {Array} - Returns a transformed array of objects.
  */
 const transformGeneCompounds = (data) => {
-    console.log(data);
     return data.map(compound_compound => {
         const {
             gct_id, compound_id, estimate, lower_analytic, upper_analytic,
@@ -165,7 +164,6 @@ const gene_compound_dataset = async (args, context, info) => {
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not.
  */
 const gene_compound_tissue_dataset = async (args, context, info) => {
-    console.log(args);
     // arguments
     const { geneId, compoundId, tissueId, page = 1, per_page = 20, all = false } = args;
 
@@ -209,10 +207,10 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
 
         let query = knex.select(columns).from('gene_compound_tissue_dataset as GD');
         // chooses table to select from
-        if (geneId) query = query.where({ 'GD.gene_id': geneId });
-        if (compoundId) query = geneId
-            ? query.andWhere({ 'GD.compound_id': compoundId })
-            : query.where({ 'GD.compound_id': compoundId });
+        if (geneId && compoundId && tissueId) query = query.where({ 'GD.gene_id': geneId })
+            .andWhere({ 'GD.compound_id': compoundId })
+            .andWhere({ 'GD.tissue_id': tissueId });
+
         if (!all) query = query.limit(limit).offset(offset);
 
         // updates query to contain joins based on requested fields
