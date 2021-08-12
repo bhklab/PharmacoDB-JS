@@ -141,11 +141,54 @@ const getSingleGeneExperimentsQuery = gql`
   }
 `;
 
+/**
+ * Takes cell line and compound ids/names, and returns all the experiment records that 
+ * is perfoemd using the given cell line and compound combination.
+ * @param { Number } cellLineId 
+ * @param { String } cellLineName
+ * @param { Number } compoundId
+ * @param { String } compoundName
+ * @returns - All the experiments with given cell line and compound combination.
+ */
+const getCellLineCompoundExperimentsQuery = gql`
+  query getCellLineCompoundExperiments($cellLineId: Int, $cellLineName: String, $compoundId: Int, $compoundName: String) {
+    experiments(cellLineId: $cellLineId, cellLineName: $cellLineName, compoundId: $compoundId, compoundName: $compoundName) {
+      cell_line {
+        id
+        name
+      }
+      compound {
+        id
+        name
+      }
+      dataset {
+        id
+        name
+      }
+      dose_response {
+        dose
+        response
+      }
+      profile {
+        HS
+        Einf
+        EC50
+        AAC
+        IC50
+        DSS1
+        DSS2
+        DSS3
+      }
+    }
+  }
+`;
+
 export {
   getSingleCompoundExperimentsQuery,
   getSingleCellLineExperimentsQuery,
   getSingleTissueExperimentsQuery,
   getSingleTissueCellLinesQuery,
   getSingleTissueCompoundsQuery,
-  getSingleGeneExperimentsQuery
+  getSingleGeneExperimentsQuery,
+  getCellLineCompoundExperimentsQuery
 };
