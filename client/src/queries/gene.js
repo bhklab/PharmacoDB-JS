@@ -22,6 +22,7 @@ const GENE_FIELDS = gql`
  * and also returning the annotation object for each of the gene in the database.
  */
 const getGenesQuery = gql`
+    ${GENE_FIELDS}
     query getAllGenes {
         genes(all: true) {
             ...GeneFields
