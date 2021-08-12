@@ -78,7 +78,11 @@ const CompoundsSummaryTable = (props) => {
         }
     ];
 
-    const [tableData, setTableData] = useState([]);
+    const [tableData, setTableData] = useState({
+        data: [],
+        numCompounds: 0,
+        numDatasets: 0
+    });
     const [error, setError] = useState(false);
 
     const { loading } = useQuery(getGeneCompoundDatasetQuery, {
@@ -102,21 +106,26 @@ const CompoundsSummaryTable = (props) => {
                 <React.Fragment>
                     <h4>
                         <p align="center">
-                            { `Compounds tested targetting ${gene.name}` }
+                            { `Compounds tested targetting ${gene.annotation.symbol}` }
                         </p>
                     </h4>
                     <p align="center">
-                        { `${tableData.numCompounds} compounds have been tested on ${gene.name}, using data from ${tableData.numDatasets} dataset(s).` }
+                        { `${tableData.numCompounds} compounds have been tested on ${gene.annotation.symbol}, using data from ${tableData.numDatasets} dataset(s).` }
                     </p>
-                    <div className='download-button'>
-                        <DownloadButton 
-                            label='CSV' 
-                            data={tableData.data} 
-                            mode='csv' 
-                            filename={`${gene.name} - compounds`} 
-                        />
-                    </div>
-                    <Table columns={columns} data={tableData.data} />
+                    {
+                        tableData.data.length > 0 &&
+                        <React.Fragment>
+                            <div className='download-button'>
+                                <DownloadButton 
+                                    label='CSV' 
+                                    data={tableData.data} 
+                                    mode='csv' 
+                                    filename={`${gene.name} - compounds`} 
+                                />
+                            </div>
+                            <Table columns={columns} data={tableData.data} />
+                        </React.Fragment>
+                    }
                 </React.Fragment>
             }
         </React.Fragment>

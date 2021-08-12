@@ -75,7 +75,7 @@ const PlotSection = (props) => {
             plotId='gene_compound_dataset_plot'
             data={data}
             xaxis="# of compounds"
-            title={`Number of compounds tested targeting ${gene.name} (per dataset)`}
+            title={`Number of compounds tested targeting ${gene.annotation.symbol} (per dataset)`}
           />
         </PlotsWrapper>
       }

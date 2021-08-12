@@ -96,6 +96,7 @@ const RootQuery = `type RootQuery {
         Root Queries for targets.
     """
     compound_target(compoundId: Int!): CompoundTarget!
+    compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
 
 
     """

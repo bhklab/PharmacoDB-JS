@@ -149,10 +149,6 @@ const ProfileCellLine = (props) => {
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
       <Plot divId={plotId}  data={plotData} layout={layout} config={config} />
-      <div className='download-buttons'>
-        <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
-        <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
-      </div>
       <div className="notifications">
         {notifications.subset ? (
           <p>
@@ -166,6 +162,10 @@ const ProfileCellLine = (props) => {
             {notifications.errorBars}
           </p>
         ) : null}
+      </div>
+      <div className='download-buttons'>
+        <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
+        <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
       </div>
     </div>
   );

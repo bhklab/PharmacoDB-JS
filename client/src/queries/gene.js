@@ -43,4 +43,19 @@ const getGeneQuery = gql`
     }
 `;
 
-export { getGenesQuery, getGeneQuery };
+const getCompoundTargetsQuery = gql`
+    query getCompoundTargets {
+        compound_targets {
+            compound_id
+            targets {
+                id
+            }
+        }
+    }
+`;
+
+export { 
+    getGenesQuery, 
+    getGeneQuery, 
+    getCompoundTargetsQuery 
+};
