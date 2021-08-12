@@ -6,7 +6,8 @@ const geneResolver = require('./gene');
 const targetResolver = require('./target');
 const tissueResolver = require('./tissue');
 const geneCompoundResolver = require('./gene_compound');
-const molCellResolver = require('./mol')
+const geneCompoundAnalyticResolver = require('./gene_compound_analytic');
+const molCellResolver = require('./mol');
 
 const rootResolver = {
     ...compoundResolver,
@@ -17,6 +18,7 @@ const rootResolver = {
     ...targetResolver,
     ...tissueResolver,
     ...geneCompoundResolver,
+    ...geneCompoundAnalyticResolver,
     ...molCellResolver,
 };
 
