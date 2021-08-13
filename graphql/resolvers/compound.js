@@ -173,8 +173,6 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
 
-        console.log(listOfFields);
-
         // select fields.
         const selectFields = ['c.id as id', 'c.name as name'];
         // add dataset detail to the list of knex columns to select.
