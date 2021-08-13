@@ -33,10 +33,10 @@ const transformSynonyms = data => {
         if (!i || !Object.keys(returnList).includes(source_compound_name.trim())) {
             returnList[source_compound_name] = {
                 name: source_compound_name,
-                source: [{'id': dataset_id, 'name': dataset_name}]
+                source: [{ 'id': dataset_id, 'name': dataset_name }]
             };
         } else if (Object.keys(returnList).includes(source_compound_name.trim())) {
-            returnList[source_compound_name.trim()]['source'].push({'id': dataset_id, 'name': dataset_name});
+            returnList[source_compound_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
         }
     });
     return Object.values(returnList);
@@ -83,8 +83,8 @@ const transformCompounds = data => {
  */
 const datasetsQuery = async () => {
     const query = knex
-        .select(['d.name as name','d.id as id'])
-        .from('dataset as d')
+        .select(['d.name as name', 'd.id as id'])
+        .from('dataset as d');
     return query;
 };
 
