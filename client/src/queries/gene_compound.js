@@ -17,15 +17,15 @@ const geneCompound = `
  * @param {number} geneId - gene id for which the data is needed.
  * @returns - the information for the queried gene.
  */
- const getGeneCompoundDatasetQuery = gql`
+const getGeneCompoundDatasetQuery = gql`
     query getGeneCompoundDataset($geneId: Int) {
         gene_compound_dataset(geneId: $geneId, all: true) {
             ${geneCompound}
-            n
             dataset {
                 id
                 name
             }
+            n
         }
     }
 `;
@@ -34,14 +34,10 @@ const geneCompound = `
  * @param {number} geneId/compoundId - gene/compound id for which the data is needed.
  * @returns - the information for the queried gene.
  */
- const getGeneCompoundTissueDatasetQuery = gql`
+const getGeneCompoundTissueDatasetQuery = gql`
     query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int) {
         gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
             ${geneCompound}
-            estimate
-            pvalue_analytic
-            sens_stat,
-            mDataType,
             dataset {
                 id
                 name
@@ -50,6 +46,14 @@ const geneCompound = `
                 id
                 name
             }
+            lower_analytic
+            upper_analytic
+            upper_permutation
+            lower_permutation
+            estimate
+            pvalue_analytic
+            sens_stat,
+            mDataType,
         }
     }
 `;
