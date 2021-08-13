@@ -7,7 +7,7 @@ import { getCellLineCompoundExperimentsQuery } from '../../../queries/experiment
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
 import CellLineCompoundDoseResponse from './CellLineCompoundDoseResponse';
-import IntersectionSummaryTable from '../IntersectionSummaryTable';
+import CellLineCompoundTable from './CellLineCompoundTable';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
 import { StyledIntersectionComponent } from '../../../styles/IntersectionComponentStyles';
@@ -22,6 +22,7 @@ const CellLineCompound = (props) => {
     const { cell_line, compound } = props;
     const [error, setError] = useState(false);
     const [experiments, setExperiments] = useState(undefined);
+    const [displayedStats, setDisplayedStats] = useState([]);
 
     // query to get the data for the single gene.
     const { loading } = useQuery(getCellLineCompoundExperimentsQuery, {
@@ -59,8 +60,15 @@ const CellLineCompound = (props) => {
                             experiments.length > 0 ?
                             <StyledIntersectionComponent>
                                 <h2>{getLink('cell_lines', experiments[0].cell_line)} treated with {getLink('compounds', experiments[0].compound)}</h2>
-                                <CellLineCompoundDoseResponse experiments={experiments} />
-                                <IntersectionSummaryTable experiments={experiments.map(exp => ({dataset: exp.dataset, profile: exp.profile}))} />
+                                <CellLineCompoundDoseResponse 
+                                    experiments={experiments} 
+                                    displayedStats={displayedStats}
+                                />
+                                <CellLineCompoundTable 
+                                    experiments={experiments.map(exp => ({dataset: exp.dataset, profile: exp.profile}))} 
+                                    displayedStats={displayedStats}
+                                    setDisplayedStats={setDisplayedStats}
+                                />
                             </StyledIntersectionComponent>
                             :
                             <h3>No experiments were found with a given combination of cell line and compound.</h3>
