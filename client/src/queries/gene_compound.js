@@ -35,8 +35,8 @@ const getGeneCompoundDatasetQuery = gql`
  * @returns - the information for the queried gene.
  */
 const getGeneCompoundTissueDatasetQuery = gql`
-    query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int) {
-        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
+    query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int, $tissueId: Int) {
+        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, all: true) {
             ${geneCompound}
             dataset {
                 id
