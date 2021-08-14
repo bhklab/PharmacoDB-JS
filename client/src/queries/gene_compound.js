@@ -52,8 +52,9 @@ const getGeneCompoundTissueDatasetQuery = gql`
             lower_permutation
             estimate
             pvalue_analytic
-            sens_stat,
-            mDataType,
+            sens_stat
+            mDataType
+            n
         }
     }
 `;

@@ -4,53 +4,13 @@ import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
-import SnakeCase from '../../utils/convertToSnakeCase';
+import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
-
-const poly = [
-    { x: 250.0, y: 300.0 },
-    { x: 275, y: 275 },
-    { x: 300.0, y: 300.0 },
-    { x: 275.0, y: 325 },
-    { x: 250.0, y: 300.0 },
-];
-const data = [
-    {
-        gene: 5512,
-        drug: 415,
-        tissue: 2,
-        dataset: 5,
-        n: 27,
-        se: 1.031,
-        estimate: -0.63,
-        dataset_name: 'CCLE',
-    },
-    {
-        gene: 5512,
-        drug: 415,
-        tissue: 2,
-        dataset: 3,
-        n: 5,
-        se: 0.203,
-        estimate: -0.085,
-        dataset_name: 'FIMM',
-    },
-    {
-        gene: 5512,
-        drug: 415,
-        tissue: 2,
-        dataset: 4,
-        n: 27,
-        se: 1.033,
-        estimate: 0.542,
-        dataset_name: 'gCSI',
-    },
-];
 
 // side links.
 const SIDE_LINKS = [
@@ -115,7 +75,7 @@ const transformCompoundTableData = (data) => {
  *
  * @param {Object} geneData - gene information data.
  * @param {Object} compoundData - compound information data.
- * @returns {Array} - transformed data.
+ * @returns {Array} - data array.
  */
 const transformGeneTableData = (geneData, compoundData) => {
     // grab the ensg and gene location.
@@ -155,6 +115,7 @@ const Biomarker = (props) => {
     // set states for transformed data for tables.
     const [transformedCompoundData, setTransformedCompoundData] = useState([]);
     const [transformedGeneData, setTransformedGeneData] = useState([]);
+    const [finalGeneCompoundTissueDatasetData, setGeneCompoundTissueDatasetData] = useState([]);
 
     // A section to display on the page
     const [display, setDisplay] = useState('gene_info');
@@ -178,11 +139,19 @@ const Biomarker = (props) => {
     } = useQuery(getCompoundQuery, {
         variables: { compoundName: `${compound}` },
     });
+
     const {
         loading: geneDataLoading,
         error: geneDataError,
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
+
+    const {
+        loading: geneCompoundTissueDatasetDataLoading,
+        error: geneCompoundTissueDatasetDataError,
+        data: geneCompoundTissueDatasetQueryData,
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 64, compoundId: 1, tissueId: 6 } });
+
 
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
@@ -191,7 +160,7 @@ const Biomarker = (props) => {
     // setting the state on load of compound data.
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
-        if (compoundQueryData && geneQueryData) {
+        if (compoundQueryData && geneQueryData && geneCompoundTissueDatasetQueryData) {
             setTransformedCompoundData(
                 transformCompoundTableData(compoundQueryData.singleCompound)
             );
@@ -201,18 +170,23 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
+            setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
         }
-    }, [compoundQueryData, geneQueryData]);
+    }, [compoundQueryData, geneQueryData, geneCompoundTissueDatasetQueryData]);
 
     return (
         <Layout>
             <StyledWrapper>
                 <StyledIndivPage >
                     <div className='heading'>
-                        <span className='title'>{data.name}
-                            {`${TitleCase(gene)} + ${TitleCase(
-                                compound
-                            )} + ${TitleCase(tissue)}`}
+                        <span className='title'>
+                            {
+                                `
+                                    ${TitleCase(gene)} + 
+                                    ${TitleCase(compound)} + 
+                                    ${TitleCase(tissue)}
+                                `
+                            }
                         </span>
                     </div>
                     <div className='wrapper'>
@@ -252,7 +226,7 @@ const Biomarker = (props) => {
                                 {
                                     display === 'forest_plot' &&
                                     <Element className="section" name="forest_plot">
-                                        <ForestPlot />
+                                        <ForestPlot data={finalGeneCompoundTissueDatasetData} />
                                     </Element>
                                 }
                                 {
