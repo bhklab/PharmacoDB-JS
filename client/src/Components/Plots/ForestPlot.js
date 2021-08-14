@@ -4,37 +4,8 @@ import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 
-const data = [
-    {
-        gene: 64,
-        drug: 1,
-        tissue: 6,
-        dataset: 2,
-        n: 37,
-        lower_analytic: -0.468858800064676,
-        upper_analytic: 0.162209940075892,
-        upper_permutation: null,
-        lower_permutation: null,
-        estimate: -0.17,
-        dataset_name: 'CCLE',
-    },
-    {
-        gene: 64,
-        drug: 1,
-        tissue: 6,
-        dataset: 3,
-        n: 39,
-        lower_analytic: -0.327969091537435,
-        upper_analytic: 0.302955393024951,
-        upper_permutation: null,
-        lower_permutation: null,
-        estimate: -0.0139,
-        dataset_name: 'FIMM',
-    }
-];
-
 // data length and multiplier variables.
-const data_length = data.length + 2;
+const ADDITIONAL = 2;
 
 // margin for the svg element.
 const margin = {
@@ -48,21 +19,32 @@ const margin = {
 const width = 800 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
-// calculates the minimum and maximum estimate from the data.
-const minEstimate = Math.min(...data.map((val) => val.estimate));
-const maxEstimate = Math.max(...data.map((val) => val.estimate));
+/**
+ * 
+ * @param {Array} data - input data.
+ */
+const calculateMinMax = (data) => {
+    // calculates the minimum and maximum estimate from the data.
+    const minEstimate = Math.min(...data.map((val) => val.estimate));
+    const maxEstimate = Math.max(...data.map((val) => val.estimate));
 
-// calculates the minimum and maximum analytic from the data.
-const minAnalytic = Math.min(...data.map((val) => val.lower_analytic));
-const maxAnalytic = Math.max(...data.map((val) => val.upper_analytic));
+    // calculates the minimum and maximum analytic from the data.
+    const minAnalytic = Math.min(...data.map((val) => val.lower_analytic));
+    const maxAnalytic = Math.max(...data.map((val) => val.upper_analytic));
 
-// calculates the minimum and maximum permutation from the data.
-const minPermutation = Math.min(...data.map((val) => val.lower_permutation));
-const maxPermutation = Math.max(...data.map((val) => val.upper_permutation));
+    // calculates the minimum and maximum permutation from the data.
+    const minPermutation = Math.min(...data.map((val) => val.lower_permutation));
+    const maxPermutation = Math.max(...data.map((val) => val.upper_permutation));
 
-// assign min and max.
-const min = minPermutation || minAnalytic;
-const max = maxPermutation || maxAnalytic;
+    // assign min and max.
+    const min = minPermutation || minAnalytic;
+    const max = maxPermutation || maxAnalytic;
+
+    return {
+        min,
+        max
+    }
+}
 
 /**
  * @returns - d3 linear scale for circles.
@@ -71,9 +53,12 @@ const max = maxPermutation || maxAnalytic;
 const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 25]);
 
 /**
+ * 
+ * @param {number} min - min value to be passed to the domain.
+ * @param {number} max - max value to be passed to the domain.
  * @returns - d3 linear scale for x-axis.
  */
-const createXScale = () =>
+const createXScale = (min, max) =>
     d3.scaleLinear()
         .domain([min, max])
         .range([100, (width * 3) / 4])
@@ -83,11 +68,11 @@ const createXScale = () =>
  * Appends x-axis to the main svg element.
  * @param {Object} svg - svg selection.
  */
-const createXAxis = (svg) => {
+const createXAxis = (svg, scale) => {
     svg.append('g')
         .attr('id', 'x-axis')
         .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(createXScale()));
+        .call(d3.axisBottom(scale));
 };
 
 /**
@@ -111,17 +96,20 @@ const createVerticalLine = (svg, scale) => {
  * @param {Object} svg - svg selection for the global canvas.
  * @param {Object} scale - x axis scale.
  */
-const createHorizontalLines = (svg, scale) => {
+const createHorizontalLines = (svg, scale, data) => {
+    const horizontal = svg.append('g')
+        .attr('id', `horizontal-lines`)
+
     data.forEach((element, i) => {
-        svg.append('g')
-            .attr('id', `horizontal-line-${element.dataset}`)
+        horizontal
             .append('line')
+            .attr('id', `horizontal-line-${element.dataset.name}`)
             .style('stroke', `${colors.dark_gray_text}`)
             .style('stroke-width', 1.5)
             .attr('x1', scale(element.lower_permutation || element.lower_analytic))
-            .attr('y1', ((i + 1) * height) / data_length)
+            .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('x2', scale(element.upper_permutation || element.upper_analytic))
-            .attr('y2', ((i + 1) * height) / data_length)
+            .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
     });
 };
 
@@ -130,14 +118,18 @@ const createHorizontalLines = (svg, scale) => {
  * @param {Object} svg - svg selection for the global canvas.
  * @param {Object} xScale - x axis scale.
  * @param {Object} circleScale - scale to set the radius of the circle.
+ * @param {Array} data - data array.
  */
-const createCircles = (svg, xScale, circleScale) => {
+const createCircles = (svg, xScale, circleScale, data) => {
+    const circles = svg.append('g')
+        .attr('id', 'cirlces');
+
     data.forEach((element, i) => {
-        svg.append('g')
-            .attr('id', `cirlce-${element.dataset}`)
+        circles
             .append('circle')
+            .attr('id', `cirlce-${element.dataset.name}`)
             .attr('cx', xScale(element.estimate))
-            .attr('cy', ((i + 1) * height) / data_length)
+            .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
             .attr('stroke', 'black')
             .attr('fill', `${colors.teal}`);
@@ -168,8 +160,9 @@ const createCircles = (svg, xScale, circleScale) => {
 /**
  * Appends dataset name to the right of the forest plot.
  * @param {Object} svg
+ * @param {Array} data - data array.
  */
-const appendDatasetName = (svg) => {
+const appendDatasetName = (svg, data) => {
     // append header (dataset)
     svg.append('g')
         .attr('id', 'dataset-header')
@@ -181,16 +174,19 @@ const appendDatasetName = (svg) => {
         .text('Dataset Name')
         .attr('font-size', '20px');
 
+    const dataset = svg.append('g')
+        .attr('id', 'dataset-names');
+
     // append dataset name.
     data.forEach((element, i) => {
-        svg.append('g')
-            .attr('id', `dataset-${element.dataset_name}`)
+        dataset
             .append('text')
+            .attr('id', `dataset-${element.dataset.name}`)
             .attr('font-weight', 200)
             .attr('x', 10)
-            .attr('y', ((i + 1) * height) / data_length)
+            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${element.dataset_name}`)
+            .text(`${element.dataset.name}`)
             .attr('font-size', '16px');
     });
 };
@@ -198,8 +194,9 @@ const appendDatasetName = (svg) => {
 /**
  * Appends estimate text to the chart.
  * @param {Object} svg
+ * @param {Array} data - data array.
  */
-const appendEstimateText = (svg) => {
+const appendEstimateText = (svg, data) => {
     // append header (dataset)
     svg.append('g')
         .attr('id', 'estimate-header')
@@ -211,15 +208,17 @@ const appendEstimateText = (svg) => {
         .text('Estimate')
         .attr('font-size', '20px');
 
+    const estimate = svg.append('g')
+        .attr('id', 'estimate');
+
     // append dataset name.
     data.forEach((element, i) => {
-        svg
-            .append('g')
-            .attr('id', `dataset-${element.dataset_name}`)
+        estimate
             .append('text')
+            .attr('id', `estimate-${element.dataset.name}`)
             .attr('font-weight', 200)
             .attr('x', (width * 3) / 4 + 10)
-            .attr('y', ((i + 1) * height) / data_length)
+            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`).text(`(
                 ${(element.lower_permutation || element.lower_analytic).toFixed(2)}, 
                 ${(element.upper_permutation || element.upper_analytic).toFixed(2)}
@@ -238,24 +237,26 @@ const appendEstimateText = (svg) => {
 const createForestPlot = (margin, height, width, data) => {
     // creating the svg canvas.
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
+    // min and max.
+    const { min, max } = calculateMinMax(data);
     // scale for x-axis.
-    const xScale = createXScale();
+    const xScale = createXScale(min, max);
     // scale for circles.
     const circleScale = circleScaling();
     // creating x axis.
-    createXAxis(svg);
+    createXAxis(svg, xScale);
     // create vertical line at 0 on x-axis.
     createVerticalLine(svg, xScale);
     // create horizontal lines for the plot.
-    createHorizontalLines(svg, xScale);
+    createHorizontalLines(svg, xScale, data);
     // create the circles for the plot.
-    createCircles(svg, xScale, circleScale);
+    createCircles(svg, xScale, circleScale, data);
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
     // append the dataset names corresponding to each horizontal line.
-    appendDatasetName(svg);
+    appendDatasetName(svg, data);
     // append estimate as text to the svg.
-    appendEstimateText(svg);
+    appendEstimateText(svg, data);
 };
 
 /**
