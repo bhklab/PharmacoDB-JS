@@ -1,39 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
-import d3 from 'd3';
-
-function getSupportVec(x, num_points) {
-    var dx = Math.pow(10,((Math.log10(d3.max(x)) - Math.log10(d3.min(x)))/(num_points - 1)));
-    var support_vec = [];
-    for (var i=0; i < num_points; i++){
-      support_vec.push((d3.min(x) * Math.pow(dx,i)));
-    }
-    return support_vec;
-}
   
-function hill(x, pars) {
-    return (pars[1] + (100 - pars[1]) / (1 + Math.pow(x / pars[2], pars[0])));
+const hill = (x, profile) => {
+    return (profile.Einf + (100 - profile.Einf) / (1 + Math.pow(x / profile.EC50, profile.HS)));
 }
 
 //Returns the curve-fitting coordinates
-function makeCurveFit(pars, minDose, maxDose) {
+const makeCurveFit = (profile, minDose, maxDose) => {
     //curve fitting data
-    var x = getSupportVec([minDose, maxDose], 1001);
-    var y = [];
-  
-    for (var i = 0; i < x.length; i++) {
-      y.push(hill(x[i], pars));
+    let numPoints = 1001;
+    let dx = Math.pow(10,((Math.log10(maxDose) - Math.log10(minDose))/(numPoints - 1)));
+    let supportVec = [];
+    for(let i = 0; i < numPoints; i++){
+      supportVec.push((minDose * Math.pow(dx,i)));
     }
-  
-    //making into a JSON object to send to curvefit
-    var coords = [];
-    for (var i = 0; i < x.length; i++) {
-      var obj = {}
-      obj["x"] = x[i];
-      obj["y"] = y[i];
-      coords.push(obj);
-    }
-    return coords;
+
+    return(supportVec.map(item => ({
+        x: item,
+        y: hill(item, profile)
+    })));
 }
 
 const DoseResponseCurve = (props) => {
@@ -42,11 +27,26 @@ const DoseResponseCurve = (props) => {
 
     useEffect(() => {
         let parsed = [];
+
         for(const experiment of experiments){
             let dose = experiment.dose_response.map(item => item.dose);
-            let profile = [experiment.profile.HS, experiment.profile.Einf, experiment.profile.EC50];
-            let curvCoordinates = makeCurveFit(profile, Math.min(...dose), Math.max(...dose));
-
+            let logDose = dose.map(item => Math.log10(item));
+            let curvCoordinates = makeCurveFit(experiment.profile, Math.min(...dose), Math.max(...dose));
+            
+            parsed.push({
+                name: experiment.name,
+                x: [Math.min(...logDose), Math.max(...logDose)],
+                y: [100, 100],
+                mode: 'lines',
+                line: {
+                    color: experiment.color,
+                    width: 0
+                },
+                showlegend: false,
+                hoverinfo: 'skip',
+                fill: 'none'
+            });
+            
             parsed.push({
                 name: experiment.name,
                 curve: true,
@@ -59,12 +59,12 @@ const DoseResponseCurve = (props) => {
                 },
                 showlegend: false,
                 hoverinfo: 'skip',
-                fill: ''
+                fill: 'none'
             });
             
             parsed.push({
                 name: experiment.name,
-                x: dose.map(item => Math.log10(item)),
+                x: logDose,
                 y: experiment.dose_response.map(item => item.response),
                 mode: 'markers',
                 type: 'scatter',
@@ -77,7 +77,7 @@ const DoseResponseCurve = (props) => {
                     `Dose: ${item.dose}uM<br />` + 
                     `Response: ${item.response}%`
                 )),
-                fill: ''
+                fill: 'none'
             });
         }
         setTraces(parsed);
@@ -87,12 +87,12 @@ const DoseResponseCurve = (props) => {
         if(traces.length > 0){
             let copy = [...traces];
             copy = copy.filter(trace => !trace.additionalStat);
-            copy = copy.map(trace => ({...trace, fill: ''}));
+            copy = copy.map(trace => ({...trace, fill: 'none'}));
             for(const stat of displayedStats){
                 switch(stat.statName){
                     case 'AAC':
                         let index = copy.findIndex(item => item.name === stat.rowName && item.curve);
-                        copy[index].fill = 'tozeroy';
+                        copy[index].fill = 'tonexty';
                         break;
                     case 'IC50':
                         break;
