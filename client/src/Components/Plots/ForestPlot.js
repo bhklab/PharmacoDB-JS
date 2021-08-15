@@ -131,7 +131,6 @@ const createCircles = (svg, xScale, circleScale, data) => {
             .attr('cx', xScale(element.estimate))
             .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
-            .attr('stroke', 'black')
             .attr('fill', `${colors.teal}`);
     });
 };
@@ -263,6 +262,7 @@ const createForestPlot = (margin, height, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ data }) => {
+    console.log(data);
     useEffect(() => {
         createForestPlot(margin, height, width, data);
     }, []);

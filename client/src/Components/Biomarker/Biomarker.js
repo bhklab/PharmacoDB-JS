@@ -11,6 +11,7 @@ import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
+import ManhattanPlot from '../Plots/ManhattanPlot';
 
 // side links.
 const SIDE_LINKS = [
@@ -150,7 +151,7 @@ const Biomarker = (props) => {
         loading: geneCompoundTissueDatasetDataLoading,
         error: geneCompoundTissueDatasetDataError,
         data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 64, compoundId: 1, tissueId: 6 } });
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 64, compoundId: 642, tissueId: 6 } });
 
 
     // compound and gene information columns.
@@ -232,7 +233,7 @@ const Biomarker = (props) => {
                                 {
                                     display === 'manhattan_plot' &&
                                     <Element className="section" name="manhattan_plot">
-                                        <div />
+                                        <ManhattanPlot />
                                     </Element>
                                 }
                             </div>
