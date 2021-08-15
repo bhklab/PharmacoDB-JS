@@ -6,6 +6,10 @@ const geneCompound = `
     gene {
         id
         name
+        annotation {
+            gene_seq_start
+            gene_seq_end
+        }
     }
     compound {
         id
