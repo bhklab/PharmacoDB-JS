@@ -40,6 +40,7 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
+  {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -196,7 +197,6 @@ const IndivCellLines = (props) => {
                         </React.Fragment>
                       }
                       {
-                        display === 'barPlot' &&
                         <Element>
                             <PlotSection
                                 display={display}
