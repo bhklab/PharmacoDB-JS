@@ -103,7 +103,7 @@ const NavBar = (props) => {
           <Dropdown className="header-links link-dropdown" text="About" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(aboutLinks)}
-              <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb">Github</a></Dropdown.Item>
+              <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb" target="_blank">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           <Link className="header-links link" to="/explore">Explore</Link>
@@ -118,8 +118,8 @@ const NavBar = (props) => {
               {isOpen ? (
                 <img alt="close" src={closeSearchImg} />
               ) : (
-                <img alt="magnifying glass" src={magnifImg} />
-              )}
+                  <img alt="magnifying glass" src={magnifImg} />
+                )}
             </StyledSearchButton>
           )}
         </StyledLinkDropdowns>
