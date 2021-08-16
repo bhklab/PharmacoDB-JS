@@ -1,15 +1,13 @@
-
-/* eslint-disable radix */
-/* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCellLineExperimentsQuery } from '../../../queries/experiments';
-import Layout from '../../UtilComponents/Layout';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
+import { generateOptions } from '../../../utils/plotProcessing';
 import ProfileCompound from '../../Plots/ProfileCompound';
+import PlotsWrapper from '../../../styles/PlotsWrapper';
 
 /**
  * A helper function that processes data from the API to be subsequently loaded it into
@@ -57,8 +55,10 @@ const PlotSection = (props) => {
         }
     );
 
-    const cellLineData = data? data.experiments : [];
-    const [compoundsData] = useMemo(() => generateCountPlotData(cellLineData), [cellLineData]);
+    const experimentalData = data ? data.experiments : [];
+    // memoization of the plotData
+    const [compoundsData] = useMemo(() => generateCountPlotData(experimentalData), [experimentalData]);
+    const [profileOptions, datasetOptions] = useMemo(() => generateOptions(experimentalData), [experimentalData]);
 
     if (error) {
         return <p> Error! </p>;
@@ -79,22 +79,25 @@ const PlotSection = (props) => {
                                     title={`Number of compounds tested with ${name} (per dataset)`}
                                 />
                             :
-                            ''
-                    }
-                    {
                         display === 'aacCompounds' ?
                             loading ? <Loading />
                                 :
-                                <ProfileCompound
-                                    cellLine={name}
-                                    data={data.experiments}
-                                />
+                                <PlotsWrapper single={true}>
+                                    <ProfileCompound
+                                        plotId={`${name}CompoundsAAC`}
+                                        cellLine={name}
+                                        data={experimentalData}
+                                        profileOptions={profileOptions}
+                                        datasetOptions={datasetOptions}
+                                        title={`${name}: AAC`}
+                                    />
+                                </PlotsWrapper>
                             :
                             ''
                     }
                 </React.Fragment>
             ) : (
-                display === 'barPlot'?
+                display === 'barPlot' || display === 'aacCompounds'?
                     loading ? <Loading /> :
                         (
                             <h6 align="center">No data is available to plot this cell line.</h6>
