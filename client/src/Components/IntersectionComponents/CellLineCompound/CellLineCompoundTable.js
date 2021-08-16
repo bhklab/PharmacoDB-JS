@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../UtilComponents/Table/Table';
 import styled from 'styled-components';
@@ -28,9 +28,9 @@ const StyledCell = styled.div`
 const IntersectionSummaryTable = (props) => {
     const { experiments, displayedStats, setDisplayedStats } = props;
 
-    const addStat = (rowName, statName) => {
+    const addStat = (id, statName) => {
         let copy = [...displayedStats];
-        copy.push({rowName: rowName, statName: statName});
+        copy.push({id: id, statName: statName});
         setDisplayedStats(copy);
     };
 
@@ -40,9 +40,9 @@ const IntersectionSummaryTable = (props) => {
         setDisplayedStats(copy);
     };
 
-    const alterClickedCells = (rowName, statName) => {
+    const alterClickedCells = (id, statName) => {
         let copy = [...displayedStats];
-        let index = copy.findIndex(item => item.rowName === rowName && item.statName === statName);
+        let index = copy.findIndex(item => item.id === id && item.statName === statName);
         if(copy[index].clicked){
             copy[index].clicked = false;
         }else{
@@ -51,44 +51,49 @@ const IntersectionSummaryTable = (props) => {
         setDisplayedStats(copy);
     }
 
+    const getStyledCell = (item, statName) => (
+        <StyledCell 
+            className={
+                displayedStats.findIndex(stat => stat.id === item.cell.row.original.id && stat.statName === statName && stat.clicked) > -1 ? 'clicked' : ''
+            }
+            onMouseEnter={(e) => {addStat(item.cell.row.original.id, statName)}}
+            onMouseOut={(e) => {removeStat()}}
+            onClick={(e) => {alterClickedCells(item.cell.row.original.id, statName)}}
+        >
+            {item.value}
+        </StyledCell>
+    );
+
     const columns = [
         {
             Header: `Dataset`,
             accessor: 'dataset',
-            center: true,
+            center: true, 
             Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.cell.row.original.dataset.name}</Link>
         },
         {
             Header: `AAC (%)`,
             accessor: 'AAC',
             center: true,
-            Cell: (item) => (
-                <StyledCell 
-                    className={
-                        displayedStats.findIndex(stat => stat.rowName === item.cell.row.original.dataset.name && stat.statName === 'AAC' && stat.clicked) > -1 ? 'clicked' : ''
-                    }
-                    onMouseEnter={(e) => {addStat(item.cell.row.original.dataset.name, 'AAC')}}
-                    onMouseOut={(e) => {removeStat()}}
-                    onClick={(e) => {alterClickedCells(item.cell.row.original.dataset.name, 'AAC')}}
-                >
-                    {item.value}
-                </StyledCell>
-            )
+            Cell: (item) => {return getStyledCell(item, 'AAC')}
         },
         {
             Header: `IC50 (uM)`,
             accessor: 'IC50',
             center: true,
+            Cell: (item) => {return getStyledCell(item, 'IC50')}
         },
         {
             Header: `EC50 (uM)`,
             accessor: 'EC50',
             center: true,
+            Cell: (item) => {return getStyledCell(item, 'EC50')}
         },
         {
             Header: `Einf (%)`,
             accessor: 'Einf',
             center: true,
+            Cell: (item) => {return getStyledCell(item, 'Einf')}
         },
         {
             Header: `DSS1`,
@@ -99,6 +104,7 @@ const IntersectionSummaryTable = (props) => {
 
     const parseData = () => {
         return experiments.map(item => ({
+            id: item.id,
             dataset: item.dataset,
             ...item.profile
         }));

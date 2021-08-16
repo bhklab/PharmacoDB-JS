@@ -11,6 +11,7 @@ import CellLineCompoundTable from './CellLineCompoundTable';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
 import { StyledIntersectionComponent } from '../../../styles/IntersectionComponentStyles';
+import plotColors from '../../../styles/plot_colors';
 
 /**
  * Component to render cell line vs component page.
@@ -33,8 +34,11 @@ const CellLineCompound = (props) => {
             compoundName: typeof compound === 'string' ? compound : undefined
         },
         onCompleted: (data) => {
-            console.log(data);
-            setExperiments(data.experiments);
+            setExperiments(data.experiments.map((item, i) => ({
+                ...item, 
+                id: i,
+                color: plotColors[i]
+            }))); // add id to each experiment so that it is easy to identify in the table and the plot.
         },
         onError: (err) => {
             console.log(err);
@@ -65,7 +69,7 @@ const CellLineCompound = (props) => {
                                     displayedStats={displayedStats}
                                 />
                                 <CellLineCompoundTable 
-                                    experiments={experiments.map(exp => ({dataset: exp.dataset, profile: exp.profile}))} 
+                                    experiments={experiments.map(exp => ({id: exp.id, dataset: exp.dataset, profile: exp.profile}))} 
                                     displayedStats={displayedStats}
                                     setDisplayedStats={setDisplayedStats}
                                 />

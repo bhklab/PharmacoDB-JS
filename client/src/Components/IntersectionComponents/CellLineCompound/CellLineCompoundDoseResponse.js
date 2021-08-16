@@ -3,17 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DoseResponseCurve from '../../Plots/DoseResponseCurve';
-import plotColors from '../../../styles/plot_colors';
+import styled from 'styled-components';
 
-// const hill = (x, profile) => {
-//     return ((profile.Einf * 100) + (100 - (profile.Einf * 100)) / (1 + Math.pow(x / Math.pow(profile.EC50), profile.HS)));
-// }
-
-// [data.data[i].params.HS, data.data[i].params.Einf*100, Math.pow(10,data.data[i].params.EC50)]
-// function hill(x, pars) {
-//     return (pars[1] + (100 - pars[1]) / (1 + Math.pow(x / pars[2], pars[0])));
-// }
-
+const StyledDoseResponseContainer = styled.div`
+    display: flex;
+`;
+ 
 const CellLineCompoundDoseResponse = (props) => {
     const { experiments, displayedStats } = props;
     const [data, setData] = useState([]);
@@ -21,17 +16,18 @@ const CellLineCompoundDoseResponse = (props) => {
     
     useEffect(() => {
         let data = experiments.map((item, i) => ({
+            id: item.id,
             name: item.dataset.name,
             dose_response: item.dose_response,
             profile: item.profile,
-            color: plotColors[i]
+            color: item.color
         }));
         setData(data);
         setReady(true);
     }, []);
 
     return(
-        <React.Fragment>
+        <StyledDoseResponseContainer>
             {
                 ready && 
                 <DoseResponseCurve 
@@ -39,7 +35,7 @@ const CellLineCompoundDoseResponse = (props) => {
                     displayedStats={displayedStats} 
                 />
             }
-        </React.Fragment>
+        </StyledDoseResponseContainer>
     );
 };
 
