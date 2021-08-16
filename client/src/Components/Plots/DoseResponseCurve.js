@@ -21,7 +21,7 @@ const makeCurveFit = (profile, minDose, maxDose) => {
     })));
 }
 
-const getDashedLine = (id, stat, x, y, color) => ({
+const getDashedLine = (id, stat, x, y, color, visible) => ({
     id: id,
     stat: stat,
     additionalStat: true,
@@ -36,10 +36,10 @@ const getDashedLine = (id, stat, x, y, color) => ({
     showlegend: false,
     hoverinfo: 'skip',
     fill: 'none',
-    visible: false
+    visible: visible
 });
 
-const getScatterPoints = (id, stat, x, y, color) => ({
+const getScatterPoints = (id, stat, x, y, color, visible) => ({
     id: id,
     stat: stat,
     additionalStat: true,
@@ -53,53 +53,115 @@ const getScatterPoints = (id, stat, x, y, color) => ({
     },
     showlegend: false,
     hoverinfo: 'skip',
-    visible: false
+    visible: visible
 });
 
 const parseDoseResponseData = (experiments, xMin, xMax) => {
     let parsed = [];
     for(const experiment of experiments){
-        let dose = experiment.dose_response.map(item => item.dose);
-        let logDose = dose.map(item => Math.log10(item));
         let curvCoordinates = makeCurveFit(experiment.profile, xMin, xMax);
         
-        // invisible line used to display AAC
-        parsed.push({
-            id: experiment.id,
-            stat: 'AAC',
-            x: [Math.log10(xMin), Math.log10(xMax)],
-            y: [100, 100],
-            mode: 'lines',
-            line: {
-                color: experiment.color,
-                width: 0
-            },
-            showlegend: false,
-            hoverinfo: 'skip',
-            fill: 'none'
-        });
-        
-        // Parse dose response curve
-        parsed.push({
-            id: experiment.id,
-            curve: true,
-            x: curvCoordinates.map(item => Math.log10(item.x)),
-            y: curvCoordinates.map(item => item.y),
-            mode: 'lines',
-            line: {
-                color: experiment.color,
-                width: 2
-            },
-            showlegend: false,
-            hoverinfo: 'skip',
-            fill: 'none'
-        });
+        if(experiment.visible){
+            // invisible line used to display AAC
+            parsed.push({
+                id: experiment.id,
+                stat: 'AAC',
+                x: [Math.log10(xMin), Math.log10(xMax)],
+                y: [100, 100],
+                mode: 'lines',
+                line: {
+                    color: experiment.color,
+                    width: 0
+                },
+                showlegend: false,
+                hoverinfo: 'skip',
+                fill: 'none'
+            });
+            
+            // Parse dose response curve
+            parsed.push({
+                id: experiment.id,
+                curve: true,
+                x: curvCoordinates.map(item => Math.log10(item.x)),
+                y: curvCoordinates.map(item => item.y),
+                mode: 'lines',
+                line: {
+                    color: experiment.color,
+                    width: 2
+                },
+                showlegend: false,
+                hoverinfo: 'skip',
+                fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none'
+            });
+
+            // Parse IC50 lines
+            parsed.push(getDashedLine(
+                experiment.id,
+                "IC50",
+                [Math.log10(xMin), Math.log10(experiment.profile.IC50)],
+                [50, 50],
+                experiment.color,
+                experiment.visibleStats.IC50.visible
+            ));
+            parsed.push(getDashedLine(
+                experiment.id,
+                "IC50",
+                [Math.log10(experiment.profile.IC50), Math.log10(experiment.profile.IC50)],
+                [0, 50],
+                experiment.color,
+                experiment.visibleStats.IC50.visible
+            ));
+            parsed.push(getScatterPoints(
+                experiment.id,
+                "IC50",
+                [Math.log10(experiment.profile.IC50)],
+                [50],
+                experiment.color,
+                experiment.visibleStats.IC50.visible
+            ));
+
+            // Parse EC50 lines
+            parsed.push(getDashedLine(
+                experiment.id,
+                "EC50",
+                [Math.log10(xMin), Math.log10(experiment.profile.EC50)],
+                [hill(experiment.profile.EC50, experiment.profile), hill(experiment.profile.EC50, experiment.profile)],
+                experiment.color,
+                experiment.visibleStats.EC50.visible
+            ));
+            parsed.push(getDashedLine(
+                experiment.id,
+                "EC50",
+                [Math.log10(experiment.profile.EC50), Math.log10(experiment.profile.EC50)],
+                [0, hill(experiment.profile.EC50, experiment.profile)],
+                experiment.color,
+                experiment.visibleStats.EC50.visible
+            ));
+            parsed.push(getScatterPoints(
+                experiment.id,
+                "EC50",
+                [Math.log10(experiment.profile.EC50)],
+                [hill(experiment.profile.EC50, experiment.profile)],
+                experiment.color,
+                experiment.visibleStats.EC50.visible
+            ));
+
+            // Parse Einf line
+            parsed.push(getDashedLine(
+                experiment.id,
+                "Einf",
+                [Math.log10(xMin), Math.log10(xMax)],
+                [experiment.profile.Einf, experiment.profile.Einf],
+                experiment.color,
+                experiment.visibleStats.Einf.visible
+            ));
+        }
         
         // Parse scatter points
         parsed.push({
             id: experiment.id,
             name: experiment.name,
-            x: logDose,
+            x: experiment.dose_response.map(item => Math.log10(item.dose)),
             y: experiment.dose_response.map(item => item.response),
             mode: 'markers',
             type: 'scatter',
@@ -115,126 +177,27 @@ const parseDoseResponseData = (experiments, xMin, xMax) => {
             fill: 'none',
             showlegend: false,
         });
-
-        // Parse IC50 lines
-        parsed.push(getDashedLine(
-            experiment.id,
-            "IC50",
-            [Math.log10(xMin), Math.log10(experiment.profile.IC50)],
-            [50, 50],
-            experiment.color
-        ));
-        parsed.push(getDashedLine(
-            experiment.id,
-            "IC50",
-            [Math.log10(experiment.profile.IC50), Math.log10(experiment.profile.IC50)],
-            [0, 50],
-            experiment.color
-        ));
-        parsed.push(getScatterPoints(
-            experiment.id,
-            "IC50",
-            [Math.log10(experiment.profile.IC50)],
-            [50],
-            experiment.color
-        ));
-
-        // Parse EC50 lines
-        parsed.push(getDashedLine(
-            experiment.id,
-            "EC50",
-            [Math.log10(xMin), Math.log10(experiment.profile.EC50)],
-            [hill(experiment.profile.EC50, experiment.profile), hill(experiment.profile.EC50, experiment.profile)],
-            experiment.color
-        ));
-        parsed.push(getDashedLine(
-            experiment.id,
-            "EC50",
-            [Math.log10(experiment.profile.EC50), Math.log10(experiment.profile.EC50)],
-            [0, hill(experiment.profile.EC50, experiment.profile)],
-            experiment.color
-        ));
-        parsed.push(getScatterPoints(
-            experiment.id,
-            "EC50",
-            [Math.log10(experiment.profile.EC50)],
-            [hill(experiment.profile.EC50, experiment.profile)],
-            experiment.color
-        ));
-
-        // Parse Einf line
-        parsed.push(getDashedLine(
-            experiment.id,
-            "Einf",
-            [Math.log10(xMin), Math.log10(xMax)],
-            [experiment.profile.Einf, experiment.profile.Einf],
-            experiment.color
-        ));
-
     }
     return parsed;
 }
 
-const alterStats = (traces, displayedStats) => {
-    traces = traces.map(trace => ({...trace, fill: 'none'}));
-    traces.forEach(trace => {
-        if(trace.additionalStat){
-            trace.visible = false;
-        }
-    });
-    for(const stat of displayedStats){
-        let index = -1;
-        switch(stat.statName){
-            case 'AAC':
-                index = traces.findIndex(item => item.id === stat.id && item.curve);
-                traces[index].fill = 'tonexty';
-                break;
-            case 'IC50':
-                traces.forEach(trace => {
-                    if(trace.id === stat.id && trace.stat === stat.statName){
-                        trace.visible = true;
-                    }
-                });
-                break;
-            case 'EC50':
-                traces.forEach(trace => {
-                    if(trace.id === stat.id && trace.stat === stat.statName){
-                        trace.visible = true;
-                    }
-                });
-                break;
-            case 'Einf':
-                traces.forEach(trace => {
-                    if(trace.id === stat.id && trace.stat === stat.statName){
-                        trace.visible = true;
-                    }
-                });
-                break;
-            case 'DSS1':
-                break;
-            default:
-                break;
-        }
-    }
-    return traces;
-}
-
 const DoseResponseCurve = (props) => {
-    const { experiments, displayedStats } = props;
+    const { experiments } = props;
     const [traces, setTraces] = useState([]);
     const [plotValues, setPlotValues] = useState({
         xMin: 0,
         xMax: 0,
-    })
+    });
 
     useEffect(() => {
+        setTraces([]); // Reset traces each time experiments are modified to redraw the plot
         let doseResponses = experiments.map(item => item.dose_response);
         let doses = [];
         for(const doseResponse of doseResponses){
             doses = doses.concat(doseResponse.map(item => item.dose));
         }
         let xMin = Math.min(...doses);
-        let xMax = Math.max(...doses);
+        let xMax = Math.max(...doses) + 2;
         setPlotValues(
             {
                 xMin: xMin,
@@ -243,14 +206,7 @@ const DoseResponseCurve = (props) => {
         );
         let parsed = parseDoseResponseData(experiments, xMin, xMax);
         setTraces(parsed);
-    }, []);
-
-    useEffect(() => {
-        if(traces.length > 0){
-            let updatedTraces = alterStats([...traces], displayedStats);
-            setTraces(updatedTraces);
-        }
-    }, [displayedStats]);
+    }, [experiments]);
 
     return(
         <Plot 

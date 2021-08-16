@@ -6,12 +6,21 @@ import { useQuery } from '@apollo/react-hooks';
 import { getCellLineCompoundExperimentsQuery } from '../../../queries/experiments';
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
-import CellLineCompoundDoseResponse from './CellLineCompoundDoseResponse';
+import Checkbox from '../../UtilComponents/Checkbox';
+import DoseResponseCurve from '../../Plots/DoseResponseCurve';
 import CellLineCompoundTable from './CellLineCompoundTable';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
 import { StyledIntersectionComponent } from '../../../styles/IntersectionComponentStyles';
 import plotColors from '../../../styles/plot_colors';
+import styled from 'styled-components';
+
+const StyledDoseResponseContainer = styled.div`
+    display: flex;
+    .right-panel {
+        margin-top: 50px;
+    }
+`;
 
 /**
  * Component to render cell line vs component page.
@@ -37,7 +46,16 @@ const CellLineCompound = (props) => {
             setExperiments(data.experiments.map((item, i) => ({
                 ...item, 
                 id: i,
-                color: plotColors[i]
+                name: item.dataset.name,
+                visible: true,
+                color: plotColors[i],
+                visibleStats: {
+                    AAC: { visible: false, clicked: false },
+                    IC50: { visible: false, clicked: false },
+                    EC50: { visible: false, clicked: false },
+                    Einf: { visible: false, clicked: false },
+                    DSS1: { visible: false, clicked: false },
+                }
             }))); // add id to each experiment so that it is easy to identify in the table and the plot.
         },
         onError: (err) => {
@@ -49,6 +67,23 @@ const CellLineCompound = (props) => {
     const getLink = (name, data) => (
         <a href={`/${name}/${data.id}`}>{data.name}</a>
     );
+
+    const handleExperimentSelectionChange = (e) => {
+        let copy = JSON.parse(JSON.stringify(experiments));
+        copy.forEach(item => {
+            if(item.name === e.target.value){
+                item.visible = e.target.checked;
+                if(!e.target.checked){
+                    item.visibleStats.AAC = { visible: false, clicked: false };
+                    item.visibleStats.IC50 = { visible: false, clicked: false };
+                    item.visibleStats.EC50 = { visible: false, clicked: false };
+                    item.visibleStats.Einf = { visible: false, clicked: false };
+                    item.visibleStats.DSS1 = { visible: false, clicked: false };
+                }
+            }
+        });
+        setExperiments(copy);
+    };
 
     return(
         <Layout>
@@ -64,14 +99,29 @@ const CellLineCompound = (props) => {
                             experiments.length > 0 ?
                             <StyledIntersectionComponent>
                                 <h2>{getLink('cell_lines', experiments[0].cell_line)} treated with {getLink('compounds', experiments[0].compound)}</h2>
-                                <CellLineCompoundDoseResponse 
-                                    experiments={experiments} 
-                                    displayedStats={displayedStats}
-                                />
+                                <StyledDoseResponseContainer>
+                                    <DoseResponseCurve 
+                                        experiments={experiments}
+                                        displayedStats={displayedStats} 
+                                    />
+                                    <div className='right-panel'>
+                                        {
+                                            experiments.map((item, i) => (
+                                                <Checkbox 
+                                                    key={i}
+                                                    value={item.name}
+                                                    label={item.name}
+                                                    checked={item.visible}
+                                                    color={item.color}
+                                                    onChange={handleExperimentSelectionChange}
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                </StyledDoseResponseContainer>
                                 <CellLineCompoundTable 
-                                    experiments={experiments.map(exp => ({id: exp.id, dataset: exp.dataset, profile: exp.profile}))} 
-                                    displayedStats={displayedStats}
-                                    setDisplayedStats={setDisplayedStats}
+                                    experiments={experiments} 
+                                    setExperiments={setExperiments}
                                 />
                             </StyledIntersectionComponent>
                             :

@@ -21,48 +21,69 @@ const StyledIntersectionSummaryTable = styled.div`
     }
 `;
 
-const StyledCell = styled.div`
+const StyledCell = styled.button`
+    width: 100%;
+    height: 100%;
     cursor: pointer;
+    border: none;
+    background: none;
+    color: ${colors.dark_gray_text};
+    :disabled {
+        color: #dddddd;
+        cursor: default;
+    }
 `;
 
 const IntersectionSummaryTable = (props) => {
-    const { experiments, displayedStats, setDisplayedStats } = props;
+    const { experiments, setExperiments } = props;
 
-    const addStat = (id, statName) => {
-        let copy = [...displayedStats];
-        copy.push({id: id, statName: statName});
-        setDisplayedStats(copy);
+    const displayStat = (id, statName) => {
+        let copy = JSON.parse(JSON.stringify(experiments));
+        let index = copy.findIndex(item => item.id === id);
+        copy[index].visibleStats[statName].visible = true;
+        setExperiments(copy);
     };
 
-    const removeStat = () => {
-        let copy = [...displayedStats];
-        copy = copy.filter(item => item.clicked);
-        setDisplayedStats(copy);
-    };
-
-    const alterClickedCells = (id, statName) => {
-        let copy = [...displayedStats];
-        let index = copy.findIndex(item => item.id === id && item.statName === statName);
-        if(copy[index].clicked){
-            copy[index].clicked = false;
-        }else{
-            copy[index].clicked = true;
+    const hideStat = () => {
+        let copy = JSON.parse(JSON.stringify(experiments));
+        for(const exp of copy){
+            exp.visibleStats.AAC.visible = exp.visibleStats.AAC.clicked ? true : false;
+            exp.visibleStats.IC50.visible = exp.visibleStats.IC50.clicked ? true : false;
+            exp.visibleStats.EC50.visible = exp.visibleStats.EC50.clicked ? true : false;
+            exp.visibleStats.Einf.visible = exp.visibleStats.Einf.clicked ? true : false;
+            exp.visibleStats.DSS1.visible = exp.visibleStats.DSS1.clicked ? true : false;
         }
-        setDisplayedStats(copy);
+        setExperiments(copy);
     }
 
-    const getStyledCell = (item, statName) => (
-        <StyledCell 
-            className={
-                displayedStats.findIndex(stat => stat.id === item.cell.row.original.id && stat.statName === statName && stat.clicked) > -1 ? 'clicked' : ''
-            }
-            onMouseEnter={(e) => {addStat(item.cell.row.original.id, statName)}}
-            onMouseOut={(e) => {removeStat()}}
-            onClick={(e) => {alterClickedCells(item.cell.row.original.id, statName)}}
-        >
-            {item.value}
-        </StyledCell>
-    );
+    const alterClickedCells = (id, statName) => {
+        let copy = JSON.parse(JSON.stringify(experiments));
+        let index = copy.findIndex(item => item.id === id);
+        copy[index].visibleStats[statName].clicked = !copy[index].visibleStats[statName].clicked;
+            copy[index].clicked = false;
+        setExperiments(copy);
+    }
+
+    const getStyledCell = (item, statName) => {
+        let cellData = item.cell.row.original;
+        return(
+            <StyledCell 
+                className={ cellData.visibleStats[statName].clicked ? 'clicked' : '' }
+                onMouseEnter={(e) => {
+                    displayStat(cellData.id, statName);
+                }}
+                onMouseOut={(e) => {
+                    hideStat();
+                }}
+                onClick={(e) => {
+                    alterClickedCells(cellData.id, statName);
+                }}
+                disabled={!cellData.visible}
+            >
+                {item.value}
+            </StyledCell>
+        );
+    };
 
     const columns = [
         {
@@ -102,18 +123,16 @@ const IntersectionSummaryTable = (props) => {
         },
     ];
 
-    const parseData = () => {
-        return experiments.map(item => ({
-            id: item.id,
-            dataset: item.dataset,
-            ...item.profile
-        }));
-    }
-
     return(
         <StyledIntersectionSummaryTable>
             <h3 className='title'>Summary Statistics</h3>
-            <Table data={parseData()} columns={columns} disablePagination={true} />
+            <Table data={experiments.map(item => ({
+                id: item.id,
+                visible: item.visible,
+                visibleStats: item.visibleStats,
+                dataset: item.dataset,
+                ...item.profile
+            }))} columns={columns} disablePagination={true} />
         </StyledIntersectionSummaryTable>
         
     )
