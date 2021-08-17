@@ -53,29 +53,12 @@ const formatName = (string) =>
  * @param {Array} data annotation data from the tissue API
  */
 const formatAnnotationData = (data) => {
-    if (data) {
-        console.log(data)
-        // join list of tissue source value into sources, split PascalCase names, and replace _ s
-        const jsources = data.map((x) => ({
-            name: formatName(x.name),
-            sources: x.source['name'],
-        }));
-        // merge tissue names that have same source
-        const output = [];
-        jsources.forEach((item) => {
-            const existing = output.filter((v) => v.sources === item.sources);
-            if (existing.length) {
-                const existingIndex = output.indexOf(existing[0]);
-                output[existingIndex].name = output[existingIndex].name.concat(item.name);
-            } else {
-                if (typeof item.name === 'string') item.name = [item.name];
-                output.push(item);
-            }
-        });
-        output.forEach(item => {
-            item.name = [...new Set(item.name)].join(', ');
-        })
-        return output;
+    if (data.synonyms) {
+        const returnObj = data.synonyms;
+        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
+            returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
+        }
+        return returnObj;
     }
     return null;
 };
@@ -145,9 +128,7 @@ const IndivTissues = (props) => {
                             <StyledIndivPage className="indiv-tissues">
                                 <div className='heading'>
                                     <span className='title'>{formatName(data.name)}</span>
-                                    <span className='attributes'>
-
-                    </span>
+                                    <span className='attributes'></span>
                                 </div>
                                 <div className='wrapper'>
                                     <StyledSidebarList>
@@ -159,7 +140,7 @@ const IndivTissues = (props) => {
                                                 display === 'annotations' &&
                                                 <Element className="section" name="annotations">
                                                     <div className='section-title'>Annotations</div>
-                                                    <Table columns={ANNOTATION_COLUMNS} data={data.synonyms} disablePagination />
+                                                    <Table columns={ANNOTATION_COLUMNS} data={formatAnnotationData(data)} disablePagination />
                                                 </Element>
                                             }
                                             {
