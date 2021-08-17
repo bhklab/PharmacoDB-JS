@@ -68,8 +68,6 @@ const formatDiseaseData = (data) => {
     if (data) {
         const ncit_path =
             'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
-        // const ordo_path =
-        //     'https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Lng=GB&Expert=';
         const ordo_path = 'https://www.ebi.ac.uk/ols/ontologies/ordo/terms?iri=http://www.orpha.net/ORDO/';
         return data.map((x) =>
             x
