@@ -87,7 +87,7 @@ const formatAnnotationData = (data) => {
             modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
         if (annotation.pubchem) {
-            modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, });
+            modifiedData.push({ db: 'PubChem ID', identifier: <a href= {`https://pubchem.ncbi.nlm.nih.gov/compound/${annotation.pubchem}`}>{annotation.pubchem}</a>, });
         }
     }
     return modifiedData;
