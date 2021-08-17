@@ -65,7 +65,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    experiments(cellLineId: Int, compoundId: Int, tissueId: Int, page: Int, per_page: Int, all: Boolean): [Experiment!]!
+    experiments(cellLineId: Int, cellLineName: String, compoundId: Int, compoundName: String, tissueId: Int, tissueName: String, page: Int, per_page: Int, all: Boolean): [Experiment!]!
     experiment(experimentId: Int!): Experiment!
 
 

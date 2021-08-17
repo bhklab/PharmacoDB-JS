@@ -6,7 +6,7 @@ import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../UtilComponents/Loading';
-import ParseData from '../../Plots/UpsetPlot/ParseData';
+import UpsetPlotData from '../../Plots/UpsetPlot/UpsetPlotData';
 
 // an array with the columns of dataset table.
 const table_columns = [
@@ -37,7 +37,7 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <ParseData />
+      <UpsetPlotData />
       <h2>List of Datasets</h2>
       <Table columns={columns} data={data} />
     </>
