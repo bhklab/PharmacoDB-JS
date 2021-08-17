@@ -78,6 +78,7 @@ const formatSynonymData = (data) => {
  */
 const formatAnnotationData = (data) => {
     const modifiedData = [];
+    const pubchem = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
     if (data) {
         const { annotation } = data;
         if (annotation.smiles) {
@@ -87,7 +88,11 @@ const formatAnnotationData = (data) => {
             modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
         if (annotation.pubchem) {
-            modifiedData.push({ db: 'PubChem ID', identifier: <a href= {`https://pubchem.ncbi.nlm.nih.gov/compound/${annotation.pubchem}`}>{annotation.pubchem}</a>, });
+            modifiedData.push(
+                {
+                    db: 'PubChem ID',
+                    identifier: <a href= {`${pubchem}${annotation.pubchem}`} target="_blank">{annotation.pubchem}</a>,
+                });
         }
     }
     return modifiedData;
