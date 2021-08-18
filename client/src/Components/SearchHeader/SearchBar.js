@@ -66,7 +66,7 @@ const groupStyles = {
  */
 const formatGroupLabel = (data) => (
   <div style={groupStyles}>
-    <span>{data.label}</span>
+    <span>{data.label.replace('_', ' ')}</span>
   </div>
 );
 
