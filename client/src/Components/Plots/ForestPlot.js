@@ -105,7 +105,7 @@ const createHorizontalLines = (svg, scale, data) => {
             .append('line')
             .attr('id', `horizontal-line-${element.dataset.name}`)
             .style('stroke', `${colors.dark_gray_text}`)
-            .style('stroke-width', 1.5)
+            .style('stroke-width', 1.25)
             .attr('x1', scale(element.lower_permutation || element.lower_analytic))
             .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('x2', scale(element.upper_permutation || element.upper_analytic))
@@ -262,7 +262,6 @@ const createForestPlot = (margin, height, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ data }) => {
-    console.log(data);
     useEffect(() => {
         createForestPlot(margin, height, width, data);
     }, []);
