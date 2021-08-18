@@ -64,7 +64,7 @@ const IntersectionSummaryTable = (props) => {
         setExperiments(copy);
     }
 
-    const getStyledCell = (item, statName) => {
+    const getStyledCell = (item, statName, value) => {
         let cellData = item.cell.row.original;
         return(
             <StyledCell 
@@ -78,9 +78,9 @@ const IntersectionSummaryTable = (props) => {
                 onClick={(e) => {
                     alterClickedCells(cellData.id, statName);
                 }}
-                disabled={!cellData.visible}
+                disabled={!cellData.visible || value === 'N/A'}
             >
-                {item.value}
+                {value}
             </StyledCell>
         );
     };
@@ -88,39 +88,34 @@ const IntersectionSummaryTable = (props) => {
     const columns = [
         {
             Header: `Dataset`,
-            accessor: 'dataset',
-            center: true, 
-            Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.cell.row.original.dataset.name}</Link>
+            accessor: 'name',
+            center: false, 
+            Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.value}</Link>
         },
         {
             Header: `AAC (%)`,
             accessor: 'AAC',
             center: true,
-            Cell: (item) => {return getStyledCell(item, 'AAC')}
+            Cell: (item) => {return getStyledCell(item, 'AAC', typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A')}
         },
         {
             Header: `IC50 (uM)`,
             accessor: 'IC50',
             center: true,
-            Cell: (item) => {return getStyledCell(item, 'IC50')}
+            Cell: (item) => {return getStyledCell(item, 'IC50', typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A')}
         },
         {
             Header: `EC50 (uM)`,
             accessor: 'EC50',
             center: true,
-            Cell: (item) => {return getStyledCell(item, 'EC50')}
+            Cell: (item) => {return getStyledCell(item, 'EC50', typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A')}
         },
         {
             Header: `Einf (%)`,
             accessor: 'Einf',
             center: true,
-            Cell: (item) => {return getStyledCell(item, 'Einf')}
-        },
-        {
-            Header: `DSS1`,
-            accessor: 'DSS1',
-            center: true,
-        },
+            Cell: (item) => {return getStyledCell(item, 'Einf', typeof item.value === 'number' ? item.value.toFixed(3) : 'N/A')}
+        }
     ];
 
     return(
@@ -128,6 +123,7 @@ const IntersectionSummaryTable = (props) => {
             <h3 className='title'>Summary Statistics</h3>
             <Table data={experiments.map(item => ({
                 id: item.id,
+                name: item.name,
                 visible: item.visible,
                 visibleStats: item.visibleStats,
                 dataset: item.dataset,

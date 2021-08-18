@@ -56,43 +56,46 @@ const getScatterPoints = (id, stat, x, y, color, visible) => ({
     visible: visible
 });
 
-const parseDoseResponseData = (experiments, xMin, xMax) => {
+const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
     let parsed = [];
     for(const experiment of experiments){
         let curvCoordinates = makeCurveFit(experiment.profile, xMin, xMax);
         
         if(experiment.visible){
-            // invisible line used to display AAC
-            parsed.push({
-                id: experiment.id,
-                stat: 'AAC',
-                x: [Math.log10(xMin), Math.log10(xMax)],
-                y: [100, 100],
-                mode: 'lines',
-                line: {
-                    color: experiment.color,
-                    width: 0
-                },
-                showlegend: false,
-                hoverinfo: 'skip',
-                fill: 'none'
-            });
             
-            // Parse dose response curve
-            parsed.push({
-                id: experiment.id,
-                curve: true,
-                x: curvCoordinates.map(item => Math.log10(item.x)),
-                y: curvCoordinates.map(item => item.y),
-                mode: 'lines',
-                line: {
-                    color: experiment.color,
-                    width: 2
-                },
-                showlegend: false,
-                hoverinfo: 'skip',
-                fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none'
-            });
+            if(experiment.displayCurve){
+                // invisible line used to display AAC
+                parsed.push({
+                    id: experiment.id,
+                    stat: 'AAC',
+                    x: [Math.log10(xMin), Math.log10(xMax)],
+                    y: [100, 100],
+                    mode: 'lines',
+                    line: {
+                        color: experiment.color,
+                        width: 0
+                    },
+                    showlegend: false,
+                    hoverinfo: 'skip',
+                    fill: 'none'
+                });
+                
+                // Parse dose response curve
+                parsed.push({
+                    id: experiment.id,
+                    curve: true,
+                    x: curvCoordinates.map(item => Math.log10(item.x)),
+                    y: curvCoordinates.map(item => item.y),
+                    mode: 'lines',
+                    line: {
+                        color: experiment.color,
+                        width: 2
+                    },
+                    showlegend: false,
+                    hoverinfo: 'skip',
+                    fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none'
+                });
+            }
 
             // Parse IC50 lines
             parsed.push(getDashedLine(
@@ -107,7 +110,7 @@ const parseDoseResponseData = (experiments, xMin, xMax) => {
                 experiment.id,
                 "IC50",
                 [Math.log10(experiment.profile.IC50), Math.log10(experiment.profile.IC50)],
-                [0, 50],
+                [yMin, 50],
                 experiment.color,
                 experiment.visibleStats.IC50.visible
             ));
@@ -133,7 +136,7 @@ const parseDoseResponseData = (experiments, xMin, xMax) => {
                 experiment.id,
                 "EC50",
                 [Math.log10(experiment.profile.EC50), Math.log10(experiment.profile.EC50)],
-                [0, hill(experiment.profile.EC50, experiment.profile)],
+                [yMin, hill(experiment.profile.EC50, experiment.profile)],
                 experiment.color,
                 experiment.visibleStats.EC50.visible
             ));
@@ -171,8 +174,8 @@ const parseDoseResponseData = (experiments, xMin, xMax) => {
             hoverinfo: 'text',
             hovertext: experiment.dose_response.map(item => (
                 `${experiment.name}<br />` + 
-                `Dose: ${item.dose}uM<br />` + 
-                `Response: ${item.response}%`
+                `Dose: ${item.dose.toFixed(5)}uM<br />` + 
+                `Response: ${item.response.toFixed(2)}%`
             )),
             fill: 'none',
             showlegend: false,
@@ -182,7 +185,7 @@ const parseDoseResponseData = (experiments, xMin, xMax) => {
 }
 
 const DoseResponseCurve = (props) => {
-    const { experiments } = props;
+    const { experiments, plotId } = props;
     const [traces, setTraces] = useState([]);
     const [plotValues, setPlotValues] = useState({
         xMin: 0,
@@ -193,33 +196,39 @@ const DoseResponseCurve = (props) => {
         setTraces([]); // Reset traces each time experiments are modified to redraw the plot
         let doseResponses = experiments.map(item => item.dose_response);
         let doses = [];
+        let responses = [];
         for(const doseResponse of doseResponses){
             doses = doses.concat(doseResponse.map(item => item.dose));
+            responses = responses.concat(doseResponse.map(item => item.response));
         }
         let xMin = Math.min(...doses);
         let xMax = Math.max(...doses) + 2;
+        let yMin = Math.min(...responses) - 2;
         setPlotValues(
             {
                 xMin: xMin,
-                xMax: xMax
+                xMax: xMax,
+                yMax: Math.max(...responses) + 2,
+                yMin: yMin
             }
         );
-        let parsed = parseDoseResponseData(experiments, xMin, xMax);
+        let parsed = parseDoseResponseData(experiments, xMin, xMax, yMin);
         setTraces(parsed);
     }, [experiments]);
 
     return(
         <Plot 
+            divId={plotId}
             data={traces} 
             layout={{
                 autosize: true,
-                height: 530,
+                height: 600,
                 margin: {
                     t: 50,
                 },
                 xaxis: {
                     title: {
-                        text: 'Concentration (uM)'
+                        text: 'Log Concentration (uM)'
                     },
                     showgrid: false,
                     zeroline: false,
@@ -238,7 +247,7 @@ const DoseResponseCurve = (props) => {
                     zeroline: false,
                     showline: true,
                     fixedrange: true,
-                    range: [0, 120]
+                    range: [plotValues.yMin, plotValues.yMax]
                 }
             }} 
             config={{

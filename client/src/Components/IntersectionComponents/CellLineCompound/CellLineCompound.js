@@ -18,6 +18,7 @@ import styled from 'styled-components';
 const StyledDoseResponseContainer = styled.div`
     display: flex;
     .right-panel {
+        min-width: 150px;
         margin-top: 50px;
     }
 `;
@@ -32,7 +33,6 @@ const CellLineCompound = (props) => {
     const { cell_line, compound } = props;
     const [error, setError] = useState(false);
     const [experiments, setExperiments] = useState(undefined);
-    const [displayedStats, setDisplayedStats] = useState([]);
 
     // query to get the data for the single gene.
     const { loading } = useQuery(getCellLineCompoundExperimentsQuery, {
@@ -43,12 +43,36 @@ const CellLineCompound = (props) => {
             compoundName: typeof compound === 'string' ? compound : undefined
         },
         onCompleted: (data) => {
-            setExperiments(data.experiments.map((item, i) => ({
+            let experiments = data.experiments;
+            let repExperiments = [];
+            let colorIndex = 0;
+            let uniqueDatasets = experiments.map(item => item.dataset.name);
+            uniqueDatasets = [...new Set(uniqueDatasets)];
+            for(const dataset of uniqueDatasets){
+                let filtered = experiments.filter(item => item.dataset.name === dataset);
+                if(filtered.length > 1){
+                    let repeats = filtered.map((item, i) => ({
+                        ...item,
+                        name: `${item.dataset.name} rep ${i + 1}`,
+                        color: plotColors.gradients[colorIndex] ? plotColors.gradients[colorIndex][i <= 3 ? i : 3] : plotColors.default[3]
+                    }));
+                    repExperiments = repExperiments.concat(repeats);
+                    colorIndex++;
+                }else{
+                    repExperiments.push({
+                        ...filtered[0],
+                        name: filtered[0].dataset.name,
+                        color: plotColors.gradients[colorIndex] ? plotColors.gradients[colorIndex][0] : plotColors.default[3]
+                    });
+                    colorIndex++
+                }
+            }
+            
+            setExperiments(repExperiments.map((item, i) => ({
                 ...item, 
                 id: i,
-                name: item.dataset.name,
                 visible: true,
-                color: plotColors[i],
+                displayCurve: typeof item.profile.AAC === 'number',
                 visibleStats: {
                     AAC: { visible: false, clicked: false },
                     IC50: { visible: false, clicked: false },
@@ -101,8 +125,8 @@ const CellLineCompound = (props) => {
                                 <h2>{getLink('cell_lines', experiments[0].cell_line)} treated with {getLink('compounds', experiments[0].compound)}</h2>
                                 <StyledDoseResponseContainer>
                                     <DoseResponseCurve 
+                                        plotId='cell_compound_dose_response'
                                         experiments={experiments}
-                                        displayedStats={displayedStats} 
                                     />
                                     <div className='right-panel'>
                                         {
@@ -114,6 +138,7 @@ const CellLineCompound = (props) => {
                                                     checked={item.visible}
                                                     color={item.color}
                                                     onChange={handleExperimentSelectionChange}
+                                                    disabled={!item.displayCurve}
                                                 />
                                             ))
                                         }
