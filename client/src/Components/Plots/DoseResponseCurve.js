@@ -203,7 +203,7 @@ const DoseResponseCurve = (props) => {
         }
         let xMin = Math.min(...doses);
         let xMax = Math.max(...doses) + 2;
-        let yMin = Math.min(...responses) - 2;
+        let yMin = Math.min(...responses) - 5;
         setPlotValues(
             {
                 xMin: xMin,
@@ -212,7 +212,7 @@ const DoseResponseCurve = (props) => {
                 yMin: yMin
             }
         );
-        let parsed = parseDoseResponseData(experiments, xMin, xMax, yMin);
+        let parsed = parseDoseResponseData(experiments, xMin, xMax, yMin - 3);
         setTraces(parsed);
     }, [experiments]);
 
@@ -247,7 +247,7 @@ const DoseResponseCurve = (props) => {
                     zeroline: false,
                     showline: true,
                     fixedrange: true,
-                    range: [plotValues.yMin, plotValues.yMax]
+                    range: [plotValues.yMin - 3, plotValues.yMax + 5]
                 }
             }} 
             config={{
