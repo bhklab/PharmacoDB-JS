@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import qs from 'query-string' // used to parse the query string
 import CellLineCompound from './CellLineCompound/CellLineCompound';
+import TissueCompound from './TissueCompound/TissueCompound';
 import NotFoundPage from '../UtilComponents/NotFoundPage';
 
 /**
@@ -45,7 +46,7 @@ const IntersectionMain = () => {
                 page.name === 'cellCompound' && <CellLineCompound cell_line={page.query.cell_line} compound={page.query.compound} />
             }
             {
-                page.name === 'tissueCompound' && <div>tissue compound</div>
+                page.name === 'tissueCompound' && <TissueCompound tissue={page.query.tissue} compound={page.query.compound} />
             }
         </React.Fragment>
     );

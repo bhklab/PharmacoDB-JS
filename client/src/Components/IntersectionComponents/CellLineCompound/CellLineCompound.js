@@ -111,7 +111,7 @@ const parseCSVData = (experiments) => {
 }
 
 /**
- * Component to render cell line vs component page.
+ * Component to render cell line vs compound page.
  * @param {*} props requires cell_line and compound props, 
  * each containing either id (number) or name (string) of the respective properties.
  * @returns CellLineCompound component
@@ -228,7 +228,7 @@ const CellLineCompound = (props) => {
                                 />
                             </StyledIntersectionComponent>
                             :
-                            <h3>No experiments were found with a given combination of cell line and compound.</h3>
+                            <h3>No experiments were found with the given combination of cell line and compound.</h3>
                         }
                     </React.Fragment>
                 }

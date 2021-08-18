@@ -183,6 +183,39 @@ const getCellLineCompoundExperimentsQuery = gql`
   }
 `;
 
+const getTissueCompoundExperimentsQuery = gql`
+  query getTissueCompoundExperiments($tissueId: Int, $tissueName: String, $compoundId: Int, $compoundName: String) {
+    experiments(tissueId: $tissueId, tissueName: $tissueName, compoundId: $compoundId, compoundName: $compoundName) {
+      tissue {
+        id
+        name
+      }
+      compound {
+        id
+        name
+      }
+      dataset {
+        id
+        name
+      }
+      dose_response {
+        dose
+        response
+      }
+      profile {
+        HS
+        Einf
+        EC50
+        AAC
+        IC50
+        DSS1
+        DSS2
+        DSS3
+      }
+    }
+  }  
+`;
+
 export {
   getSingleCompoundExperimentsQuery,
   getSingleCellLineExperimentsQuery,
@@ -190,5 +223,6 @@ export {
   getSingleTissueCellLinesQuery,
   getSingleTissueCompoundsQuery,
   getSingleGeneExperimentsQuery,
-  getCellLineCompoundExperimentsQuery
+  getCellLineCompoundExperimentsQuery,
+  getTissueCompoundExperimentsQuery
 };
