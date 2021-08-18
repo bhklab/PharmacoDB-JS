@@ -40,6 +40,7 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
+  {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -51,7 +52,9 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
+            returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
+        }
         return returnObj;
     }
     return null;
@@ -196,7 +199,6 @@ const IndivCellLines = (props) => {
                         </React.Fragment>
                       }
                       {
-                        display === 'barPlot' &&
                         <Element>
                             <PlotSection
                                 display={display}

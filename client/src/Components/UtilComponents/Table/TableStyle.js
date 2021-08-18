@@ -21,7 +21,7 @@ const TableStyles = styled.div`
       padding: calc(0.3vw + 0.3em);
       border-bottom: 1px solid ${colors.white_smoke};
       border-right: 1px solid ${colors.white_smoke};
-      overflow-x: auto;
+      overflow-wrap: break-word;
       
       a {
         color: ${colors.dark_gray_text};
