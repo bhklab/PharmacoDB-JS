@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../UtilComponents/Table/Table';
+import DownloadButton from '../../UtilComponents/DownloadButton';
 import styled from 'styled-components';
 import colors from '../../../styles/colors'
 
@@ -18,6 +19,12 @@ const StyledIntersectionSummaryTable = styled.div`
     }
     .clicked {
         color: ${colors.dark_pink_highlight};
+    }
+    .download-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+        margin-bottom: 30px;
     }
 `;
 
@@ -121,14 +128,34 @@ const IntersectionSummaryTable = (props) => {
     return(
         <StyledIntersectionSummaryTable>
             <h3 className='title'>Summary Statistics</h3>
-            <Table data={experiments.map(item => ({
-                id: item.id,
-                name: item.name,
-                visible: item.visible,
-                visibleStats: item.visibleStats,
-                dataset: item.dataset,
-                ...item.profile
-            }))} columns={columns} disablePagination={true} />
+            <Table 
+                data={experiments.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    visible: item.visible,
+                    visibleStats: item.visibleStats,
+                    dataset: item.dataset,
+                    ...item.profile
+                }))} 
+                columns={columns} 
+                disablePagination={true} 
+            />
+            <div className='download-button'>
+                <DownloadButton 
+                    label='CSV' 
+                    mode='csv' 
+                    filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                    data={experiments.map(item => ({
+                        cell_line: item.cell_line.name,
+                        compound: item.compound.name,
+                        dataset: item.name,
+                        Einf: typeof item.profile.Einf === 'number' ? item.profile.Einf : '',
+                        EC50: typeof item.profile.EC50 === 'number' ? item.profile.EC50 : '',
+                        AAC: typeof item.profile.AAC === 'number' ? item.profile.AAC : '',
+                        IC50: typeof item.profile.IC50 === 'number' ? item.profile.IC50 : '',
+                    }))}
+                />
+            </div>
         </StyledIntersectionSummaryTable>
         
     )
