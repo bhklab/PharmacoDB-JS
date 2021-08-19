@@ -51,6 +51,7 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
+    {label: 'Annotated Targets', name: 'targets'},
     {label: 'Bar Plots', name: 'barplots'},
     {label: 'AAC (Cell Lines)', name: 'aacCells'},
     {label: 'AAC (Tissues)', name: 'aacTissues'},
@@ -66,7 +67,9 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        returnObj.push({name:data.compound.name , source:[{name: "PharmacoGx", id: ''}]})
+        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
+            returnObj.push({name:data.compound.name , source:[{name: "PharmacoGx", id: ''}]});
+        }
         return returnObj;
     }
     return null;
@@ -78,6 +81,7 @@ const formatSynonymData = (data) => {
  */
 const formatAnnotationData = (data) => {
     const modifiedData = [];
+    const pubchem = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
     if (data) {
         const { annotation } = data;
         if (annotation.smiles) {
@@ -87,7 +91,11 @@ const formatAnnotationData = (data) => {
             modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
         if (annotation.pubchem) {
-            modifiedData.push({ db: 'PubChem ID', identifier: annotation.pubchem, });
+            modifiedData.push(
+                {
+                    db: 'PubChem ID',
+                    identifier: <a href= {`${pubchem}${annotation.pubchem}`} target="_blank">{annotation.pubchem}</a>,
+                });
         }
     }
     return modifiedData;

@@ -109,12 +109,12 @@ const PlotSection = (props) => {
           :
           <PlotsWrapper single={true}>
             <ProfileCellLine
-              plotId={`${name}CellLinesACC`}
+              plotId={`${name}CellLinesAAC`}
               compound={name}
               data={experimentalData}
               profileOptions={profileOptions}
               datasetOptions={datasetOptions}
-              title={`${name}: ACC`}
+              title={`${name}: AAC`}
             />
           </PlotsWrapper>
         :
@@ -126,12 +126,12 @@ const PlotSection = (props) => {
           :
           <PlotsWrapper single={true}>
             <ProfileTissue
-              plotId={`${name}TissuesACC`}
+              plotId={`${name}TissuesAAC`}
               compound={name}
               data={experimentalData}
               profileOptions={profileOptions}
               datasetOptions={datasetOptions}
-              title={`${name}: ACC`}
+              title={`${name}: AAC`}
             />
           </PlotsWrapper>
         :
