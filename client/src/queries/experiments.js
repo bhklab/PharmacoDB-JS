@@ -190,6 +190,10 @@ const getTissueCompoundExperimentsQuery = gql`
         id
         name
       }
+      cell_line {
+        id
+        name
+      }
       compound {
         id
         name

@@ -5,15 +5,21 @@ import DownloadButton from '../../UtilComponents/DownloadButton';
 import { StyledIntersectionSummaryTable } from '../../../styles/IntersectionComponentStyles';
 import IntersectionTableCell from '../IntersectionTableCell';
 
-const CellLineCompoundTable = (props) => {
+const TissueCompoundTable = (props) => {
     const { experiments, setExperiments } = props;
 
     const columns = [
         {
-            Header: `Dataset`,
-            accessor: 'name',
+            Header: `Cell Line`,
+            accessor: 'cell_line',
             center: false, 
-            Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.value}</Link>
+            Cell: (item) => <Link to={`/cells/${item.cell.value.id}`}>{item.value.name}</Link>
+        },
+        {
+            Header: `Dataset`,
+            accessor: 'dataset',
+            center: false, 
+            Cell: (item) => <Link to={`/datasets/${item.value.id}`}>{item.value.name}</Link>
         },
         {
             Header: `AAC (%)`,
@@ -80,23 +86,26 @@ const CellLineCompoundTable = (props) => {
                 data={experiments.map(item => ({
                     id: item.id,
                     name: item.name,
+                    cell_line: item.cell_line,
+                    dataset: item.dataset,
                     visible: item.visible,
                     visibleStats: item.visibleStats,
                     dataset: item.dataset,
                     ...item.profile
                 }))} 
                 columns={columns} 
-                disablePagination={true} 
+                disablePagination={false} 
             />
             <div className='download-button'>
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                    filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
                     data={experiments.map(item => ({
-                        cell_line: item.cell_line.name,
                         compound: item.compound.name,
-                        dataset: item.name,
+                        tissue: item.tissue.name,
+                        cell_line: item.cell_line.name,
+                        dataset: item.dataset.name,
                         Einf: typeof item.profile.Einf === 'number' ? item.profile.Einf : '',
                         EC50: typeof item.profile.EC50 === 'number' ? item.profile.EC50 : '',
                         AAC: typeof item.profile.AAC === 'number' ? item.profile.AAC : '',
@@ -109,4 +118,4 @@ const CellLineCompoundTable = (props) => {
     );
 }
 
-export default CellLineCompoundTable;
+export default TissueCompoundTable;
