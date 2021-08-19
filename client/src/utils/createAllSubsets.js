@@ -1,5 +1,5 @@
 /**
- * List all the subsets of a set.
+ * Returns all the subsets of a set.
  * @param {Array} set
  */
 const createAllSubsets = (set) => {
