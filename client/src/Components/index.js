@@ -10,6 +10,7 @@ import IndivTissues from './IndividualComponents/IndivTissues/IndivTissues';
 import IndivGenes from './IndividualComponents/IndivGenes/IndivGenes';
 import IndivDatasets from './IndividualComponents/IndivDatasets/IndivDatasets';
 import Datasets from './SummaryComponents/Datasets/Datasets';
+import IntersectionMain from './IntersectionComponents/IntersectionMain';
 import Home from './Home/Home';
 import NotFoundPage from './UtilComponents/NotFoundPage';
 
@@ -28,4 +29,5 @@ export {
     Datasets,
     Experiments,
     Biomarker,
+    IntersectionMain
 };
