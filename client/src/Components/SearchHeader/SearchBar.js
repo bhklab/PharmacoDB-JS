@@ -8,7 +8,7 @@ import { getCompoundsQuery } from '../../queries/compound';
 import { getTissuesQuery } from '../../queries/tissue';
 import { getCellLinesQuery } from '../../queries/cell';
 import { getDatasetsQuery } from '../../queries/dataset';
-import MenuList from './MenuList';
+import createAllSubsets from '../../utils/createAllSubsets';
 
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
@@ -17,11 +17,14 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 // input must be greater than this length to
 // display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
+
 // placeholders for react-select
-const placeholders = ['Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
+const placeholders = [
+  'Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
   'Drug (eg. paclitaxel)', 'Dataset (eg. ccle)',
-  'Tissue vs Drug (eg. breast paclitaxel)', 'Cell line vs Drug (eg. 22rv1 paclitaxel)',
-  'Multiple datasets (eg. ccle, ctrpv2)',
+  'Tissue vs Drug (eg. breast paclitaxel)',
+  'Cell line vs Drug (eg. 22rv1 paclitaxel)',
+  'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
 
 /**
@@ -63,7 +66,7 @@ const groupStyles = {
  */
 const formatGroupLabel = (data) => (
   <div style={groupStyles}>
-    <span>{data.label}</span>
+    <span>{data.label.replace('_', ' ')}</span>
   </div>
 );
 
@@ -90,6 +93,7 @@ const SearchBar = (props) => {
     tissues: [],
     cell_lines: [],
     datasets: [],
+    dataset_intersection: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
     compounds: false,
@@ -183,6 +187,27 @@ const SearchBar = (props) => {
    */
   const customFilterOption = (option, rawInput) => option.label.toLowerCase().startsWith(rawInput.toLowerCase());
 
+  /**
+   * Creates the dataset intersection array.
+   * @param {Array} - dataset array.
+   * @returns {Array} - a dataset intersection array with all the subsets.
+   */
+  const createDatasetIntersections = (data) => {
+    // datasets array.
+    const datasets = data.map(el => el.name);
+    // get all the subsets of the datasets array/set.
+    const subsets = createAllSubsets(datasets).map((el, i) => {
+      return {
+        id: i,
+        name: el.toString().replaceAll(',', ' '),
+      }
+    });
+    // remove the first element from the subsets being an empty string.
+    subsets.shift();
+
+    return subsets;
+  }
+
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
   const compoundsData = useQuery(getCompoundsQuery).data;
@@ -200,6 +225,7 @@ const SearchBar = (props) => {
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
       datasets: datasetsData ? datasetsData.datasets : [],
+      dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
     });
     setDataLoaded({
       compounds: !!compoundsData,
@@ -243,7 +269,7 @@ const SearchBar = (props) => {
             className="placeholder"
             text={placeholders}
           />
-            )}
+        )}
         value={selectState.selected}
         formatGroupLabel={formatGroupLabel}
         styles={SearchBarStyles}
