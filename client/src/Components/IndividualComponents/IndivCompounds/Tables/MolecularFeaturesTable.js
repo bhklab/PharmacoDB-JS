@@ -10,7 +10,7 @@ import Error from '../../../UtilComponents/Error';
 
 const parseTableData = (data, compound) => {
     let tableData = [];
-    if(typeof data !== 'undefined'){
+    if (typeof data !== 'undefined') {
         let filtered = data.filter(item => !!item.pvalue_analytic);
         tableData = filtered.map(item => ({
             compound_id: compound.id,
@@ -86,7 +86,6 @@ const MolecularFeaturesTable = (props) => {
     const { loading } = useQuery(getGeneCompoundTissueDatasetQuery, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            console.log("!@!@",data);
             setTableData(parseTableData(data.gene_compound_tissue_dataset, compound));
         },
         onError: (err) => {
@@ -106,7 +105,7 @@ const MolecularFeaturesTable = (props) => {
                         <React.Fragment>
                             <h4>
                                 <p align="center">
-                                    { `Top molecular features associated with response to ${compound.name}` }
+                                    {`Top molecular features associated with response to ${compound.name}`}
                                 </p>
                             </h4>
                             <div className='download-button'>

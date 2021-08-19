@@ -119,8 +119,12 @@ const gene_compound_dataset = async (args, context, info) => {
 
         let query = knex.select(columns).from('gene_compound_dataset as GD');
         // chooses table to select from
-        if (geneId && compoundId) query = query.where({ 'GD.gene_id': geneId })
-            .andWhere({ 'GD.compound_id': compoundId });
+        if (geneId) query = query.where({ 'GD.gene_id': geneId });
+
+        if (compoundId) query = geneId
+            ? query.andWhere({ 'GD.compound_id': compoundId })
+            : query.where({ 'GD.compound_id': compoundId });
+
         if (!all) query = query.limit(limit).offset(offset);
 
         // updates query to contain joins based on requested fields
@@ -205,9 +209,16 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
 
         let query = knex.select(columns).from('gene_compound_tissue_dataset as GD');
         // chooses table to select from
-        if (geneId && compoundId && tissueId) query = query.where({ 'GD.gene_id': geneId })
-            .andWhere({ 'GD.compound_id': compoundId })
-            .andWhere({ 'GD.tissue_id': tissueId });
+        if (geneId) query = query.where({ 'GD.gene_id': geneId });
+
+        if (compoundId) query = geneId
+            ? query.andWhere({ 'GD.compound_id': compoundId })
+            : query.where({ 'GD.compound_id': compoundId });
+
+        if (tissueId) query = compoundId ?
+            query.andWhere({ 'GD.tissue_id': tissueId })
+            : query.where({ 'GD.tissue_id': tissueId });
+
 
         if (!all) query = query.limit(limit).offset(offset);
 
