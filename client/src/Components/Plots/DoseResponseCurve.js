@@ -56,7 +56,7 @@ const getScatterPoints = (id, stat, x, y, color, visible) => ({
     visible: visible
 });
 
-const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
+const parseDoseResponseData = (experiments, xMin, xMax, yMin, showScatter) => {
     let parsed = [];
     for(const experiment of experiments){
         let curvCoordinates = makeCurveFit(experiment.profile, xMin, xMax);
@@ -88,12 +88,12 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                     y: curvCoordinates.map(item => item.y),
                     mode: 'lines',
                     line: {
-                        color: experiment.color,
-                        width: 2
+                        color: experiment.highlight && experiment.visibleStats.AAC.visible ? experiment.highlight : experiment.color,
+                        width: experiment.curveWidth ? experiment.curveWidth : 2
                     },
                     showlegend: false,
-                    hoverinfo: 'skip',
-                    fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none'
+                    hoverinfo: 'none',
+                    fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none',
                 });
             }
 
@@ -103,7 +103,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "IC50",
                 [Math.log10(xMin), Math.log10(experiment.profile.IC50)],
                 [50, 50],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.IC50.visible
             ));
             parsed.push(getDashedLine(
@@ -111,7 +111,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "IC50",
                 [Math.log10(experiment.profile.IC50), Math.log10(experiment.profile.IC50)],
                 [yMin, 50],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.IC50.visible
             ));
             parsed.push(getScatterPoints(
@@ -119,7 +119,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "IC50",
                 [Math.log10(experiment.profile.IC50)],
                 [50],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.IC50.visible
             ));
 
@@ -129,7 +129,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "EC50",
                 [Math.log10(xMin), Math.log10(experiment.profile.EC50)],
                 [hill(experiment.profile.EC50, experiment.profile), hill(experiment.profile.EC50, experiment.profile)],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.EC50.visible
             ));
             parsed.push(getDashedLine(
@@ -137,7 +137,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "EC50",
                 [Math.log10(experiment.profile.EC50), Math.log10(experiment.profile.EC50)],
                 [yMin, hill(experiment.profile.EC50, experiment.profile)],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.EC50.visible
             ));
             parsed.push(getScatterPoints(
@@ -145,7 +145,7 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "EC50",
                 [Math.log10(experiment.profile.EC50)],
                 [hill(experiment.profile.EC50, experiment.profile)],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.EC50.visible
             ));
 
@@ -155,37 +155,40 @@ const parseDoseResponseData = (experiments, xMin, xMax, yMin) => {
                 "Einf",
                 [Math.log10(xMin), Math.log10(xMax)],
                 [experiment.profile.Einf, experiment.profile.Einf],
-                experiment.color,
+                experiment.highlight ? experiment.highlight : experiment.color,
                 experiment.visibleStats.Einf.visible
             ));
         }
         
-        // Parse scatter points
-        parsed.push({
-            id: experiment.id,
-            name: experiment.name,
-            x: experiment.dose_response.map(item => Math.log10(item.dose)),
-            y: experiment.dose_response.map(item => item.response),
-            mode: 'markers',
-            type: 'scatter',
-            marker: {
-                color: experiment.color
-            },
-            hoverinfo: 'text',
-            hovertext: experiment.dose_response.map(item => (
-                `${experiment.name}<br />` + 
-                `Dose: ${item.dose.toFixed(5)}uM<br />` + 
-                `Response: ${item.response.toFixed(2)}%`
-            )),
-            fill: 'none',
-            showlegend: false,
-        });
+        if(showScatter){
+            // Parse scatter points
+            parsed.push({
+                id: experiment.id,
+                name: experiment.name,
+                x: experiment.dose_response.map(item => Math.log10(item.dose)),
+                y: experiment.dose_response.map(item => item.response),
+                mode: 'markers',
+                type: 'scatter',
+                marker: {
+                    color: experiment.color
+                },
+                hoverinfo: 'text',
+                hovertext: experiment.dose_response.map(item => (
+                    `${experiment.name}<br />` + 
+                    `Dose: ${item.dose.toFixed(5)}uM<br />` + 
+                    `Response: ${item.response.toFixed(2)}%`
+                )),
+                fill: 'none',
+                showlegend: false,
+            });
+        }
+
     }
     return parsed;
 }
 
 const DoseResponseCurve = (props) => {
-    const { experiments, plotId } = props;
+    const { experiments, plotId, showScatter, onHover, onUnhover, onClick} = props;
     const [traces, setTraces] = useState([]);
     const [plotValues, setPlotValues] = useState({
         xMin: 0,
@@ -203,17 +206,16 @@ const DoseResponseCurve = (props) => {
         }
         let xMin = Math.min(...doses);
         let xMax = Math.max(...doses) + 2;
-        let yMin = Math.min(...responses) - 5;
+        let yMin = showScatter ? Math.min(...responses) - 5 : 0;
         setPlotValues(
             {
                 xMin: xMin,
                 xMax: xMax,
-                yMax: Math.max(...responses) + 2,
+                yMax: showScatter ? Math.max(...responses) + 2 : 100,
                 yMin: yMin
             }
         );
-        let parsed = parseDoseResponseData(experiments, xMin, xMax, yMin - 3);
-        setTraces(parsed);
+        setTraces(parseDoseResponseData(experiments, xMin, xMax, yMin - 3, showScatter));
     }, [experiments]);
 
     return(
@@ -247,13 +249,20 @@ const DoseResponseCurve = (props) => {
                     zeroline: false,
                     showline: true,
                     fixedrange: true,
-                    range: [plotValues.yMin - 3, plotValues.yMax + 5]
-                }
+                    range: [
+                        showScatter ? plotValues.yMin - 3 : 0, 
+                        showScatter ? plotValues.yMax + 5 : 100
+                    ]
+                },
+                hovermode: "closest",
             }} 
             config={{
                 responsive: true,
                 displayModeBar: false,
             }} 
+            onHover={onHover ? onHover : undefined}
+            onUnhover={onUnhover ? onUnhover : undefined}
+            onClick={onClick ? onClick : undefined}
         />
     );
 }

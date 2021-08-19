@@ -40,6 +40,9 @@ const StyledCheckbox = styled.label`
     input:disabled ~ .custom-checkbox {
         opacity: 0.5; 
     }
+    input:disabled ~ .label {
+        opacity: 0.5;
+    }
 
     .custom-checkbox:after {
         margin-left: 3px;
@@ -66,7 +69,7 @@ const Checkbox = (props) => {
     const handleOnChange = (e) => {
         setIsChecked(!isChecked);
         onChange(e);
-    }
+    };
 
     return(
         <StyledCheckbox color={color}>

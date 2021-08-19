@@ -11,15 +11,15 @@ const TissueCompoundTable = (props) => {
     const columns = [
         {
             Header: `Cell Line`,
-            accessor: 'cell_line',
+            accessor: 'cell_line_name',
             center: false, 
-            Cell: (item) => <Link to={`/cells/${item.cell.value.id}`}>{item.value.name}</Link>
+            Cell: (item) => <Link to={`/cell_lines/${item.cell.row.original.cell_line.id}`}>{item.value}</Link>
         },
         {
             Header: `Dataset`,
-            accessor: 'dataset',
+            accessor: 'dataset_name',
             center: false, 
-            Cell: (item) => <Link to={`/datasets/${item.value.id}`}>{item.value.name}</Link>
+            Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.value}</Link>
         },
         {
             Header: `AAC (%)`,
@@ -87,7 +87,9 @@ const TissueCompoundTable = (props) => {
                     id: item.id,
                     name: item.name,
                     cell_line: item.cell_line,
+                    cell_line_name: item.cell_line.name,
                     dataset: item.dataset,
+                    dataset_name: item.dataset.name,
                     visible: item.visible,
                     visibleStats: item.visibleStats,
                     dataset: item.dataset,
@@ -100,7 +102,7 @@ const TissueCompoundTable = (props) => {
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
+                    filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}-statistics`}
                     data={experiments.map(item => ({
                         compound: item.compound.name,
                         tissue: item.tissue.name,

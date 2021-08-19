@@ -92,7 +92,7 @@ const CellLineCompoundTable = (props) => {
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                    filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-statistics`}
                     data={experiments.map(item => ({
                         cell_line: item.cell_line.name,
                         compound: item.compound.name,

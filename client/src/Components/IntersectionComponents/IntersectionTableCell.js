@@ -19,7 +19,6 @@ const IntersectionTableCell = (props) => {
             exp.visibleStats.IC50.visible = exp.visibleStats.IC50.clicked ? true : false;
             exp.visibleStats.EC50.visible = exp.visibleStats.EC50.clicked ? true : false;
             exp.visibleStats.Einf.visible = exp.visibleStats.Einf.clicked ? true : false;
-            exp.visibleStats.DSS1.visible = exp.visibleStats.DSS1.clicked ? true : false;
         }
         setExperiments(copy);
     };

@@ -154,7 +154,6 @@ const CellLineCompound = (props) => {
                     item.visibleStats.IC50 = { visible: false, clicked: false };
                     item.visibleStats.EC50 = { visible: false, clicked: false };
                     item.visibleStats.Einf = { visible: false, clicked: false };
-                    item.visibleStats.DSS1 = { visible: false, clicked: false };
                 }
             }
         });
@@ -182,6 +181,7 @@ const CellLineCompound = (props) => {
                                         <DoseResponseCurve 
                                             plotId='cell_compound_dose_response'
                                             experiments={experiments}
+                                            showScatter={true}
                                         />
                                         <div className='download-buttons'>
                                             <DownloadButton 
@@ -201,7 +201,7 @@ const CellLineCompound = (props) => {
                                             <DownloadButton 
                                                 label='CSV' 
                                                 mode='csv' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-dose_response`}
                                                 data={csvData}
                                             />
                                         </div>
