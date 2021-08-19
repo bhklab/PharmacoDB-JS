@@ -61,6 +61,8 @@ const generateRenderData = (data, dataset, profile) => {
       title: {
         text: profile,
       },
+      type: profile === 'AAC' ? '' : 'log',
+      autorange: true,
     },
   };
   data.forEach((el, i) => {

@@ -95,12 +95,24 @@ const pieChartDataObject = (data) => {
     },
   }];
   Object.keys(data).forEach((key) => {
-    if (data[key].total > threshold) {
+    if (data[key].total > threshold || key ==="Other") {
       returnData[0].values.push(data[key].total);
       returnData[0].labels.push(key);
     }
   });
   return returnData;
+  // let other_total = 0
+  // Object.keys(data).forEach((key) => {
+  //   if (data[key].total > threshold && key !=="Other") {
+  //     returnData[0].values.push(data[key].total);
+  //     returnData[0].labels.push(key);
+  //   } else {
+  //       other_total += data[key].total;
+  //   }
+  //   returnData[0].values.push(other_total);
+  //   returnData[0].labels.push("Other");
+  // });
+  // return returnData;
 };
 
 /**

@@ -51,6 +51,7 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     {label: 'Synonyms and IDs', name: 'synonyms'},
+    {label: 'Annotated Targets', name: 'targets'},
     {label: 'Bar Plots', name: 'barplots'},
     {label: 'AAC (Cell Lines)', name: 'aacCells'},
     {label: 'AAC (Tissues)', name: 'aacTissues'},
