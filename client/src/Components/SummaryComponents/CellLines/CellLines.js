@@ -94,7 +94,7 @@ const pieChartDataObject = (data) => {
     },
   }];
   Object.keys(data).forEach((key) => {
-    if (data[key].total > threshold || key ==="Other") {
+    if (data[key].total > threshold || key === "Other") {
       returnData[0].values.push(data[key].total);
       returnData[0].labels.push(key);
     }
