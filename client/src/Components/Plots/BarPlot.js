@@ -5,7 +5,7 @@ import datasets from '../../utils/datasetsList';
 const data = [
   {
     x: datasets,
-    y: [544, 250, 90, 52, 26, 16, 4],
+    y: [544, 343, 190, 107, 52, 44, 24, 8],
     type: 'bar',
     marker: {
       color: ['#084081', '#0868ac', '#2b8cbe', '#4eb3d3', '#7bccc4', '#a8ddb5', '#ccebc5', '#e0f3db', '#f7fcf0'],

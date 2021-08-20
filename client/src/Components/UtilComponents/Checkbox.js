@@ -34,9 +34,14 @@ const StyledCheckbox = styled.label`
     input:checked ~ .custom-checkbox {
         background-color: ${props => props.color ? props.color : colors.dark_gray_text};
     }
-
     input:checked ~ .custom-checkbox:after {
         display: block;
+    }
+    input:disabled ~ .custom-checkbox {
+        opacity: 0.5; 
+    }
+    input:disabled ~ .label {
+        opacity: 0.5;
     }
 
     .custom-checkbox:after {
@@ -58,17 +63,17 @@ const StyledCheckbox = styled.label`
 `;
 
 const Checkbox = (props) => {
-    const { value, label, checked, color, onChange } = props;
+    const { value, label, checked, color, onChange, disabled } = props;
     const [isChecked, setIsChecked] = useState(checked);
 
     const handleOnChange = (e) => {
         setIsChecked(!isChecked);
         onChange(e);
-    }
+    };
 
     return(
         <StyledCheckbox color={color}>
-            <input type="checkbox" value={value} checked={isChecked} onChange={handleOnChange} />
+            <input type="checkbox" value={value} checked={isChecked} disabled={disabled} onChange={handleOnChange} />
             <span className='custom-checkbox'></span>
             <span className='label'>{label}</span>
         </StyledCheckbox>

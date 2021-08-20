@@ -6,6 +6,10 @@ const geneCompound = `
     gene {
         id
         name
+        annotation {
+            gene_seq_start
+            gene_seq_end
+        }
     }
     compound {
         id
@@ -17,15 +21,15 @@ const geneCompound = `
  * @param {number} geneId - gene id for which the data is needed.
  * @returns - the information for the queried gene.
  */
- const getGeneCompoundDatasetQuery = gql`
-    query getGeneCompoundDataset($geneId: Int) {
-        gene_compound_dataset(geneId: $geneId, all: true) {
+const getGeneCompoundDatasetQuery = gql`
+    query getGeneCompoundDataset($geneId: Int, $compoundId: Int) {
+        gene_compound_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
             ${geneCompound}
-            n
             dataset {
                 id
                 name
             }
+            n
         }
     }
 `;
@@ -34,14 +38,10 @@ const geneCompound = `
  * @param {number} geneId/compoundId - gene/compound id for which the data is needed.
  * @returns - the information for the queried gene.
  */
- const getGeneCompoundTissueDatasetQuery = gql`
-    query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int) {
-        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
+const getGeneCompoundTissueDatasetQuery = gql`
+    query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int, $tissueId: Int) {
+        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, all: true) {
             ${geneCompound}
-            estimate
-            pvalue_analytic
-            sens_stat,
-            mDataType,
             dataset {
                 id
                 name
@@ -50,6 +50,15 @@ const geneCompound = `
                 id
                 name
             }
+            lower_analytic
+            upper_analytic
+            upper_permutation
+            lower_permutation
+            estimate
+            pvalue_analytic
+            sens_stat
+            mDataType
+            n
         }
     }
 `;

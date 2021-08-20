@@ -58,6 +58,7 @@ const generateRenderData = (data, dataset, profile) => {
       title: {
         text: profile,
       },
+      type: 'log',
     },
   };
   const notifications = {

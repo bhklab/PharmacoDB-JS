@@ -34,7 +34,8 @@
         "react-virtualized": "^9.21.2",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
-        "styled-components": "^5.1.1"
+        "styled-components": "^5.1.1",
+        "venn.js": "^0.2.20"
     },
     "scripts": {
         "start": "react-scripts --max_old_space_size=4096 start",

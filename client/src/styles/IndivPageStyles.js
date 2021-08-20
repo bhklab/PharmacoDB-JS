@@ -17,6 +17,8 @@ const StyledIndivPage = styled.div`
       margin-left: 20%;
       margin-top: 20px;
       margin-bottom: 20px;
+      white-space: normal;
+      line-height: 40px;
     }
     .attributes {
       .value {

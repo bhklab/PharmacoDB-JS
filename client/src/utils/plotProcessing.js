@@ -106,7 +106,9 @@ const runPlotDataAnalysis = (data, dataset, profile, plotType) => {
     }
   });
   let output;
-  if (plotType === 'tissue') output = calculatedData;
+  if (plotType === 'tissue') {
+    output = calculatedData.sort((a, b) => a.name.localeCompare(b.name));
+  }
   if (plotType === 'cell_line') {
     calculatedData.sort((a, b) => b.value - a.value);
     // returns calculatedData or a subset of first and last 30 items from calculated data along with some few empty datapoints to create a gap if there too many dataoints

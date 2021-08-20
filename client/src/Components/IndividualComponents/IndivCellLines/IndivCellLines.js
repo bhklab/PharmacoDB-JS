@@ -40,6 +40,7 @@ const SYNONYM_COLUMNS = [
 const SIDE_LINKS = [
   {label: 'Cell Line Data', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
+  {label: 'AAC (Compounds)', name: 'aacCompounds'},
   {label: 'Drugs Summary', name: 'drugsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
@@ -51,7 +52,9 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]})
+        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
+            returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
+        }
         return returnObj;
     }
     return null;
@@ -65,12 +68,15 @@ const formatDiseaseData = (data) => {
     if (data) {
         const ncit_path =
             'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
+        const ordo_path = 'https://www.ebi.ac.uk/ols/ontologies/ordo/terms?iri=http://www.orpha.net/ORDO/';
         return data.map((x) =>
             x
                 ? {
                       key: x.split('; ')[1],
-                      name: x,
-                      source: ncit_path + x.split('; ')[1],
+                      name: x.split('; ')[0] === 'NCIt' ?
+                            x.split('; ')[0] + ': '+ x.split('; ')[2] + ' (Code ' + x.split('; ')[1] + ')' :
+                            x.split('; ')[0] + ': '+ x.split('; ')[2] + ' (ORPHA:' + x.split('; ')[1].split('_')[1] + ')',
+                      source: x.split('; ')[0] === 'NCIt' ? ncit_path + x.split('; ')[1] : ordo_path + x.split('; ')[1],
                   }
                 : {
                       key: null,
@@ -184,7 +190,12 @@ const IndivCellLines = (props) => {
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
                             <div className="text">
-                              {diseaseData ? diseaseData.map((x) => <a key={x.key} target="_blank" href={x.source}>{x.name}</a>) : 'N/A'}
+                              {diseaseData ? diseaseData.map((x, i) =>
+                                  <span key={i}>
+                                      <a key={x.key} target="_blank" href={x.source}>{x.name}</a>
+                                      { i + 1 < diseaseData.length ? <br/> : ''}
+                                  </span>
+                              ) : 'N/A'}
                             </div>
                           </Element>
                           <Element className="section" name="link(s)">
@@ -196,7 +207,6 @@ const IndivCellLines = (props) => {
                         </React.Fragment>
                       }
                       {
-                        display === 'barPlot' &&
                         <Element>
                             <PlotSection
                                 display={display}
