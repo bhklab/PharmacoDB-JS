@@ -12,11 +12,13 @@ const StyledIndivPage = styled.div`
     color: ${colors.dark_teal_heading};
     .title {
       color: ${colors.dark_pink_highlight};
-      font-size: clamp(32px, calc(2vw + 10px), 44px);
+      font-size: clamp(32px, calc(2vw + 10px), 22px);
       font-weight: bold;
       margin-left: 20%;
       margin-top: 20px;
       margin-bottom: 20px;
+      white-space: normal;
+      line-height: 40px;
     }
     .attributes {
       .value {
