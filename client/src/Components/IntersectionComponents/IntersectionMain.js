@@ -6,6 +6,7 @@ import qs from 'query-string' // used to parse the query string
 import CellLineCompound from './CellLineCompound/CellLineCompound';
 import TissueCompound from './TissueCompound/TissueCompound';
 import NotFoundPage from '../UtilComponents/NotFoundPage';
+import VennDiagram from '../Plots/VennDiagram';
 
 /**
  * A component that evaluates, the query string and returns intersection components such as cell line vs drug and tissue vs drug.
@@ -14,9 +15,9 @@ import NotFoundPage from '../UtilComponents/NotFoundPage';
  */
 const IntersectionMain = () => {
     const location = useLocation();
-    
+
     // determined which page to be rendered. Values: 'cellDrug', 'tissueDrug', 'notFound', or undefined
-    const [page, setPage] = useState({ name: undefined, query: undefined }); 
+    const [page, setPage] = useState({ name: undefined, query: undefined });
 
     useEffect(() => {
         let values = qs.parse(location.search);
@@ -24,20 +25,22 @@ const IntersectionMain = () => {
         let pageName = undefined;
 
         // Determines which page to render by evaluating the keys
-        if(keys.length >= 2 && keys.includes('compound')){
-            if(keys.includes('cell_line')){
+        if (keys.length >= 2 && keys.includes('compound')) {
+            if (keys.includes('cell_line')) {
                 pageName = 'cellCompound';
             }
-            if(keys.includes('tissue')){
+            if (keys.includes('tissue')) {
                 pageName = 'tissueCompound';
             }
-        }else{
+        } else if (keys.length === 1 && keys.includes('dataset_intersection')) {
+            pageName = 'vennDiagram';
+        } else {
             pageName = 'notFound';
         }
-        setPage({name: pageName, query: values});
+        setPage({ name: pageName, query: values });
     }, []);
 
-    return(
+    return (
         <React.Fragment>
             {
                 page.name === 'notFound' && <NotFoundPage />
@@ -47,6 +50,9 @@ const IntersectionMain = () => {
             }
             {
                 page.name === 'tissueCompound' && <TissueCompound tissue={page.query.tissue} compound={page.query.compound} />
+            }
+            {
+                page.name === 'vennDiagram' && <VennDiagram datasets={page.query.dataset_intersection} />
             }
         </React.Fragment>
     );
