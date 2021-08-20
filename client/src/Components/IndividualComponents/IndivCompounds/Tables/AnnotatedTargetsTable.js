@@ -21,10 +21,10 @@ const parseTableData = (data, compound) => {
         tableData.numDatasets = datasetIds.length;
         for(const geneId of geneIds){
             let filtered = data.filter(item => item.gene.id === geneId);
-            let experiments = filtered.map(item => item.n).reduce((a, b) => a + b, 0);
-
+            // let experiments = filtered.map(item => item.n).reduce((a, b) => a + b, 0);
             let datasetIds = filtered.map(item => item.dataset.id);
             datasetIds = [...new Set(datasetIds)];
+            let experiments = datasetIds.length;
             let datasets = [];
             for(const datasetId of datasetIds){
                 let dataset = filtered.find(item => item.dataset.id === datasetId).dataset;
@@ -53,7 +53,7 @@ const AnnotatedTargetsTable = (props) => {
             Header: `Genes`,
             accessor: 'gene',
             center: true,
-            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.gene_id}`}>{item.value}</Link>
+            Cell: (item) => <Link to={`/genes/${item.cell.row.original.gene_id}`}>{item.value}</Link>
         },
         {
             Header: `Datasets`,
