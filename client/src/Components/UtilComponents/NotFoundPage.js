@@ -31,7 +31,10 @@ export const NotFoundContent = () => (
 const NotFoundPage = () => (
   <Layout>
     <StyledWrapper>
-      {NotFoundContent}
+      <h1>Page Not Found.</h1>
+      <p style={{ textAlign: 'center', marginTop: '5vh', fontSize: 'calc(0.6vw + 0.9em)' }}>
+        <Link to="/">← Go Home</Link>
+      </p>
     </StyledWrapper>
   </Layout>
 );

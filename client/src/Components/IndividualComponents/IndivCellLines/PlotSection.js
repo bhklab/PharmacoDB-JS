@@ -44,7 +44,7 @@ const generateCountPlotData = (experiments) => {
  *   <PlotSection/>
  * )
  */
-const PlotSection = (props) => {
+const PlotSection = (props) =>{
     const { display, cellLine } = props;
     const { id, name } = cellLine;
 
@@ -72,12 +72,14 @@ const PlotSection = (props) => {
                         display === 'barPlot' ?
                             loading ? <Loading />
                                 :
-                                <DatasetHorizontalPlot
-                                    plotId={`${name}Compounds`}
-                                    data={compoundsData}
-                                    xaxis="# of compounds"
-                                    title={`Number of compounds tested with ${name} (per dataset)`}
-                                />
+                                <PlotsWrapper single={true}>
+                                    <DatasetHorizontalPlot
+                                        plotId={`${name}Compounds`}
+                                        data={compoundsData}
+                                        xaxis="# of compounds"
+                                        title={`Number of compounds tested with ${name} (per dataset)`}
+                                    />
+                                </PlotsWrapper>
                             :
                         display === 'aacCompounds' ?
                             loading ? <Loading />
