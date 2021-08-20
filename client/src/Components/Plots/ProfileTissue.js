@@ -32,7 +32,7 @@ const baseLayout = {
     fixedrange: true,
     tickmode: 'linear',
     anchor: 'free',
-    position: 0.025,
+    position: 0.020,
   },
   yaxis: {
     color: colors.dark_teal_heading,

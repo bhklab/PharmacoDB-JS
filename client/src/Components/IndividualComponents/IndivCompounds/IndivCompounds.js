@@ -12,6 +12,7 @@ import PlotSection from './PlotSection';
 import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
 import TissuesSummaryTable from './Tables/TissuesSummaryTable'
 import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
+import AnnotatedTargetsTable from './Tables/AnnotatedTargetsTable'
 import {StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -220,15 +221,9 @@ const IndivCompounds = (props) => {
                                     }
                                     {
                                         display === 'targets' &&
-                                        <Element className="section" name="annotated_targets">
+                                        <Element className="section">
                                             <div className='section-title'>Annotated Targets</div>
-                                            <div className="text">
-                                                {data.targets
-                                                    ? data.targets
-                                                        .map((x) => x.name)
-                                                        .join(', ')
-                                                    : ''}
-                                            </div>
+                                            <AnnotatedTargetsTable compound={({ id: data.compound.id, name: data.compound.name })}/>
                                         </Element>
                                     }
                                     <Element>
