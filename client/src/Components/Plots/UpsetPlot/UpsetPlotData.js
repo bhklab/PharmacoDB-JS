@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import createAllSubsets from '../../../utils/createAllSubsets';
 import UpsetPlot from './UpsetPlot';
-
+import Loading from '../../UtilComponents/Loading';
 
 /**
  * Parses the data and prepare an object for each dataset and all the related types in the dataset.
@@ -88,7 +88,7 @@ const ParseData = () => {
     }, [data])
 
     return (
-        datasets.length > 0 ? <UpsetPlot data={parsedCellData} datasets={datasets} /> : ''
+        loading ? <Loading /> : <UpsetPlot data={parsedCellData} datasets={datasets} />
         // datasets.length > 0 ? <UpsetPlot data={dataset} datasets={datasets1} /> : ''
     )
 };

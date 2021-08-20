@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import createSvgCanvas from '../../../utils/createSvgCanvas';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
+import Loading from '../../UtilComponents/Loading';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
@@ -258,7 +259,7 @@ const UpsetPlot = ({ data, datasets }) => {
     })
     return (
         <UpsetPlotStyle>
-            <div id='upsetplot' />
+            {data ? <div id='upsetplot' /> : <Loading />}
         </UpsetPlotStyle>
     )
 };
