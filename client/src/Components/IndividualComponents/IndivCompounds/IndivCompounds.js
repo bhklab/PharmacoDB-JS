@@ -225,16 +225,6 @@ const IndivCompounds = (props) => {
                                             <div className='section-title'>Annotated Targets</div>
                                             <AnnotatedTargetsTable compound={({ id: data.compound.id, name: data.compound.name })}/>
                                         </Element>
-                                        // <Element className="section" name="annotated_targets">
-                                        //     <div className='section-title'>Annotated Targets</div>
-                                        //     <div className="text">
-                                        //         {data.targets
-                                        //             ? data.targets
-                                        //                 .map((x) => x.name)
-                                        //                 .join(', ')
-                                        //             : ''}
-                                        //     </div>
-                                        // </Element>
                                     }
                                     <Element>
                                         <PlotSection

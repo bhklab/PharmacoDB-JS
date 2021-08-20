@@ -88,7 +88,6 @@ const AnnotatedTargetsTable = (props) => {
     const { loading } = useQuery(getGeneCompoundDatasetQuery, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            console.log(data)
             setTableData(parseTableData(data.gene_compound_dataset, compound));
         },
         onError: (err) => {
