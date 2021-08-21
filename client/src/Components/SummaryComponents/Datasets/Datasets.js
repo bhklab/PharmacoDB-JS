@@ -6,7 +6,7 @@ import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../UtilComponents/Loading';
-import DatasetIntersection from '../../Plots/UpsetPlot/DatasetIntersection';
+import DatasetIntersection from '../../Plots/DatasetIntersection/DatasetIntersection';
 
 // an array with the columns of dataset table.
 const table_columns = [
