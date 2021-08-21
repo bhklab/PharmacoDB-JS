@@ -204,7 +204,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  */
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
-    const width = CIRCLE_RADIUS * 3.1 * Object.keys(data).length;
+    const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
     const height = 600 - margin.top - margin.bottom;
 
     // sort the data based on the count.
@@ -251,6 +251,7 @@ const createUpsetPlot = (data, datasets) => {
  * )
  */
 const UpsetPlot = ({ data, datasets }) => {
+    console.log(data, datasets);
     useEffect(() => {
         // remove the alrady existing upset plot.
         d3.select(`#${CANVAS_ID}`).remove();

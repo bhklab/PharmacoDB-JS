@@ -71,7 +71,8 @@ const createUpsetPlotData = (data, subsets) => {
  * Parses data from the cell line query for the upset plot.
  * @component
  */
-const ParseData = () => {
+const DatasetIntersection = () => {
+    // const datasetArray = ['CCLE', 'CTRPv2', 'gCSI'];
     const { loading, error, data } = useQuery(getCellLinesQuery);
     const [datasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
@@ -93,4 +94,4 @@ const ParseData = () => {
     )
 };
 
-export default ParseData;
+export default DatasetIntersection;
