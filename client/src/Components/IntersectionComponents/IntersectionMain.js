@@ -52,7 +52,7 @@ const IntersectionMain = () => {
                 page.name === 'tissueCompound' && <TissueCompound tissue={page.query.tissue} compound={page.query.compound} />
             }
             {
-                page.name === 'datasetIntersection' && <DatasetIntersection datasets={page.query.dataset_intersection} />
+                page.name === 'datasetIntersection' && <DatasetIntersection datasets={page.query.dataset_intersection} isIntersection />
             }
         </React.Fragment>
     );

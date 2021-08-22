@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import { getDatasetsQuery } from '../../../queries/dataset';
+import StyledWrapper from '../../../styles/utils';
+import Layout from '../../UtilComponents/Layout';
 import createAllSubsets from '../../../utils/createAllSubsets';
 import UpsetPlot from '../../Plots/UpsetPlot';
 import VennDiagram from '../../Plots/VennDiagram';
@@ -115,7 +117,7 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
  * Parses data from the cell line query for the upset plot.
  * @component
  */
-const DatasetIntersection = ({ datasets: datasetsProp }) => {
+const DatasetIntersection = ({ datasets: datasetsProp, isIntersection = false }) => {
     // array of the datasets from the prop.
     const datasetsPropArray = createDatasetArray(datasetsProp);
 
@@ -147,17 +149,30 @@ const DatasetIntersection = ({ datasets: datasetsProp }) => {
     }, [cellLineData, datasetData])
 
     return (
-        <>
-            {
-                renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
-            }
-        </>
+        isIntersection
+            ? (
+                <Layout page="dataset_intersection">
+                    <StyledWrapper>
+                        {
+                            renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+                        }
+                    </StyledWrapper>
+                </Layout>
+            )
+            : (
+                <>
+                    {
+                        renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+                    }
+                </>
+            )
     )
 };
 
 
 DatasetIntersection.propTypes = {
     datasets: PropTypes.string,
+    isIntersection: PropTypes.bool,
 }
 
 export default DatasetIntersection;
