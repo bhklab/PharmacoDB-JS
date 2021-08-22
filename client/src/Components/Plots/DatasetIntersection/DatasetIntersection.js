@@ -5,6 +5,7 @@ import { getCellLinesQuery } from '../../../queries/cell';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import createAllSubsets from '../../../utils/createAllSubsets';
 import UpsetPlot from './UpsetPlot';
+import VennDiagram from '../VennDiagram';
 import Loading from '../../UtilComponents/Loading';
 
 /**
@@ -94,6 +95,21 @@ const createUpdatedDatasetArray = (datasets, keys) => {
     return data;
 };
 
+/**
+ * 
+ * @param {boolean} cellDataLoading 
+ * @param {boolean} datasetDataLoading 
+ * @param {Object} parsedCellData 
+ * @param {Array} updatedDatasets 
+ */
+const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets) => {
+    if (cellDataLoading || datasetDataLoading) {
+        return <Loading />
+    } else {
+        return <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+    }
+}
+
 
 /**
  * Parses data from the cell line query for the upset plot.
@@ -131,9 +147,11 @@ const DatasetIntersection = ({ datasets: datasetsProp }) => {
     }, [cellLineData, datasetData])
 
     return (
-        cellDataLoading || datasetDataLoading
-            ? <Loading />
-            : <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+        <>
+            {
+                renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+            }
+        </>
     )
 };
 
