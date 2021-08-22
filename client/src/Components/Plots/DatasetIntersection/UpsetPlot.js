@@ -206,7 +206,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
     const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
-    const height = 600 - margin.top - margin.bottom;
+    const height = 700 - margin.top - margin.bottom;
 
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
