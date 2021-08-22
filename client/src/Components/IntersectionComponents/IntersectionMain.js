@@ -6,7 +6,7 @@ import qs from 'query-string' // used to parse the query string
 import CellLineCompound from './CellLineCompound/CellLineCompound';
 import TissueCompound from './TissueCompound/TissueCompound';
 import NotFoundPage from '../UtilComponents/NotFoundPage';
-import VennDiagram from '../Plots/VennDiagram';
+import DatasetIntersection from '../Plots/DatasetIntersection/DatasetIntersection';
 
 /**
  * A component that evaluates, the query string and returns intersection components such as cell line vs drug and tissue vs drug.
@@ -33,7 +33,7 @@ const IntersectionMain = () => {
                 pageName = 'tissueCompound';
             }
         } else if (keys.length === 1 && keys.includes('dataset_intersection')) {
-            pageName = 'vennDiagram';
+            pageName = 'datasetIntersection';
         } else {
             pageName = 'notFound';
         }
@@ -52,7 +52,7 @@ const IntersectionMain = () => {
                 page.name === 'tissueCompound' && <TissueCompound tissue={page.query.tissue} compound={page.query.compound} />
             }
             {
-                page.name === 'vennDiagram' && <VennDiagram datasets={page.query.dataset_intersection} />
+                page.name === 'datasetIntersection' && <DatasetIntersection datasets={page.query.dataset_intersection} />
             }
         </React.Fragment>
     );
