@@ -16,6 +16,7 @@ const UpsetPlotStyle = styled.div`
     width: 800px;
     overflow: auto;
     margin-bottom: 50px;
+    text-align: center;
 `;
 
 // margin for the svg element.
@@ -251,7 +252,6 @@ const createUpsetPlot = (data, datasets) => {
  * )
  */
 const UpsetPlot = ({ data, datasets }) => {
-    console.log(data, datasets);
     useEffect(() => {
         // remove the alrady existing upset plot.
         d3.select(`#${CANVAS_ID}`).remove();
@@ -260,7 +260,7 @@ const UpsetPlot = ({ data, datasets }) => {
     })
     return (
         <UpsetPlotStyle>
-            {data ? <div id='upsetplot' /> : <Loading />}
+            {data && datasets ? <div id='upsetplot' /> : <Loading />}
         </UpsetPlotStyle>
     )
 };
