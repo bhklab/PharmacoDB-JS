@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
+import PropTypes from 'prop-types';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
 import colors from '../../styles/colors';
+import createAllSubsets from '../../utils/createAllSubsets';
+
 
 var sets = [
     { sets: ['A'], size: 20, label: '20' },
@@ -107,7 +110,7 @@ const createVennDiagram = (data) => {
 };
 
 
-const VennDiagram = (props) => {
+const VennDiagram = ({ data }) => {
     useEffect(() => {
         createVennDiagram(sets)
     }, [])
@@ -118,6 +121,17 @@ const VennDiagram = (props) => {
             </StyledWrapper>
         </Layout>
     )
+};
+
+
+VennDiagram.propTypes = {
+    datasets: PropTypes.arrayOf(
+        PropTypes.shape({
+            sets: PropTypes.arrayOf(PropTypes.string),
+            size: PropTypes.number,
+            label: PropTypes.string,
+        }).isRequired,
+    ),
 };
 
 export default VennDiagram;
