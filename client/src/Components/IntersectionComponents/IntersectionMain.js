@@ -6,7 +6,7 @@ import qs from 'query-string' // used to parse the query string
 import CellLineCompound from './CellLineCompound/CellLineCompound';
 import TissueCompound from './TissueCompound/TissueCompound';
 import NotFoundPage from '../UtilComponents/NotFoundPage';
-import DatasetIntersection from '../Plots/DatasetIntersection/DatasetIntersection';
+import DatasetIntersection from './DatasetIntersection/DatasetIntersection';
 
 /**
  * A component that evaluates, the query string and returns intersection components such as cell line vs drug and tissue vs drug.

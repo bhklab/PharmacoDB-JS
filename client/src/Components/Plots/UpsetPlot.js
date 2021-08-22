@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
-import createSvgCanvas from '../../../utils/createSvgCanvas';
-import colors from '../../../styles/colors';
+import createSvgCanvas from '../../utils/createSvgCanvas';
+import colors from '../../styles/colors';
 import styled from 'styled-components';
-import Loading from '../../UtilComponents/Loading';
+import Loading from '../UtilComponents/Loading';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;

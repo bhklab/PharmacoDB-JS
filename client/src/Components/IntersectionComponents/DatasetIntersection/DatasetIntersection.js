@@ -4,8 +4,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import createAllSubsets from '../../../utils/createAllSubsets';
-import UpsetPlot from './UpsetPlot';
-import VennDiagram from '../VennDiagram';
+import UpsetPlot from '../../Plots/UpsetPlot';
+import VennDiagram from '../../Plots/VennDiagram';
 import Loading from '../../UtilComponents/Loading';
 
 /**
