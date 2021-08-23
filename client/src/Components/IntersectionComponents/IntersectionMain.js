@@ -32,8 +32,10 @@ const IntersectionMain = () => {
             if (keys.includes('tissue')) {
                 pageName = 'tissueCompound';
             }
-        } else if (keys.length === 1 && keys.includes('dataset_intersection')) {
+        } else if (keys.length === 2 && keys.includes('dataset_intersection')) {
             pageName = 'datasetIntersection';
+        } else if (keys.length === 1 && keys.includes('dataset_intersection')) { //TODO: update this to render individual dataset page.
+            pageName = 'individualDataset';
         } else {
             pageName = 'notFound';
         }
