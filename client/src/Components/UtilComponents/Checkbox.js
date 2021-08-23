@@ -13,7 +13,7 @@ const StyledCheckbox = styled.label`
 
     input {
         position: absolute;
-        opacity: 0;
+        display: none;
         cursor: pointer;
         height: 0;
         width: 0;

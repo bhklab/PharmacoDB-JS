@@ -6,7 +6,7 @@ import { StyledIntersectionSummaryTable } from '../../../styles/IntersectionComp
 import IntersectionTableCell from '../IntersectionTableCell';
 
 const CellLineCompoundTable = (props) => {
-    const { experiments, setExperiments } = props;
+    const { experiments, showStat, hideStat, alterClickedCells } = props;
 
     const columns = [
         {
@@ -24,7 +24,9 @@ const CellLineCompoundTable = (props) => {
                     statName='AAC' 
                     value={typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A'} 
                     experiments={experiments} 
-                    setExperiments={setExperiments} 
+                    showStat={showStat}
+                    hideStat={hideStat}
+                    alterClickedCells={alterClickedCells}
                     cellItem={item} 
                 />
             )
@@ -38,7 +40,9 @@ const CellLineCompoundTable = (props) => {
                     statName='IC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
                     experiments={experiments} 
-                    setExperiments={setExperiments} 
+                    showStat={showStat}
+                    hideStat={hideStat}
+                    alterClickedCells={alterClickedCells}
                     cellItem={item} 
                 />
             )
@@ -52,7 +56,9 @@ const CellLineCompoundTable = (props) => {
                     statName='EC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
                     experiments={experiments} 
-                    setExperiments={setExperiments} 
+                    showStat={showStat}
+                    hideStat={hideStat}
+                    alterClickedCells={alterClickedCells}
                     cellItem={item} 
                 />
             )
@@ -66,7 +72,9 @@ const CellLineCompoundTable = (props) => {
                     statName='Einf' 
                     value={typeof item.value === 'number' ? item.value.toFixed(3) : 'N/A'} 
                     experiments={experiments} 
-                    setExperiments={setExperiments} 
+                    showStat={showStat}
+                    hideStat={hideStat}
+                    alterClickedCells={alterClickedCells}
                     cellItem={item} 
                 />
             )
@@ -81,12 +89,12 @@ const CellLineCompoundTable = (props) => {
                     id: item.id,
                     name: item.name,
                     visible: item.visible,
-                    visibleStats: item.visibleStats,
                     dataset: item.dataset,
+                    clicked: item.clicked,
                     ...item.profile
                 }))} 
                 columns={columns} 
-                disablePagination={true} 
+                disablePagination={false} 
             />
             <div className='download-button'>
                 <DownloadButton 

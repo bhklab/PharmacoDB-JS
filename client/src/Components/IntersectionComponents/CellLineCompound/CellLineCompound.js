@@ -15,6 +15,7 @@ import Error from '../../UtilComponents/Error';
 import { StyledIntersectionComponent } from '../../../styles/IntersectionComponentStyles';
 import plotColors from '../../../styles/plot_colors';
 import styled from 'styled-components';
+import { getDoseResponseCurveData } from '../../../utils/doseResponseCurveHelper';
 
 const StyledDoseResponseContainer = styled.div`
     display: flex;
@@ -32,6 +33,8 @@ const StyledDoseResponseContainer = styled.div`
     .right-panel {
         min-width: 150px;
         margin-top: 50px;
+        max-height: 450px;
+        overflow-y: auto;
     }
 `;
 
@@ -72,19 +75,19 @@ const parseExperiments = (experiments) => {
     }
 
     // Add other fields that will be used in the plot and the table.
-    return parsed.map((item, i) => ({
+    parsed = parsed.map((item, i) => ({
         ...item, 
         id: i, // add id to each experiment so that it is easy to identify in the table and the plot.
         visible: true,
         displayCurve: typeof item.profile.AAC === 'number',
-        visibleStats: {
-            AAC: { visible: false, clicked: false },
-            IC50: { visible: false, clicked: false },
-            EC50: { visible: false, clicked: false },
-            Einf: { visible: false, clicked: false },
-            DSS1: { visible: false, clicked: false },
+        clicked: {
+            AAC: false,
+            IC50: false,
+            EC50: false,
+            Einf: false
         }
     }));
+    return parsed;
 }
 
 /**
@@ -120,6 +123,7 @@ const CellLineCompound = (props) => {
     const { cell_line, compound } = props;
     const [error, setError] = useState(false);
     const [experiments, setExperiments] = useState(undefined);
+    const [plotData, setPlotData] = useState({traces: [], xMin: 0, xMax: 0, yMin: 0, yMax: 0});
     const [csvData, setCSVData] = useState([]);
 
     // query to get the data for the single gene.
@@ -131,8 +135,10 @@ const CellLineCompound = (props) => {
             compoundName: typeof compound === 'string' ? compound : undefined
         },
         onCompleted: (data) => { 
-            setExperiments(parseExperiments(data.experiments));
+            let parsed = parseExperiments(data.experiments);
+            setExperiments(parsed);
             setCSVData(parseCSVData(data.experiments));
+            setPlotData(getDoseResponseCurveData(parsed, true));
         },
         onError: (err) => {
             console.log(err);
@@ -145,18 +151,71 @@ const CellLineCompound = (props) => {
     );
 
     const handleExperimentSelectionChange = (e) => {
-        let copy = JSON.parse(JSON.stringify(experiments));
+        let copy = JSON.parse(JSON.stringify(plotData.traces));
+        let ids = experiments.filter(item => item.name === e.target.value).map(item => item.id);
         copy.forEach(item => {
+            if(ids.includes(item.id) && item.curve){
+                item.visible = e.target.checked;
+            }
+        });
+        let expCopy = JSON.parse(JSON.stringify(experiments));
+        expCopy.forEach(item => {
             if(item.name === e.target.value){
                 item.visible = e.target.checked;
                 if(!e.target.checked){
-                    item.visibleStats.AAC = { visible: false, clicked: false };
-                    item.visibleStats.IC50 = { visible: false, clicked: false };
-                    item.visibleStats.EC50 = { visible: false, clicked: false };
-                    item.visibleStats.Einf = { visible: false, clicked: false };
+                    item.clicked.AAC = false;
+                    item.clicked.IC50 = false;
+                    item.clicked.EC50 = false;
+                    item.clicked.Einf = false;
                 }
             }
         });
+        setExperiments(expCopy);
+        setPlotData({
+            ...plotData,
+            traces: copy
+        });
+    };
+
+    const showStat = (id, statName) => {
+        let copy = JSON.parse(JSON.stringify(plotData.traces));
+        copy.forEach(item => {
+            if(item.id === id && item.stat === statName){
+                if(statName === 'AAC' && item.curve){
+                    item.fill = 'tonexty';
+                }else{
+                    item.visible = true;
+                }
+            }
+        });
+        setPlotData({
+            ...plotData,
+            traces: copy
+        });
+    };
+
+    const hideStat = () => {
+        let copy = JSON.parse(JSON.stringify(plotData.traces));
+        copy.forEach(item => {
+            let found = experiments.find(exp => exp.id === item.id);
+            if(item.stat !== 'scatterPoints' && !found.clicked[item.stat]){
+                if(item.curve){
+                    item.fill = 'none';
+                }else{
+                    item.visible = false;
+                }
+            }
+        });
+        setPlotData({
+            ...plotData,
+            traces: copy
+        });
+    }
+
+    const alterClickedCells = (id, statName) => {
+        let copy = JSON.parse(JSON.stringify(experiments));
+        let index = copy.findIndex(item => item.id === id);
+        copy[index].clicked[statName] = !copy[index].clicked[statName];
         setExperiments(copy);
     };
 
@@ -180,8 +239,8 @@ const CellLineCompound = (props) => {
                                     <div className='plot'>
                                         <DoseResponseCurve 
                                             plotId='cell_compound_dose_response'
-                                            experiments={experiments}
                                             showScatter={true}
+                                            plotData={plotData}
                                         />
                                         <div className='download-buttons'>
                                             <DownloadButton 
@@ -224,7 +283,9 @@ const CellLineCompound = (props) => {
                                 </StyledDoseResponseContainer>
                                 <CellLineCompoundTable 
                                     experiments={experiments} 
-                                    setExperiments={setExperiments}
+                                    showStat={showStat}
+                                    hideStat={hideStat}
+                                    alterClickedCells={alterClickedCells}
                                 />
                             </StyledIntersectionComponent>
                             :

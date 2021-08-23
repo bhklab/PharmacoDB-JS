@@ -39,6 +39,10 @@ const StyledDoseResponseContainer = styled.div`
                 font-weight: bold;
                 margin-bottom: 5px;
             }
+            .dataset-selector {
+                max-height: 250px;
+                overflow-y: auto;
+            }
             .cell-line-selector {
                 max-height: 250px;
                 overflow-y: auto;
@@ -91,7 +95,7 @@ const StyledDoseResponseContainer = styled.div`
         color: plotColors.default[1],
         visible: true,
         displayCurve: typeof item.profile.AAC === 'number',
-        curveWidth: 1,
+        curveWidth: 0.5,
         highlight: cellLines.find(cell => cell.name === item.cell_line.name).color,
         visibleStats: {
             AAC: { visible: false, clicked: false },
@@ -194,7 +198,7 @@ const TissueDrug = (props) => {
         let copy = [...experiments];
         copy.forEach(item => {
             if(item.cell_line.name === e.target.value){
-                item.curveWidth = e.target.checked ? 3 : 1;
+                item.curveWidth = e.target.checked ? 2 : 0.5;
                 item.color = e.target.checked ? item.highlight : plotColors.default[1];
             }
         });
@@ -225,7 +229,7 @@ const TissueDrug = (props) => {
         let found = copy.find(item => item.id === e.points[0].data.id);
         copy.forEach(item => {
             if(item.cell_line.name === found.cell_line.name){
-                item.curveWidth = item.curveWidth === 1 ? 3 : 1;
+                item.curveWidth = item.curveWidth === 0.5 ? 2 : 0.5;
                 item.color = item.color === plotColors.default[1] ? item.highlight : plotColors.default[1];
             }
         });
@@ -284,6 +288,7 @@ const TissueDrug = (props) => {
                                     <div className='right-panel'>
                                         <div className='checkbox-group'>
                                             <div className='title'>Dataset Selector</div>
+                                            <div className='dataset-selector'>
                                             {
                                                 datasets.map((item, i) => (
                                                     <Checkbox 
@@ -296,6 +301,7 @@ const TissueDrug = (props) => {
                                                     />
                                                 ))
                                             }
+                                            </div>
                                         </div>
                                         <div className='checkbox-group'>
                                             <div className='title'>Cell Line Selector</div>
