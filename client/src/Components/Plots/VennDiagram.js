@@ -2,24 +2,13 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
-import Layout from '../UtilComponents/Layout';
-import StyledWrapper from '../../styles/utils';
 import colors from '../../styles/colors';
-import createAllSubsets from '../../utils/createAllSubsets';
 
-
-var sets = [
-    { sets: ['A'], size: 20, label: '20' },
-    { sets: ['B'], size: 20, label: '22' },
-    { sets: ['C'], size: 20, label: '42' },
-    { sets: ['A', 'B'], size: 6, label: '11' },
-    { sets: ['A', 'C'], size: 6, label: '4' },
-    { sets: ['C', 'B'], size: 6, label: '8' },
-    { sets: ['C', 'B', 'A'], size: 4, label: '4' }
-];
 
 // Inline style for the venn to align it in the center.
-const vennStyle = { textAlign: 'center' }
+const vennStyle = {
+    textAlign: 'center'
+}
 
 /**
  * Creates the venn diagram structure.
@@ -93,6 +82,15 @@ const createVennDiagram = (data) => {
     // creates the basic structure for the venn diagram.
     const chart = createVennDiagramStructure();
 
+    // get the set and concat it in case the set size is three (3).
+    let innerInstersection = '';
+
+    data.forEach(el => {
+        if (el.sets.length === 3) {
+            innerInstersection = el.sets.join('_');
+        }
+    });
+
     // add the data to the venn diagram.
     enterData(chart, data, 'venn');
 
@@ -106,20 +104,18 @@ const createVennDiagram = (data) => {
     changeIntersectionColor('venn', 'venn-intersection', `${colors.green}`)
 
     // change the color of the intersection with 3 sets.
-    changeInnerIntersectionColor('C_B_A', `${colors.dark_pink_highlight}`)
+    if (innerInstersection !== '') {
+        changeInnerIntersectionColor(innerInstersection, `${colors.dark_pink_highlight}`)
+    }
 };
 
 
 const VennDiagram = ({ data }) => {
     useEffect(() => {
-        createVennDiagram(sets)
+        createVennDiagram(data)
     }, [])
     return (
-        <Layout page='venn_diagram'>
-            <StyledWrapper>
-                <div id='venn' style={vennStyle} />
-            </StyledWrapper>
-        </Layout>
+        <div id='venn' style={vennStyle} />
     )
 };
 
@@ -130,6 +126,7 @@ VennDiagram.propTypes = {
             sets: PropTypes.arrayOf(PropTypes.string),
             size: PropTypes.number,
             label: PropTypes.string,
+            values: PropTypes.arrayOf(PropTypes.string),
         }).isRequired,
     ),
 };
