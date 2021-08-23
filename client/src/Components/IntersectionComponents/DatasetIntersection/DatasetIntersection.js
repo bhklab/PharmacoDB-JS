@@ -73,6 +73,30 @@ const createUpsetPlotData = (data, subsets) => {
 
 /**
  * 
+ * @param {Object} data - data for the venn diagram.
+ */
+const createVennDiagramData = (data) => {
+    // size object for the venn diagram.
+    const size = {
+        1: 20,
+        2: 6,
+        3: 4,
+    };
+
+    // data for the venn diagram.
+    const vennData = Object.values(data).map(el => {
+        return {
+            sets: el.keys,
+            label: String(el.values.length),
+            values: el.values,
+            size: size[el.keys.length],
+        }
+    });
+    return vennData;
+};
+
+/**
+ * 
  * @param {Array | string} datasets - array or string of datasets.
  * @returns {Array} - an array of datasets in the upper case.
  */
@@ -104,9 +128,11 @@ const createUpdatedDatasetArray = (datasets, keys) => {
  * @param {Object} parsedCellData 
  * @param {Array} updatedDatasets 
  */
-const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets) => {
+const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn = false) => {
     if (cellDataLoading || datasetDataLoading) {
         return <Loading />
+    } else if (isVenn) {
+        return <VennDiagram data={createVennDiagramData(parsedCellData)} />
     } else {
         return <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
     }
@@ -128,6 +154,7 @@ const DatasetIntersection = ({ datasets: datasetsProp, isIntersection = false })
     // setting the state to grab the updated dataset array and cell line data.
     const [updatedDatasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
+    const [isVenn, setIsVenn] = useState(false);
 
     useEffect(() => {
         if (cellLineData && datasetData) {
@@ -145,6 +172,11 @@ const DatasetIntersection = ({ datasets: datasetsProp, isIntersection = false })
             // update the state to include a dataset list and 
             setDatasets(updatedDatasetArray);
             setParsedCellData(subSetCells);
+
+            // set the state of isVenn to true if the dataset prop length is 3 or less than 3.
+            if (datasetsPropArray.length <= 3) {
+                setIsVenn(true);
+            }
         }
     }, [cellLineData, datasetData])
 
@@ -154,7 +186,7 @@ const DatasetIntersection = ({ datasets: datasetsProp, isIntersection = false })
                 <Layout page="dataset_intersection">
                     <StyledWrapper>
                         {
-                            renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+                            renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn)
                         }
                     </StyledWrapper>
                 </Layout>
