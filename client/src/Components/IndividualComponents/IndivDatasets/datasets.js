@@ -251,6 +251,70 @@ const datasets = {
   },
   7: {
     id: 7,
+    name: 'NCI60',
+    acr: "",
+    acr_ref: '',
+    des: '',
+    resource: [
+      { id: '0', name: '', urlextern: '' },
+      { id: '1', name: '', urlextern: '' },
+      { id: '2', name: '', urlextern: '' },
+    ],
+    pub: [
+      {
+        id: '0',
+        title: '',
+        url: '',
+      },
+      {
+        id: '1',
+        title: '',
+        url: '',
+      },
+    ],
+    dtype: [
+      {
+        type: '', platform: '', raw: '', processed: [''],
+      },
+      {
+        type: '', platform: '', raw: '', processed: [''],
+      },
+    ],
+  },
+  8: {
+    id: 8,
+    name: 'PRISM',
+    acr: "",
+    acr_ref: '',
+    des: '',
+    resource: [
+      { id: '0', name: '', urlextern: '' },
+      { id: '1', name: '', urlextern: '' },
+      { id: '2', name: '', urlextern: '' },
+    ],
+    pub: [
+      {
+        id: '0',
+        title: '',
+        url: '',
+      },
+      {
+        id: '1',
+        title: '',
+        url: '',
+      },
+    ],
+    dtype: [
+      {
+        type: '', platform: '', raw: '', processed: [''],
+      },
+      {
+        type: '', platform: '', raw: '', processed: [''],
+      },
+    ],
+  },
+  9: {
+    id: 9,
     name: 'UHNBreast',
     acr: 'University Health Network (UHN) Breast Cancer (BC) Screen',
     acr_ref: '',
@@ -282,8 +346,8 @@ const datasets = {
       },
     ],
   },
-  8: {
-    id: 8,
+  10: {
+    id: 10,
     name: 'gCSI',
     acr: 'The Genentech Cell Line Screening Initiative (gCSI)',
     acr_ref: '',

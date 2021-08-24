@@ -16,7 +16,7 @@ const datasetQuery = async datasetId => {
 };
 
 /**
- * 
+ *
  * @returns {Object} - {
  *      CCLE: { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  * }
@@ -152,7 +152,6 @@ const datasets = async (args, parent, info) => {
         if (listOfFields.includes('tissue_tested_count')) tissue_count = await typeTestedCountGroupByDatasetQuery('tissue');
 
         console.log(tissue_count);
-        
         // return the transformed data for this function.
         const data = datasets.map(dataset => {
             const {
@@ -265,11 +264,11 @@ const cell_lines_grouped_by_dataset = async () => {
 
 /**
  * @param {Object} - Args {type: 'it can be compound, tissue, cells', datasetId: 'dataset id'}
- * @returns {Array} - returns an array of the objects. 
- * { 
- *      dataset: {id: 'dataset id', name: 'dataset name'}, 
- *      type: 'example compound', 
- *      list: {id: 'type id', name: 'type name' } 
+ * @returns {Array} - returns an array of the objects.
+ * {
+ *      dataset: {id: 'dataset id', name: 'dataset name'},
+ *      type: 'example compound',
+ *      list: {id: 'type id', name: 'type name' }
  * }
  */
 const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => {
@@ -297,7 +296,7 @@ const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => 
 };
 
 /**
- * 
+ *
  * @returns {Object}
  */
 // TODO: Using dataset_id right now, might have to change in future.
@@ -312,29 +311,28 @@ const datasetStatQuery = () => {
  * @param {String} - takes an argument either 'compound', 'tissue' or 'cell'
  * @returns {Object} - return object {source: {count: Number, source: String}, ....}
  */
-const typeCountGroupByDataset = async type => {
+const typeCountGroupByDataset = async ({ type: type}) => {
     // return object.
-    const returnObject = {};
+    // const returnObject = {};
+    const returnObject = [];
     /**
      * queries the database to get the data in the required format.
      * number of give type total across datasets
      * @returns {count: Number, source: String}
      */
     const query = await knex
-        .select('d.name as dataset')
-        .countDistinct(`${type}_id as count`)
+        .select('d.name as dataset_name', 'd.id as dataset_id')
+        .count(`${type}_id as count`)
         .from(`dataset_${type} as dt`)
         .join('dataset as d', 'd.id', 'dt.dataset_id')
         .groupBy('dt.dataset_id');
     query.forEach(value => {
         const {
-            dataset,
+            dataset_id, dataset_name, count} = value;
+        returnObject.push({
+            dataset : { 'id' : dataset_id, 'name' : dataset_name},
             count
-        } = value;
-        returnObject[dataset] = {
-            dataset,
-            count
-        };
+        });
     });
     // return the transformed object.
     return returnObject;

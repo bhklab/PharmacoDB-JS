@@ -36,8 +36,17 @@ const datasetDetailType = `
     }
 `;
 
+const countDatasetType = `
+    type CountDataset {
+        """name and id of the dataset"""
+        dataset: Generic!
+        """number of tested types in the dataset"""
+        count: Int!
+    }
+`;
 
 module.exports = {
     datasetType,
     datasetDetailType,
+    countDatasetType,
 };

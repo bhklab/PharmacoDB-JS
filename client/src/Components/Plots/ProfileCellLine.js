@@ -58,7 +58,7 @@ const generateRenderData = (data, dataset, profile) => {
       title: {
         text: profile,
       },
-      type: 'log',
+      type: profile === 'AAC' ? '' : 'log',
     },
   };
   const notifications = {

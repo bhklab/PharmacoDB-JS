@@ -90,11 +90,24 @@ const getDatasetCompoundQuery = gql`
   }
 `;
 
+const getCountTypePerDatasetQuery = gql`
+  query getCountTypePerDatasetQuery ($type: String!){
+    typeCountGroupByDataset (type: $type) {
+      dataset {
+        id
+        name
+      },
+      count
+    }
+  }
+`;
+
 export {
   getDatasetCountsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
   getDatasetCellLinesQuery,
-  getDatasetCompoundQuery
+  getDatasetCompoundQuery,
+  getCountTypePerDatasetQuery
 };
