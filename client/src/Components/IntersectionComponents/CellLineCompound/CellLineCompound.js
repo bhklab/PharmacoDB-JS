@@ -51,10 +51,11 @@ const CellLineCompound = (props) => {
     const {
         experiments,
         plotData,
+        traces,
         plotCSVData,
         tableData,
         parseExperiments,
-        handleDatasetSelectionChange,
+        handleExperimentSelectionChange,
         showStat,
         hideStat,
         alterClickedCells,
@@ -72,7 +73,7 @@ const CellLineCompound = (props) => {
             compoundName: typeof compound === 'string' ? compound : undefined
         },
         onCompleted: (data) => { 
-            parseExperiments(data.experiments);
+            parseExperiments(data.experiments, true);
         },
         onError: (err) => {
             console.log(err);
@@ -102,6 +103,7 @@ const CellLineCompound = (props) => {
                                             plotId='cell_compound_dose_response'
                                             showScatter={true}
                                             plotData={plotData}
+                                            traces={plotData.traces}
                                         />
                                         <div className='download-buttons'>
                                             <DownloadButton 
@@ -131,11 +133,11 @@ const CellLineCompound = (props) => {
                                             experiments.map((item, i) => (
                                                 <Checkbox 
                                                     key={i}
-                                                    value={item.name}
-                                                    label={item.name}
+                                                    value={item.experiment.name}
+                                                    label={item.experiment.name}
                                                     checked={item.visible}
                                                     color={item.color}
-                                                    onChange={handleDatasetSelectionChange}
+                                                    onChange={handleExperimentSelectionChange}
                                                     disabled={!item.displayCurve}
                                                 />
                                             ))

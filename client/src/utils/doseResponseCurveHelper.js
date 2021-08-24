@@ -27,6 +27,8 @@ const getDashedLine = (id, stat, x, y, color, visible) => ({
     id: id,
     stat: stat,
     additionalStat: true,
+    color: color,
+    highlight: color,
     x: x,
     y: y,
     mode: 'lines',
@@ -45,6 +47,8 @@ const getScatterPoints = (id, stat, x, y, color, visible) => ({
     id: id,
     stat: stat,
     additionalStat: true,
+    color: color,
+    highlight: color,
     x: x,
     y: y,
     mode: 'markers',
@@ -81,6 +85,8 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
             traces.push({
                 id: experiment.id,
                 stat: 'AAC',
+                color: experiment.color,
+                highlight: experiment.highlight,
                 x: [Math.log10(xMin), Math.log10(xMax)],
                 y: [100, 100],
                 mode: 'lines',
@@ -99,17 +105,18 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
                 visible: experiment.visible,
                 curve: true,
                 stat: 'AAC',
+                color: experiment.color,
+                highlight: experiment.highlight,
                 x: curvCoordinates.map(item => Math.log10(item.x)),
                 y: curvCoordinates.map(item => item.y),
                 mode: 'lines',
                 line: {
-                    color: experiment.highlight && experiment.visibleStats.AAC.visible ? experiment.highlight : experiment.color,
+                    color: experiment.color,
                     width: experiment.curveWidth ? experiment.curveWidth : 2
                 },
                 showlegend: false,
                 hoverinfo: 'none',
                 fill: 'none',
-                // fill: experiment.visibleStats.AAC.visible ? 'tonexty' : 'none',
             });
         }
 

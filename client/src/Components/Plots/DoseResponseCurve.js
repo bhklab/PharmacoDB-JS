@@ -2,12 +2,12 @@ import React from 'react';
 import Plot from 'react-plotly.js';
 
 const DoseResponseCurve = (props) => {
-    const { plotData, plotId, showScatter, onHover, onUnhover, onClick} = props;
+    const { plotData, traces, plotId, showScatter, onHover, onUnhover, onClick} = props;
 
     return(
         <Plot 
             divId={plotId}
-            data={plotData.traces} 
+            data={traces} 
             layout={{
                 autosize: true,
                 height: 600,
@@ -45,6 +45,7 @@ const DoseResponseCurve = (props) => {
             config={{
                 responsive: true,
                 displayModeBar: false,
+                staticPlot: false
             }} 
             onHover={onHover ? onHover : undefined}
             onUnhover={onUnhover ? onUnhover : undefined}

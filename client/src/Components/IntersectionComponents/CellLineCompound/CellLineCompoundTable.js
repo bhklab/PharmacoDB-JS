@@ -11,7 +11,7 @@ const CellLineCompoundTable = (props) => {
     const columns = [
         {
             Header: `Dataset`,
-            accessor: 'name',
+            accessor: 'dataset.name',
             center: false, 
             Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.value}</Link>
         },
@@ -22,7 +22,9 @@ const CellLineCompoundTable = (props) => {
             Cell: (item) => (
                 <IntersectionTableCell 
                     statName='AAC' 
-                    value={typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A'} 
+                    value={typeof item.value === 'number' ? (
+                        item.cell.row.original.dataset.name === 'NCI60' || item.cell.row.original.dataset.name === 'PRISM' ? 
+                        item.value : item.value * 100).toFixed(3) : 'N/A'} 
                     cellItem={item} 
                 />
             )
@@ -77,9 +79,9 @@ const CellLineCompoundTable = (props) => {
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${data[0].compound}-${data[0].cell_line}-statistics`}
+                    filename={`${data[0].compound.name}-${data[0].cell_line.name}-statistics`}
                     data={data.map(item => ({
-                        cell_line: item.cellLine.name,
+                        cell_line: item.cell_line.name,
                         compound: item.compound.name,
                         dataset: item.dataset.name,
                         Einf: typeof item.Einf === 'number' ? item.Einf : '',
