@@ -39,12 +39,17 @@ const StyledDoseResponseContainer = styled.div`
 `;
 
 /**
- * Formats experiments data into plot and table friendly format
+ * Formats experiments data into plot data, table data and 
+ * plot interaction control object
  * @param {*} experiments 
  * @returns 
  */
 const parseExperiments = (experiments) => {
     let parsed = [];
+    let plotData = {}; 
+    let tableData = [];
+    let csvData = [];
+    let exp = [];
     
     // assign color and name to each experiment
     let colorIndex = 0;
@@ -79,7 +84,28 @@ const parseExperiments = (experiments) => {
         ...item, 
         id: i, // add id to each experiment so that it is easy to identify in the table and the plot.
         visible: true,
-        displayCurve: typeof item.profile.AAC === 'number',
+        displayCurve: typeof item.profile.AAC === 'number'
+    }));
+
+    plotData = getDoseResponseCurveData(parsed, true);
+    tableData = parsed.map(item => ({
+        id: item.id,
+        name: item.name,
+        visible: item.visible,
+        dataset: item.dataset,
+        cellLine: item.cell_line,
+        compound: item.compound,
+        ...item.profile
+    }));
+    exp = parsed.map((item) => ({
+        id: item.id,
+        name: item.name,
+        dataset: item.dataset,
+        cellLine: item.cell_line,
+        compound: item.compound,
+        color: item.color,
+        displayCurve: item.displayCurve,
+        visible: item.visible,
         clicked: {
             AAC: false,
             IC50: false,
@@ -87,31 +113,26 @@ const parseExperiments = (experiments) => {
             Einf: false
         }
     }));
-    return parsed;
-}
 
-/**
- * Formats plot experiment data for CSV file download
- * @param {*} experiments 
- * @returns 
- */
-const parseCSVData = (experiments) => {
-    console.log(experiments)
-    let csv = [];
+    // parse CSV data
     for(const experiment of experiments){
         experiment.dose_response.forEach(item => {
-            csv.push({
+            csvData.push({
                 cell_line: experiment.cell_line.name,
                 compound: experiment.compound.name,
                 dataset: experiment.dataset.name,
                 dose: item.dose,
                 response: item.response
             });
-        })
-        
+        });
     }
-    return csv;
-}
+    return {
+        plotData: plotData,
+        tableData: tableData,
+        experiments: exp,
+        csvData: csvData
+    };
+};
 
 /**
  * Component to render cell line vs compound page.
@@ -124,6 +145,7 @@ const CellLineCompound = (props) => {
     const [error, setError] = useState(false);
     const [experiments, setExperiments] = useState(undefined);
     const [plotData, setPlotData] = useState({traces: [], xMin: 0, xMax: 0, yMin: 0, yMax: 0});
+    const [tableData, setTableData] = useState([]);
     const [csvData, setCSVData] = useState([]);
 
     // query to get the data for the single gene.
@@ -136,9 +158,10 @@ const CellLineCompound = (props) => {
         },
         onCompleted: (data) => { 
             let parsed = parseExperiments(data.experiments);
-            setExperiments(parsed);
-            setCSVData(parseCSVData(data.experiments));
-            setPlotData(getDoseResponseCurveData(parsed, true));
+            setExperiments(parsed.experiments);
+            setCSVData(parsed.csvData);
+            setPlotData(parsed.plotData);
+            setTableData(parsed.tableData);
         },
         onError: (err) => {
             console.log(err);
@@ -233,7 +256,7 @@ const CellLineCompound = (props) => {
                             experiments.length > 0 ?
                             <StyledIntersectionComponent>
                                 <h2>
-                                    {getLink('cell_lines', experiments[0].cell_line)} treated with {getLink('compounds', experiments[0].compound)}
+                                    {getLink('cell_lines', experiments[0].cellLine)} treated with {getLink('compounds', experiments[0].compound)}
                                 </h2>
                                 <StyledDoseResponseContainer>
                                     <div className='plot'>
@@ -247,20 +270,20 @@ const CellLineCompound = (props) => {
                                                 className='left'
                                                 label='SVG' 
                                                 mode='svg' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                                                filename={`${experiments[0].compound.name}-${experiments[0].cellLine.name}`}
                                                 plotId='cell_compound_dose_response'
                                             />
                                             <DownloadButton 
                                                 className='left'
                                                 label='PNG' 
                                                 mode='png' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                                                filename={`${experiments[0].compound.name}-${experiments[0].cellLine.name}`}
                                                 plotId='cell_compound_dose_response'
                                             />
                                             <DownloadButton 
                                                 label='CSV' 
                                                 mode='csv' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-dose_response`}
+                                                filename={`${experiments[0].compound.name}-${experiments[0].cellLine.name}-dose_response`}
                                                 data={csvData}
                                             />
                                         </div>
@@ -282,7 +305,7 @@ const CellLineCompound = (props) => {
                                     </div>
                                 </StyledDoseResponseContainer>
                                 <CellLineCompoundTable 
-                                    experiments={experiments} 
+                                    data={tableData} 
                                     showStat={showStat}
                                     hideStat={hideStat}
                                     alterClickedCells={alterClickedCells}

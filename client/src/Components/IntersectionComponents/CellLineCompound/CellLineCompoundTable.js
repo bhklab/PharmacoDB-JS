@@ -6,7 +6,7 @@ import { StyledIntersectionSummaryTable } from '../../../styles/IntersectionComp
 import IntersectionTableCell from '../IntersectionTableCell';
 
 const CellLineCompoundTable = (props) => {
-    const { experiments, showStat, hideStat, alterClickedCells } = props;
+    const { data, showStat, hideStat, alterClickedCells } = props;
 
     const columns = [
         {
@@ -23,7 +23,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='AAC' 
                     value={typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A'} 
-                    experiments={experiments} 
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
@@ -39,7 +38,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='IC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
-                    experiments={experiments} 
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
@@ -55,7 +53,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='EC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
-                    experiments={experiments} 
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
@@ -70,8 +67,7 @@ const CellLineCompoundTable = (props) => {
             Cell: (item) => (
                 <IntersectionTableCell 
                     statName='Einf' 
-                    value={typeof item.value === 'number' ? item.value.toFixed(3) : 'N/A'} 
-                    experiments={experiments} 
+                    value={typeof item.value === 'number' ? item.value.toFixed(3) : 'N/A'}  
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
@@ -85,14 +81,7 @@ const CellLineCompoundTable = (props) => {
         <StyledIntersectionSummaryTable>
             <h3 className='title'>Summary Statistics</h3>
             <Table 
-                data={experiments.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    visible: item.visible,
-                    dataset: item.dataset,
-                    clicked: item.clicked,
-                    ...item.profile
-                }))} 
+                data={data} 
                 columns={columns} 
                 disablePagination={false} 
             />
@@ -100,15 +89,15 @@ const CellLineCompoundTable = (props) => {
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-statistics`}
-                    data={experiments.map(item => ({
-                        cell_line: item.cell_line.name,
+                    filename={`${data[0].compound}-${data[0].cellLine}-statistics`}
+                    data={data.map(item => ({
+                        cell_line: item.cellLine.name,
                         compound: item.compound.name,
-                        dataset: item.name,
-                        Einf: typeof item.profile.Einf === 'number' ? item.profile.Einf : '',
-                        EC50: typeof item.profile.EC50 === 'number' ? item.profile.EC50 : '',
-                        AAC: typeof item.profile.AAC === 'number' ? item.profile.AAC : '',
-                        IC50: typeof item.profile.IC50 === 'number' ? item.profile.IC50 : '',
+                        dataset: item.dataset.name,
+                        Einf: typeof item.Einf === 'number' ? item.Einf : '',
+                        EC50: typeof item.EC50 === 'number' ? item.EC50 : '',
+                        AAC: typeof item.AAC === 'number' ? item.AAC : '',
+                        IC50: typeof item.IC50 === 'number' ? item.IC50 : '',
                     }))}
                 />
             </div>

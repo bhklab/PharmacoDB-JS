@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyledCell } from '../../styles/IntersectionComponentStyles';
 
 const IntersectionTableCell = (props) => {
@@ -7,7 +7,7 @@ const IntersectionTableCell = (props) => {
 
     return(
         <StyledCell 
-            className={ cellData.clicked[statName] ? 'clicked' : '' }
+            // className={ clicked ? 'clicked' : '' }
             onMouseEnter={(e) => {
                 showStat(cellData.id, statName, true);
             }}
