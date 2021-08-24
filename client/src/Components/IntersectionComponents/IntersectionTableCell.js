@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { StyledCell } from '../../styles/IntersectionComponentStyles';
+import PageContext from '../../context/PageContext';
 
 const IntersectionTableCell = (props) => {
-    const { statName, value, showStat, hideStat, alterClickedCells, isClicked, cellItem } = props;
+    const { statName, value, cellItem } = props;
     const cellData = cellItem.cell.row.original;
+    const page = useContext(PageContext);
 
     return(
         <StyledCell 
-            className={ isClicked(cellData.id, statName) ? 'clicked' : '' }
+            className={ page.isClicked(cellData.id, statName) ? 'clicked' : '' }
             onMouseEnter={(e) => {
-                showStat(cellData.id, statName, true);
+                e.preventDefault();
+                page.showStat(cellData.id, statName, true);
             }}
             onMouseOut={(e) => {
-                hideStat();
+                e.preventDefault();
+                page.hideStat();
             }}
             onClick={(e) => {
-                alterClickedCells(cellData.id, statName);
+                e.preventDefault();
+                page.alterClickedCells(cellData.id, statName);
             }}
-            disabled={!cellData.visible || value === 'N/A'}
+            disabled={page.isDisabled(cellData.id) || value === 'N/A'}
         >
             {value}
         </StyledCell>

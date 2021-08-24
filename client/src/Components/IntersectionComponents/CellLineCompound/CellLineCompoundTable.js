@@ -6,7 +6,7 @@ import { StyledIntersectionSummaryTable } from '../../../styles/IntersectionComp
 import IntersectionTableCell from '../IntersectionTableCell';
 
 const CellLineCompoundTable = (props) => {
-    const { data, showStat, hideStat, alterClickedCells, isClicked } = props;
+    const { data } = props;
 
     const columns = [
         {
@@ -23,10 +23,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='AAC' 
                     value={typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A'} 
-                    showStat={showStat}
-                    hideStat={hideStat}
-                    alterClickedCells={alterClickedCells}
-                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -39,10 +35,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='IC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
-                    showStat={showStat}
-                    hideStat={hideStat}
-                    alterClickedCells={alterClickedCells}
-                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -55,10 +47,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='EC50' 
                     value={typeof item.value === 'number' ? item.value.toFixed(5) : 'N/A'} 
-                    showStat={showStat}
-                    hideStat={hideStat}
-                    alterClickedCells={alterClickedCells}
-                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -71,10 +59,6 @@ const CellLineCompoundTable = (props) => {
                 <IntersectionTableCell 
                     statName='Einf' 
                     value={typeof item.value === 'number' ? item.value.toFixed(3) : 'N/A'}  
-                    showStat={showStat}
-                    hideStat={hideStat}
-                    alterClickedCells={alterClickedCells}
-                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -93,7 +77,7 @@ const CellLineCompoundTable = (props) => {
                 <DownloadButton 
                     label='CSV' 
                     mode='csv' 
-                    filename={`${data[0].compound}-${data[0].cellLine}-statistics`}
+                    filename={`${data[0].compound}-${data[0].cell_line}-statistics`}
                     data={data.map(item => ({
                         cell_line: item.cellLine.name,
                         compound: item.compound.name,
