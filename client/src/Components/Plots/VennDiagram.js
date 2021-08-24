@@ -79,9 +79,6 @@ const changeInnerIntersectionColor = (attr, color = `${colors.dark_pink_highligh
 
 
 const createVennDiagram = (data) => {
-    // creates the basic structure for the venn diagram.
-    const chart = createVennDiagramStructure();
-
     // get the set and concat it in case the set size is three (3).
     let innerInstersection = '';
 
@@ -90,6 +87,9 @@ const createVennDiagram = (data) => {
             innerInstersection = el.sets.join('_');
         }
     });
+
+    // creates the basic structure for the venn diagram.
+    const chart = createVennDiagramStructure();
 
     // add the data to the venn diagram.
     enterData(chart, data, 'venn');

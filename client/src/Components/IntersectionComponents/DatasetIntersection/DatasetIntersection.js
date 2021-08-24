@@ -78,9 +78,9 @@ const createUpsetPlotData = (data, subsets) => {
 const createVennDiagramData = (data) => {
     // size object for the venn diagram.
     const size = {
-        1: 20,
-        2: 6,
-        3: 4,
+        1: 16,
+        2: 4,
+        3: 2,
     };
 
     // data for the venn diagram.
@@ -129,14 +129,26 @@ const createUpdatedDatasetArray = (datasets, keys) => {
  * @param {Array} updatedDatasets 
  */
 const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn = false) => {
+    const datasetString = updatedDatasets.join(' + ');
+
     if (cellDataLoading || datasetDataLoading) {
         return <Loading />
     } else if (isVenn) {
-        return <VennDiagram data={createVennDiagramData(parsedCellData)} />
+        return (
+            <>
+                <h2>{datasetString}</h2>
+                <VennDiagram data={createVennDiagramData(parsedCellData)} />
+            </>
+        )
     } else {
-        return <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+        return (
+            <>
+                <h2>{datasetString}</h2>
+                <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+            </>
+        )
     }
-}
+};
 
 
 /**
