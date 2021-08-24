@@ -143,7 +143,7 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
  * Parses data from the cell line query for the upset plot.
  * @component
  */
-const DatasetIntersection = ({ datasets: datasetsProp, isIntersection = false }) => {
+const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = false }) => {
     // array of the datasets from the prop.
     const datasetsPropArray = createDatasetArray(datasetsProp);
 
