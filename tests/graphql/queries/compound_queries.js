@@ -20,7 +20,7 @@ const multipleCompoundsTestQuery = `
 // using compoundId 13 since it has all annotation fields present and has at least one target
 const singleCompoundTestQuery = `
     { 
-        compound(compoundId: 13) {
+        compound(compoundName: "Lapatinib") {
             compound {
                 id 
                 name 
@@ -48,7 +48,7 @@ const singleCompoundTestQuery = `
 
 const paclitaxelCompoundTestQuery = `
     {
-        compound(compoundId: 642) {
+        compound(compoundName: "paclitaxel") {
             compound {
                 id 
                 name 
