@@ -242,6 +242,11 @@ const CellLineCompound = (props) => {
         setExperiments(copy);
     };
 
+    const isClicked = (id, statName) => {
+        let found = experiments.find(item => item.id === id);
+        return found.clicked[statName];
+    }
+
     return(
         <Layout>
             <StyledWrapper>
@@ -309,6 +314,7 @@ const CellLineCompound = (props) => {
                                     showStat={showStat}
                                     hideStat={hideStat}
                                     alterClickedCells={alterClickedCells}
+                                    isClicked={isClicked}
                                 />
                             </StyledIntersectionComponent>
                             :

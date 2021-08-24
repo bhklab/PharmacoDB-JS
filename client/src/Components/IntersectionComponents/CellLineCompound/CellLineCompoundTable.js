@@ -6,7 +6,7 @@ import { StyledIntersectionSummaryTable } from '../../../styles/IntersectionComp
 import IntersectionTableCell from '../IntersectionTableCell';
 
 const CellLineCompoundTable = (props) => {
-    const { data, showStat, hideStat, alterClickedCells } = props;
+    const { data, showStat, hideStat, alterClickedCells, isClicked } = props;
 
     const columns = [
         {
@@ -26,6 +26,7 @@ const CellLineCompoundTable = (props) => {
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
+                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -41,6 +42,7 @@ const CellLineCompoundTable = (props) => {
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
+                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -56,6 +58,7 @@ const CellLineCompoundTable = (props) => {
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
+                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
@@ -71,6 +74,7 @@ const CellLineCompoundTable = (props) => {
                     showStat={showStat}
                     hideStat={hideStat}
                     alterClickedCells={alterClickedCells}
+                    isClicked={isClicked}
                     cellItem={item} 
                 />
             )
