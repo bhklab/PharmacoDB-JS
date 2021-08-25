@@ -11,7 +11,7 @@ const CellLineCompoundTable = (props) => {
     const columns = [
         {
             Header: `Dataset`,
-            accessor: 'dataset.name',
+            accessor: 'experiment.name',
             center: false, 
             Cell: (item) => <Link to={`/datasets/${item.cell.row.original.dataset.id}`}>{item.value}</Link>
         },

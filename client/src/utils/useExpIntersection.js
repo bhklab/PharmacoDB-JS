@@ -103,6 +103,7 @@ const useExpIntersection = () => {
 
         tableData = parsed.map(item => ({
             id: item.id,
+            experiment: item.experiment,
             dataset: item.dataset,
             cell_line: item.cell_line,
             compound: item.compound,
@@ -129,15 +130,16 @@ const useExpIntersection = () => {
         }));
 
         // parse CSV data
-        for(const experiment of raw_experiments){
+        for(const experiment of parsed){
             experiment.dose_response.forEach(item => {
-                csvData.push({
-                    cell_line: experiment.cell_line.name,
-                    compound: experiment.compound.name,
-                    dataset: experiment.dataset.name,
-                    dose: item.dose,
-                    response: item.response
-                });
+                let row = isTissueCompound ? { tissue: experiment.tissue.name } : {};
+                row.cell_line = experiment.cell_line.name;
+                row.compound = experiment.compound.name;
+                row.dataset = experiment.dataset.name;
+                row.dataset_experiment = experiment.experiment.name;
+                row.dose = item.dose;
+                row.response = item.response;
+                csvData.push(row);
             });
         }
 
@@ -160,17 +162,9 @@ const useExpIntersection = () => {
      * @param {*} e 
      */
     const handleExperimentSelectionChange = (e) => {
-        let ids = experiments.filter(item => item.experiment.name === e.target.value).map(item => item.id);
-        let newTraces = traces.map(item => {
-            if(ids.includes(item.id) && item.curve){
-                item.visible = e.target.checked;
-                return {
-                    ...item,
-                    visible: e.target.checked
-                }
-            }
-            return item;
-        });
+        let id = experiments.find(item => item.experiment.name === e.target.value).id;
+        console.log(id);
+        
         let newExp = experiments.map(item => {
             if(item.experiment.name === e.target.value){
                 let newItem = {...item}
@@ -187,8 +181,44 @@ const useExpIntersection = () => {
             }
             return item;
         });
+
+        let newTraces = traces.map(item => {
+            if(item.id === id && item.curve){
+                item.visible = e.target.checked;
+                return {
+                    ...item,
+                    visible: e.target.checked
+                }
+            }
+            return item;
+        });
+        // setTraces(newTraces);
+
+        newTraces = newTraces.map(item => {
+            let found = newExp.find(exp => exp.id === item.id);
+            if(found.visible && item.curve){
+                if(found.clicked.AAC){
+                    item.fill = 'tonexty';
+                    item.line.color = item.highlight ? item.highlight : item.color;
+                }
+                return item;
+            }
+            if(item.stat === 'scatterPoints'){
+                item.visible = true;
+                return item;
+            }
+            if(found.visible && found.clicked[item.stat]){
+                item.visible = true;
+                return item;
+            }
+            item.visible = false;
+            return item;
+        });
+        setPlotData({
+            ...plotData,
+            traces: newTraces.filter(item => item.visible)
+        });
         setExperiments(newExp);
-        setTraces(newTraces);
     };
 
     /**
@@ -197,10 +227,14 @@ const useExpIntersection = () => {
      * @param {*} e 
      */
     const handleDatasetSelectionChange = (e) => {
+        // Get experiment ids that belong to the clicked dataset.
         let ids = experiments.filter(item => item.dataset.name === e.target.value).map(item => item.id);
-
-        let newTraces = traces.map(item => {
-            if(ids.includes(item.id) && item.curve){
+        /**
+         * Set the experiments that belong to the clicked dataset to either visible or invisible,
+         * based on the click action.
+         **/ 
+        let newExp = experiments.map(item => {
+            if(ids.includes(item.id)){
                 return {
                     ...item,
                     visible: e.target.checked
@@ -209,13 +243,28 @@ const useExpIntersection = () => {
             return item;
         });
 
-        let newExp = experiments.map(item => {
-            if(ids.includes(item.id)){
-                return {
-                    ...item,
-                    visible: e.target.checked
+        // Filter traces that should be visible after the checkbox click.
+        let visibleExpIds = newExp.filter(item => item.visible).map(item => item.id);
+        let newTraces = traces.filter(item => visibleExpIds.includes(item.id));
+
+        // Set each trace to be visible or invisible.
+        newTraces = newTraces.map(item => {
+            let found = newExp.find(exp => exp.id === item.id);
+            if(item.curve){
+                // Keep the clicked AAC visible.
+                if(found.clicked.AAC){
+                    item.fill = 'tonexty';
+                    item.line.color = item.highlight ? item.highlight : item.color;
                 }
+                return item;
             }
+            // Keep other clicked stats such as IC50 visible
+            if(found.clicked[item.stat]){
+                item.visible = true;
+                return item;
+            }
+            // Everything else should be hidden.
+            item.visible = false;
             return item;
         });
 
@@ -228,29 +277,57 @@ const useExpIntersection = () => {
 
         setCellLines(cellOptions);
         setExperiments(newExp);
-        setTraces(newTraces);
+        setPlotData({
+            ...plotData,
+            traces: newTraces.filter(item => item.visible) // Get traces that are set to be visible only.
+        });
     };
 
     /**
-     * Shows/hides dose response curves upon cell line checkbox click.
+     * Highlights / unhighlights dose response curves upon cell line checkbox click.
      * Used in tissue vs compound page.
      * @param {*} e 
      */
     const handleCellLineSelectionChange = (e) => {
+        // Filter out any traces that belong to unchecked datasets (if any)
+        let visibleExpIds = experiments.filter(item => item.visible).map(item => item.id);
+        let newTraces = traces.filter(item => visibleExpIds.includes(item.id));
+
+        // Get experiment ids of experiments that has the clicked cell line.
         let filteredExpIds = experiments.filter(item => item.cell_line.name === e.target.value).map(item => item.id);
-        let newTraces = traces.map(item => {
-            if(item.curve && filteredExpIds.includes(item.id)){
-                return {
-                    ...item,
-                    line: {
-                        width: e.target.checked ? 2 : 0.5,
+        
+        // Set traces to be visible, highlighted, or invisible.
+        newTraces = newTraces.map(item => {
+            let found = experiments.find(exp => exp.id === item.id);
+            if(item.curve){
+                // Highlight/unhighlight the curve if the check box has been selected
+                if(filteredExpIds.includes(item.id)){
+                    item.line = {
+                        width: e.target.checked ? 3 : 0.5,
                         color: e.target.checked ? item.highlight : item.color
                     }
                 }
+                // If AAC cell is clicked, then keep it as visible.
+                if(found.clicked.AAC){
+                    item.fill = 'tonexty';
+                    item.line.color = item.highlight ? item.highlight : item.color;
+                }
+                return item;
             }
+            // Keep any other clicked stat such as IC50 visible.
+            if(found.clicked[item.stat]){
+                item.visible = true;
+                return item;
+            }
+            // Everything else is set to invislble.
+            item.visible = false;
             return item;
-        })
-        setTraces(newTraces);
+        });
+
+        setPlotData({
+            ...plotData,
+            traces: newTraces.filter(item => item.visible) // Get traces that are set to be visible only.
+        });
     };
 
     /**
@@ -260,38 +337,42 @@ const useExpIntersection = () => {
      * @param {*} statName 
      */
     const showStat = (id, statName) => {
-        // let newTraces = traces.map(item => {
-        //     if(item.id === id && item.stat === statName){
-        //         let newItem = {...item}
-        //         if(statName === 'AAC' && newItem.curve){
-        //             newItem.fill = 'tonexty';
-        //             newItem.line.color = newItem.highlight ? newItem.highlight : newItem.color;
-        //         }else{
-        //             newItem.visible = true;
-        //         }
-        //         return newItem;
-        //     }
-        //     return item;
-        // });
-        // setTraces(newTraces);
-        let newTraces = traces.filter(
-                item => item.curve || 
-                item.id === id && item.stat === statName ||
-                item.stat === 'scatterPoints'
-            );
-        newTraces.forEach(item => {
-            if(item.id === id && item.stat === statName){
-                if(statName === 'AAC' && item.curve){
+        // Get ids of experiments that should be visible.
+        // This needs to be done since some experiments might be de-selected through checkbox filtering.
+        let visibleExpIds = experiments.filter(item => item.visible).map(item => item.id);
+        
+        // Get all traces that belong to visible experiments.
+        let newTraces = traces.filter(item => visibleExpIds.includes(item.id));
+        
+        // Set traces to be visible or invisible depending on the type of traces.
+        // For example, scatter points for cell line vs drug plot should always be visible, while 
+        // Stat traces such as IC50 should only be visible if the IC50 of the specific experiment has been clicked.
+        newTraces = newTraces.map(item => {
+            let found = experiments.find(exp => exp.id === item.id);
+            if(item.curve){
+                if(statName === 'AAC' && (item.id === id || found.clicked.AAC)){
                     item.fill = 'tonexty';
                     item.line.color = item.highlight ? item.highlight : item.color;
-                }else{
-                    item.visible = true;
                 }
+                return item;
             }
+            if(item.stat === 'scatterPoints'){
+                item.visible = true;
+                return item;
+            }
+            if(item.id === id && item.stat === statName){
+                item.visible = true;
+                return item;
+            }
+            if(found.clicked[item.stat]){
+                return item;
+            }
+            item.visible = false;
+            return item;
         });
         setPlotData({
             ...plotData,
-            traces: newTraces
+            traces: newTraces.filter(item => item.visible) // Get traces that are set to be visible only.
         });
     };
 
@@ -300,34 +381,40 @@ const useExpIntersection = () => {
      * Hides stats visualizations from the dose resopnse plot.
      */
     const hideStat = () => {
-        // let newTraces = traces.map(item => {
-        //     let found = experiments.find(exp => exp.id === item.id);
-        //     if(item.stat !== 'scatterPoints' && !found.clicked[item.stat]){
-        //         let newItem = {...item};
-        //         if(newItem.curve){
-        //             newItem.fill = 'none';
-        //             newItem.line.color = newItem.color;
-        //         }else{
-        //             newItem.visible = false;
-        //         }
-        //         return newItem;
-        //     }
-        //     return item;
-        // });
-        // setTraces(newTraces);
-        let newTraces = traces.filter(
-            item => item.curve || 
-            item.stat === 'scatterPoints'
-        );
-        newTraces.forEach(item => {
-                if(item.curve){
+        // Get ids of experiments that should be visible.
+        // This needs to be done since some experiments might be de-selected through checkbox filtering.
+        let visibleExpIds = experiments.filter(item => item.visible).map(item => item.id);
+        
+        // Modify only visible traces.
+        let newTraces = traces.filter(item => visibleExpIds.includes(item.id));
+        newTraces.map(item => {
+            let found = experiments.find(exp => exp.id === item.id);
+            // Curves should always be visible, but hide AAC (only if that particular AAC is not clicked)
+            if(item.curve){
+                if(!found.clicked[item.stat]){
                     item.fill = 'none';
                     item.line.color = item.color;
                 }
+                item.visible = true;
+                return item;
+            }
+            // Scatter points should always be visible
+            if(item.stat === 'scatterPoints'){
+                item.visible = true;
+                return item;
+            }
+            // Other clicked stats such as IC50 should be visible.
+            if(found.clicked[item.stat]){
+                item.visible = true;
+                return item;
+            }
+            // Everything else should be hidden.
+            item.visible = false;
+            return item;
         });
         setPlotData({
             ...plotData,
-            traces: newTraces
+            traces: newTraces.filter(item => item.visible) // Get traces that are set to be visible only.
         });
     };
 
@@ -340,15 +427,18 @@ const useExpIntersection = () => {
         console.log(e.points[0].data.id);
         let cell = experiments.find(item => item.id === e.points[0].data.id).cell_line.name;
         let expIds = experiments.filter(item => item.cell_line.name === cell).map(item => item.id);
-        let newTraces = traces.map(item => {
+        let newTraces = plotData.traces.map(item => {
             if(item.curve && expIds.includes(item.id)){
                 let newItem = {...item};
-                newItem.line.width = newItem.line.width === 0.5 ? 2 : 0.5;
+                newItem.line.width = newItem.line.width === 0.5 ? 3 : 0.5;
                 newItem.line.color = newItem.line.color === newItem.color ? newItem.highlight : newItem.color;
             }
             return item;
         });
-        setTraces(newTraces);
+        setPlotData({
+            ...plotData,
+            traces: newTraces
+        });
     }
 
     /**
@@ -367,7 +457,7 @@ const useExpIntersection = () => {
 
     /**
      * Used in stat summary table cell.
-     * Checks if a cell is clicked or not.
+     * Checks if a table cell is clicked or not.
      * @param {*} id 
      * @param {*} statName 
      * @returns 
@@ -378,7 +468,7 @@ const useExpIntersection = () => {
 
     /**
      * Used in stat summary table cell.
-     * Checks if the cell needs to be disabled or not.
+     * Checks if the table cell needs to be disabled or not.
      * @param {*} id 
      * @returns 
      */

@@ -42,6 +42,7 @@ const StyledCheckbox = styled.label`
     }
     input:disabled ~ .label {
         opacity: 0.5;
+        text-decoration: line-through;
     }
 
     .custom-checkbox:after {

@@ -3,6 +3,8 @@
  * Used in Tissue vs Compound and Cell Line vs Compound pages.
  */
 
+import plotColors from "../styles/plot_colors";
+
 const hill = (x, profile) => {
     return (profile.Einf + (100 - profile.Einf) / (1 + Math.pow(x / profile.EC50, profile.HS)));
 }
@@ -10,7 +12,7 @@ const hill = (x, profile) => {
 //Returns the curve-fitting coordinates
 const makeCurveFit = (profile, minDose, maxDose) => {
     //curve fitting data
-    let numPoints = 1001;
+    let numPoints = 301;
     let dx = Math.pow(10,((Math.log10(maxDose) - Math.log10(minDose))/(numPoints - 1)));
     let supportVec = [];
     for(let i = 0; i < numPoints; i++){
@@ -62,6 +64,14 @@ const getScatterPoints = (id, stat, x, y, color, visible) => ({
     visible: visible
 });
 
+/**
+ * Parses dose response curve data in plotly friendly format.
+ * @param {*} experiments the parsed experiments 
+ * @param {*} showScatter 
+ * @returns 
+ * traces: represents each line, contains all the information required for Plotly to render a plot.
+ * xMin, xMax, yMin, yMax: min and max axis values detemrined by the experiment data.
+ */
 export const getDoseResponseCurveData = (experiments, showScatter) => {
     let traces = [];
 
@@ -80,7 +90,7 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
     for(const experiment of experiments){
         let curvCoordinates = makeCurveFit(experiment.profile, xMin, xMax);
         
-        if(experiment.profile.AAC){
+        if(experiment.displayCurve){
             // invisible line used to display AAC
             traces.push({
                 id: experiment.id,
@@ -105,14 +115,15 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
                 visible: experiment.visible,
                 curve: true,
                 stat: 'AAC',
-                color: experiment.color,
+                color: showScatter ? experiment.color : plotColors.default[2],
                 highlight: experiment.highlight,
                 x: curvCoordinates.map(item => Math.log10(item.x)),
                 y: curvCoordinates.map(item => item.y),
                 mode: 'lines',
                 line: {
-                    color: experiment.color,
-                    width: experiment.curveWidth ? experiment.curveWidth : 2
+                    color: showScatter ? experiment.color : plotColors.default[2],
+                    width: experiment.curveWidth ? experiment.curveWidth : 2,
+                    // shape: 'spline'
                 },
                 showlegend: false,
                 hoverinfo: 'none',
@@ -186,7 +197,7 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
             // Parse scatter points
             traces.push({
                 id: experiment.id,
-                name: experiment.name,
+                name: experiment.experiment.name,
                 stat: 'scatterPoints',
                 x: experiment.dose_response.map(item => Math.log10(item.dose)),
                 y: experiment.dose_response.map(item => item.response),
@@ -197,7 +208,7 @@ export const getDoseResponseCurveData = (experiments, showScatter) => {
                 },
                 hoverinfo: 'text',
                 hovertext: experiment.dose_response.map(item => (
-                    `${experiment.name}<br />` + 
+                    `${experiment.experiment.name}<br />` + 
                     `Dose: ${item.dose.toFixed(5)}uM<br />` + 
                     `Response: ${item.response.toFixed(2)}%`
                 )),

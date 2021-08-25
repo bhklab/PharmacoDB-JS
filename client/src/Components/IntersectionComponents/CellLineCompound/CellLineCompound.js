@@ -51,7 +51,6 @@ const CellLineCompound = (props) => {
     const {
         experiments,
         plotData,
-        traces,
         plotCSVData,
         tableData,
         parseExperiments,

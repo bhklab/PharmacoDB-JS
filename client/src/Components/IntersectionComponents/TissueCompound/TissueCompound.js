@@ -67,7 +67,6 @@ const TissueDrug = (props) => {
         datasets,
         cellLines,
         plotData,
-        traces,
         plotCSVData,
         tableData,
         parseExperiments,
