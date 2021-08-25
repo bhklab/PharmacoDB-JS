@@ -97,7 +97,7 @@ const appendText = (data) => {
         ? {
             0: { x: (dimensions.width) / 4, y: dimensions.height - 40 },
             1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 40 },
-            2: { x: 120, y: 80 },
+            2: { x: 100, y: 80 },
         }
         : {
             0: { x: (dimensions.width) / 4, y: dimensions.height - 120 },
