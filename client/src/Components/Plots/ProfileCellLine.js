@@ -58,7 +58,8 @@ const generateRenderData = (data, dataset, profile) => {
       title: {
         text: profile,
       },
-      type: 'log',
+      type: profile === 'AAC' ? '' : 'log',
+      tickformat: profile === 'AAC' ? '' : '.1r',
     },
   };
   const notifications = {
