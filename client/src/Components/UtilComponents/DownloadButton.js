@@ -7,9 +7,9 @@ import Plotly from 'plotly.js-dist';
 import PropTypes from 'prop-types';
 
 /**
- * Button used to download plot in .svg or .png format, 
+ * Button used to download plot in .svg or .png format,
  * or table data in .csv format.
- * The implementation examples can be found in the files in IndivDatasets/Tables, 
+ * The implementation examples can be found in the files in IndivDatasets/Tables,
  * and Plots/DatasetHorizontalPlot.js
  */
 
@@ -73,7 +73,7 @@ const DownloadButton = (props) => {
                 FileSaver.saveAs(csvData, `${filename}.csv`);
                 break;
             case 'png':
-                Plotly.downloadImage(plotId, {format: 'png', scale: 2, filename: filename});
+                Plotly.downloadImage(plotId, {format: 'png', scale: 10, filename: filename});
                 break;
             case 'svg':
                 Plotly.downloadImage(plotId, {format: 'svg', scale: 2, filename: filename});
@@ -95,8 +95,8 @@ DownloadButton.propTypes = {
     label: PropTypes.string.isRequired, // label for the button
     data: PropTypes.arrayOf(PropTypes.object), // data for CSV download
     mode: PropTypes.string.isRequired, // accepts 'csv', 'png' or 'svg'
-    filename: PropTypes.string.isRequired, // downloaded filename 
-    plotId: PropTypes.string // id of the plot to be downloaded. Used for downloading a plot. 
+    filename: PropTypes.string.isRequired, // downloaded filename
+    plotId: PropTypes.string // id of the plot to be downloaded. Used for downloading a plot.
 };
 
 export default DownloadButton;
