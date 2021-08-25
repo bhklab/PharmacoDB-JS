@@ -120,6 +120,7 @@ const IndivCompounds = (props) => {
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
         variables: { compoundId: parseInt(params.id) },
+        fetchPolicy: "no-cache",
     });
 
     // load data from query into state
