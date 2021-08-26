@@ -13,7 +13,7 @@ const StyledCheckbox = styled.label`
 
     input {
         position: absolute;
-        opacity: 0;
+        display: none;
         cursor: pointer;
         height: 0;
         width: 0;
@@ -42,6 +42,7 @@ const StyledCheckbox = styled.label`
     }
     input:disabled ~ .label {
         opacity: 0.5;
+        text-decoration: line-through;
     }
 
     .custom-checkbox:after {
