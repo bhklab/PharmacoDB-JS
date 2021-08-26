@@ -54,7 +54,7 @@ const CellLineCompound = (props) => {
         plotCSVData,
         tableData,
         parseExperiments,
-        handleExperimentSelectionChange,
+        showHideCurve,
         showStat,
         hideStat,
         alterClickedCells,
@@ -136,7 +136,7 @@ const CellLineCompound = (props) => {
                                                     label={item.experiment.name}
                                                     checked={item.visible}
                                                     color={item.color}
-                                                    onChange={handleExperimentSelectionChange}
+                                                    onChange={(e) => {showHideCurve(e, 'experiment')}}
                                                     disabled={!item.displayCurve}
                                                 />
                                             ))

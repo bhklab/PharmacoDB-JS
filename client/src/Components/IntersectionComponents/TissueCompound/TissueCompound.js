@@ -70,7 +70,7 @@ const TissueDrug = (props) => {
         plotCSVData,
         tableData,
         parseExperiments,
-        handleDatasetSelectionChange,
+        showHideCurve,
         handleCellLineSelectionChange,
         showStat,
         hideStat,
@@ -159,7 +159,7 @@ const TissueDrug = (props) => {
                                                         label={item.name}
                                                         checked={item.checked}
                                                         color={item.color}
-                                                        onChange={handleDatasetSelectionChange}
+                                                        onChange={(e) => {showHideCurve(e, 'dataset')}}
                                                     />
                                                 ))
                                             }
