@@ -35,7 +35,7 @@ const getDatasetsQuery = gql`
  * id, and name for the dataset.
  */
 const getDatasetQuery = gql`
-  query getSingleDataset($datasetId: Int!) {
+  query getSingleDataset($datasetId: Int!, $datasetName: String!) {
     dataset(datasetId: $datasetId) {
       id
       name

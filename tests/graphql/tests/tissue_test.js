@@ -23,7 +23,8 @@ const checkCount = item => {
 
 const test = (server) => {
     // test for all tissues route. Checks Tissue Graphql type
-    it('Returns a list of all tissues with "id" and "name" properties', done => {
+    it('Returns a list of all tissues with "id" and "name" properties', function (done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: tissueQueries.multipleTissuesTestQuery })
@@ -41,7 +42,8 @@ const test = (server) => {
             });
     });
     // test for a single tissue route. Checks TissueAnnotations Graphql type
-    it('Returns a single tissue with "id" and "name" properties along with "synonyms", "cell_count" and "compounds_tested" data', done => {
+    it('Returns a single tissue with "id" and "name" properties along with "synonyms", "cell_count" and "compounds_tested" data', function (done) {
+        this.timeout(10000);
         request(server)
             .post('/graphql')
             .send({ query: tissueQueries.singleTissueTestQuery })

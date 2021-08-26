@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
-import createSvgCanvas from '../../../utils/createSvgCanvas';
-import colors from '../../../styles/colors';
+import createSvgCanvas from '../../utils/createSvgCanvas';
+import colors from '../../styles/colors';
 import styled from 'styled-components';
+import Loading from '../UtilComponents/Loading';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
@@ -15,6 +16,7 @@ const UpsetPlotStyle = styled.div`
     width: 800px;
     overflow: auto;
     margin-bottom: 50px;
+    text-align: center;
 `;
 
 // margin for the svg element.
@@ -203,8 +205,8 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  */
 const createUpsetPlot = (data, datasets) => {
     // width and height of the SVG canvas.
-    const width = CIRCLE_RADIUS * 3.1 * Object.keys(data).length;
-    const height = 600 - margin.top - margin.bottom;
+    const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
+    const height = 700 - margin.top - margin.bottom;
 
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
@@ -258,7 +260,7 @@ const UpsetPlot = ({ data, datasets }) => {
     })
     return (
         <UpsetPlotStyle>
-            <div id='upsetplot' />
+            {data && datasets ? <div id='upsetplot' /> : <Loading />}
         </UpsetPlotStyle>
     )
 };

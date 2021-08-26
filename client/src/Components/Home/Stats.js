@@ -85,7 +85,7 @@ const statistics = {
   },
   experiments: {
     name: 'experiments',
-    value: '102,9712',
+    value: '1,029,712',
     image: experimentsImg,
     link: '/experiments',
   },

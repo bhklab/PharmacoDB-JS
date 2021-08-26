@@ -38,7 +38,7 @@ const test = (server) => {
     });
 
     // test for all compound route. Checks SingleCompound Graphql type
-    it('Returns a compound object based on a compound ID input.', (done) => {
+    it('Returns a compound object based on a compound NAME input.', (done) => {
         request(server)
             .post('/graphql')
             .send({ query: compoundQueries.singleCompoundTestQuery })
@@ -102,11 +102,11 @@ const test = (server) => {
             .end((err, res) => {
                 if (err) return done(err);
                 const compound = res.body.data.compound.compound;
-                expect(compound.id).to.equal(642);
                 expect(compound.name).to.equal('Paclitaxel');
                 return done();
             });
     });
+
 };
 
 module.exports = {
