@@ -344,10 +344,10 @@ const dataset_stats = async () => {
     const stats = await datasetStatQuery();
     // return object.
     return stats.map(stat => {
+        console.log(stat);
         const { id, name, cell_lines, compounds, tissues, experiments } = stat;
         return {
-            id,
-            name,
+            dataset: { 'id': id, 'name': name},
             cell_line_count: cell_lines,
             tissue_count: tissues,
             compound_count: compounds,

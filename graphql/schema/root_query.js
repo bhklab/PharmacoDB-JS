@@ -49,6 +49,11 @@ const RootQuery = `type RootQuery {
     dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
     
     """
+        Root Query for Counting tested Types for each dataset
+    """
+    dataset_stats: [DatasetStats!]!
+    
+    """
         'type' is the data type of data ( cell, tissue, or compound) tested in the datasets
         Root Query for Counting tested Types for each dataset
     """

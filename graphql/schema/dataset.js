@@ -45,8 +45,24 @@ const countDatasetType = `
     }
 `;
 
+const datasetStatsType = `
+    type DatasetStats {
+        """name and id of the dataset"""
+        dataset: Generic!
+        """number of tested cell lines in the dataset"""
+        cell_line_count: Int!
+        """number of tested experiments in the dataset"""
+        experiment_count: Int!
+        """number of tested compounds in the dataset"""
+        compound_count: Int!
+        """number of tested tissues in the dataset"""
+        tissue_count: Int!
+    }
+`;
+
 module.exports = {
     datasetType,
     datasetDetailType,
     countDatasetType,
+    datasetStatsType,
 };
