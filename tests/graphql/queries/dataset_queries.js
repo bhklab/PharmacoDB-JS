@@ -35,6 +35,21 @@ query singleDataset {
 }
 `;
 
+const datasetsStatsTestQuery = `
+query datasetStats {
+    dataset_stats {
+      dataset {
+        id,
+        name
+      }
+      cell_line_count
+      experiment_count
+      compound_count
+      tissue_count
+    }
+  }
+`;
+
 module.exports = {
     multipleDatasetsTestQuery,
     singleDatasetTestQuery

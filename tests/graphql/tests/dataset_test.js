@@ -80,6 +80,34 @@ const test = (server) => {
                 return done();
             });
     });
+
+    it('Test to validate "id" and "name" for all datasets and checking for the correctness of datatype as well as compound_count , cell_line_count, tissues_count, and experiments_count for each dataset', function (done) {
+        this.timeout(30000);
+        request(server)
+            .post('/graphql')
+            .send({ query: datasetQueries.datasetsStatsTestQuery })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                const { dataset_stats } = res.body.data;
+                dataset_stats.every(datasetStat => {
+                    // expect to have all the data.
+                    expect(datasetStat).to.have.all.keys('dataset', 'cell_line_count', 'experiment_count', 'compound_count', 'tissue_count');
+                    const { dataset, cell_line_count, experiment_count, compound_count, tissue_count} = datasetStat;
+                    // checks dataset data
+                    expect(dataset).to.be.an('object');
+                    expect(datasetStat).to.have.all.keys('id', 'name');
+                    expect(datasetStat.id).to.be.a('number');
+                    expect(datasetStat.name).to.be.string;
+                    // checks dataset data
+                    expect(cell_line_count).to.be.a('number');
+                    expect(experiment_count).to.be.a('number');
+                    expect(compound_count).to.be.a('number');
+                    expect(tissue_count).to.be.a('number');
+                });
+                return done();
+            });
+    });
 };
 
 module.exports = {

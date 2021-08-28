@@ -46,18 +46,13 @@ const RootQuery = `type RootQuery {
         'datasetName' is the name of the dataset in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the dataset Name
     """
-    dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
+    dataset(datasetId: Int, datasetName: String): DatasetDetail!
     
     """
         Root Query for Counting tested Types for each dataset
     """
     dataset_stats: [DatasetStats!]!
-    
-    """
-        'type' is the data type of data ( cell, tissue, or compound) tested in the datasets
-        Root Query for Counting tested Types for each dataset
-    """
-    typeCountGroupByDataset(type: String!): [CountDataset!]!
+
 
     """
         This is a query to get the cell lines that are grouped based on the dataset.
