@@ -7,9 +7,6 @@ const multipleDatasetsTestQuery = `
     datasets {
       id
       name
-      compound_tested_count
-      cell_count
-      experiment_count
     }
   }
 `;
@@ -35,7 +32,7 @@ query singleDataset {
 }
 `;
 
-const datasetsStatsTestQuery = `
+const allDatasetsStatsTestQuery = `
 query datasetStats {
     dataset_stats {
       dataset {
@@ -52,5 +49,6 @@ query datasetStats {
 
 module.exports = {
     multipleDatasetsTestQuery,
-    singleDatasetTestQuery
+    singleDatasetTestQuery,
+    allDatasetsStatsTestQuery,
 };

@@ -184,8 +184,7 @@ const dataset = async (args, parent, info) => {
 
         if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
         if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
-        returnData.push(data)
-        console.log(returnData);
+        returnData.push(data);
         return returnData;
 
     } catch (err) {
