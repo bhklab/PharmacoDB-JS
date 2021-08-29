@@ -156,7 +156,7 @@ const dataset = async (args, parent, info) => {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
         // data returned from the graphql API.
-        const returnData = {};
+        const returnData = [];
         let cell_count, compound_count, tissue_count, experiment_count, cells, compounds;
         const datasets = await datasetQuery();
         const dataset = datasets.filter(dataset => { return dataset.dataset_id === datasetId ||dataset.dataset_name === datasetName})[0];
@@ -169,21 +169,23 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('experiment_count')) experiment_count = { dataset : { 'id' : id, 'name' : name}, count : experiments};
         if (listOfFields.includes('cells_tested')) cells = await summaryQuery('cell', datasetId, datasetName);
         if (listOfFields.includes('compounds_tested')) compounds = await summaryQuery('compound', datasetId, datasetName);
+        const data = {};
         // returnData object.
         const {
             dataset_id,
             dataset_name
         } = dataset;
-        returnData['id'] = dataset_id;
-        returnData['name'] = dataset_name;
-        if (listOfFields.includes('cell_count')) returnData['cell_count'] = cell_count.count;
-        if (listOfFields.includes('tissue_tested_count')) returnData['tissue_tested_count'] = tissue_count.count;
-        if (listOfFields.includes('compound_tested_count')) returnData['compound_tested_count'] = compound_count.count;
-        if (listOfFields.includes('experiment_count')) returnData['experiment_count'] = experiment_count.count;
+        data['id'] = dataset_id;
+        data['name'] = dataset_name;
+        if (listOfFields.includes('cell_count')) data['cell_count'] = cell_count.count;
+        if (listOfFields.includes('tissue_tested_count')) data['tissue_tested_count'] = tissue_count.count;
+        if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count.count;
+        if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count.count;
 
-        if (listOfFields.includes('cells_tested')) returnData['cells_tested'] = cells.map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
-        if (listOfFields.includes('compounds_tested')) returnData['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
-
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
+        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+        returnData.push(data)
+        console.log(returnData);
         return returnData;
 
     } catch (err) {

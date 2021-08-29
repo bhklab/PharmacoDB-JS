@@ -46,7 +46,7 @@ const RootQuery = `type RootQuery {
         'datasetName' is the name of the dataset in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the dataset Name
     """
-    dataset(datasetId: Int, datasetName: String): DatasetDetail!
+    dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
     
     """
         Root Query for Counting tested Types for each dataset
