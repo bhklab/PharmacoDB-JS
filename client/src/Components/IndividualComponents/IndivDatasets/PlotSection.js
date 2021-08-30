@@ -11,32 +11,32 @@ import Error from '../../UtilComponents/Error';
 import colors from '../../../styles/colors';
 
 /**
- * Parses dataset counts data (number of cell lines, experiements, tissues and compounds) into 
+ * Parses dataset counts data (number of cell lines, experiements, tissues and compounds) into
  * a data sturcture that can be used for bar plots.
  * @param {*} datasets - an array of dataset objects containing dataset metrics
  * @returns - an object containing parsed plot data for four bar plots.
  */
 const generateCountPlotData = (datasets, id) => {
   console.log(datasets);
-  const cells = datasets.map(item => ({ 
-    name: item.name, 
-    count: item.cell_count,
-    color: item.id === id ? colors.dark_pink_highlight : colors.light_teal
+  const cells = datasets.map(item => ({
+    name: item.dataset.name,
+    count: item.cell_line_count,
+    color: item.dataset.id === id ? colors.dark_pink_highlight : colors.light_teal
   }));
-  const compounds = datasets.map(item => ({  
-    name: item.name, 
-    count: item.compound_tested_count,
-    color: item.id === id ? colors.dark_pink_highlight : colors.light_teal
+  const compounds = datasets.map(item => ({
+    name: item.dataset.name,
+    count: item.compound_count,
+    color: item.dataset.id === id ? colors.dark_pink_highlight : colors.light_teal
   }));
-  const experiments = datasets.map(item => ({ 
-    name: item.name, 
+  const experiments = datasets.map(item => ({
+    name: item.dataset.name,
     count: item.experiment_count,
-    color: item.id === id ? colors.dark_pink_highlight : colors.light_teal
+    color: item.dataset.id === id ? colors.dark_pink_highlight : colors.light_teal
   }));
-  const tissues = datasets.map(item => ({ 
-    name: item.name, 
-    count: item.tissue_tested_count,
-    color: item.id === id ? colors.dark_pink_highlight : colors.light_teal
+  const tissues = datasets.map(item => ({
+    name: item.dataset.name,
+    count: item.tissue_count,
+    color: item.dataset.id === id ? colors.dark_pink_highlight : colors.light_teal
   }));
 
   return { cells: cells, tissues: tissues, compounds: compounds, experiments: experiments };
@@ -64,7 +64,7 @@ const PlotSection = (props) => {
 
   const { loading } = useQuery(getDatasetCountsQuery, {
     onCompleted: (data) => {
-      setPlots(generateCountPlotData(data.datasets, dataset.id));
+      setPlots(generateCountPlotData(data.dataset_stats, dataset.id));
     },
     onError: () => {setError(true)}
   });
