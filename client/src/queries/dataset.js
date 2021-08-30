@@ -5,14 +5,16 @@ import { gql } from 'apollo-boost';
  * cell lines, tissues, experiments and compounds are in those datsets.
  */
 const getDatasetCountsQuery = gql`
-  query getDatasetData {
-    datasets {
-      id
-      name
-      cell_count
+  {
+    dataset_stats {
+      dataset {
+        id,
+        name
+      }
+      cell_line_count
       experiment_count
-      compound_tested_count
-      tissue_tested_count
+      compound_count
+      tissue_count
     }
   }
 `;
@@ -36,7 +38,7 @@ const getDatasetsQuery = gql`
  */
 const getDatasetQuery = gql`
   query getSingleDataset($datasetId: Int!, $datasetName: String!) {
-    dataset(datasetId: $datasetId) {
+    dataset(datasetId: $datasetId, datasetName: $datasetName) {
       id
       name
     }
@@ -90,17 +92,6 @@ const getDatasetCompoundQuery = gql`
   }
 `;
 
-const getCountTypePerDatasetQuery = gql`
-  query getCountTypePerDatasetQuery ($type: String!){
-    typeCountGroupByDataset (type: $type) {
-      dataset {
-        id
-        name
-      },
-      count
-    }
-  }
-`;
 
 export {
   getDatasetCountsQuery,
@@ -109,5 +100,4 @@ export {
   getCellLinesGroupedByDatasetQuery,
   getDatasetCellLinesQuery,
   getDatasetCompoundQuery,
-  getCountTypePerDatasetQuery
 };

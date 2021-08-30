@@ -12,7 +12,7 @@ const datasetQueries = require('../queries/dataset_queries');
  * This function is exported, and called in graphql.test.js.
  */
 const test = (server) => {
-    it('Test to validate the "id" and "name" for all the datasets and checking for the correctness of datatype as well as cell line, experiment and compound counts for each dataset', function (done) {
+    it('Test to validate the "id" and "name" for all the datasets and checking for the correctness of datatype', function (done) {
         this.timeout(30000);
         request(server)
             .post('/graphql')
@@ -23,13 +23,10 @@ const test = (server) => {
                 const { datasets } = res.body.data;
                 datasets.every(dataset => {
                     // expect to have all the data.
-                    expect(dataset).to.have.all.keys('id', 'name', 'compound_tested_count', 'cell_count', 'experiment_count');
-                    const { id, name, compound_tested_count, cell_count, experiment_count } = dataset;
-                    // expect id, compound_tested_count, cell_count, experiment_count to be numbers
+                    expect(dataset).to.have.all.keys('id', 'name');
+                    const { id, name} = dataset;
+                    // expect id to be a number
                     expect(id).to.be.a('number');
-                    expect(compound_tested_count).to.be.a('number');
-                    expect(cell_count).to.be.a('number');
-                    expect(experiment_count).to.be.a('number');
                     // expect name to be a string.
                     expect(name).to.be.a('string');
                 });
@@ -76,6 +73,34 @@ const test = (server) => {
                     expect(dataset.compound_tested_count).to.be.a('number');
                     // expect id to be a number.
                     expect(dataset.experiment_count).to.be.a('number');
+                });
+                return done();
+            });
+    });
+
+    it('Test to validate "id" and "name" for all datasets and checking for the correctness of datatype as well as compound_count , cell_line_count, tissues_count, and experiments_count for each dataset', function (done) {
+        this.timeout(30000);
+        request(server)
+            .post('/graphql')
+            .send({ query: datasetQueries.allDatasetsStatsTestQuery })
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                const { dataset_stats } = res.body.data;
+                dataset_stats.every(datasetStat => {
+                    // expect to have all the data.
+                    expect(datasetStat).to.have.all.keys('dataset', 'cell_line_count', 'experiment_count', 'compound_count', 'tissue_count');
+                    const { dataset, cell_line_count, experiment_count, compound_count, tissue_count} = datasetStat;
+                    // checks dataset data
+                    expect(dataset).to.be.an('object');
+                    expect(dataset).to.have.all.keys('id', 'name');
+                    expect(dataset.id).to.be.a('number');
+                    expect(dataset.name).to.be.string;
+                    // checks dataset data
+                    expect(cell_line_count).to.be.a('number');
+                    expect(experiment_count).to.be.a('number');
+                    expect(compound_count).to.be.a('number');
+                    expect(tissue_count).to.be.a('number');
                 });
                 return done();
             });
