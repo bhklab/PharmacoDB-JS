@@ -108,7 +108,8 @@ const transformSingleCellLine = (data) => {
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
+                        if (!returnObject['synonyms'][i]['source'].filter(item => item.id === dataset_id).length > 0)
+                            returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
                     }
                 });
             }
@@ -200,6 +201,7 @@ const cell_line = async args => {
             cell_line = await query.where('cell.name', cellName);
         }
         // return the transformed data.
+        transformSingleCellLine(cell_line).synonyms.forEach(x => console.log(x.source));
         return transformSingleCellLine(cell_line);
     } catch (err) {
         console.log(err);
