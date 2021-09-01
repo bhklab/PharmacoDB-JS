@@ -3,13 +3,13 @@ const knex = require('../../db/knex');
 /**
  * @returns {Array} - an array of the object of total count for each data type with it's name.
  */
-const data_type_stats = async () => { //TODO: UPDATE THIS BASED ON THE NEW DATABASE.
+const data_type_stats = async () => {
     try {
-        const datasetCount = await knex('datasets').max('dataset_id as datasetCount');
-        const compoundCount = await knex('drugs').max('drug_id as compoundCount');
-        const cellCount = await knex('cells').max('cell_id as cellCount');
-        const tissueCount = await knex('tissues').max('tissue_id as tissueCount');
-        const experimentCount = await knex('experiments').max('experiment_id as experimentCount');
+        const datasetCount = await knex('dataset').max('id as datasetCount');
+        const compoundCount = await knex('compound').max('id as compoundCount');
+        const cellCount = await knex('cell').max('id as cellCount');
+        const tissueCount = await knex('tissue').max('id as tissueCount');
+        const experimentCount = await knex('experiment').max('id as experimentCount');
         // const geneCount = await knex('genes').max('gene_id as geneCount');
 
         return (
