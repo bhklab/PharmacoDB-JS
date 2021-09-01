@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getDatasetCountsQuery } from '../../../queries/dataset';
+import { getDatasetStatsQuery } from '../../../queries/dataset';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
 import Loading from '../../UtilComponents/Loading';
@@ -62,50 +62,50 @@ const PlotSection = (props) => {
   });
   const [error, setError] = useState(false);
 
-  const { loading } = useQuery(getDatasetCountsQuery, {
+  const { loading } = useQuery(getDatasetStatsQuery, {
     onCompleted: (data) => {
       setPlots(generateCountPlotData(data.dataset_stats, dataset.id));
     },
-    onError: () => {setError(true)}
+    onError: () => { setError(true) }
   });
 
   return (
     <>
       {
         loading ? <Loading />
-        :
-        error ? <Error />
-        :
-        <React.Fragment>
-          <PlotsWrapper>
-            <DatasetHorizontalPlot
-              plotId={`${dataset.name}CellLinesPlot`}
-              data={plots.cells}
-              xaxis="# of cell lines"
-              title={`Number of cell lines tested across datasets`}
-            />
-            <DatasetHorizontalPlot
-              plotId={`${dataset.name}TissuesPlot`}
-              data={plots.tissues}
-              xaxis="# of tissues"
-              title={`Number of tissues tested across datasets`}
-            />
-          </PlotsWrapper>
-          <PlotsWrapper>
-            <DatasetHorizontalPlot
-              plotId={`${dataset.name}CompoundsPlot`}
-              data={plots.compounds}
-              xaxis="# of compounds"
-              title={`Number of compounds tested across datasets`}
-            />
-            <DatasetHorizontalPlot
-              plotId={`${dataset.name}ExperimentsPlot`}
-              data={plots.experiments}
-              xaxis="# of experiments"
-              title={`Number of experiments held across datasets`}
-            />
-          </PlotsWrapper>
-        </React.Fragment>
+          :
+          error ? <Error />
+            :
+            <React.Fragment>
+              <PlotsWrapper>
+                <DatasetHorizontalPlot
+                  plotId={`${dataset.name}CellLinesPlot`}
+                  data={plots.cells}
+                  xaxis="# of cell lines"
+                  title={`Number of cell lines tested across datasets`}
+                />
+                <DatasetHorizontalPlot
+                  plotId={`${dataset.name}TissuesPlot`}
+                  data={plots.tissues}
+                  xaxis="# of tissues"
+                  title={`Number of tissues tested across datasets`}
+                />
+              </PlotsWrapper>
+              <PlotsWrapper>
+                <DatasetHorizontalPlot
+                  plotId={`${dataset.name}CompoundsPlot`}
+                  data={plots.compounds}
+                  xaxis="# of compounds"
+                  title={`Number of compounds tested across datasets`}
+                />
+                <DatasetHorizontalPlot
+                  plotId={`${dataset.name}ExperimentsPlot`}
+                  data={plots.experiments}
+                  xaxis="# of experiments"
+                  title={`Number of experiments held across datasets`}
+                />
+              </PlotsWrapper>
+            </React.Fragment>
       }
     </>
   );
