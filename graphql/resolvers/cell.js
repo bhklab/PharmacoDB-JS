@@ -51,16 +51,6 @@ const transformCellLines = data => {
 };
 
 /**
- * @returns {Array} - Returns a list of datasets' names and ids
- */
-const datasetsQuery = async () => {
-    const query = knex
-        .select(['d.name as name','d.id as id'])
-        .from('dataset as d')
-    return query;
-};
-
-/**
  * Returns a transformed array of objects.
  * @param {Array} data
  * @returns {Object} - transformed object.
@@ -94,7 +84,7 @@ const transformSingleCellLine = (data) => {
             };
             returnObject['synonyms'] = [{
                 name: source_cell_name,
-                source: [{'id': dataset_id, 'name': dataset_name}]
+                source: [{ 'id': dataset_id, 'name': dataset_name }]
             }];
             source_cell_name_list.push(source_cell_name);
         } else {
@@ -102,13 +92,13 @@ const transformSingleCellLine = (data) => {
             if (!source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].push({
                     name: source_cell_name,
-                    source: [{'id': dataset_id, 'name': dataset_name}]
+                    source: [{ 'id': dataset_id, 'name': dataset_name }]
                 });
                 source_cell_name_list.push(source_cell_name);
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
+                        returnObject['synonyms'][i]['source'].push({ 'id': dataset_id, 'name': dataset_name });
                     }
                 });
             }

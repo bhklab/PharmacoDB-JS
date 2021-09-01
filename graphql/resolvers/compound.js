@@ -79,16 +79,6 @@ const transformCompounds = data => {
 };
 
 /**
- * @returns {Array} - Returns a list of datasets' names and ids
- */
-const datasetsQuery = async () => {
-    const query = knex
-        .select(['d.name as name', 'd.id as id'])
-        .from('dataset as d');
-    return query;
-};
-
-/**
  * @param {number} compoundId
  * @param {string} compoundName
  * @param {Array} compoundData

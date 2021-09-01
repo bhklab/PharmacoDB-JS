@@ -1,6 +1,7 @@
 const compoundResolver = require('./compound');
 const cellLineResolver = require('./cell');
 const datasetResolver = require('./dataset');
+const dataTypeStatResolver = require('./stat');
 const experimentResolver = require('./experiment');
 const geneResolver = require('./gene');
 const targetResolver = require('./target');
@@ -13,6 +14,7 @@ const rootResolver = {
     ...compoundResolver,
     ...cellLineResolver,
     ...datasetResolver,
+    ...dataTypeStatResolver,
     ...experimentResolver,
     ...geneResolver,
     ...targetResolver,

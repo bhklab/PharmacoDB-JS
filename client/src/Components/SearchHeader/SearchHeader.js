@@ -44,7 +44,14 @@ const SearchHeader = () => {
       <div className={`search-container${page === 'home' ? '' : ` popup ${isOpen ? 'visible' : 'hidden'}`}`}>
         <h1>Try searching for a...</h1>
         <SearchBar onClick={onClick} />
-        <span className="example">Example: &nbsp;&nbsp;paclitaxel &nbsp;&nbsp;•&nbsp;&nbsp; 22rv1 &nbsp;&nbsp;•&nbsp;&nbsp; mcf7 paclitaxel</span>
+        <span className="example">
+          <span> Example: </span>
+          <span> paclitaxel </span>
+          <span> • </span>
+          <span> 22rv1 </span>
+          <span> • </span>
+          <span> mcf7 paclitaxel </span>
+        </span>
       </div>
     </StyledSearchHeader>
   );
