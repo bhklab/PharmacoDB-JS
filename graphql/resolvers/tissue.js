@@ -133,8 +133,22 @@ const transformTissues = data => {
             };
         }
     });
-    // return the final data.
-    return Object.values(finalData);
+
+    // returns the final data before appending tissue with the name 'NA' to the end.
+    // values from the final data object.
+    const dataValues = Object.values(finalData);
+    // variable stores the object with tissue value NA.
+    let tissueWithNaValue = '';
+    // looping to grab the object with NA tissue name.
+    dataValues.forEach((el, i) => {
+        if (el.name === 'NA') {
+            tissueWithNaValue = dataValues.splice(i, 1);
+        }
+    });
+    // push/append to the end of the array and return the array.
+    dataValues.push(tissueWithNaValue[0]);
+
+    return Object.values(dataValues);
 };
 
 /**
@@ -175,9 +189,9 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         if (!i || !Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
             returnObject['id'] = tissue_id;
             returnObject['name'] = tissue_name;
-            returnObject['synonyms'][source_tissue_name.trim()]={
+            returnObject['synonyms'][source_tissue_name.trim()] = {
                 name: source_tissue_name,
-                source: [{'id': dataset_id, 'name': dataset_name}]
+                source: [{ 'id': dataset_id, 'name': dataset_name }]
             };
             returnObject['cell_count'] = cell_count.map(value => {
                 return {
@@ -200,7 +214,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         } else if (Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
             if (!returnObject['synonyms'][source_tissue_name.trim()]['source'].filter(source => source.id === dataset_id).length > 0)
                 returnObject['synonyms'][source_tissue_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
-            }
+        }
     });
     returnObject['synonyms'] = Object.values(returnObject['synonyms']);
     return returnObject;
