@@ -150,9 +150,8 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
     let returnObject = {
         id: 0,
         name: 'empty',
-        synonyms: []
+        synonyms: {},
     };
-    const source_tissue_name_list = [];
     // looping through each data point.
     tissue.forEach((row, i) => {
         // only return tissue_name if source_tissue_name is N/A
@@ -173,13 +172,13 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
         if (subtypes.includes('synonyms')) source_tissue_name = source_tissue_name.replace(' ', '');
 
         // if it's the first element.
-        if (!i) {
+        if (!i || !Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
             returnObject['id'] = tissue_id;
             returnObject['name'] = tissue_name;
-            returnObject['synonyms'].push({
+            returnObject['synonyms'][source_tissue_name.trim()]={
                 name: source_tissue_name,
                 source: [{'id': dataset_id, 'name': dataset_name}]
-            });
+            };
             returnObject['cell_count'] = cell_count.map(value => {
                 return {
                     dataset: {
@@ -198,24 +197,12 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
                     count: value.total
                 };
             });
-            source_tissue_name_list.push(source_tissue_name);
-        } else {
-            // for all other elements.
-            if (!source_tissue_name_list.includes(source_tissue_name)) {
-                returnObject['synonyms'].push({
-                    name: source_tissue_name,
-                    source: [{'id': dataset_id, 'name': dataset_name}]
-                });
-                source_tissue_name_list.push(source_tissue_name);
-            } else if (source_tissue_name_list.includes(source_tissue_name)) {
-                returnObject['synonyms'].forEach((val, index) => {
-                    if (val['name'] === source_tissue_name) {
-                        returnObject['synonyms'][index]['source'].push({'id': dataset_id, 'name': dataset_name});
-                    }
-                });
+        } else if (Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
+            if (!returnObject['synonyms'][source_tissue_name.trim()]['source'].filter(source => source.id === dataset_id).length > 0)
+                returnObject['synonyms'][source_tissue_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
             }
-        }
     });
+    returnObject['synonyms'] = Object.values(returnObject['synonyms']);
     return returnObject;
 };
 

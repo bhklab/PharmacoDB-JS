@@ -19,7 +19,10 @@ import {
     Datasets,
     IndivDatasets,
     Experiments,
-    IntersectionMain
+    IntersectionMain,
+    AboutUs,
+    Documentation,
+    CiteUs,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -64,6 +67,9 @@ const App = () => {
                             component={IndivDatasets}
                         />
                         <Route path="/search" component={IntersectionMain} />
+                        <Route path="/about" component={AboutUs} />
+                        <Route path="/documentation" component={Documentation} />
+                        <Route path="/cite" component={CiteUs} />
                         <Route path="*" component={NotFoundPage} />
                     </Switch>
                 </Router>

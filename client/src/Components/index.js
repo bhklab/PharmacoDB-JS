@@ -12,6 +12,9 @@ import IndivDatasets from './IndividualComponents/IndivDatasets/IndivDatasets';
 import Datasets from './SummaryComponents/Datasets/Datasets';
 import IntersectionMain from './IntersectionComponents/IntersectionMain';
 import Home from './Home/Home';
+import AboutUs from './About/AboutUs/AboutUs';
+import Documentation from './About/Documentation/Documentation';
+import CiteUs from './About/CiteUs/CiteUs'
 import NotFoundPage from './UtilComponents/NotFoundPage';
 
 export {
@@ -29,5 +32,8 @@ export {
     Datasets,
     Experiments,
     Biomarker,
-    IntersectionMain
+    IntersectionMain,
+    AboutUs,
+    Documentation,
+    CiteUs,
 };
