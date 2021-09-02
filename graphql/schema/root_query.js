@@ -104,6 +104,10 @@ const RootQuery = `type RootQuery {
     compound_target(compoundId: Int!): CompoundTarget!
     compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
 
+    """
+        Root Query for the stats for the different types.
+    """
+    data_type_stats: [Statistics!]!
 
     """
         Root Query for tissues.

@@ -3,13 +3,13 @@ import { mount } from 'enzyme';
 import { MockedProvider } from '@apollo/react-testing';
 import { BrowserRouter } from 'react-router-dom';
 import Experiments from '../Components/SummaryComponents/Experiments/Experiments';
-import { getDatasetCountsQuery } from '../queries/dataset';
+import { getDatasetStatsQuery } from '../queries/dataset';
 import updateWrapper from '../test_utils/updateWrapper';
 
 const mocks = [
   {
     request: {
-      query: getDatasetCountsQuery,
+      query: getDatasetStatsQuery,
     },
     result: {
       data: {

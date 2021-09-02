@@ -13,6 +13,7 @@ const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./ge
 const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
+const { statType } = require('./stat');
 const { targetType, compoundTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
@@ -57,7 +58,10 @@ const schema = `
 
     """Source Annotation type with id, name, tissue information 
     and annotations including the name of source and datasets it's present in"""
-   ${sourceAnnotationType}
+    ${sourceAnnotationType}
+
+    "Statistics Type"
+    ${statType}
 
     "Summary Type"
     ${summaryType}

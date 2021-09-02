@@ -4,7 +4,7 @@ import datasets from '../../utils/datasetsList';
 import Loading from '../UtilComponents/Loading';
 import Error from '../UtilComponents/Error';
 import React, { useState, useMemo, useEffect } from 'react';
-import { getDatasetCountsQuery } from '../../queries/dataset'
+import { getDatasetStatsQuery } from '../../queries/dataset'
 
 const layout = {
   autosize: true,
@@ -35,7 +35,7 @@ const parsePlotData = (data) => {
   }
   if (typeof data !== 'undefined') {
     // descendingly sort datasets based on counts
-    const sorted = data.sort((a,b)=> (a.compound_count < b.compound_count) ? 1 : -1);
+    const sorted = data.sort((a, b) => (a.compound_count < b.compound_count) ? 1 : -1);
 
     sorted.forEach(item => {
       plotData.x.push(item.dataset.name);
@@ -65,7 +65,7 @@ const BarPlot = () => {
   const [error, setError] = useState(false);
 
   // query to get the data for the single gene.
-  const { loading } = useQuery(getDatasetCountsQuery, {
+  const { loading } = useQuery(getDatasetStatsQuery, {
     onCompleted: (data) => {
       setPlotData(parsePlotData(data.dataset_stats));
     },
@@ -75,16 +75,16 @@ const BarPlot = () => {
     }
   });
 
-  return(
-      <React.Fragment>
-        {
-          loading ? <Loading />
-              :
-              error ? <Error />
-                  :
-                  <Plot data={[plotData]} layout={layout} config={config} />
-        }
-      </React.Fragment>
+  return (
+    <React.Fragment>
+      {
+        loading ? <Loading />
+          :
+          error ? <Error />
+            :
+            <Plot data={[plotData]} layout={layout} config={config} />
+      }
+    </React.Fragment>
   );
 }
 

@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost';
  * @returns - Query returns the list of datasets with information about how many
  * cell lines, tissues, experiments and compounds are in those datsets.
  */
-const getDatasetCountsQuery = gql`
+const getDatasetStatsQuery = gql`
   {
     dataset_stats {
       dataset {
@@ -94,7 +94,7 @@ const getDatasetCompoundQuery = gql`
 
 
 export {
-  getDatasetCountsQuery,
+  getDatasetStatsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,

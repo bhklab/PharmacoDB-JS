@@ -5,7 +5,7 @@ import dataset_colors from '../../../styles/dataset_colors';
 import StyledWrapper from '../../../styles/utils';
 import PlotsWrapper from '../../../styles/PlotsWrapper';
 import AverageDatasetBarPlot from '../../Plots/DatasetHorizontalPlot';
-import { getDatasetCountsQuery } from '../../../queries/dataset';
+import { getDatasetStatsQuery } from '../../../queries/dataset';
 import Loading from '../../UtilComponents/Loading';
 
 /**
@@ -72,7 +72,7 @@ const renderComponent = (loading, error, data) => {
  * )
  */
 const Experiments = () => {
-  const { loading, error, data } = useQuery(getDatasetCountsQuery);
+  const { loading, error, data } = useQuery(getDatasetStatsQuery);
   return (
     <Layout page="experiments">
       <StyledWrapper>

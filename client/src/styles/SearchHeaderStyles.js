@@ -39,6 +39,9 @@ const StyledSearchHeader = styled.div`
             color: ${(props) => (props.page === 'home' ? colors.light_blue_header : colors.dark_teal_heading)};
             margin-bottom: 20px;
             font-size: calc(0.3vw + 0.8em);
+            span {
+              margin-left: 5px;
+            }
         }
         
         // Search bar placeholder
