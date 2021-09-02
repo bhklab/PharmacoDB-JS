@@ -26,6 +26,9 @@ const getGenesQuery = gql`
     query getAllGenes {
         genes(all: true) {
             ...GeneFields
+            annotation {
+                gene_id
+            }
         }
     }
 `;
@@ -39,6 +42,9 @@ const getGeneQuery = gql`
     query getSingleGene($geneId: Int, $geneName: String) {
         gene(geneId: $geneId, geneName: $geneName) {
             ...GeneFields
+            annotation {
+                gene_id
+            }
         }
     }
 `;
@@ -54,8 +60,8 @@ const getCompoundTargetsQuery = gql`
     }
 `;
 
-export { 
-    getGenesQuery, 
-    getGeneQuery, 
-    getCompoundTargetsQuery 
+export {
+    getGenesQuery,
+    getGeneQuery,
+    getCompoundTargetsQuery
 };
