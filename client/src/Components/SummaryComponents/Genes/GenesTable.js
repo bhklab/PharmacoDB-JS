@@ -58,7 +58,6 @@ const GenesTable = () => {
 
     const { loading } = useQuery(getGenesQuery, {
         onCompleted: (data) => {
-            console.log("log data in GenesTable:",data);
             setGenes(getTableData(data));
         },
         onError: (err) => {
