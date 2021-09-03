@@ -252,64 +252,62 @@ const datasets = {
   7: {
     id: 7,
     name: 'NCI60',
-    acr: "",
+    acr: "National Cancer Institute 60",
     acr_ref: '',
-    des: '',
+    des: 'The US National Cancer Institute 60 human tumor cell line anticancer drug screen was initiated in the late 1980 and continued to become one of the most well-established sources of drug sensitivity information. NCI60 dataset consists of molecular profiles of the 60 core human cell lines as well as the dose-response outcomes from screening more than 55000 compounds.',
     resource: [
-      { id: '0', name: '', urlextern: '' },
-      { id: '1', name: '', urlextern: '' },
-      { id: '2', name: '', urlextern: '' },
+      { id: '0', name: 'NCI60 dose-response data', urlextern: 'https://wiki.nci.nih.gov/display/NCIDTPdata/NCI-60+Growth+Inhibition+Data' },
+      { id: '1', name: 'CellMiner', urlextern: 'https://discover.nci.nih.gov/cellminer/' },
     ],
     pub: [
       {
         id: '0',
-        title: '',
-        url: '',
-      },
-      {
-        id: '1',
-        title: '',
-        url: '',
+        title: 'Shoemaker,R.H. (2006) The NCI60 human tumour cell line anticancer drug screen. Nat. Rev. Cancer, 6, 813–823.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/16990858/',
       },
     ],
     dtype: [
       {
-        type: '', platform: '', raw: '', processed: [''],
+        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
       {
-        type: '', platform: '', raw: '', processed: [''],
+        type: 'mRNA Expression', platform: 'Affymetrix HG-U133PLUS2', raw: 'No', processed: ['RMA (see CellMiner)'],
+      },
+      {
+        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'No', processed: ['Isoforms (see CellMiner)'],
+      },
+      {
+        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'No', processed: ['Composite expression (see CellMiner)'],
+      },
+      {
+        type: 'MicroRNA expression', platform: 'Agilent Human microRNA(v2)', raw: 'No', processed: ['GeneSpringGX (see CellMiner)'],
       },
     ],
   },
   8: {
     id: 8,
     name: 'PRISM',
-    acr: "",
+    acr: "Profiling Relative Inhibition Simultaneously in Mixtures",
     acr_ref: '',
-    des: '',
+    des: 'The PRISM dataset consists of dose-response data from assessing the anti-cancer effects of non-oncology drugs on human cancer cell-lines using the PRISM barcoding method developed by Broad Institute of MIT and Harvard.',
     resource: [
-      { id: '0', name: '', urlextern: '' },
-      { id: '1', name: '', urlextern: '' },
-      { id: '2', name: '', urlextern: '' },
+      { id: '0', name: 'PRISM drug repurposing resource', urlextern: 'https://depmap.org/repurposing/' },
     ],
     pub: [
       {
         id: '0',
-        title: '',
-        url: '',
+        title: 'Corsello,S.M., Nagari,R.T., Spangler,R.D., Rossen,J., Kocak,M., Bryan,J.G., Humeidi,R., Peck,D., Wu,X., Tang,A.A., et al. (2020) Discovering the anti-cancer potential of non-oncology drugs by systematic viability profiling. Nat Cancer, 1, 235–248.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/32613204/',
       },
       {
         id: '1',
-        title: '',
-        url: '',
+        title: 'Yu,C., Mannan,A.M., Yvone,G.M., Ross,K.N., Zhang,Y.-L., Marton,M.A., Taylor,B.R., Crenshaw,A., Gould,J.Z., Tamayo,P., et al. (2016) High-throughput identification of genotype-specific cancer vulnerabilities in mixtures of barcoded tumor cell lines. Nat.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/26928769/',
       },
     ],
     dtype: [
       {
-        type: '', platform: '', raw: '', processed: [''],
-      },
-      {
-        type: '', platform: '', raw: '', processed: [''],
+        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
     ],
   },

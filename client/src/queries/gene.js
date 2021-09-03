@@ -1,6 +1,7 @@
 import { gql } from 'apollo-boost';
 
 // Fragment containing the gene id, name and annotation.
+// This fragment is currently not used due to some issues, maybe removed from the code base.
 const GENE_FIELDS = gql`
   fragment GeneFields on Gene {
     id
@@ -22,10 +23,18 @@ const GENE_FIELDS = gql`
  * and also returning the annotation object for each of the gene in the database.
  */
 const getGenesQuery = gql`
-    ${GENE_FIELDS}
     query getAllGenes {
         genes(all: true) {
-            ...GeneFields
+            id
+            name
+            annotation {
+                gene_id
+                symbol
+                gene_seq_start
+                gene_seq_end
+                chr
+                strand
+            }
         }
     }
 `;
@@ -35,10 +44,18 @@ const getGenesQuery = gql`
  * @returns - the information for the queried gene.
  */
 const getGeneQuery = gql`
-    ${GENE_FIELDS}
     query getSingleGene($geneId: Int, $geneName: String) {
         gene(geneId: $geneId, geneName: $geneName) {
-            ...GeneFields
+            id
+            name
+            annotation {
+                gene_id
+                symbol
+                gene_seq_start
+                gene_seq_end
+                chr
+                strand
+            }
         }
     }
 `;
@@ -54,8 +71,8 @@ const getCompoundTargetsQuery = gql`
     }
 `;
 
-export { 
-    getGenesQuery, 
-    getGeneQuery, 
-    getCompoundTargetsQuery 
+export {
+    getGenesQuery,
+    getGeneQuery,
+    getCompoundTargetsQuery
 };
