@@ -1,6 +1,7 @@
 import { gql } from 'apollo-boost';
 
 // Fragment containing the gene id, name and annotation.
+// This fragment is currently not used due to some issues, maybe removed from the code base.
 const GENE_FIELDS = gql`
   fragment GeneFields on Gene {
     id
