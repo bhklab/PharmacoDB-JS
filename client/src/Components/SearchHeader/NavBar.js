@@ -106,7 +106,7 @@ const NavBar = (props) => {
               <Dropdown.Item><a href="http://github.com/bhklab/pharmacodb" target="_blank">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Link className="header-links link" to="/explore">Explore</Link>
+          {/* <Link className="header-links link" to="/explore">Explore</Link> */}
           <Dropdown className="header-links link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">
               {dropdownItems(dataLinks)}
