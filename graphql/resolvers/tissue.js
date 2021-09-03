@@ -125,7 +125,7 @@ const transformTissues = data => {
         } else {
             finalData[id] = {
                 id: id,
-                name: name,
+                name: name || 'NA',
                 dataset: [{
                     id: dataset_id,
                     name: dataset_name,
