@@ -22,12 +22,17 @@ const GENE_FIELDS = gql`
  * and also returning the annotation object for each of the gene in the database.
  */
 const getGenesQuery = gql`
-    ${GENE_FIELDS}
     query getAllGenes {
         genes(all: true) {
-            ...GeneFields
+            id
+            name
             annotation {
                 gene_id
+                symbol
+                gene_seq_start
+                gene_seq_end
+                chr
+                strand
             }
         }
     }
@@ -38,12 +43,17 @@ const getGenesQuery = gql`
  * @returns - the information for the queried gene.
  */
 const getGeneQuery = gql`
-    ${GENE_FIELDS}
     query getSingleGene($geneId: Int, $geneName: String) {
         gene(geneId: $geneId, geneName: $geneName) {
-            ...GeneFields
+            id
+            name
             annotation {
                 gene_id
+                symbol
+                gene_seq_start
+                gene_seq_end
+                chr
+                strand
             }
         }
     }
