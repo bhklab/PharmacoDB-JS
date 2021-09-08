@@ -24,7 +24,9 @@ const parseTableData = (data, compound) => {
             tissue: item.tissue.name,
             stat: item.sens_stat,
             standardized_coef: item.estimate,
-            pvalue: item.pvalue_analytic
+            pvalue: item.pvalue_analytic,
+            permutation_pvalue: item.pvalue_permutation,
+            significant_permutation: item.significant_permutation,
         }));
         tableData.sort((a, b) => a.pvalue - b.pvalue);
     }
@@ -56,14 +58,24 @@ const COLUMNS = [
         accessor: 'stat',
     },
     {
-        Header: `Standardized Coefficient`,
+        Header: `Correlation`,
         accessor: 'standardized_coef',
         Cell: (item) => item.value.toFixed(2)
     },
     {
-        Header: `Nominal ANOVA p-value`,
+        Header: `Analytic p value`,
         accessor: 'pvalue',
         Cell: (item) => item.value.toExponential(2)
+    },
+    {
+        Header: `Permutation p value`,
+        accessor: 'permutation_pvalue',
+        Cell: (item) => item.value? item.value: 'N/A'
+    },
+    {
+        Header: `Significant by Permutation Test`,
+        accessor: 'significant_permutation',
+        Cell: (item) => item.value ? item.value: 'N/A'
     },
 ];
 
