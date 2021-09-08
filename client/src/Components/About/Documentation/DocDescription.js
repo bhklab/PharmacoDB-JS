@@ -7,16 +7,6 @@ import Layout from '../../UtilComponents/Layout';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
-import Overview from './Documentations/DocOverview';
-import Search from "./Documentations/DocSearch";
-import Cell from './Documentations/DocCell';
-import Tissue from './Documentations/DocTissue';
-import Drug from './Documentations/DocDrug';
-import Dataset from './Documentations/DocDataset';
-import DatasetsIntersection from './Documentations/DocDatasetsIntersection';
-import CellVsDrug from './Documentations/DocCellVsDrug';
-import TissueVsDrug from './Documentations/DocTissueVsDrug';
-
 /**
  * Shows the description of the documentation page.
  *
