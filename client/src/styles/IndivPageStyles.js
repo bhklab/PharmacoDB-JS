@@ -112,6 +112,10 @@ const StyledIndivPage = styled.div`
   }
 `;
 
+/**
+ * Used to reduce text size for a long individual page title.
+ * Used in IndivCompounds.js to accommodate long compound names.
+ */
 const StyledIndivPageTitle = styled.span`
   color: ${colors.dark_pink_highlight};
   font-size: ${props => props.smalltxt ? `clamp(14px, calc(1vw + 10px), 20px)` : 'clamp(32px, calc(2vw + 10px), 44px)'};
