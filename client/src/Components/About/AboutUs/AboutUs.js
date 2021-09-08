@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ScrollToTop from 'react-scroll-to-top';
 import Layout from '../../UtilComponents/Layout';
+import AboutUsDescription from './AboutUsDescription';
 import 'react-scroll-to-top/lib/index.css';
 
 const StyledAboutUs = styled.div`
@@ -25,7 +26,7 @@ const AboutUs = () => (
     <Layout page="about">
         <ScrollToTop smooth />
         <StyledAboutUs>
-            <p>About Content!</p>
+            <AboutUsDescription />
         </StyledAboutUs>
     </Layout>
 );

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ScrollToTop from 'react-scroll-to-top';
 import Layout from '../../UtilComponents/Layout';
+import DocDescription from './DocDescription';
 import 'react-scroll-to-top/lib/index.css';
 
 const StyledDocumentation = styled.div`
@@ -25,7 +26,7 @@ const Documentation = () => (
     <Layout page="documentation">
         <ScrollToTop smooth />
         <StyledDocumentation>
-            <p>Documentation Content!</p>
+            <DocDescription/>
         </StyledDocumentation>
     </Layout>
 );
