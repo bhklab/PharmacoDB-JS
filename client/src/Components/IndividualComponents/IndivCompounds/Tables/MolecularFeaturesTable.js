@@ -73,7 +73,7 @@ const COLUMNS = [
         Cell: (item) => item.value? item.value: 'N/A'
     },
     {
-        Header: `Analytic p value`,
+        Header: `Significant by Permutation Test`,
         accessor: 'significant_permutation',
         Cell: (item) => item.value ? item.value: 'N/A'
     },
