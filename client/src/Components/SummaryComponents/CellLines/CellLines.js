@@ -92,18 +92,10 @@ const pieChartDataObject = (data) => {
       ],
     },
   }];
-  const threshold = 1.2 * Object.keys(data).map(key => data[key].total).reduce((a, b)=> a + b, 0) / 100  ;
-  let other_total = 0
   Object.keys(data).forEach((key) => {
-    if (data[key].total > threshold && key !=="Other") {
-      returnData[0].values.push(data[key].total);
-      returnData[0].labels.push(key);
-    } else {
-      other_total += data[key].total;
-    }
+    returnData[0].values.push(data[key].total);
+    returnData[0].labels.push(key);
   });
-  returnData[0].values.push(other_total);
-  returnData[0].labels.push("Other");
   return returnData;
 };
 
