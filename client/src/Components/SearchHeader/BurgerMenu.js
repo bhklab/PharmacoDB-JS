@@ -74,7 +74,6 @@ const BurgerMenu = () => {
   // for about menu dropdown
   const aboutLinks = [
     { url: '/about', name: 'About Us' },
-    { url: '/explore', name: 'Explore' },
     { url: '/documentation', name: 'Documentation' },
     { url: '/cite', name: 'Cite Us' },
   ];

@@ -34,17 +34,20 @@ const renderComponent = (loading, error, data) => {
   }
   const experimentsPerCell = [];
   const experimentsPerCompound = [];
-  if (data.datasets) {
-    data.datasets.forEach((el, i) => {
-      const { id, name } = el;
+  if (data.dataset_stats) {
+    data.dataset_stats.forEach((el, i) => {
+      const { dataset } = el;
+      const { id, name } = dataset;
+
       experimentsPerCell.push({
-        id, name, count: el.experiment_count / el.cell_count, color: dataset_colors[i],
+        id, name, count: el.experiment_count / el.cell_line_count, color: dataset_colors[i],
       });
       experimentsPerCompound.push({
-        id, name, count: el.experiment_count / el.compound_tested_count, color: dataset_colors[i],
+        id, name, count: el.experiment_count / el.compound_count, color: dataset_colors[i],
       });
     });
   }
+
   return (
     <>
       <AverageDatasetBarPlot
@@ -73,6 +76,7 @@ const renderComponent = (loading, error, data) => {
  */
 const Experiments = () => {
   const { loading, error, data } = useQuery(getDatasetStatsQuery);
+
   return (
     <Layout page="experiments">
       <StyledWrapper>
