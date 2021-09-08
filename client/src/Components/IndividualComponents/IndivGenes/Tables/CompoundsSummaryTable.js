@@ -37,7 +37,7 @@ const parseTableData = (data, gene) => {
                 compound: filtered[0].compound.name,
                 datasets: datasets.map(item => item.name).join(', '),
                 dataset_ids: datasets.map(item => item.id).join(', '),
-                experiments: experiments
+                experiments: filtered.length
             });
         }
         tableData.data.sort((a, b) => b.experiments - a.experiments);
