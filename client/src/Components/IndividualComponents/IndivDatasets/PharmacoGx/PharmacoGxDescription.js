@@ -10,7 +10,7 @@ const StyledDescription = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+  
     width: 75%;
     margin-top: 8vh;
 
@@ -31,6 +31,7 @@ const StyledDescription = styled.div`
             font-family: 'Roboto Slab', serif;
             font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
+            align-self: center;
         }
     }
 
@@ -131,9 +132,7 @@ const PharmacoGxDescription = (props) => {
           <span>
           To learn more about the PharmacoGx package, you can download the full documentation and vignettes through our
           Bioconductor page:
-          <a href="https://bioconductor.org/packages/release/bioc/html/PharmacoGx.html" target="_blank">
-          PharmacoGx
-          </a>
+          <a href="https://bioconductor.org/packages/release/bioc/html/PharmacoGx.html" target="_blank"> PharmacoGx</a>
         </span>
         </div>
       </StyledDescription>
