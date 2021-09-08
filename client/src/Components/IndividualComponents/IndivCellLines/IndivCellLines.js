@@ -170,7 +170,9 @@ const IndivCellLines = (props) => {
                     <span className='attributes'>
                         Tissue Type:
                         <span className='value highlight'>
-                          {data.tissue.name}
+                          {
+                            data.tissue.name === 'NA' ? 'Not Available' : <a href={`/tissues/${data.tissue.id}`}>{data.tissue.name}</a>
+                          }
                         </span>
                     </span>
                 </div>
@@ -185,7 +187,12 @@ const IndivCellLines = (props) => {
                         <React.Fragment>
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
-                            <Table columns={SYNONYM_COLUMNS} data={synonymData} />
+                            {
+                              synonymData ? 
+                              <Table columns={SYNONYM_COLUMNS} data={synonymData} />
+                              :
+                              <div className="text">N/A</div>
+                            }
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
@@ -201,7 +208,7 @@ const IndivCellLines = (props) => {
                           <Element className="section" name="link(s)">
                             <div className='section-title'>Link(s)</div>
                             <div className="text">
-                              {linkData ? (<a key={linkData.key} target="_blank" href={linkData.path}>{linkData.source}</a>) : ''}
+                              {linkData ? (<a key={linkData.key} target="_blank" href={linkData.path}>{linkData.source}</a>) : 'N/A'}
                             </div>
                           </Element>
                         </React.Fragment>

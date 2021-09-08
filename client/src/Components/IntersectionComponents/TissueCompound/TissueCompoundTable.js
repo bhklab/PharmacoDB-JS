@@ -28,9 +28,7 @@ const TissueCompoundTable = (props) => {
             Cell: (item) => (
                 <IntersectionTableCell 
                     statName='AAC' 
-                    value={typeof item.value === 'number' ? (
-                        item.cell.row.original.dataset.name === 'NCI60' || item.cell.row.original.dataset.name === 'PRISM' ? 
-                        item.value : item.value * 100).toFixed(3) : 'N/A'} 
+                    value={typeof item.value === 'number' ? (item.value * 100).toFixed(3) : 'N/A'} 
                     cellItem={item} 
                 />
             )
