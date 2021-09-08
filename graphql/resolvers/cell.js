@@ -51,16 +51,6 @@ const transformCellLines = data => {
 };
 
 /**
- * @returns {Array} - Returns a list of datasets' names and ids
- */
-const datasetsQuery = async () => {
-    const query = knex
-        .select(['d.name as name','d.id as id'])
-        .from('dataset as d')
-    return query;
-};
-
-/**
  * Returns a transformed array of objects.
  * @param {Array} data
  * @returns {Object} - transformed object.
@@ -92,23 +82,24 @@ const transformSingleCellLine = (data) => {
                 id: tissue_id,
                 name: tissue_name
             };
-            returnObject['synonyms'] = [{
+            returnObject['synonyms'] = source_cell_name ? [{
                 name: source_cell_name,
-                source: [{'id': dataset_id, 'name': dataset_name}]
-            }];
+                source: [{ 'id': dataset_id, 'name': dataset_name }]
+            }] : null;
             source_cell_name_list.push(source_cell_name);
         } else {
             // for all other elements.
             if (!source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].push({
                     name: source_cell_name,
-                    source: [{'id': dataset_id, 'name': dataset_name}]
+                    source: [{ 'id': dataset_id, 'name': dataset_name }]
                 });
                 source_cell_name_list.push(source_cell_name);
             } else if (source_cell_name_list.includes(source_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
-                        returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
+                        if (!returnObject['synonyms'][i]['source'].filter(source => source.id === dataset_id).length > 0)
+                            returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
                     }
                 });
             }
@@ -173,7 +164,7 @@ const cell_line = async args => {
         // throw error if neither of the arguments are passed.
         if (!cellId && !cellName) {
             throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
-        }
+        }        
         // variable to store cell line data.
         let cell_line;
         // the base query
@@ -199,8 +190,32 @@ const cell_line = async args => {
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);
         }
+
+        // If the full query does not return any results, query the minimum information that needs to be returned.
+        if(cell_line.length === 0){
+            query = knex
+                .select('cell.id as cell_id',
+                    'cell.name as cell_name',
+                    'tissue.id as tissue_id',
+                    'tissue.name as tissue_name',
+                    'dataset.id as dataset_id',
+                    'dataset.name as dataset_name',
+                    'cellosaurus.di as diseases',
+                    'cellosaurus.accession as accessions')
+                .from('cell')
+                .join('tissue', 'tissue.id', 'cell.tissue_id')
+                .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
+                .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
+                .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
+        }
+        if (cellId) {
+            cell_line = await query.where('cell.id', cellId);
+        } else if (cellName) {
+            cell_line = await query.where('cell.name', cellName);
+        }
+
         // return the transformed data.
-        return transformSingleCellLine(cell_line);
+        return transformSingleCellLine(cell_line);  
     } catch (err) {
         console.log(err);
         return err;

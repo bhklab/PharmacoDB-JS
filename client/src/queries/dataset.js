@@ -4,15 +4,17 @@ import { gql } from 'apollo-boost';
  * @returns - Query returns the list of datasets with information about how many
  * cell lines, tissues, experiments and compounds are in those datsets.
  */
-const getDatasetCountsQuery = gql`
-  query getDatasetData {
-    datasets {
-      id
-      name
-      cell_count
+const getDatasetStatsQuery = gql`
+  {
+    dataset_stats {
+      dataset {
+        id,
+        name
+      }
+      cell_line_count
       experiment_count
-      compound_tested_count
-      tissue_tested_count
+      compound_count
+      tissue_count
     }
   }
 `;
@@ -35,8 +37,8 @@ const getDatasetsQuery = gql`
  * id, and name for the dataset.
  */
 const getDatasetQuery = gql`
-  query getSingleDataset($datasetId: Int!) {
-    dataset(datasetId: $datasetId) {
+  query getSingleDataset($datasetId: Int!, $datasetName: String!) {
+    dataset(datasetId: $datasetId, datasetName: $datasetName) {
       id
       name
     }
@@ -90,11 +92,12 @@ const getDatasetCompoundQuery = gql`
   }
 `;
 
+
 export {
-  getDatasetCountsQuery,
+  getDatasetStatsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
   getDatasetCellLinesQuery,
-  getDatasetCompoundQuery
+  getDatasetCompoundQuery,
 };

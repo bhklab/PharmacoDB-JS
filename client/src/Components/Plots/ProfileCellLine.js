@@ -44,7 +44,7 @@ const baseLayout = {
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
-const generateRenderData = (data, dataset, profile) => {
+const generateRenderData = (compound, data, dataset, profile) => {
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -58,7 +58,8 @@ const generateRenderData = (data, dataset, profile) => {
       title: {
         text: profile,
       },
-      type: 'log',
+      type: profile === 'AAC' ? '' : 'log',
+      tickformat: profile === 'AAC' ? '' : '.1r',
     },
   };
   const notifications = {
@@ -88,7 +89,7 @@ const generateRenderData = (data, dataset, profile) => {
       };
     }
     layout.xaxis.tickvals.push(`${name} cell line`);
-    layout.xaxis.ticktext.push(label);
+    layout.xaxis.ticktext.push(`<a href='${`/search?cell_line=${name}&compound=${compound}`}' rel="noopener noreferrer">${label}</a>`);
     plotData.push(trace);
   });
   return { plotData, layout, notifications };
@@ -117,8 +118,9 @@ const ProfileCellLine = (props) => {
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'cell_line');
-    setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
+    setPlotData(generateRenderData(compound, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
+  useEffect(() => {console.log(layout)}, [plotData]);
   return (
     <div className="plot">
       <StyledSelectorContainer>

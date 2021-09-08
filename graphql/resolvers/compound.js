@@ -36,10 +36,11 @@ const transformSynonyms = data => {
                 source: [{ 'id': dataset_id, 'name': dataset_name }]
             };
         } else if (Object.keys(returnList).includes(source_compound_name.trim())) {
-            returnList[source_compound_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
+            if (!returnList[source_compound_name.trim()]['source'].filter(source => source.id === dataset_id).length > 0)
+                returnList[source_compound_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
         }
     });
-    return Object.values(returnList);
+    return Object.values(returnList);ß
 };
 
 /**
@@ -60,13 +61,24 @@ const transformCompounds = data => {
             dataset_id,
             dataset_name,
         } = compound;
+        const returnList = { "smiles": [], "inchikey": [] };
+        if (smiles !== null) {
+            smiles.split(", ").forEach((item) => {
+                if (!returnList["smiles"].includes(item)) returnList["smiles"].push(item)
+            })
+        }
+        if (inchikey !== null) {
+            inchikey.split(", ").forEach((item) => {
+                if (!returnList["inchikey"].includes(item)) returnList["inchikey"].push(item)
+            })
+        }
         return {
             id,
             name,
             uid: compound_uid,
             annotation: {
-                smiles: smiles,
-                inchikey: inchikey,
+                smiles: returnList["smiles"].join(", "),
+                inchikey: returnList["inchikey"].join(", "),
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status)
             },
@@ -76,16 +88,6 @@ const transformCompounds = data => {
             }
         };
     });
-};
-
-/**
- * @returns {Array} - Returns a list of datasets' names and ids
- */
-const datasetsQuery = async () => {
-    const query = knex
-        .select(['d.name as name', 'd.id as id'])
-        .from('dataset as d');
-    return query;
 };
 
 /**

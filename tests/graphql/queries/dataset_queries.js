@@ -7,9 +7,6 @@ const multipleDatasetsTestQuery = `
     datasets {
       id
       name
-      compound_tested_count
-      cell_count
-      experiment_count
     }
   }
 `;
@@ -35,7 +32,23 @@ query singleDataset {
 }
 `;
 
+const allDatasetsStatsTestQuery = `
+query datasetStats {
+    dataset_stats {
+      dataset {
+        id,
+        name
+      }
+      cell_line_count
+      experiment_count
+      compound_count
+      tissue_count
+    }
+  }
+`;
+
 module.exports = {
     multipleDatasetsTestQuery,
-    singleDatasetTestQuery
+    singleDatasetTestQuery,
+    allDatasetsStatsTestQuery,
 };

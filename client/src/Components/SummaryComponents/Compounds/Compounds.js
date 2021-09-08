@@ -25,6 +25,7 @@ const table_columns = [
   {
     Header: 'PubChem',
     accessor: 'pubchem',
+    Cell: (row) => (<a href={`https://pubchem.ncbi.nlm.nih.gov/compound/${row.value}`}>{row.value}</a>),
   },
   {
     Header: 'FDA Status',

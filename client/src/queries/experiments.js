@@ -152,7 +152,13 @@ const getSingleGeneExperimentsQuery = gql`
  */
 const getCellLineCompoundExperimentsQuery = gql`
   query getCellLineCompoundExperiments($cellLineId: Int, $cellLineName: String, $compoundId: Int, $compoundName: String) {
-    experiments(cellLineId: $cellLineId, cellLineName: $cellLineName, compoundId: $compoundId, compoundName: $compoundName) {
+    experiments(
+      cellLineId: $cellLineId, 
+      cellLineName: $cellLineName, 
+      compoundId: $compoundId, 
+      compoundName: $compoundName, 
+      all: true
+    ) {
       cell_line {
         id
         name
@@ -185,7 +191,13 @@ const getCellLineCompoundExperimentsQuery = gql`
 
 const getTissueCompoundExperimentsQuery = gql`
   query getTissueCompoundExperiments($tissueId: Int, $tissueName: String, $compoundId: Int, $compoundName: String) {
-    experiments(tissueId: $tissueId, tissueName: $tissueName, compoundId: $compoundId, compoundName: $compoundName) {
+    experiments(
+      tissueId: $tissueId, 
+      tissueName: $tissueName, 
+      compoundId: $compoundId, 
+      compoundName: $compoundName,
+      all: true
+    ) {
       tissue {
         id
         name

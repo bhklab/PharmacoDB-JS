@@ -19,14 +19,14 @@ const parseTableData = (data, gene) => {
         let datasetIds = [...new Set(data.map(item => item.dataset.id))];
         tableData.numCompounds = compoundIds.length;
         tableData.numDatasets = datasetIds.length;
-        for(const compoundId of compoundIds){
+        for (const compoundId of compoundIds) {
             let filtered = data.filter(item => item.compound.id === compoundId);
             let experiments = filtered.map(item => item.n).reduce((a, b) => a + b, 0);
-            
+
             let datasetIds = filtered.map(item => item.dataset.id);
             datasetIds = [...new Set(datasetIds)];
             let datasets = [];
-            for(const datasetId of datasetIds){
+            for (const datasetId of datasetIds) {
                 let dataset = filtered.find(item => item.dataset.id === datasetId).dataset;
                 datasets.push(dataset);
             }
@@ -37,8 +37,8 @@ const parseTableData = (data, gene) => {
                 compound: filtered[0].compound.name,
                 datasets: datasets.map(item => item.name).join(', '),
                 dataset_ids: datasets.map(item => item.id).join(', '),
-                experiments: experiments
-            }); 
+                experiments: filtered.length
+            });
         }
         tableData.data.sort((a, b) => b.experiments - a.experiments);
     }
@@ -62,10 +62,10 @@ const CompoundsSummaryTable = (props) => {
             Cell: (item) => {
                 let datasets = item.cell.row.original.datasets.split(', ');
                 let ids = item.cell.row.original.dataset_ids.split(', ');
-                return(
+                return (
                     datasets.map((item, i) => (
                         <span key={i}>
-                            <Link to={`/datasets/${ids[i]}`}>{item}</Link>{ i + 1 < datasets.length ? ', ' : ''}
+                            <Link to={`/datasets/${ids[i]}`}>{item}</Link>{i + 1 < datasets.length ? ', ' : ''}
                         </span>
                     ))
                 )
@@ -96,37 +96,41 @@ const CompoundsSummaryTable = (props) => {
         }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                <React.Fragment>
-                    <h4>
-                        <p align="center">
-                            { `Compounds tested targetting ${gene.annotation.symbol}` }
-                        </p>
-                    </h4>
-                    <p align="center">
-                        { `${tableData.numCompounds} compounds have been tested on ${gene.annotation.symbol}, using data from ${tableData.numDatasets} dataset(s).` }
-                    </p>
-                    {
-                        tableData.data.length > 0 &&
+                    :
+                    error ? <Error />
+                        :
                         <React.Fragment>
-                            <div className='download-button'>
-                                <DownloadButton 
-                                    label='CSV' 
-                                    data={tableData.data} 
-                                    mode='csv' 
-                                    filename={`${gene.name} - compounds`} 
-                                />
-                            </div>
-                            <Table columns={columns} data={tableData.data} />
+                            <h4>
+                                <p align="center">
+                                    {`Compounds tested targetting ${gene.annotation.symbol}`}
+                                </p>
+                            </h4>
+                            <p align="center">
+                                {
+                                    tableData.numCompounds
+                                        ? `${tableData.numCompounds} compounds have been tested on ${gene.annotation.symbol}, using data from ${tableData.numDatasets} dataset(s).`
+                                        : `There are no drugs targeting ${gene.annotation.symbol} in the database`
+                                }
+                            </p>
+                            {
+                                tableData.data.length > 0 &&
+                                <React.Fragment>
+                                    <div className='download-button'>
+                                        <DownloadButton
+                                            label='CSV'
+                                            data={tableData.data}
+                                            mode='csv'
+                                            filename={`${gene.name} - compounds`}
+                                        />
+                                    </div>
+                                    <Table columns={columns} data={tableData.data} />
+                                </React.Fragment>
+                            }
                         </React.Fragment>
-                    }
-                </React.Fragment>
             }
         </React.Fragment>
     );

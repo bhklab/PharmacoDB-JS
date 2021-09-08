@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
 import compoundsImg from '../../images/compounds.png';
 import cellsImg from '../../images/cells.png';
 import datasetsImg from '../../images/datasets.png';
@@ -8,6 +9,7 @@ import experimentsImg from '../../images/experiments.png';
 import genesImg from '../../images/genes.png';
 import tissuesImg from '../../images/tissues.png';
 import colors from '../../styles/colors';
+import { getAllDataTypeStatsQuery } from '../../queries/stat';
 
 const StyledStats = styled.div`
     display: flex;
@@ -70,32 +72,64 @@ const StyledStats = styled.div`
     } 
 `;
 
+
 /**
  * @returns {Object} - returns an Object of different types with name and value.
  */
-const statistics = {
-  datasets: {
-    name: 'datasets', value: '8', image: datasetsImg, link: '/datasets',
+const statsObject = {
+  dataset: {
+    name: 'datasets', value: '0', image: datasetsImg, link: '/datasets',
   },
-  tissues: {
-    name: 'tissues', value: '30', image: tissuesImg, link: '/tissues',
+  tissue: {
+    name: 'tissues', value: '0', image: tissuesImg, link: '/tissues',
   },
-  cells: {
-    name: 'cell-lines', value: '1,676', image: cellsImg, link: '/cell_lines',
+  cell: {
+    name: 'cell-lines', value: '0', image: cellsImg, link: '/cell_lines',
   },
-  experiments: {
+  experiment: {
     name: 'experiments',
-    value: '102,9712',
+    value: '0',
     image: experimentsImg,
     link: '/experiments',
   },
-  genes: {
-    name: 'genes', value: '60,859', image: genesImg, link: '/genes',
+  gene: {
+    name: 'genes', value: '61273', image: genesImg, link: '/genes',
   },
-  compounds: {
-    name: 'compounds', value: '920', image: compoundsImg, link: '/compounds',
+  compound: {
+    name: 'compounds', value: '0', image: compoundsImg, link: '/compounds',
   },
 };
+
+
+/**
+ * 
+ * @param {Array} data - input array.
+ */
+const createStatsObject = (data) => {
+  const stats = {};
+
+  data.forEach(el => {
+    stats[el.dataType] = el;
+  })
+
+  return stats;
+}
+
+/**
+ * 
+ * @param {Array} data 
+ */
+const updateStatsObject = (data) => {
+  const stats = statsObject;
+
+  Object.keys(stats).forEach((el) => {
+    if (el !== 'gene') { //TODO: Update this when we can calculate the total number of genes.
+      stats[el].value = data[el]['count'];
+    }
+  })
+
+  return stats;
+}
 
 /**
  * Shows the stats with graphics on the front page.
@@ -107,24 +141,39 @@ const statistics = {
  *   <Stats/>
  * )
  */
-const Stats = () => (
+const Stats = () => {
+  const { loading, error, data } = useQuery(getAllDataTypeStatsQuery);
+  const [stats, setStats] = useState({});
 
-  <StyledStats>
-    {Object.keys(statistics).map((type) => (
-      <div key={statistics[type].name} className="item-container">
-        <Link to={statistics[type].link}>
-          <img alt={statistics[type].value} src={`${statistics[type].image}`} />
-          <div className="text">
-            <span className="big">
-              {`${statistics[type].value}`}
-            </span>
-            <br />
-            {`${statistics[type].name}`}
+  useEffect(() => {
+    if (data) {
+      const stats = createStatsObject(data.data_type_stats);
+      const updatedStatsObject = updateStatsObject(stats);
+
+      setStats(updatedStatsObject);
+    }
+  }, [data])
+
+  return (
+    < StyledStats >
+      {
+        Object.keys(stats).map((type) => (
+          <div key={stats[type].name} className="item-container">
+            <Link to={stats[type].link}>
+              <img alt={stats[type].value} src={`${stats[type].image}`} />
+              <div className="text">
+                <span className="big">
+                  {`${stats[type].value}`}
+                </span>
+                <br />
+                {`${stats[type].name}`}
+              </div>
+            </Link>
           </div>
-        </Link>
-      </div>
-    ))}
-  </StyledStats>
-);
+        ))
+      }
+    </StyledStats >
+  )
+};
 
 export default Stats;

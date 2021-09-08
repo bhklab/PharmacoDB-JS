@@ -47,6 +47,12 @@ const RootQuery = `type RootQuery {
         One of the parameters has to be passed either an ID or the dataset Name
     """
     dataset(datasetId: Int, datasetName: String): [DatasetDetail!]!
+    
+    """
+        Root Query for Counting tested Types for each dataset
+    """
+    dataset_stats: [DatasetStats!]!
+
 
     """
         This is a query to get the cell lines that are grouped based on the dataset.
@@ -98,6 +104,10 @@ const RootQuery = `type RootQuery {
     compound_target(compoundId: Int!): CompoundTarget!
     compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
 
+    """
+        Root Query for the stats for the different types.
+    """
+    data_type_stats: [Statistics!]!
 
     """
         Root Query for tissues.

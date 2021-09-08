@@ -38,6 +38,9 @@ const datasets = {
       {
         type: 'DNA Mutation', platform: 'Hybrid Capture', raw: 'Yes', processed: ['MAF'],
       },
+      {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
+      },
     ],
   },
   2: {
@@ -100,10 +103,10 @@ const datasets = {
   },
   4: {
     id: 4,
-    name: 'GDSC_1',
+    name: 'GDSC1',
     acr: 'Genomics of Drug Sensitivity in Cancer (GDSC)',
     acr_ref: '',
-    des: 'The Genomics of Drug Sensitivity in Cancer \u200B(GDSC) \u200BProject is part of a Wellcome Trust funded collaboration between The Cancer Genome Project at the Wellcome Trust Sanger Institute (UK) and the Center for Molecular Therapeutics,\u200B Massachusetts General Hospital Cancer Center (USA). As part of this collaboration,\u200B the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators,\u200B and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive \u200B(epi)genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.\nAs part of this collaboration, the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators, and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.',
+    des: 'The Genomics of Drug Sensitivity in Cancer \u200B(GDSC) \u200BProject is part of a Wellcome Trust funded collaboration between The Cancer Genome Project at the Wellcome Trust Sanger Institute (UK) and the Center for Molecular Therapeutics,\u200B Massachusetts General Hospital Cancer Center (USA). As part of this collaboration,\u200B the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators,\u200B and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive \u200B(epi)genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.\n\n The GDSC1 data specifically refers to the original cell screening platform used by GDSC for performing drug screening, used between 2009 and 2015.',
     resource: [
       { id: '0', name: 'GDSC website', urlextern: 'http://www.cancerrxgene.org/' },
       {
@@ -136,6 +139,9 @@ const datasets = {
       },
       {
         type: 'DNA Mutation', platform: 'Sanger', raw: 'No', processed: ['CSV'],
+      },
+      {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
       },
       {
         type: 'DNA Methylation', platform: 'Illumina array 450K', raw: 'Yes', processed: ['GenomeStudio'],
@@ -144,10 +150,10 @@ const datasets = {
   },
   5: {
     id: 5,
-    name: 'GDSC_2',
+    name: 'GDSC2',
     acr: 'Genomics of Drug Sensitivity in Cancer (GDSC)',
     acr_ref: '',
-    des: 'The Genomics of Drug Sensitivity in Cancer \u200B(GDSC) \u200BProject is part of a Wellcome Trust funded collaboration between The Cancer Genome Project at the Wellcome Trust Sanger Institute (UK) and the Center for Molecular Therapeutics,\u200B Massachusetts General Hospital Cancer Center (USA). As part of this collaboration,\u200B the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators,\u200B and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive \u200B(epi)genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.\nAs part of this collaboration, the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators, and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.',
+    des: 'The Genomics of Drug Sensitivity in Cancer \u200B(GDSC) \u200BProject is part of a Wellcome Trust funded collaboration between The Cancer Genome Project at the Wellcome Trust Sanger Institute (UK) and the Center for Molecular Therapeutics,\u200B Massachusetts General Hospital Cancer Center (USA). As part of this collaboration,\u200B the GDSC group is screening > 1000 genetically characterised human cancer cell lines with a wide range of anti-cancer therapeutics. These compounds include cytotoxic chemotherapeutics as well as targeted therapeutics from commercial sources, academic collaborators,\u200B and from the biotech and pharmaceutical industries. The sensitivity patterns of the cell lines are correlated with extensive \u200B(epi)genomic and expression data to identify genetic features that are predictive of sensitivity. This large collection of cell lines aims at capturing much of the genomic heterogeneity that underlies human cancer, and which appears to play a critical role in determining the variable response of patients to treatment with specific agents.\n\n The GDSC2 data specifically refers to newer cell screening platform used by GDSC for performing drug screening, used starting  2015.',
     resource: [
       { id: '0', name: 'GDSC website', urlextern: 'http://www.cancerrxgene.org/' },
       {
@@ -170,7 +176,7 @@ const datasets = {
     ],
     dtype: [
       {
-        type: 'Pharmacological', platform: 'Syto60', raw: 'Yes', processed: ['AUC', 'IC50'],
+        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AUC', 'IC50'],
       },
       {
         type: 'mRNA Expression', platform: 'Affymetrix HG-U133A', raw: 'Yes', processed: ['RMA'],
@@ -180,6 +186,9 @@ const datasets = {
       },
       {
         type: 'DNA Mutation', platform: 'Sanger', raw: 'No', processed: ['CSV'],
+      },
+      {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
       },
       {
         type: 'DNA Methylation', platform: 'Illumina array 450K', raw: 'Yes', processed: ['GenomeStudio'],
@@ -251,6 +260,68 @@ const datasets = {
   },
   7: {
     id: 7,
+    name: 'NCI60',
+    acr: "National Cancer Institute 60",
+    acr_ref: '',
+    des: 'The US National Cancer Institute 60 human tumor cell line anticancer drug screen was initiated in the late 1980 and continued to become one of the most well-established sources of drug sensitivity information. NCI60 dataset consists of molecular profiles of the 60 core human cell lines as well as the dose-response outcomes from screening more than 55000 compounds.',
+    resource: [
+      { id: '0', name: 'NCI60 dose-response data', urlextern: 'https://wiki.nci.nih.gov/display/NCIDTPdata/NCI-60+Growth+Inhibition+Data' },
+      { id: '1', name: 'CellMiner', urlextern: 'https://discover.nci.nih.gov/cellminer/' },
+    ],
+    pub: [
+      {
+        id: '0',
+        title: 'Shoemaker,R.H. (2006) The NCI60 human tumour cell line anticancer drug screen. Nat. Rev. Cancer, 6, 813–823.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/16990858/',
+      },
+    ],
+    dtype: [
+      {
+        type: 'Pharmacological', platform: 'Sulforhodamine B colorimetric', raw: 'Yes', processed: ['AAC', 'IC50'],
+      },
+      {
+        type: 'mRNA Expression', platform: 'Affymetrix HG-U133PLUS2', raw: 'No', processed: ['RMA (see CellMiner)'],
+      },
+      {
+        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'No', processed: ['Isoforms (see CellMiner)'],
+      },
+      {
+        type: 'mRNA Expression', platform: 'Illumina RNA-seq', raw: 'No', processed: ['Composite expression (see CellMiner)'],
+      },
+      {
+        type: 'MicroRNA expression', platform: 'Agilent Human microRNA(v2)', raw: 'No', processed: ['GeneSpringGX (see CellMiner)'],
+      },
+    ],
+  },
+  8: {
+    id: 8,
+    name: 'PRISM',
+    acr: "Profiling Relative Inhibition Simultaneously in Mixtures",
+    acr_ref: '',
+    des: 'The PRISM dataset consists of dose-response data from assessing the anti-cancer effects of non-oncology drugs on human cancer cell-lines using the PRISM barcoding method developed by Broad Institute of MIT and Harvard.',
+    resource: [
+      { id: '0', name: 'PRISM drug repurposing resource', urlextern: 'https://depmap.org/repurposing/' },
+    ],
+    pub: [
+      {
+        id: '0',
+        title: 'Corsello,S.M., Nagari,R.T., Spangler,R.D., Rossen,J., Kocak,M., Bryan,J.G., Humeidi,R., Peck,D., Wu,X., Tang,A.A., et al. (2020) Discovering the anti-cancer potential of non-oncology drugs by systematic viability profiling. Nat Cancer, 1, 235–248.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/32613204/',
+      },
+      {
+        id: '1',
+        title: 'Yu,C., Mannan,A.M., Yvone,G.M., Ross,K.N., Zhang,Y.-L., Marton,M.A., Taylor,B.R., Crenshaw,A., Gould,J.Z., Tamayo,P., et al. (2016) High-throughput identification of genotype-specific cancer vulnerabilities in mixtures of barcoded tumor cell lines. Nat.',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/26928769/',
+      },
+    ],
+    dtype: [
+      {
+        type: 'Pharmacological', platform: 'PRISM (Luminex)', raw: 'Yes', processed: ['AAC', 'IC50'],
+      },
+    ],
+  },
+  9: {
+    id: 9,
     name: 'UHNBreast',
     acr: 'University Health Network (UHN) Breast Cancer (BC) Screen',
     acr_ref: '',
@@ -282,8 +353,8 @@ const datasets = {
       },
     ],
   },
-  8: {
-    id: 8,
+  10: {
+    id: 10,
     name: 'gCSI',
     acr: 'The Genentech Cell Line Screening Initiative (gCSI)',
     acr_ref: '',

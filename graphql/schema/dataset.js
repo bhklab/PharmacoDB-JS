@@ -4,14 +4,6 @@ const datasetType = `
         id: Int!
         """name of the dataset"""
         name: String!
-        """number of compounds tested in the dataset"""
-        compound_tested_count: Int
-        """number of cell lines used in the dataset"""
-        cell_count: Int
-        """number of experiments in the dataset"""
-        experiment_count: Int 
-        """number of tissues in the dataset"""
-        tissue_tested_count: Int 
     }
 `;
 
@@ -33,11 +25,27 @@ const datasetDetailType = `
         cells_tested: [CellLine!]
         """compound names tested in the dataset"""
         compounds_tested: [Compound!]
+        
     }
 `;
 
+const datasetStatsType = `
+    type DatasetStats {
+        """name and id of the dataset"""
+        dataset: Generic!
+        """number of tested cell lines in the dataset"""
+        cell_line_count: Int!
+        """number of tested experiments in the dataset"""
+        experiment_count: Int!
+        """number of tested compounds in the dataset"""
+        compound_count: Int!
+        """number of tested tissues in the dataset"""
+        tissue_count: Int!
+    }
+`;
 
 module.exports = {
     datasetType,
     datasetDetailType,
+    datasetStatsType,
 };

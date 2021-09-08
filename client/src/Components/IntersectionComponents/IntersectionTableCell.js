@@ -1,49 +1,28 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyledCell } from '../../styles/IntersectionComponentStyles';
+import PageContext from '../../context/PageContext';
 
 const IntersectionTableCell = (props) => {
-    const { statName, value, experiments, setExperiments, cellItem } = props;
+    const { statName, value, cellItem } = props;
     const cellData = cellItem.cell.row.original;
-
-    const displayStat = (id, statName) => {
-        let copy = JSON.parse(JSON.stringify(experiments));
-        let index = copy.findIndex(item => item.id === id);
-        copy[index].visibleStats[statName].visible = true;
-        setExperiments(copy);
-    };
-
-    const hideStat = () => {
-        let copy = JSON.parse(JSON.stringify(experiments));
-        for(const exp of copy){
-            exp.visibleStats.AAC.visible = exp.visibleStats.AAC.clicked ? true : false;
-            exp.visibleStats.IC50.visible = exp.visibleStats.IC50.clicked ? true : false;
-            exp.visibleStats.EC50.visible = exp.visibleStats.EC50.clicked ? true : false;
-            exp.visibleStats.Einf.visible = exp.visibleStats.Einf.clicked ? true : false;
-        }
-        setExperiments(copy);
-    };
-
-    const alterClickedCells = (id, statName) => {
-        let copy = JSON.parse(JSON.stringify(experiments));
-        let index = copy.findIndex(item => item.id === id);
-        copy[index].visibleStats[statName].clicked = !copy[index].visibleStats[statName].clicked;
-            copy[index].clicked = false;
-        setExperiments(copy);
-    };
+    const page = useContext(PageContext);
 
     return(
         <StyledCell 
-            className={ cellData.visibleStats[statName].clicked ? 'clicked' : '' }
+            className={ page.isClicked(cellData.id, statName) ? 'clicked' : '' }
             onMouseEnter={(e) => {
-                displayStat(cellData.id, statName);
+                e.preventDefault();
+                page.showStat(cellData.id, statName, true);
             }}
             onMouseOut={(e) => {
-                hideStat();
+                e.preventDefault();
+                page.hideStat();
             }}
             onClick={(e) => {
-                alterClickedCells(cellData.id, statName);
+                e.preventDefault();
+                page.alterClickedCells(cellData.id, statName);
             }}
-            disabled={!cellData.visible || value === 'N/A'}
+            disabled={page.isDisabled(cellData.id) || value === 'N/A'}
         >
             {value}
         </StyledCell>

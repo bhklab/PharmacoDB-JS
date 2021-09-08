@@ -13,13 +13,17 @@ const table_columns = [
       Cell: (row) => (<Link to={`/genes/${row.row.original.id}`}>{row.value}</Link>),
     },
     {
-      Header: 'Gene Seq Start',
-      accessor: 'gene_seq_start',
+        Header: 'Symbol',
+        accessor: 'symbol',
     },
-    {
-      Header: 'Gene Seq End',
-      accessor: 'gene_seq_end',
-    },
+    // {
+    //   Header: 'Gene Seq Start',
+    //   accessor: 'gene_seq_start',
+    // },
+    // {
+    //   Header: 'Gene Seq End',
+    //   accessor: 'gene_seq_end',
+    // },
 ];
 
 /**
@@ -34,7 +38,9 @@ const table_columns = [
         const { symbol, ensg, gene_seq_end, gene_seq_start } = annotation;
         return {
           id,
-          name: symbol ? symbol : name,
+          // name: symbol ? symbol : name,
+          name: name,
+          symbol: symbol ? symbol : "N/A",
           ensg,
           gene_seq_start,
           gene_seq_end,
@@ -71,7 +77,7 @@ const GenesTable = () => {
                 genes.length > 0 &&
                 <Table columns={table_columns} data={genes} />
             }
-        </React.Fragment> 
+        </React.Fragment>
     )
 }
 

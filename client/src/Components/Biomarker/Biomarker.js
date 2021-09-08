@@ -151,7 +151,7 @@ const Biomarker = (props) => {
         loading: geneCompoundTissueDatasetDataLoading,
         error: geneCompoundTissueDatasetDataError,
         data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 64, compoundId: 642, tissueId: 6 } });
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 8228, compoundId: 36057, tissueId: 8 } });
 
 
     // compound and gene information columns.
@@ -182,11 +182,7 @@ const Biomarker = (props) => {
                     <div className='heading'>
                         <span className='title'>
                             {
-                                `
-                                    ${TitleCase(gene)} + 
-                                    ${TitleCase(compound)} + 
-                                    ${TitleCase(tissue)}
-                                `
+                                Object.values(params).map(el => TitleCase(el)).join(' + ')
                             }
                         </span>
                     </div>

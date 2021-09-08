@@ -18,8 +18,12 @@ import {
     IndivCellLines,
     Datasets,
     IndivDatasets,
+    PharmacoGx,
     Experiments,
-    IntersectionMain
+    IntersectionMain,
+    AboutUs,
+    Documentation,
+    CiteUs,
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
@@ -48,6 +52,7 @@ const App = () => {
                         />
                         <Route path="/cell_lines" exact component={CellLines} />
                         <Route path="/datasets" exact component={Datasets} />
+                        <Route path="/pharmacogx/:id" exact component={PharmacoGx} />
                         <Route
                             path="/compounds/:id"
                             component={IndivCompounds}
@@ -64,6 +69,9 @@ const App = () => {
                             component={IndivDatasets}
                         />
                         <Route path="/search" component={IntersectionMain} />
+                        <Route path="/about" component={AboutUs} />
+                        <Route path="/documentation" component={Documentation} />
+                        <Route path="/cite" component={CiteUs} />
                         <Route path="*" component={NotFoundPage} />
                     </Switch>
                 </Router>
