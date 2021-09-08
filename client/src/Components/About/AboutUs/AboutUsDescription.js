@@ -134,7 +134,7 @@ const AboutUsDescription = () => {
           About the Lab
         </h1>
         <span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <a href="https://www.pmgenomics.ca/bhklab/" target="_blank">BHKLAB</a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <a href="https://www.pmgenomics.ca/bhklab/" target="_blank">BHKLAB </a>
           is composed of a multidisciplinary team of researchers analyzing high-dimensional molecular and imaging data to
           develop new predictive tools foranticancer therapies. We develop databases and analysis pipelines to leverage
           large compendia of pharmacogenomic datasets for biomarker discovery and drug repurposing. The BHKLAB is part of

@@ -88,13 +88,13 @@ const formatDataType = (data) => {
   return null;
 };
 /**
- * Parent component for the individual compound page.
+ * Parent component for the individual datasets page.
  *
  * @component
  * @example
  *
  * return (
- *   <IndivCompounds/>
+ *   <IndivDatasets/>
  * )
  */
 const IndivDatasets = (props) => {
@@ -146,7 +146,7 @@ const IndivDatasets = (props) => {
           dataset.notFound ?
           <NotFoundContent />
           :
-          <StyledIndivPage className="indiv-compounds">
+          <StyledIndivPage className="indiv-datasets">
             <div className='heading'>
                 <span className='title'>{dataset.name}</span>
             </div>
@@ -195,11 +195,11 @@ const IndivDatasets = (props) => {
                     display === 'datatype' &&
                     <Element className="section" name="data_type">
                       <div className='section-title'>Data Types</div>
-                      <Table 
-                        pivotBy={['type']} 
-                        columns={DATATYPE_COLUMNS} 
-                        data={dataset.datatypes} 
-                        disablePagination 
+                      <Table
+                        pivotBy={['type']}
+                        columns={DATATYPE_COLUMNS}
+                        data={dataset.datatypes}
+                        disablePagination
                       />
                     </Element>
                   }
@@ -233,7 +233,7 @@ const IndivDatasets = (props) => {
 
 IndivDatasets.propTypes = {
   /**
-     * IndivCompounds' param id
+     * IndivDatasets' param id
      */
   match: PropTypes.shape({
     params: PropTypes.shape({
