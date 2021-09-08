@@ -277,7 +277,7 @@ const datasets = {
     ],
     dtype: [
       {
-        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
+        type: 'Pharmacological', platform: 'Sulforhodamine B colorimetric', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
       {
         type: 'mRNA Expression', platform: 'Affymetrix HG-U133PLUS2', raw: 'No', processed: ['RMA (see CellMiner)'],
@@ -316,7 +316,7 @@ const datasets = {
     ],
     dtype: [
       {
-        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
+        type: 'Pharmacological', platform: 'PRISM (Luminex)', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
     ],
   },

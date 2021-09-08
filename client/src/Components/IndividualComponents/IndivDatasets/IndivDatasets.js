@@ -175,7 +175,7 @@ const IndivDatasets = (props) => {
                       <Element className="section" name="pharmacogx">
                         <div className='section-title'>PharmacoGx</div>
                         <div className="text">
-                          <a href={`https://pharmacodb.ca/pharmacogx?pgx=${params.id}`} target="_blank">
+                          <a href={`./pharmacogx/${params.id}`} target="_blank">
                             PharmacoSet object for:
                             {' '}
                             {dataset.name}
