@@ -116,7 +116,7 @@ const generateEmptySpace = (distance) => {
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
-const generateRenderData = (data, dataset, profile) => {
+const generateRenderData = (cellLine, data, dataset, profile) => {
   const plotData = [];
   const layout = {
     ...baseLayout,
@@ -140,7 +140,7 @@ const generateRenderData = (data, dataset, profile) => {
   };
   data.forEach((el, i) => {
     const {
-      name, value, deviation, label,
+      name, value, deviation, label, id
     } = el;
     const trace = {
       type: 'bar',
@@ -161,7 +161,7 @@ const generateRenderData = (data, dataset, profile) => {
       };
     }
     layout.xaxis.tickvals.push(`${name} compound`);
-    layout.xaxis.ticktext.push(label);
+    layout.xaxis.ticktext.push(`<a href='${`/search?cell_line=${cellLine}&compound=${name}`}' rel="noopener noreferrer">${label}</a>`);
     plotData.push(trace);
   });
   return { plotData, layout, notifications };
@@ -184,7 +184,7 @@ const runDataAnalysis = (data, dataset, profile) => {
       const value = calculateMedian(profiles);
       const deviation = calculateMedian(calculateAbsoluteDeviation(profiles, value));
       calculatedData.push({
-        value, deviation, name: el.name, label: el.name,
+        value, deviation, name: el.name, label: el.name, id: el.id
       });
     }
   });
@@ -216,7 +216,7 @@ const ProfileCompound = (props) => {
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
-    setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
+    setPlotData(generateRenderData(cellLine, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset]);
   return (
     <div className="plot">

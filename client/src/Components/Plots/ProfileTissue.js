@@ -30,7 +30,7 @@ const baseLayout = {
       size: 9,
     },
     fixedrange: true,
-    tickmode: 'linear',
+    tickmode: 'array',
     anchor: 'free',
     position: 0.020,
   },
@@ -46,12 +46,13 @@ const baseLayout = {
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
-const generateRenderData = (data, dataset, profile) => {
+const generateRenderData = (compound, data, dataset, profile) => {
   const plotData = [];
   const layout = {
     ...baseLayout,
     xaxis: {
       ...baseLayout.xaxis,
+      tickvals: [],
       ticktext: [],
       // draws tick labels vertically if there are more than 5 otherwise labels are horizontal
       tickangle: data.length > 5 ? -90 : 0,
@@ -77,11 +78,13 @@ const generateRenderData = (data, dataset, profile) => {
         color: i % 2 === 0 ? colors.blue : colors.green,
         size: 2,
       },
-      name,
+      name: name,
+      x: name,
       y: value,
     };
+    layout.xaxis.tickvals.push(name);
+    layout.xaxis.ticktext.push(`<a href='${`/search?tissue=${name}&compound=${compound}`}' rel='noopener noreferrer'>${name}</a>`);
     plotData.push(trace);
-    layout.xaxis.ticktext.push(name);
   });
   return { plotData, layout };
 };
@@ -108,7 +111,7 @@ const ProfileTissue = (props) => {
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'tissue');
-    setPlotData(generateRenderData(values, selectedDataset, selectedProfile));
+    setPlotData(generateRenderData(compound, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
   return (
     <div className="plot">

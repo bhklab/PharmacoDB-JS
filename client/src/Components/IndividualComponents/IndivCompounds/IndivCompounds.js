@@ -13,7 +13,7 @@ import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
 import TissuesSummaryTable from './Tables/TissuesSummaryTable'
 import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
 import AnnotatedTargetsTable from './Tables/AnnotatedTargetsTable'
-import {StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
+import {StyledIndivPageTitle, StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
@@ -178,9 +178,9 @@ const IndivCompounds = (props) => {
                 ) : (
                     <StyledIndivPage className="indiv-compounds">
                         <div className='heading'>
-                            <span className='title'>{data.compound.name}</span>
+                            <StyledIndivPageTitle smalltxt={data.compound.name.length > 30}>{data.compound.name}</StyledIndivPageTitle>
                             <span className='attributes'>
-                                FDA Approval Status:
+                                <span>FDA Approval Status:</span>
                                 <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
                                     {data.compound.annotation.fda_status}
                                 </span>
