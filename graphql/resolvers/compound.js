@@ -132,8 +132,7 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
             'dataset.name as dataset_name')
         .from('compound')
         .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
-        .join('dataset_compound', 'dataset_compound.compound_id', 'compound.id')
-        .join('dataset', 'dataset.id', 'dataset_compound.dataset_id');
+        .join('dataset', 'dataset.id', 'compound_synonym.dataset_id');
     // return sub query based on the compoundId or compoundName.
     if (compoundId) {
         return await query.where('compound.id', compoundId);
