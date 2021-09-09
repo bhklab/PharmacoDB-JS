@@ -77,12 +77,14 @@ const TopDrugsTable = (props) => {
         {
             Header: `Permutation P Value`,
             accessor: 'permutation_pvalue',
-            Cell: (item) => item.value? item.value.toExponential(2): 'N/A'
+            Cell: (item) => item.value? item.value.toExponential(2): 'N/A',
+            sortType: 'basic',
         },
         {
             Header: `Significant by Permutation Test`,
             accessor: 'significant_permutation',
-            Cell: (item) => item.value ? item.value: 'N/A'
+            Cell: (item) => item.value ? item.value: 'N/A',
+            sortType: 'basic',
         }
     ];
 
