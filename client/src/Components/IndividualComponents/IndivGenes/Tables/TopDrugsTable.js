@@ -63,12 +63,16 @@ const TopDrugsTable = (props) => {
         {
             Header: `Correlation`,
             accessor: 'correlation',
-            Cell: (item) => item.value.toFixed(2)
+            Cell: (item) => item.value.toFixed(2),
+            sortType: 'basic',
+            sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
         },
         {
             Header: `Analytic P Value`,
             accessor: 'pvalue_analytic',
-            Cell: (item) => item.value.toExponential(2)
+            Cell: (item) => item.value.toExponential(2),
+            sortType: 'basic',
+            sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
         },
         {
             Header: `Permutation P Value`,
