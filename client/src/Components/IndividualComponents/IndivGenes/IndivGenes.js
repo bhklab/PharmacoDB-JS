@@ -111,12 +111,12 @@ const IndivGenes = (props) => {
         console.log(data);
         if (data.gene.name !== 'empty') {
             setGene({
-              ...gene, 
+              ...gene,
               data: {
                 ...data.gene,
-                synonyms: formatSynonymData(data.gene), 
+                synonyms: formatSynonymData(data.gene),
                 links: formatLinkData(data.gene)
-              }, 
+              },
               loaded: true
             });
         }else{
@@ -129,8 +129,8 @@ const IndivGenes = (props) => {
   });
 
   /**
-   * 
-   * @param {String} link 
+   *
+   * @param {String} link
    */
   const createSideLink = (link, i) => (
     <li key={i} className={display === link.name ? 'selected' : undefined}>
@@ -140,7 +140,7 @@ const IndivGenes = (props) => {
     </li>
   );
 
-  return (
+  return (gene.loaded ? (
     <Layout page={gene.loaded ? gene.data.annotation.symbol : ''}>
       <StyledWrapper>
         {
@@ -206,6 +206,7 @@ const IndivGenes = (props) => {
         }
       </StyledWrapper>
     </Layout>
+    ) : <Loading/>
   );
 };
 

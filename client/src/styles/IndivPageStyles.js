@@ -21,6 +21,8 @@ const StyledIndivPage = styled.div`
       line-height: 40px;
     }
     .attributes {
+      min-width: 200px;
+      margin-left: 10px;
       .value {
         margin-left: 5px;
       }
@@ -110,6 +112,25 @@ const StyledIndivPage = styled.div`
   }
 `;
 
+/**
+ * Used to reduce text size for a long individual page title.
+ * Used in IndivCompounds.js to accommodate long compound names.
+ */
+const StyledIndivPageTitle = styled.span`
+  color: ${colors.dark_pink_highlight};
+  font-size: ${props => props.smalltxt ? `clamp(14px, calc(1vw + 10px), 20px)` : 'clamp(32px, calc(2vw + 10px), 44px)'};
+  font-weight: bold;
+  margin-left: 20%;
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  white-space: normal;
+  line-height: 40px;
+  @media only screen and (max-width: 765px) {
+    margin-left: 0px;
+  }
+`;
+
 const StyledSidebar = styled.div`
   width: calc(5vw + 4em);
   margin-top: 5vh;
@@ -195,6 +216,7 @@ const StyledSidebarList = styled.ul`
 
 export {
   StyledIndivPage,
+  StyledIndivPageTitle,
   StyledSidebar,
   StyledSidebarList
 };

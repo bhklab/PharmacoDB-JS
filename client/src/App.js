@@ -18,6 +18,7 @@ import {
     IndivCellLines,
     Datasets,
     IndivDatasets,
+    PharmacoGx,
     Experiments,
     IntersectionMain,
     AboutUs,
@@ -51,6 +52,7 @@ const App = () => {
                         />
                         <Route path="/cell_lines" exact component={CellLines} />
                         <Route path="/datasets" exact component={Datasets} />
+                        <Route path="/pharmacogx/:id" exact component={PharmacoGx} />
                         <Route
                             path="/compounds/:id"
                             component={IndivCompounds}
