@@ -23,8 +23,10 @@ const parseTableData = (data, gene) => {
             tissue_id: item.tissue.id,
             tissue: item.tissue.name,
             stat: item.sens_stat,
-            standardized_coef: item.estimate,
-            pvalue: item.pvalue_analytic
+            correlation: item.estimate,
+            pvalue_analytic: item.pvalue_analytic,
+            permutation_pvalue: item.pvalue_permutation,
+            significant_permutation: item.significant_permutation,
         }));
         tableData.sort((a, b) => a.pvalue - b.pvalue);
     }
@@ -59,14 +61,24 @@ const TopDrugsTable = (props) => {
             accessor: 'stat',
         },
         {
-            Header: `Standardized Coefficient`,
-            accessor: 'standardized_coef',
+            Header: `Correlation`,
+            accessor: 'correlation',
             Cell: (item) => item.value.toFixed(2)
         },
         {
-            Header: `Nominal ANOVA p-value`,
-            accessor: 'pvalue',
+            Header: `Analytic P Value`,
+            accessor: 'pvalue_analytic',
             Cell: (item) => item.value.toExponential(2)
+        },
+        {
+            Header: `Permutation P Value`,
+            accessor: 'permutation_pvalue',
+            Cell: (item) => item.value? item.value.toExponential(2): 'N/A'
+        },
+        {
+            Header: `Significant by Permutation Test`,
+            accessor: 'significant_permutation',
+            Cell: (item) => item.value ? item.value: 'N/A'
         }
     ];
 
@@ -99,11 +111,11 @@ const TopDrugsTable = (props) => {
                         </p>
                     </h4>
                     <div className='download-button'>
-                        <DownloadButton 
-                            label='CSV' 
-                            data={tableData} 
-                            mode='csv' 
-                            filename={`${gene.annotation.symbol} - top compounds`} 
+                        <DownloadButton
+                            label='CSV'
+                            data={tableData}
+                            mode='csv'
+                            filename={`${gene.annotation.symbol} - top compounds`}
                         />
                     </div>
                     <Table columns={columns} data={tableData} />
