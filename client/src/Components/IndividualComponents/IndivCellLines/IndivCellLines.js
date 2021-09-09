@@ -8,6 +8,7 @@ import Layout from '../../UtilComponents/Layout';
 import { getCellLineQuery } from '../../../queries/cell';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
+import Loading from '../../UtilComponents/Loading';
 import PlotSection from './PlotSection';
 import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
 import MolecularProfilingTable from './Tables/MolecularProfilingTable';
@@ -188,7 +189,7 @@ const IndivCellLines = (props) => {
                           <Element className="section" name="synonyms">
                             <div className='section-title'>Synonyms</div>
                             {
-                              synonymData ? 
+                              synonymData ?
                               <Table columns={SYNONYM_COLUMNS} data={synonymData} />
                               :
                               <div className="text">N/A</div>
@@ -241,7 +242,7 @@ const IndivCellLines = (props) => {
             ))}
       </StyledWrapper>
     </Layout>
-  ) : null);
+  ) : <Loading/>);
 };
 
 IndivCellLines.propTypes = {
