@@ -78,6 +78,7 @@ const PlotSection = (props) =>{
                                         data={compoundsData}
                                         xaxis="# of compounds"
                                         title={`Number of compounds tested with ${name} (per dataset)`}
+                                        logScale={true}
                                     />
                                 </PlotsWrapper>
                             :

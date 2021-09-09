@@ -97,12 +97,14 @@ const PlotSection = (props) => {
                   data={plots.compounds}
                   xaxis="# of compounds"
                   title={`Number of compounds tested across datasets`}
+                  logScale={true}
                 />
                 <DatasetHorizontalPlot
                   plotId={`${dataset.name}ExperimentsPlot`}
                   data={plots.experiments}
                   xaxis="# of experiments"
                   title={`Number of experiments held across datasets`}
+                  logScale={true}
                 />
               </PlotsWrapper>
             </React.Fragment>
