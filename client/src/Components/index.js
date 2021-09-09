@@ -9,6 +9,7 @@ import IndivCellLines from './IndividualComponents/IndivCellLines/IndivCellLines
 import IndivTissues from './IndividualComponents/IndivTissues/IndivTissues';
 import IndivGenes from './IndividualComponents/IndivGenes/IndivGenes';
 import IndivDatasets from './IndividualComponents/IndivDatasets/IndivDatasets';
+import PharmacoGx from './IndividualComponents/IndivDatasets/PharmacoGx/PharmacoGx';
 import Datasets from './SummaryComponents/Datasets/Datasets';
 import IntersectionMain from './IntersectionComponents/IntersectionMain';
 import Home from './Home/Home';
@@ -30,6 +31,7 @@ export {
     IndivCellLines,
     IndivDatasets,
     Datasets,
+    PharmacoGx,
     Experiments,
     Biomarker,
     IntersectionMain,

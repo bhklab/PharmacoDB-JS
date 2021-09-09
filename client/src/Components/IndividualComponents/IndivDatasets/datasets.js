@@ -38,6 +38,9 @@ const datasets = {
       {
         type: 'DNA Mutation', platform: 'Hybrid Capture', raw: 'Yes', processed: ['MAF'],
       },
+      {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
+      },
     ],
   },
   2: {
@@ -138,6 +141,9 @@ const datasets = {
         type: 'DNA Mutation', platform: 'Sanger', raw: 'No', processed: ['CSV'],
       },
       {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
+      },
+      {
         type: 'DNA Methylation', platform: 'Illumina array 450K', raw: 'Yes', processed: ['GenomeStudio'],
       },
     ],
@@ -180,6 +186,9 @@ const datasets = {
       },
       {
         type: 'DNA Mutation', platform: 'Sanger', raw: 'No', processed: ['CSV'],
+      },
+      {
+        type: 'DNA Mutation', platform: 'Illumina WES/WGS', raw: 'Yes', processed: ['MAF'],
       },
       {
         type: 'DNA Methylation', platform: 'Illumina array 450K', raw: 'Yes', processed: ['GenomeStudio'],
@@ -268,7 +277,7 @@ const datasets = {
     ],
     dtype: [
       {
-        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
+        type: 'Pharmacological', platform: 'Sulforhodamine B colorimetric', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
       {
         type: 'mRNA Expression', platform: 'Affymetrix HG-U133PLUS2', raw: 'No', processed: ['RMA (see CellMiner)'],
@@ -307,7 +316,7 @@ const datasets = {
     ],
     dtype: [
       {
-        type: 'Pharmacological', platform: 'CellTiter Glo', raw: 'Yes', processed: ['AAC', 'IC50'],
+        type: 'Pharmacological', platform: 'PRISM (Luminex)', raw: 'Yes', processed: ['AAC', 'IC50'],
       },
     ],
   },

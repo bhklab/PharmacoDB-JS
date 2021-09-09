@@ -56,6 +56,8 @@ const getGeneCompoundTissueDatasetQuery = gql`
             lower_permutation
             estimate
             pvalue_analytic
+            pvalue_permutation
+            significant_permutation,
             sens_stat
             mDataType
             n
