@@ -8,6 +8,7 @@ import Layout from '../../UtilComponents/Layout';
 import { getTissueQuery } from '../../../queries/tissue';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
+import Loading from '../../UtilComponents/Loading';
 import PlotSection from './PlotSection';
 import CellLineSummaryTable from './Tables/CellLineSummaryTable';
 import DrugSummaryTable from './Tables/DrugSummaryTable';
@@ -168,7 +169,7 @@ const IndivTissues = (props) => {
                         ))}
             </StyledWrapper>
         </Layout>
-    ) : null);
+    ) : <Loading/>);
 };
 
 IndivTissues.propTypes = {
