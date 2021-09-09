@@ -93,7 +93,7 @@ const statsObject = {
     link: '/experiments',
   },
   gene: {
-    name: 'genes', value: '61273', image: genesImg, link: '/genes',
+    name: 'genes', value: '61,273', image: genesImg, link: '/genes',
   },
   compound: {
     name: 'compounds', value: '0', image: compoundsImg, link: '/compounds',
@@ -124,7 +124,7 @@ const updateStatsObject = (data) => {
 
   Object.keys(stats).forEach((el) => {
     if (el !== 'gene') { //TODO: Update this when we can calculate the total number of genes.
-      stats[el].value = data[el]['count'];
+      stats[el].value = data[el]['count'].toLocaleString();
     }
   })
 
