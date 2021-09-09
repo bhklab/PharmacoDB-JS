@@ -131,7 +131,6 @@ const generateRenderData = (cellLine, data, dataset, profile) => {
         text: profile,
       },
       type: profile === 'AAC' ? '' : 'log',
-      tickformat: profile === 'AAC' ? '' : '.1r',
     },
   };
   const notifications = {

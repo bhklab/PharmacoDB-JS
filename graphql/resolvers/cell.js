@@ -164,7 +164,7 @@ const cell_line = async args => {
         // throw error if neither of the arguments are passed.
         if (!cellId && !cellName) {
             throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
-        }        
+        }
         // variable to store cell line data.
         let cell_line;
         // the base query
@@ -181,8 +181,7 @@ const cell_line = async args => {
             .from('cell')
             .join('tissue', 'tissue.id', 'cell.tissue_id')
             .join('cell_synonym', 'cell.id', 'cell_synonym.cell_id')
-            .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
-            .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
+            .join('dataset', 'dataset.id', 'cell_synonym.dataset_id')
             .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         // based on the arguments passed to the function.
         if (cellId) {
@@ -215,7 +214,7 @@ const cell_line = async args => {
         }
 
         // return the transformed data.
-        return transformSingleCellLine(cell_line);  
+        return transformSingleCellLine(cell_line);
     } catch (err) {
         console.log(err);
         return err;

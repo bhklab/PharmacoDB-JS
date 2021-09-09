@@ -7,6 +7,7 @@ const StyledDescription = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: justify;
 
     width: 70%;
     margin-top: 8vh;
@@ -66,14 +67,14 @@ const AboutUsDescription = () => {
           About PharmacoDB
         </h1>
         <span>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;High throughput drug screening technologies have enabled the profiling of hundreds of cancer cell lines to a
+          <p>High throughput drug screening technologies have enabled the profiling of hundreds of cancer cell lines to a
           large variety of small molecules to discover novel and repurposed treatments. Several large studies have been
           publicly released testing candidate molecules, often with corresponding molecular profiles of the cell lines
           used for drug screening. These studies have become invaluable resources for the research community, allowing
           researchers to leverage the collected data to support their own research. However, such pharmacogenomic datasets
           are disparate and lack of standardization for cell line and drug identifiers, and used heterogeneous data format
           for the drug sensitivity measurements.</p>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To address these issues, we developed PharmacoDB, a web-application assembling the largest in vitro drug screens
+          <p>To address these issues, we developed PharmacoDB, a web-application assembling the largest in vitro drug screens
           in a single database, and allowing users to easily query the union of studies released to date. PharmacoDB
           allows scientists to search across publicly available datasets to find instances where a drug or cell line of
           interest has been profiled, and to view and compare the dose-response data for a specific cell line - drug pair
@@ -134,7 +135,7 @@ const AboutUsDescription = () => {
           About the Lab
         </h1>
         <span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The <a href="https://www.pmgenomics.ca/bhklab/" target="_blank">BHKLAB </a>
+          The <a href="https://www.pmgenomics.ca/bhklab/" target="_blank">BHKLAB </a>
           is composed of a multidisciplinary team of researchers analyzing high-dimensional molecular and imaging data to
           develop new predictive tools foranticancer therapies. We develop databases and analysis pipelines to leverage
           large compendia of pharmacogenomic datasets for biomarker discovery and drug repurposing. The BHKLAB is part of

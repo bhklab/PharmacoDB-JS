@@ -8,6 +8,7 @@ const StyledDescription = styled.div`
     justify-content: space-between;
     align-items: center;
     max-height: 370px;
+    text-align: justify;
 
     width: 70%;
     margin-top: 8vh;

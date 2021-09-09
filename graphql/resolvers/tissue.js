@@ -83,8 +83,7 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
                 'dataset.name as dataset_name')
             .from('tissue')
             .leftJoin('tissue_synonym', 'tissue.id', 'tissue_synonym.tissue_id')
-            .leftJoin('dataset_tissue', 'dataset_tissue.tissue_id', 'tissue.id')
-            .leftJoin('dataset', 'dataset.id', 'dataset_tissue.dataset_id');
+            .leftJoin('dataset', 'dataset.id', 'tissue_synonym.dataset_id');
     } else {
         query = knex.select().from('tissue');
     }
