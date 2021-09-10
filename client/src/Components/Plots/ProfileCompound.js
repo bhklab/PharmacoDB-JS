@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
@@ -131,7 +132,6 @@ const generateRenderData = (cellLine, data, dataset, profile) => {
         text: profile,
       },
       type: profile === 'AAC' ? '' : 'log',
-      tickformat: profile === 'AAC' ? '' : '.1r',
     },
   };
   const notifications = {
@@ -210,6 +210,9 @@ const ProfileCompound = (props) => {
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  
+  const history = useHistory();
+  
   // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatCellData(data), [data]);
   const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
@@ -218,6 +221,16 @@ const ProfileCompound = (props) => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
     setPlotData(generateRenderData(cellLine, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset]);
+
+
+  /**
+   * Redirects to Cell Line vs Compound page when a plot trace is clicked.
+   * @param {*} e onclick event
+   */
+  const redirectToCellLineCompound = (e) => {
+    history.push(`/search?cell_line=${cellLine}&compound=${e.points[0].fullData.name}`);
+  }
+
   return (
     <div className="plot">
       <StyledSelectorContainer>
@@ -248,7 +261,13 @@ const ProfileCompound = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot divId={plotId} data={plotData} layout={layout} config={config} />
+      <Plot 
+        divId={plotId} 
+        data={plotData} 
+        layout={layout} 
+        config={config} 
+        onClick={redirectToCellLineCompound}
+      />
       <div className="notifications">
         {notifications.subset ? (
           <p>

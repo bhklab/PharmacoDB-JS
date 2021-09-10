@@ -9,10 +9,11 @@ import { getCompoundQuery } from '../../../queries/compound';
 import { NotFoundContent } from '../../UtilComponents/NotFoundPage';
 import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
-import CellLinesSummaryTable from './Tables/CellLinesSummaryTable'
-import TissuesSummaryTable from './Tables/TissuesSummaryTable'
-import MolecularFeaturesTable from './Tables/MolecularFeaturesTable'
-import AnnotatedTargetsTable from './Tables/AnnotatedTargetsTable'
+import CellLinesSummaryTable from './Tables/CellLinesSummaryTable';
+import TissuesSummaryTable from './Tables/TissuesSummaryTable';
+import MolecularFeaturesTable from './Tables/MolecularFeaturesTable';
+import AnnotatedTargetsTable from './Tables/AnnotatedTargetsTable';
+import Loading from '../../UtilComponents/Loading';
 import {StyledIndivPageTitle, StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
@@ -264,7 +265,7 @@ const IndivCompounds = (props) => {
                 )}
             </StyledWrapper>
         </Layout>
-    ) : null;
+    ) : <Loading/>;
 };
 
 IndivCompounds.propTypes = {

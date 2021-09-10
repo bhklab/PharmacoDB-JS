@@ -3,6 +3,22 @@ const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const { transformObject } = require('../../helpers/transformObject');
 const { retrieveFields } = require('../../helpers/queryHelpers');
 
+
+/**
+ * 
+ * @param {string} gene - gene name
+ * @returns {number} - gene id
+ */
+const getIdBasedOnGene = async (gene) => {
+    const geneId = await knex.select('gene.id')
+        .from('gene')
+        .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
+        .where('symbol', gene);
+
+    // returns the gene id
+    return geneId[0].id;
+};
+
 /**
  * @param {Array} data
  * @returns {Array} - Returns a transformed array of objects.
@@ -105,5 +121,6 @@ const gene = async (args) => {
 
 module.exports = {
     genes,
-    gene
+    gene,
+    getIdBasedOnGene,
 };

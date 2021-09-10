@@ -151,7 +151,7 @@ const Biomarker = (props) => {
         loading: geneCompoundTissueDatasetDataLoading,
         error: geneCompoundTissueDatasetDataError,
         data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneId: 8228, compoundId: 36057, tissueId: 8 } });
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
 
 
     // compound and gene information columns.

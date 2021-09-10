@@ -23,8 +23,8 @@ const parseTableData = (data, compound) => {
             tissue_id: item.tissue.id,
             tissue: item.tissue.name,
             stat: item.sens_stat,
-            standardized_coef: item.estimate,
-            pvalue: item.pvalue_analytic,
+            correlation: item.estimate,
+            pvalue_analytic: item.pvalue_analytic,
             permutation_pvalue: item.pvalue_permutation,
             significant_permutation: item.significant_permutation,
         }));
@@ -59,23 +59,29 @@ const COLUMNS = [
     },
     {
         Header: `Correlation`,
-        accessor: 'standardized_coef',
-        Cell: (item) => item.value.toFixed(2)
+        accessor: 'correlation',
+        Cell: (item) => item.value.toFixed(2),
+        sortType: 'basic',
+        sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
     },
     {
-        Header: `Analytic p value`,
-        accessor: 'pvalue',
-        Cell: (item) => item.value.toExponential(2)
+        Header: `Analytic P Value`,
+        accessor: 'pvalue_analytic',
+        Cell: (item) => item.value.toExponential(2),
+        sortType: 'basic',
+        sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
     },
     {
-        Header: `Permutation p value`,
+        Header: `Permutation P Value`,
         accessor: 'permutation_pvalue',
-        Cell: (item) => item.value? item.value: 'N/A'
+        Cell: (item) => item.value ? item.value.toExponential(2) : 'N/A',
+        sortType: 'basic',
     },
     {
         Header: `Significant by Permutation Test`,
         accessor: 'significant_permutation',
-        Cell: (item) => item.value ? item.value: 'N/A'
+        Cell: (item) => item.value ? item.value: 'N/A',
+        sortType: 'basic',
     },
 ];
 

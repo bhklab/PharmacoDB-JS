@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
@@ -106,6 +107,9 @@ const ProfileTissue = (props) => {
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout }, setPlotData] = useState({ plotData: [], layout: {} });
+
+  const history = useHistory();
+
   // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'tissue'), [data]);
   // updates the plot every time user selects new profile or dataset
@@ -113,6 +117,16 @@ const ProfileTissue = (props) => {
     const values = runPlotDataAnalysis(formattedData, selectedDataset, selectedProfile, 'tissue');
     setPlotData(generateRenderData(compound, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
+
+
+  /**
+   * Redirects to Tissue vs Compound page when a plot trace is clicked.
+   * @param {*} e onclick event
+   */
+  const redirectToTissueCompound = (e) => {
+    history.push(`/search?tissue=${e.points[0].fullData.name}&compound=${compound}`);
+  }
+
   return (
     <div className="plot">
       <StyledSelectorContainer>
@@ -143,7 +157,13 @@ const ProfileTissue = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot divId={plotId} data={plotData} layout={layout} config={config} />
+      <Plot 
+        divId={plotId} 
+        data={plotData} 
+        layout={layout} 
+        config={config} 
+        onClick={redirectToTissueCompound}
+      />
       <div className='download-buttons'>
         <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
         <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
