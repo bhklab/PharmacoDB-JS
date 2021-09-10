@@ -3,6 +3,21 @@ const { transformObject } = require('../../helpers/transformObject');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
+
+/**
+ * 
+ * @param {string} tissue - tissue name
+ * @returns {number} - tissue id
+ */
+const getIdBasedOnTissue = async (tissue) => {
+    const tissueId = await knex.select('tissue.id')
+        .from('tissue')
+        .where('name', tissue);
+
+    // returns the tissue id.
+    return tissueId[0].id;
+};
+
 /**
  * Number of cell lines of a particular tissue per dataset
  * @param {Number} tissueId - the tissue id.
@@ -287,5 +302,6 @@ const tissue = async (args, parent, info) => {
 
 module.exports = {
     tissues,
-    tissue
+    tissue,
+    getIdBasedOnTissue,
 };

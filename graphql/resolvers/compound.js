@@ -5,6 +5,20 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
+ * 
+ * @param {string} compound - compound name
+ * @returns {number} - compound id
+ */
+const getIdBasedOnCompound = async (compound) => {
+    const compoundId = await knex.select('compound.id')
+        .from('compound')
+        .where('name', compound);
+
+    // returns the compound id.
+    return compoundId[0].id;
+};
+
+/**
  *
  *  @param {Array} - takes an array of object like below
  *      [{
@@ -15,10 +29,10 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  *      }, ...]
  *  @returns {Object} - returns the object with name of the synonym belonging to the sources.
  *      {
- *        "name": "paclitaxel",
- *          "source": [
- *            "gCSI",
- *            "CTRPv2"
+ *        'name': 'paclitaxel',
+ *          'source': [
+ *            'gCSI',
+ *            'CTRPv2'
  *          ]
  *       }
  */
@@ -40,7 +54,7 @@ const transformSynonyms = data => {
                 returnList[source_compound_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
         }
     });
-    return Object.values(returnList);ß
+    return Object.values(returnList);
 };
 
 /**
@@ -61,24 +75,24 @@ const transformCompounds = data => {
             dataset_id,
             dataset_name,
         } = compound;
-        const returnList = { "smiles": [], "inchikey": [] };
+        const returnList = { 'smiles': [], 'inchikey': [] };
         if (smiles !== null) {
-            smiles.split(", ").forEach((item) => {
-                if (!returnList["smiles"].includes(item)) returnList["smiles"].push(item)
-            })
+            smiles.split(', ').forEach((item) => {
+                if (!returnList['smiles'].includes(item)) returnList['smiles'].push(item);
+            });
         }
         if (inchikey !== null) {
-            inchikey.split(", ").forEach((item) => {
-                if (!returnList["inchikey"].includes(item)) returnList["inchikey"].push(item)
-            })
+            inchikey.split(', ').forEach((item) => {
+                if (!returnList['inchikey'].includes(item)) returnList['inchikey'].push(item);
+            });
         }
         return {
             id,
             name,
             uid: compound_uid,
             annotation: {
-                smiles: returnList["smiles"].join(", "),
-                inchikey: returnList["inchikey"].join(", "),
+                smiles: returnList['smiles'].join(', '),
+                inchikey: returnList['inchikey'].join(', '),
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status)
             },
@@ -242,5 +256,6 @@ const compound = async (args, parent, info) => {
 
 module.exports = {
     compounds,
-    compound
+    compound,
+    getIdBasedOnCompound,
 };
