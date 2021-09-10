@@ -39,7 +39,7 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} data - an array of data for the table.
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
  */
-const Table = ({ columns, data, disablePagination = false }) => {
+const Table = ({ columns, data, disablePagination = false, defaultSort }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -60,7 +60,7 @@ const Table = ({ columns, data, disablePagination = false }) => {
   } = useTable({
     columns,
     data,
-    initialState: { pageIndex: 0 },
+    initialState: { pageIndex: 0, sortBy: defaultSort ? defaultSort : [] },
   },
     useGlobalFilter,
     useSortBy,
@@ -230,6 +230,7 @@ Table.propTypes = {
   columns: PropTypes.arrayOf(Object).isRequired,
   data: PropTypes.arrayOf(Object).isRequired,
   disablePagination: PropTypes.bool,
+  defaultSort: PropTypes.arrayOf(Object)
 };
 
 Table.defaultProps = {
