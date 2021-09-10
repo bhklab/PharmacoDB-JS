@@ -76,6 +76,16 @@ const getGeneCompoundTissueDatasetQuery = gql`
 const getManhattanPlotDataQuery = gql`
     query getManhattanPlotDataQuery($compoundId: Int, $tissueId: Int, $compoundName: String, $tissueName: String) {
         gene_compound_tissue_dataset(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: "rna", all: true) {
+            gene {
+                id
+                name
+                annotation {
+                    symbol
+                    chr
+                    gene_seq_start
+                    gene_seq_end
+                }
+            }
             dataset {
                 id
                 name

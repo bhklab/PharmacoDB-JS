@@ -20,7 +20,7 @@ const transformGeneCompounds = (data) => {
             pvalue_permutation, fdr_analytic, fdr_permutation,
             significant_permutation, permutation_done,
             smiles, inchikey, pubchem, fda_status, tissue_id,
-            tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end,
+            tissue_name, gene_id, gene_name, symbol, chr, gene_seq_start, gene_seq_end,
             dataset_id, dataset_name
         } = compound_compound;
         return {
@@ -45,6 +45,8 @@ const transformGeneCompounds = (data) => {
                 name: gene_name,
                 annotation: {
                     gene_id,
+                    symbol,
+                    chr,
                     gene_seq_start,
                     gene_seq_end
                 }
@@ -101,7 +103,7 @@ const gene_compound_dataset = async (args, context, info) => {
         listOfFields.forEach(el => {
             switch (el.name) {
                 case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end']);
+                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol', 'gene_seq_start', 'gene_seq_end']);
                     subtypes.push(el.name);
                     break;
                 case 'compound':
@@ -171,7 +173,7 @@ const gene_compound_dataset = async (args, context, info) => {
  */
 const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
-    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
+    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
 
     geneId = geneId || geneName ? await getIdBasedOnGene(geneName) : null;
     compoundId = compoundId || await getIdBasedOnCompound(compoundName);
@@ -193,7 +195,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
         listOfFields.forEach(el => {
             switch (el.name) {
                 case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end']);
+                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end', 'gene_annotation.symbol as symbol', 'gene_annotation.chr as chr']);
                     subtypes.push(el.name);
                     break;
                 case 'compound':

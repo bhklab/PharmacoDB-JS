@@ -1,42 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 
-var trace1 = {
-    x: [1, 2, 3, 4, 5],
-    y: [1, 6, 3, 6, 1],
-    mode: 'markers',
-    type: 'scatter',
-    name: 'Team A',
-    text: ['A-1', 'A-2', 'A-3', 'A-4', 'A-5'],
-    marker: { size: 12 }
-};
-
-var trace2 = {
-    x: [1.5, 2.5, 3.5, 4.5, 5.5],
-    y: [4, 1, 7, 1, 4],
-    mode: 'markers',
-    type: 'scatter',
-    name: 'Team B',
-    text: ['B-a', 'B-b', 'B-c', 'B-d', 'B-e'],
-    marker: { size: 12 }
-};
-
-var data = [trace1, trace2];
-
-var layout = {
-    xaxis: {
-        range: [0.75, 5.25]
-    },
-    yaxis: {
-        range: [0, 8]
-    },
-    title: 'Data Labels Hover'
-};
-
 const ManhattanPlot = (props) => {
+    const { data, plotId} = props;
+    const layout = {
+        xaxis: {
+            title: {
+                text: 'Chromosome'
+            },
+            zeroline: false,
+            showticklabels: false,
+            range:[0, Math.max(...data.map(item => item.x))]
+        },
+        yaxis: {
+            title: {
+                text: '-log10(P)'
+            },
+            zeroline: false,
+            range:[0, Math.max(...data.map(item => item.y)) + 1]
+        },
+        title: 'Manhattan Plot',
+        hovermode: "closest",
+    };
     
+    const config = {
+        responsive: true,
+        displayModeBar: false,
+        staticPlot: false
+    }
+
+    const [traces, setTraces] = useState([]);
+
+    useEffect(() => {
+        console.log(data);
+        let xVals = data.map(item => item.x);
+        let plotData = data.map(item => ({
+            x: item.x,
+            y: item.y,
+            mode: 'markers',
+            type: 'scatter',
+            name: item.chr,
+            text: [`${item.gene.symbol} - ${item.dataset.name} (${item.chr})`],
+            marker: {
+                color: item.color,
+                size: 4
+            },
+            showlegend: false,
+            hovertemplate: 
+                `Gene: ${item.gene.symbol}<br>` +
+                `Dataset: ${item.dataset.name}<br>` +
+                `${item.fdr}<br>` +
+                `${item.chr} - ${item.gene_seq_start}<br>`
+        }));
+        plotData.push({
+            x: [Math.min(...xVals), Math.max(...xVals)],
+            y: [-Math.log10(0.5), -Math.log10(0.5)],
+            mode: 'lines',
+            line: {
+                color: '#000000',
+                width: 1,
+                dash: 'dot'
+            },
+            showlegend: false,
+            hoverinfo: 'skip',
+        });
+        setTraces(plotData);
+    }, []);
+
     return(
-        <Plot data={data} layout={layout} />
+        <Plot 
+            divId={plotId}
+            data={traces} 
+            layout={layout} 
+            config={config} 
+        />
     );
 };
 
