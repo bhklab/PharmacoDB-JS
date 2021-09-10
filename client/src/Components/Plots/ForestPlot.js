@@ -8,6 +8,12 @@ import forest_colors from '../../styles/forest_colors';
 // data length and multiplier variables.
 const ADDITIONAL = 2;
 
+// variable to calculate chart width relative to the svg width.
+const CHART_WIDTH = 0.65;
+
+// width & height of square/rectangle for legend.
+const RECTANGLE_DIMENSIONS = 20;
+
 // margin for the svg element.
 const margin = {
     top: 40,
@@ -79,14 +85,14 @@ const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 25]);
 const createXScale = (min, max, width) =>
     d3.scaleLinear()
         .domain([min, max])
-        .range([100, (width * 0.65)])
+        .range([100, (width * CHART_WIDTH)])
         .nice();
 
 /**
  * Appends x-axis to the main svg element.
  * @param {Object} svg - svg selection.
  */
-const createXAxis = (svg, scale, height, width) => {
+const createXAxis = (svg, scale, height, width, margin) => {
     svg.append('g')
         .attr('id', 'x-axis')
         .attr('transform', `translate(0, ${height})`)
@@ -97,8 +103,8 @@ const createXAxis = (svg, scale, height, width) => {
         .attr('id', 'x-axis-label')
         .append('text')
         .attr('font-weight', 700)
-        .attr('x', (width * 0.65) / 2)
-        .attr('y', height + 40)
+        .attr('x', (width * CHART_WIDTH) / 2)
+        .attr('y', height + (margin.bottom * 0.75))
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Pearson correlation coefficient')
         .attr('font-size', '12px');
@@ -231,7 +237,7 @@ const appendEstimateText = (svg, data, height, width) => {
         .attr('id', 'estimate-header')
         .append('text')
         .attr('font-weight', 700)
-        .attr('x', (width * 0.65) + 10)
+        .attr('x', (width * CHART_WIDTH) + 10)
         .attr('y', -20)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Estimate')
@@ -246,7 +252,7 @@ const appendEstimateText = (svg, data, height, width) => {
             .append('text')
             .attr('id', `estimate-${element.dataset.name}`)
             .attr('font-weight', 200)
-            .attr('x', (width * 0.65) + 10)
+            .attr('x', (width * CHART_WIDTH) + 10)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
             .text(`(
@@ -272,10 +278,10 @@ const createLegend = (svg, data, mDataTypes, scale, height, width) => {
     mDataTypes.forEach((dataType, i) => {
         legends.append('rect')
             .attr('x', width - 160)
-            .attr('y', ((height * 0.2) + ((i + 1) * 20)))
-            .attr('width', 20)
-            .attr('height', 20)
-            .attr('stroke', 'black')
+            .attr('y', ((height * 0.2) + ((i + 1) * RECTANGLE_DIMENSIONS)))
+            .attr('width', RECTANGLE_DIMENSIONS)
+            .attr('height', RECTANGLE_DIMENSIONS)
+            .attr('stroke', 'none')
             .attr('fill', `${scale(dataType)}`);
     });
 
@@ -288,7 +294,7 @@ const createLegend = (svg, data, mDataTypes, scale, height, width) => {
             .append('text')
             .attr('id', `legend-${dataType}`)
             .attr('x', width - 135)
-            .attr('y', ((height * 0.2) + ((i + 1) * 25)))
+            .attr('y', ((height * 0.2) + (((i + 1) * RECTANGLE_DIMENSIONS) + (0.75 * RECTANGLE_DIMENSIONS))))
             .text(`${dataType}`)
             .attr('font-size', '12px');
     });
@@ -305,9 +311,7 @@ const createForestPlot = (margin, height, width, data) => {
     // get all the data types available in the data.
     const mDataTypes = getAllDataTypes(data);
     // create a color scale with mDataTypes.
-    const colorScale = d3.scaleOrdinal()
-        .domain(mDataTypes)
-        .range(forest_colors);
+    const colorScale = d3.scaleOrdinal().domain(mDataTypes).range(forest_colors);
     // creating the svg canvas.
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
     // min and max.
@@ -317,7 +321,7 @@ const createForestPlot = (margin, height, width, data) => {
     // scale for circles.
     const circleScale = circleScaling();
     // creating x axis.
-    createXAxis(svg, xScale, height, width);
+    createXAxis(svg, xScale, height, width, margin);
     // create vertical line at 0 on x-axis.
     createVerticalLine(svg, xScale, height);
     // create horizontal lines for the plot.
@@ -338,8 +342,10 @@ const createForestPlot = (margin, height, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ height, width, margin, data }) => {
+    // calculate the height based on the data size.
+    const updatedHeight = data.length * 50 - margin.top - margin.bottom;
     useEffect(() => {
-        createForestPlot(margin, height, width, data);
+        createForestPlot(margin, updatedHeight, width, data);
     }, []);
 
     return <div id="forestplot" />;
