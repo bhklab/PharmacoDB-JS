@@ -5,6 +5,20 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
+ * 
+ * @param {string} compound - compound name
+ * @returns {number} - compound id
+ */
+const getIdBasedOnCompound = async (compound) => {
+    const compoundId = await knex.select('compound.id')
+        .from('compound')
+        .where('name', compound);
+
+    // returns the compound id.
+    return compoundId[0].id;
+};
+
+/**
  *
  *  @param {Array} - takes an array of object like below
  *      [{
@@ -242,5 +256,6 @@ const compound = async (args, parent, info) => {
 
 module.exports = {
     compounds,
-    compound
+    compound,
+    getIdBasedOnCompound,
 };
