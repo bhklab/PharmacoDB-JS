@@ -22,11 +22,11 @@ const table_columns = [
 ];
 
 /**
- * 
- * @param {boolean} loading 
+ *
+ * @param {boolean} loading
  * @param {Error} error - takes the error as a param that is returned by the useQuery in case there is one.
- * @param {Array} columns 
- * @param {Array} data 
+ * @param {Array} columns
+ * @param {Array} data
  */
 const renderComponent = (loading, error, columns, data) => {
   if (loading) {
@@ -38,7 +38,7 @@ const renderComponent = (loading, error, columns, data) => {
   return (
     <>
       <DatasetIntersection />
-      <h2>List of Datasets</h2>
+      <h2>Dataset names</h2>
       <Table columns={columns} data={data} />
     </>
   );

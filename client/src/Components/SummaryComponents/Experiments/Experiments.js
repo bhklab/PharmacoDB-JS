@@ -34,18 +34,31 @@ const renderComponent = (loading, error, data) => {
   }
   const experimentsPerCell = [];
   const experimentsPerCompound = [];
+  const experimentsPerCellXAxis = {
+    tickvals: [],
+    ticktext: []
+  }
   if (data.dataset_stats) {
     data.dataset_stats.forEach((el, i) => {
       const { dataset } = el;
       const { id, name } = dataset;
 
       experimentsPerCell.push({
-        id, name, count: el.experiment_count / el.cell_line_count, color: dataset_colors[i],
+        id, name, 
+        // count: Math.log10(el.experiment_count / el.cell_line_count),
+        count: el.experiment_count / el.cell_line_count,  
+        color: dataset_colors[i],
       });
       experimentsPerCompound.push({
-        id, name, count: el.experiment_count / el.compound_count, color: dataset_colors[i],
+        id, name, 
+        // count: Math.log10(el.experiment_count / el.compound_count), 
+        count: el.experiment_count / el.compound_count, 
+        color: dataset_colors[i],
       });
     });
+    experimentsPerCellXAxis.tickvals = [...new Set(experimentsPerCell.map(item => Math.ceil(item.count)).sort((a, b) => a - b))];
+    experimentsPerCellXAxis.ticktext = experimentsPerCellXAxis.tickvals.map(item => Math.pow(10, item));
+    console.log(experimentsPerCellXAxis);
   }
 
   return (
@@ -54,11 +67,13 @@ const renderComponent = (loading, error, data) => {
         data={experimentsPerCell}
         xaxis="Experiments"
         title="Average experiments per cell line in each data set"
+        logScale={true}
       />
       <AverageDatasetBarPlot
         data={experimentsPerCompound}
         xaxis="Experiments"
         title="Average experiments per compound in each dataset"
+        logScale={true}
       />
     </>
   );

@@ -26,10 +26,11 @@ const config = {
     },
  * }
  */
-const generatePlotlyData = (data) => {
+const generatePlotlyData = (data, logScale) => {
   const output = {
     x: [],
     y: [],
+    text: [],
     type: 'bar',
     orientation: 'h',
     marker: {
@@ -56,7 +57,7 @@ const generatePlotlyData = (data) => {
  * )
  */
 const DatasetHorizontalPlot = (props) => {
-  const { plotId, data, xaxis, title } = props;
+  const { plotId, data, xaxis, title, logScale } = props;
 
   // add datasets with 0 experiments to the plot
   const { loading, error, data: allDatasets } = useQuery(getDatasetsQuery);
@@ -70,7 +71,7 @@ const DatasetHorizontalPlot = (props) => {
 
   // sorts data by count values
   data.sort((dataset1, dataset2) => dataset2.count - dataset1.count);
-  const plotlyData = generatePlotlyData(data);
+  const plotlyData = generatePlotlyData(data, logScale);
   const layout = {
     autoresize: true,
     height: 400,
@@ -91,11 +92,18 @@ const DatasetHorizontalPlot = (props) => {
         },
         standoff: 10,
       },
+      type: logScale ? 'log' : 'linear'
     },
     yaxis: {
       color: colors.dark_teal_heading,
     },
   };
+
+  if(logScale){
+    layout.xaxis.tickvals = [0, 10, 100, 1000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000];
+    layout.xaxis.ticktext = [0, 10, 100, 1000, '10k', '50k', '100k', '500k', '1M', '5M', '10M'];
+  };
+
   return (
     <div className="plot">
       <h5>{title}</h5>
@@ -115,6 +123,7 @@ DatasetHorizontalPlot.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   xaxis: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  logScale: PropTypes.bool
 };
 
 export default DatasetHorizontalPlot;
