@@ -1,7 +1,17 @@
 import React, {useState} from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const Biomarker = () => {
+/**
+ * Shows the Biomarker description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocBiomarker/>
+ * )
+ */
+const DocBiomarker = () => {
     return(
         <div className='documentation'>
             <p>
@@ -12,4 +22,4 @@ const Biomarker = () => {
         </div>
     );
 }
-export default Biomarker;
+export default DocBiomarker;

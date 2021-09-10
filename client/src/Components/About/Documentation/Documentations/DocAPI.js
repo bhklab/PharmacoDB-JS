@@ -1,7 +1,17 @@
 import React, {useState} from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const API = () => {
+/**
+ * Shows the API description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocAPI/>
+ * )
+ */
+const DocAPI = () => {
     return(
         <div className='documentation'>
             <p>
@@ -11,4 +21,4 @@ const API = () => {
         </div>
     );
 }
-export default API;
+export default DocAPI;

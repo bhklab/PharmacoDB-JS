@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
-const Tissue = () => {
+/**
+ * Shows the Tissue description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocTissue/>
+ * )
+ */
+const DocTissue = () => {
     return(
         <div className='documentation'>
             <div>
@@ -52,4 +62,4 @@ const Tissue = () => {
         </div>
     );
 }
-export default Tissue;
+export default DocTissue;

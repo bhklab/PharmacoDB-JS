@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
 
-const Overview = () => {
+/**
+ * Shows the Overview of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocOverview/>
+ * )
+ */
+const DocOverview = () => {
     return(
         <div className='documentation'>
             <p>
@@ -16,4 +26,4 @@ const Overview = () => {
         </div>
     );
 }
-export default Overview;
+export default DocOverview;

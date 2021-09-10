@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
-const Gene = () => {
+/**
+ * Shows the Gene description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocGene/>
+ * )
+ */
+const DocGene = () => {
     return(
         <div className='documentation'>
             <div>
@@ -24,4 +34,4 @@ const Gene = () => {
         </div>
     );
 }
-export default Gene;
+export default DocGene;

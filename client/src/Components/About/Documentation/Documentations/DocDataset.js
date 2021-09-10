@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const Dataset = () => {
+/**
+ * Shows the Dataset description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocDataset/>
+ * )
+ */
+const DocDataset = () => {
     return(
         <div className='documentation'>
             <div>
@@ -63,4 +73,4 @@ const Dataset = () => {
         </div>
     );
 }
-export default Dataset;
+export default DocDataset;

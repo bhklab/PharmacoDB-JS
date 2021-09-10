@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
-const Cell = () => {
+/**
+ * Shows the Cell line description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocCell/>
+ * )
+ */
+const DocCell = () => {
     return(
         <div className='documentation'>
             <p>
@@ -57,4 +67,4 @@ const Cell = () => {
         </div>
     );
 }
-export default Cell;
+export default DocCell;

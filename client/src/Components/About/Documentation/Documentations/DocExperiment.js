@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
-const Experiment = () => {
+/**
+ * Shows the Experiment description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocExperiment/>
+ * )
+ */
+const DocExperiment = () => {
     return(
         <div className='documentation'>
             <div>
@@ -19,4 +29,4 @@ const Experiment = () => {
         </div>
     );
 }
-export default Experiment;
+export default DocExperiment;

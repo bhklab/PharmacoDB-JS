@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const DatasetsIntersection = () => {
+/**
+ * Shows the Dataset Intersection description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocDatasetsIntersection/>
+ * )
+ */
+const DocDatasetsIntersection = () => {
     return(
         <div className='documentation'>
             <div>
@@ -27,4 +37,4 @@ const DatasetsIntersection = () => {
         </div>
     );
 }
-export default DatasetsIntersection;
+export default DocDatasetsIntersection;

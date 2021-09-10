@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const Drug = () => {
+/**
+ * Shows the Compound description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocDrug/>
+ * )
+ */
+const DocDrug = () => {
     return(
         <div className='documentation'>
             <div>
@@ -80,4 +90,4 @@ const Drug = () => {
         </div>
     );
 }
-export default Drug;
+export default DocDrug;

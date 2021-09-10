@@ -7,19 +7,19 @@ import Layout from '../../UtilComponents/Layout';
 import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
-import Overview from './Documentations/DocOverview';
-import Search from "./Documentations/DocSearch";
-import Dataset from './Documentations/DocDataset';
-import Tissue from './Documentations/DocTissue';
-import Cell from './Documentations/DocCell';
-import Experiment from './Documentations/DocExperiment';
-import Gene from './Documentations/DocGene';
-import Drug from './Documentations/DocDrug';
-import DatasetsIntersection from './Documentations/DocDatasetsIntersection';
-import CellVsDrug from './Documentations/DocCellVsDrug';
-import TissueVsDrug from './Documentations/DocTissueVsDrug';
-import API from './Documentations/DocAPI';
-import Biomarker from './Documentations/DocBiomarker';
+import DocOverview from './Documentations/DocOverview';
+import DocSearch from "./Documentations/DocSearch";
+import DocDataset from './Documentations/DocDataset';
+import DocTissue from './Documentations/DocTissue';
+import DocCell from './Documentations/DocCell';
+import DocExperiment from './Documentations/DocExperiment';
+import DocGene from './Documentations/DocGene';
+import DocDrug from './Documentations/DocDrug';
+import DocDatasetsIntersection from './Documentations/DocDatasetsIntersection';
+import DocCellVsDrug from './Documentations/DocCellVsDrug';
+import DocTissueVsDrug from './Documentations/DocTissueVsDrug';
+import DocAPI from './Documentations/DocAPI';
+import DocBiomarker from './Documentations/DocBiomarker';
 
 const SIDE_LINKS = [
     { label: 'Overview', name: 'overview' },
@@ -38,13 +38,13 @@ const SIDE_LINKS = [
 ];
 
 /**
- * Parent component for the individual compound page.
+ * Shows the description of the documentation page.
  *
  * @component
  * @example
  *
  * return (
- *   <IndivDatasets/>
+ *   <DocDescription/>
  * )
  */
 const DocDescription = () => {
@@ -89,79 +89,79 @@ const DocDescription = () => {
                         {
                             display === 'overview' &&
                             <Element className="section" name="overview">
-                                <Overview />
+                                <DocOverview />
                             </Element>
                         }
                         {
                             display === 'search' &&
                             <Element className="section" name="search">
-                                <Search />
+                                <DocSearch />
                             </Element>
                         }
                         {
                             display === 'dataset' &&
                             <Element className="section" name="dataset">
-                                <Dataset />
+                                <DocDataset />
                             </Element>
                         }
                         {
                             display === 'tissue' &&
                             <Element className="section" name="tissue">
-                                <Tissue />
+                                <DocTissue />
                             </Element>
                         }
                         {
                             display === 'cell' &&
                             <Element className="section" name="cell">
-                                <Cell />
+                                <DocCell />
                             </Element>
                         }
                         {
                             display === 'experiment' &&
                             <Element className="section" name="tissue">
-                                <Experiment />
+                                <DocExperiment />
                             </Element>
                         }
                         {
                             display === 'gene' &&
                             <Element className="section" name="tissue">
-                                <Gene />
+                                <DocGene />
                             </Element>
                         }
                         {
                             display === 'drug' &&
                             <Element className="section" name="drug">
-                                <Drug />
+                                <DocDrug />
                             </Element>
                         }
                         {
                             display === 'intersection' &&
                             <Element className="section" name="intersection">
-                                <DatasetsIntersection />
+                                <DocDatasetsIntersection />
                             </Element>
                         }
                         {
                             display === 'cell-drug' &&
                             <Element className="section" name="cell-drug">
-                                <CellVsDrug />
+                                <DocCellVsDrug />
                             </Element>
                         }
                         {
                             display === 'tissue-drug' &&
                             <Element className="section" name="tissue-drug">
-                                <TissueVsDrug />
+                                <DocTissueVsDrug />
                             </Element>
                         }
                         {
                             display === 'api' &&
                             <Element className="section" name="api">
-                                <API />
+                                <DocAPI />
                             </Element>
                         }
                         {
                             display === 'biomarker' &&
                             <Element className="section" name="biomarker">
-                                <Biomarker />
+                                <DocBiomarker />
                             </Element>
                         }
                     </div>

@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
-const Search = () => {
+/**
+ * Shows the Search description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocSearch/>
+ * )
+ */
+const DocSearch = () => {
     return(
         <div className='documentation'>
             <div>
@@ -46,4 +56,4 @@ const Search = () => {
         </div>
     );
 }
-export default Search;
+export default DocSearch;

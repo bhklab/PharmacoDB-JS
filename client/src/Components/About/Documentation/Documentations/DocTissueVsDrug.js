@@ -1,7 +1,17 @@
 import React from 'react';
 import doseImg from '../../../../images/pharmacodb-logo.png';
 
-const TissueVsDrug = () => {
+/**
+ * Shows the Tissue vs. Drug description of the documentation page.
+ *
+ * @component
+ * @example
+ *
+ * return (
+ *   <DocTissueVsDrug/>
+ * )
+ */
+const DocTissueVsDrug = () => {
     return(
         <div className='documentation'>
             <div>
@@ -22,4 +32,4 @@ const TissueVsDrug = () => {
         </div>
     );
 }
-export default TissueVsDrug;
+export default DocTissueVsDrug;
