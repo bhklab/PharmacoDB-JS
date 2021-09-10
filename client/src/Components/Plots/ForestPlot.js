@@ -344,11 +344,14 @@ const createForestPlot = (margin, height, width, data) => {
 const ForestPlot = ({ height, width, margin, data }) => {
     // calculate the height based on the data size.
     const updatedHeight = data.length * 50 - margin.top - margin.bottom;
+
     useEffect(() => {
         createForestPlot(margin, updatedHeight, width, data);
     }, []);
 
-    return <div id="forestplot" />;
+    return (
+        <div id="forestplot" />
+    );
 };
 
 // default props.
