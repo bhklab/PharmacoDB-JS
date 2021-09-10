@@ -4,14 +4,15 @@ import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
-import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
+// import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
-import ManhattanPlot from '../Plots/ManhattanPlot';
+// import ManhattanPlot from '../Plots/ManhattanPlot';
+import ManhattanPlotContainer from './ManhattanPlotContainer';
 
 // side links.
 const SIDE_LINKS = [
@@ -147,11 +148,11 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
-    const {
-        loading: geneCompoundTissueDatasetDataLoading,
-        error: geneCompoundTissueDatasetDataError,
-        data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
+    // const {
+    //     loading: geneCompoundTissueDatasetDataLoading,
+    //     error: geneCompoundTissueDatasetDataError,
+    //     data: geneCompoundTissueDatasetQueryData,
+    // } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { compoundName: compound, tissueName: tissue } });
 
 
     // compound and gene information columns.
@@ -161,7 +162,7 @@ const Biomarker = (props) => {
     // setting the state on load of compound data.
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
-        if (compoundQueryData && geneQueryData && geneCompoundTissueDatasetQueryData) {
+        if (compoundQueryData && geneQueryData) {
             setTransformedCompoundData(
                 transformCompoundTableData(compoundQueryData.singleCompound)
             );
@@ -171,9 +172,9 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
-            setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
+            // setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
         }
-    }, [compoundQueryData, geneQueryData, geneCompoundTissueDatasetQueryData]);
+    }, [compoundQueryData, geneQueryData]);
 
     return (
         <Layout>
@@ -229,7 +230,8 @@ const Biomarker = (props) => {
                                 {
                                     display === 'manhattan_plot' &&
                                     <Element className="section" name="manhattan_plot">
-                                        <ManhattanPlot />
+                                        {/* <ManhattanPlot /> */}
+                                        <ManhattanPlotContainer gene={gene} compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                             </div>

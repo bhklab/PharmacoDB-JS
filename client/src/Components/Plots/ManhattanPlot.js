@@ -33,6 +33,11 @@ var layout = {
     title: 'Data Labels Hover'
 };
 
-const ManhattanPlot = () => <Plot data={data} layout={layout} />;
+const ManhattanPlot = (props) => {
+    
+    return(
+        <Plot data={data} layout={layout} />
+    );
+};
 
 export default ManhattanPlot;

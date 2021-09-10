@@ -171,9 +171,9 @@ const gene_compound_dataset = async (args, context, info) => {
  */
 const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
-    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, page = 1, per_page = 20, all = false } = args;
+    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
 
-    geneId = geneId || await getIdBasedOnGene(geneName);
+    geneId = geneId || geneName ? await getIdBasedOnGene(geneName) : null;
     compoundId = compoundId || await getIdBasedOnCompound(compoundName);
     tissueId = tissueId || await getIdBasedOnTissue(tissueName);
 
@@ -216,7 +216,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
                     break;
             }
         });
-
+        
         let query = knex.select(columns).from('gene_compound_tissue_dataset as GD');
         // chooses table to select from
         if (geneId) query = query.where({ 'GD.gene_id': geneId });
@@ -229,6 +229,8 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
             query.andWhere({ 'GD.tissue_id': tissueId })
             : query.where({ 'GD.tissue_id': tissueId });
 
+        // Add mDataType filter if it is present in request. Used for Biomarker page (Manhattan Plot)
+        if (mDataType && mDataType.length > 0) query.andWhere({ 'GD.mDataType': mDataType });
 
         if (!all) query = query.limit(limit).offset(offset);
 
