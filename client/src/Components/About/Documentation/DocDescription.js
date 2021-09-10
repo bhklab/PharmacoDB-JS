@@ -77,6 +77,9 @@ const DocDescription = () => {
 
     return (
         <StyledIndivPage className="documentation">
+            <div className='heading'>
+                <span className='title'>{SIDE_LINKS.filter(item=> item.name === display)[0].label}</span>
+            </div>
             <div className='wrapper'>
                 <StyledSidebarList>
                     {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
@@ -86,91 +89,78 @@ const DocDescription = () => {
                         {
                             display === 'overview' &&
                             <Element className="section" name="overview">
-                                <h1 className='section-title'>Overview</h1>
                                 <Overview />
                             </Element>
                         }
                         {
                             display === 'search' &&
                             <Element className="section" name="search">
-                                <div className='section-title'>Search</div>
                                 <Search />
                             </Element>
                         }
                         {
                             display === 'dataset' &&
                             <Element className="section" name="dataset">
-                                <div className='section-title'>Datasets</div>
                                 <Dataset />
                             </Element>
                         }
                         {
                             display === 'tissue' &&
                             <Element className="section" name="tissue">
-                                <div className='section-title'>Tissues</div>
                                 <Tissue />
                             </Element>
                         }
                         {
                             display === 'cell' &&
                             <Element className="section" name="cell">
-                                <div className='section-title'>Cell Lines</div>
                                 <Cell />
                             </Element>
                         }
                         {
                             display === 'experiment' &&
                             <Element className="section" name="tissue">
-                                <div className='section-title'>Experiments</div>
                                 <Experiment />
                             </Element>
                         }
                         {
                             display === 'gene' &&
                             <Element className="section" name="tissue">
-                                <StyledIndivPage className="title">Genes</StyledIndivPage>
                                 <Gene />
                             </Element>
                         }
                         {
                             display === 'drug' &&
                             <Element className="section" name="drug">
-                                <div className='section-title'>Compounds</div>
                                 <Drug />
                             </Element>
                         }
                         {
                             display === 'intersection' &&
                             <Element className="section" name="intersection">
-                                <div className='section-title'>Datasets Intersection</div>
                                 <DatasetsIntersection />
                             </Element>
                         }
                         {
                             display === 'cell-drug' &&
                             <Element className="section" name="cell-drug">
-                                <div className='section-title'>Cell line vs. Drug</div>
                                 <CellVsDrug />
                             </Element>
                         }
                         {
                             display === 'tissue-drug' &&
                             <Element className="section" name="tissue-drug">
-                                <div className='section-title'>Tissue vs. Drug</div>
                                 <TissueVsDrug />
                             </Element>
                         }
                         {
                             display === 'api' &&
                             <Element className="section" name="api">
-                                <div className='section-title'>API</div>
                                 <API />
                             </Element>
                         }
                         {
                             display === 'biomarker' &&
                             <Element className="section" name="biomarker">
-                                <div className='section-title'>Biomarker</div>
                                 <Biomarker />
                             </Element>
                         }

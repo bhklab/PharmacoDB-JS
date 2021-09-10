@@ -5,6 +5,7 @@ import Layout from '../../UtilComponents/Layout';
 import DocDescription from './DocDescription';
 import 'react-scroll-to-top/lib/index.css';
 import colors from '../../../styles/colors';
+import StyledWrapper from '../../../styles/utils';
 
 const StyledDocumentation = styled.div`
     display: flex;
@@ -68,10 +69,13 @@ const StyledDocumentation = styled.div`
  */
 const Documentation = () => (
     <Layout page="documentation">
-        <ScrollToTop smooth />
-        <StyledDocumentation>
+        <StyledWrapper>
+            {/*<StyledDocumentation>*/}
+            {/*    <h1>Documentation</h1>*/}
+            {/*</StyledDocumentation>*/}
+            <ScrollToTop smooth />
             <DocDescription/>
-        </StyledDocumentation>
+        </StyledWrapper>
     </Layout>
 );
 
