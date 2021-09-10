@@ -77,9 +77,6 @@ const DocDescription = () => {
 
     return (
         <StyledIndivPage className="documentation">
-            <div className='heading'>
-                <span className='title'>{dataset.name}</span>
-            </div>
             <div className='wrapper'>
                 <StyledSidebarList>
                     {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
@@ -131,7 +128,7 @@ const DocDescription = () => {
                         {
                             display === 'gene' &&
                             <Element className="section" name="tissue">
-                                <div className='section-title'>Genes</div>
+                                <StyledIndivPage className="title">Genes</StyledIndivPage>
                                 <Gene />
                             </Element>
                         }
