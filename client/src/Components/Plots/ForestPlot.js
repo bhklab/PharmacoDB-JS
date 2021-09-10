@@ -11,13 +11,25 @@ const ADDITIONAL = 2;
 const margin = {
     top: 40,
     right: 20,
-    bottom: 20,
+    bottom: 50,
     left: 20,
 };
 
 // width and height of the SVG canvas.
-const width = 800 - margin.left - margin.right;
-const height = 400 - margin.top - margin.bottom;
+const width = 900 - margin.left - margin.right;
+const height = 450 - margin.top - margin.bottom;
+
+const getAllDataTypes = (data) => {
+    // variable to store the different data types.
+    const dataTypes = [];
+    // looping through and storing the data type if it's not already present.
+    data.forEach(el => {
+        if (!dataTypes.includes(el.mDataType)) {
+            dataTypes.push(el.mDataType);
+        }
+    });
+    return dataTypes;
+};
 
 /**
  * 
@@ -44,7 +56,7 @@ const calculateMinMax = (data) => {
         min,
         max
     }
-}
+};
 
 /**
  * @returns - d3 linear scale for circles.
@@ -61,7 +73,7 @@ const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 25]);
 const createXScale = (min, max) =>
     d3.scaleLinear()
         .domain([min, max])
-        .range([100, (width * 3) / 4])
+        .range([100, (width * 0.65)])
         .nice();
 
 /**
@@ -73,6 +85,18 @@ const createXAxis = (svg, scale) => {
         .attr('id', 'x-axis')
         .attr('transform', `translate(0, ${height})`)
         .call(d3.axisBottom(scale));
+
+    // append x-axis label.
+    svg.append('g')
+        .attr('id', 'x-axis-label')
+        .append('text')
+        .attr('font-weight', 700)
+        .attr('x', (width * 0.65) / 2)
+        .attr('y', height + 40)
+        .attr('fill', `${colors.dark_teal_heading}`)
+        .text('Pearson correlation coefficient')
+        .attr('font-size', '12px');
+
 };
 
 /**
@@ -120,7 +144,7 @@ const createHorizontalLines = (svg, scale, data) => {
  * @param {Object} circleScale - scale to set the radius of the circle.
  * @param {Array} data - data array.
  */
-const createCircles = (svg, xScale, circleScale, data) => {
+const createCircles = (svg, xScale, circleScale, data, colorScale) => {
     const circles = svg.append('g')
         .attr('id', 'cirlces');
 
@@ -131,7 +155,7 @@ const createCircles = (svg, xScale, circleScale, data) => {
             .attr('cx', xScale(element.estimate))
             .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
-            .attr('fill', `${colors.teal}`);
+            .attr('fill', `${colorScale(element.mDataType)}`);
     });
 };
 
@@ -168,10 +192,10 @@ const appendDatasetName = (svg, data) => {
         .append('text')
         .attr('font-weight', 700)
         .attr('x', 10)
-        .attr('y', 0)
+        .attr('y', -20)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Dataset Name')
-        .attr('font-size', '20px');
+        .attr('font-size', '18px');
 
     const dataset = svg.append('g')
         .attr('id', 'dataset-names');
@@ -186,7 +210,7 @@ const appendDatasetName = (svg, data) => {
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
             .text(`${element.dataset.name}`)
-            .attr('font-size', '16px');
+            .attr('font-size', '14px');
     });
 };
 
@@ -201,11 +225,11 @@ const appendEstimateText = (svg, data) => {
         .attr('id', 'estimate-header')
         .append('text')
         .attr('font-weight', 700)
-        .attr('x', (width * 3) / 4 + 10)
-        .attr('y', 0)
+        .attr('x', (width * 0.65) + 10)
+        .attr('y', -20)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Estimate')
-        .attr('font-size', '20px');
+        .attr('font-size', '18px');
 
     const estimate = svg.append('g')
         .attr('id', 'estimate');
@@ -216,13 +240,44 @@ const appendEstimateText = (svg, data) => {
             .append('text')
             .attr('id', `estimate-${element.dataset.name}`)
             .attr('font-weight', 200)
-            .attr('x', (width * 3) / 4 + 10)
+            .attr('x', (width * 0.65) + 10)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .attr('fill', `${colors.dark_teal_heading}`).text(`(
+            .attr('fill', `${colors.dark_teal_heading}`)
+            .text(`(
                 ${(element.lower_permutation || element.lower_analytic).toFixed(2)}, 
                 ${(element.upper_permutation || element.upper_analytic).toFixed(2)}
             )`)
-            .attr('font-size', '16px');
+            .attr('font-size', '14px');
+    });
+};
+
+const createLegend = (svg, data, mDataTypes, scale) => {
+    // append legends.
+    const legends = svg.append('g')
+        .attr('id', 'legends');
+
+    mDataTypes.forEach((dataType, i) => {
+        legends.append('rect')
+            .attr('x', width - 160)
+            .attr('y', ((height * 0.2) + ((i + 1) * 20)))
+            .attr('width', 20)
+            .attr('height', 20)
+            .attr('stroke', 'black')
+            .attr('fill', `${scale(dataType)}`);
+    });
+
+    // append legend text.
+    const legendText = svg.append('g')
+        .attr('id', 'legend-text');
+
+    mDataTypes.forEach((dataType, i) => {
+        legendText
+            .append('text')
+            .attr('id', `legend-${dataType}`)
+            .attr('x', width - 135)
+            .attr('y', ((height * 0.2) + ((i + 1) * 25)))
+            .text(`${dataType}`)
+            .attr('font-size', '12px');
     });
 };
 
@@ -234,6 +289,17 @@ const appendEstimateText = (svg, data) => {
  * @param {Array} data - array of data.
  */
 const createForestPlot = (margin, height, width, data) => {
+    const mDataTypes = getAllDataTypes(data);
+    const linearScale = d3.scaleOrdinal()
+        .domain(mDataTypes)
+        .range([
+            '#b2182b',
+            '#ef8a62',
+            '#fddbc7',
+            '#d1e5f0',
+            '#67a9cf',
+            '#2166ac',
+        ]);
     // creating the svg canvas.
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
     // min and max.
@@ -249,13 +315,15 @@ const createForestPlot = (margin, height, width, data) => {
     // create horizontal lines for the plot.
     createHorizontalLines(svg, xScale, data);
     // create the circles for the plot.
-    createCircles(svg, xScale, circleScale, data);
+    createCircles(svg, xScale, circleScale, data, linearScale);
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data);
     // append estimate as text to the svg.
     appendEstimateText(svg, data);
+    // create legend.
+    createLegend(svg, data, mDataTypes, linearScale);
 };
 
 /**
