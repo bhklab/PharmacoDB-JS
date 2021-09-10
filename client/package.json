@@ -33,6 +33,7 @@
         "react-table": "^7.3.2",
         "react-typing-effect": "^2.0.3",
         "react-virtualized": "^9.21.2",
+        "react-window": "^1.8.6",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
         "styled-components": "^5.1.1",
