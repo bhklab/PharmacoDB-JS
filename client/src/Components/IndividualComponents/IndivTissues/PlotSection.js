@@ -93,6 +93,7 @@ const PlotSection = (props) => {
                                 /([A-Z][a-z])/g,
                                 ' $1'
                             )} cell lines (per dataset)`}
+                        logScale={true}
                     />
                 </PlotsWrapper>
             }

@@ -110,6 +110,7 @@ const useExpIntersection = () => {
             tissue: item.tissue,
             ...item.profile
         }));
+        tableData = tableData.filter(item => typeof item.AAC === 'number');
 
         exp = parsed.map((item) => ({
             id: item.id,

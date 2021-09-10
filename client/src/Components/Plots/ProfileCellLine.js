@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Plot from 'react-plotly.js';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
@@ -111,6 +112,9 @@ const ProfileCellLine = (props) => {
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
   const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  
+  const history = useHistory();
+  
   // preformats the data and creates selection options for datasets and profiles
   const formattedData = useMemo(() => formatExperimentPlotData(data, 'cell_line'), [data]);
 
@@ -120,6 +124,15 @@ const ProfileCellLine = (props) => {
     setPlotData(generateRenderData(compound, values, selectedDataset, selectedProfile));
   }, [selectedProfile, selectedDataset, formattedData]);
   useEffect(() => {console.log(layout)}, [plotData]);
+
+  /**
+   * Redirects to Cell Line vs Compound page when a plot trace is clicked.
+   * @param {*} e onclick event
+   */
+  const redirectToCellLineCompound = (e) => {
+    history.push(`/search?cell_line=${e.points[0].fullData.name}&compound=${compound}`);
+  }
+
   return (
     <div className="plot">
       <StyledSelectorContainer>
@@ -150,7 +163,13 @@ const ProfileCellLine = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot divId={plotId}  data={plotData} layout={layout} config={config} />
+      <Plot 
+        divId={plotId}  
+        data={plotData} 
+        layout={layout} 
+        config={config} 
+        onClick={redirectToCellLineCompound}
+      />
       <div className="notifications">
         {notifications.subset ? (
           <p>

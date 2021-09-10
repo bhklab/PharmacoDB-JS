@@ -87,6 +87,35 @@ const formatDataType = (data) => {
   }
   return null;
 };
+
+/**
+ * Get a PSet data of the selected dataset and extract the link to 
+ * its ORCESTRA page.
+ * @param {String} selected
+ * @param {Array} psets 
+ */
+const getORCESTRALink = (selected, psets) => {
+  console.log(psets);
+  let link = '';
+  if(psets.length > 0){
+    link = 'https://www.orcestra.ca/pset/';
+    let pset = {};
+    switch(selected.name){
+      case 'GDSC1':
+        pset = psets.find(item => item.name.split('_')[0] === 'GDSC' && item.name.substr(item.name.indexOf('v') + 1, 1) === '1');
+        break;
+      case 'GDSC2':
+        pset = psets.find(item => item.name.split('_')[0] === 'GDSC' && item.name.substr(item.name.indexOf('v') + 1, 1) === '2');
+        break;
+      default:
+        pset = psets.find(item => item.name.split('_')[0] === selected.name);
+        break;
+    }
+    link = `${link}${pset.doi}`;
+  }
+  return link;
+}
+
 /**
  * Parent component for the individual datasets page.
  *
@@ -113,18 +142,35 @@ const IndivDatasets = (props) => {
 
   // to set the state on the change of the data.
   useEffect(() => {
-    // read dataset data from json file
-    const selected = datasets[params.id];
-    if(selected){
-      setDataset({
-        ...selected,
-        resources: formatResouceData(selected.resource),
-        publications: formatPublicationData(selected.pub),
-        datatypes: formatDataType(selected.dtype)
-      });
-    }else{
-      setDataset({...dataset, notFound: true});
+    /**
+     * Component mount operation wrapped in async function since 
+     * We are accessing ORCESTRA's API to fetch data.
+     */
+    const getData = async () => {
+      // Retreives ORCESTRA's canonical psets data to display link to the dataset's PSet in ORCESTRA.
+      let psets = [];
+      try{
+        const res = await fetch('https://www.orcestra.ca/api/psets/canonical');
+        psets = await res.json();
+      }catch(err){
+        console.log(err);
+      }
+      
+      // read dataset data from json file
+      const selected = datasets[params.id];
+      if(selected){
+        setDataset({
+          ...selected,
+          resources: formatResouceData(selected.resource),
+          publications: formatPublicationData(selected.pub),
+          datatypes: formatDataType(selected.dtype),
+          orcestra: getORCESTRALink(selected, psets)
+        });
+      }else{
+        setDataset({...dataset, notFound: true});
+      }
     }
+    getData();
   }, []);
 
   /**
@@ -182,6 +228,17 @@ const IndivDatasets = (props) => {
                           </a>
                         </div>
                       </Element>
+                      {
+                        dataset.orcestra && dataset.orcestra.length > 0 &&
+                        <Element className="section" name="pharmacogx">
+                          <div className='section-title'>ORCESTRA</div>
+                          <div className="text">
+                            <a href={dataset.orcestra} target="_blank" rel="noopener noreferrer">
+                              {`PharmacoSet object for ${dataset.name} in ORCESTRA`}
+                            </a>
+                          </div>
+                        </Element>
+                      }
                     </React.Fragment>
                   }
                   {
