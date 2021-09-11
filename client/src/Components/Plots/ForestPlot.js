@@ -14,6 +14,13 @@ const CHART_WIDTH = 0.65;
 // width & height of square/rectangle for legend.
 const RECTANGLE_DIMENSIONS = 20;
 
+// data type mapping variable.
+const dataTypeMaping = {
+    rna: 'microarray',
+    cnv: 'cnv',
+    'Kallisto_0.46.1.rnaseq': 'rnaseq',
+};
+
 // margin for the svg element.
 const margin = {
     top: 40,
@@ -102,12 +109,12 @@ const createXAxis = (svg, scale, height, width, margin) => {
     svg.append('g')
         .attr('id', 'x-axis-label')
         .append('text')
-        .attr('font-weight', 700)
-        .attr('x', (width * CHART_WIDTH) / 2)
+        .attr('font-weight', 500)
+        .attr('x', (width * CHART_WIDTH * 0.40))
         .attr('y', height + (margin.bottom * 0.75))
         .attr('fill', `${colors.dark_teal_heading}`)
-        .text('Pearson correlation coefficient')
-        .attr('font-size', '12px');
+        .text('pearson correlation coefficient')
+        .attr('font-size', '16px');
 
 };
 
@@ -207,7 +214,7 @@ const appendDatasetName = (svg, data, height) => {
         .attr('y', -20)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Dataset Name')
-        .attr('font-size', '18px');
+        .attr('font-size', '20px');
 
     const dataset = svg.append('g')
         .attr('id', 'dataset-names');
@@ -222,7 +229,7 @@ const appendDatasetName = (svg, data, height) => {
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
             .text(`${element.dataset.name}`)
-            .attr('font-size', '14px');
+            .attr('font-size', '16px');
     });
 };
 
@@ -241,7 +248,7 @@ const appendEstimateText = (svg, data, height, width) => {
         .attr('y', -20)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('Estimate')
-        .attr('font-size', '18px');
+        .attr('font-size', '20px');
 
     const estimate = svg.append('g')
         .attr('id', 'estimate');
@@ -259,7 +266,7 @@ const appendEstimateText = (svg, data, height, width) => {
                 ${(element.lower_permutation || element.lower_analytic).toFixed(2)}, 
                 ${(element.upper_permutation || element.upper_analytic).toFixed(2)}
             )`)
-            .attr('font-size', '14px');
+            .attr('font-size', '16px');
     });
 };
 
@@ -345,8 +352,16 @@ const ForestPlot = ({ height, width, margin, data }) => {
     // calculate the height based on the data size.
     const updatedHeight = data.length * 50 - margin.top - margin.bottom;
 
+    // update the data to change the data type names using the mapping variable.
+    const updatedData = data.map(el => {
+        return {
+            ...el,
+            mDataType: dataTypeMaping[el.mDataType],
+        };
+    });
+
     useEffect(() => {
-        createForestPlot(margin, updatedHeight, width, data);
+        createForestPlot(margin, updatedHeight, width, updatedData);
     }, []);
 
     return (
