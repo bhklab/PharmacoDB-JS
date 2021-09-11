@@ -13,6 +13,9 @@ const CHART_WIDTH = 0.70;
 // width & height of square/rectangle for legend.
 const RECTANGLE_DIMENSIONS = 20;
 
+// canvas id.
+const CANVAS_ID = 'forestplot-canvas';
+
 // data type mapping variable.
 const mDataTypeMaping = {
     rna: 'microarray',
@@ -37,6 +40,22 @@ const margin = {
 // width and height of the SVG canvas.
 const width = 900 - margin.left - margin.right;
 const height = 450 - margin.top - margin.bottom;
+
+
+/**
+ * data based on the default molecular type.
+ * @param {Array} data 
+ * @param {string} mDataType 
+ */
+const createFilteredData = (data, mDataType) => {
+    const filteredData = data.filter(el => {
+        if (el.mDataType === mDataType) {
+            return el;
+        }
+    });
+
+    return filteredData;
+};
 
 /**
  * 
@@ -94,11 +113,16 @@ const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 25]);
  * @param {number} max - max value to be passed to the domain.
  * @returns - d3 linear scale for x-axis.
  */
-const createXScale = (min, max, width) =>
-    d3.scaleLinear()
-        .domain([min, max])
+const createXScale = (min, max, width) => {
+    // set min to zero if it's greater than zero else it's a min.
+    const updatedMin = min > 0 ? -0.1 : min;
+
+    return d3.scaleLinear()
+        .domain([updatedMin, max])
         .range([100, (width * CHART_WIDTH)])
         .nice();
+};
+
 
 /**
  * Appends x-axis to the main svg element.
@@ -362,7 +386,7 @@ const createLegend = (svg, height, width) => {
  * 
  * @param {Array} mDataTypes - an array of mDataTypes.
  */
-const createSelectionOptions = (mDataTypes) => {
+const createSelectionOptions = (mDataTypes, data) => {
     // options for the selection.
     d3.select('.select')
         .selectAll('option')
@@ -374,7 +398,16 @@ const createSelectionOptions = (mDataTypes) => {
 
     // on change event handler on selection.
     d3.select('.select').on('change', function () {
-        console.log(d3.select(this).property('value'));
+        // selection.
+        const selection = d3.select(this).property('value');
+
+        // create the filtered data based on the selection.
+        const filteredData = createFilteredData(data, selection);
+
+        // remove the already drawn forest plot with it's id.
+        d3.select(`#${CANVAS_ID}`).remove();
+
+        createForestPlot(margin, 350, width, filteredData);
     });
 };
 
@@ -385,33 +418,45 @@ const createSelectionOptions = (mDataTypes) => {
  * @param {number} width - width of the svg canvas.
  * @param {Array} data - array of data.
  */
-const createForestPlot = (margin, height, width, data) => {
-    // get all the data types available in the data.
-    const mDataTypes = getAllDataTypes(data);
-    // create selection options.
-    createSelectionOptions(mDataTypes);
+const createForestPlot = (margin, heightInput, width, data) => {
+    // calculate the height based on the data size.
+    const height = data.length * 50 - margin.top - margin.bottom > heightInput
+        ? data.length * 50 - margin.top - margin.bottom
+        : heightInput;
+
     // creating the svg canvas.
-    const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
+    const svg = createSvgCanvas({ id: 'forestplot', width, height, margin, canvasId: CANVAS_ID });
+
     // min and max.
     const { min, max } = calculateMinMax(data);
+
     // scale for x-axis.
     const xScale = createXScale(min, max, width);
+
     // scale for circles.
     const circleScale = circleScaling();
+
     // creating x axis.
     createXAxis(svg, xScale, height, width, margin);
+
     // create vertical line at 0 on x-axis.
     createVerticalLine(svg, xScale, height);
+
     // create horizontal lines for the plot.
     createHorizontalLines(svg, xScale, data, height);
+
     // create the circles for the plot.
     createCircles(svg, xScale, circleScale, data, height);
+
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
+
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data, height);
+
     // append estimate as text to the svg.
     appendFdrText(svg, data, height, width);
+
     // create legend.
     createLegend(svg, height, width);
 };
@@ -420,9 +465,8 @@ const createForestPlot = (margin, height, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ height, width, margin, data }) => {
-    console.log(data);
-    // calculate the height based on the data size.
-    const updatedHeight = data.length * 50 - margin.top - margin.bottom;
+    // default mDataType.
+    const defaulMolecularDataType = 'microarray';
 
     // update the data to change the data type names using the mapping variable.
     const updatedData = data.map(el => {
@@ -432,16 +476,26 @@ const ForestPlot = ({ height, width, margin, data }) => {
         };
     });
 
+    // filtered data.
+    const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
+
     useEffect(() => {
-        createForestPlot(margin, updatedHeight, width, updatedData);
+        // get all the data types available in the data.
+        const mDataTypes = getAllDataTypes(updatedData);
+
+        // create selection options.
+        createSelectionOptions(mDataTypes, updatedData);
+
+        // create forest plot.
+        createForestPlot(margin, height, width, filteredData);
     }, []);
 
     return (
         <>
             <div style={{ position: 'relative' }}>
                 <select
-                    className="select"
-                    id="selection"
+                    className='select'
+                    id='selection'
                     style={{
                         display: 'block',
                         align: 'right',
@@ -450,7 +504,9 @@ const ForestPlot = ({ height, width, margin, data }) => {
                         width: '140px',
                         right: '20px',
                         fontSize: '16px',
-                        color: `${colors.dark_teal_heading}`
+                        color: `${colors.dark_teal_heading}`,
+                        borderRadius: '5px',
+                        border: `1px solid ${colors.dark_teal_heading}`,
                     }}
                 />
             </div>
