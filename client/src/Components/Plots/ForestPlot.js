@@ -14,7 +14,7 @@ const CHART_WIDTH = 0.70;
 const RECTANGLE_DIMENSIONS = 20;
 
 // data type mapping variable.
-const dataTypeMaping = {
+const mDataTypeMaping = {
     rna: 'microarray',
     cnv: 'cnv',
     'Kallisto_0.46.1.rnaseq': 'rnaseq',
@@ -158,7 +158,16 @@ const createHorizontalLines = (svg, scale, data, height) => {
             .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('x2', scale(element.upper_permutation || element.upper_analytic))
             .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
-    });
+            .on('mouseover', function () {
+                console.log('hey');
+                d3.select(`#horizontal-line-${element.dataset.name}`).append("svg:title").text("Your tooltip info");
+            })
+            .on('mousemove', function () {
+                console.log('hey1');
+                d3.select(`#horizontal-line-${element.dataset.name}`).append("svg:title").text("Your tooltip info");
+            });
+    })
+
 };
 
 /**
@@ -350,6 +359,26 @@ const createLegend = (svg, height, width) => {
 };
 
 /**
+ * 
+ * @param {Array} mDataTypes - an array of mDataTypes.
+ */
+const createSelectionOptions = (mDataTypes) => {
+    // options for the selection.
+    d3.select('.select')
+        .selectAll('option')
+        .data(mDataTypes)
+        .enter()
+        .append('option')
+        .text((d) => d)
+        .attr('value', (d) => d);
+
+    // on change event handler on selection.
+    d3.select('.select').on('change', function () {
+        console.log(d3.select(this).property('value'));
+    });
+};
+
+/**
  * Main function to create the forest plot.
  * @param {Object} margin - margin for the svg canavas.
  * @param {number} height - height of the svg canvas.
@@ -359,6 +388,8 @@ const createLegend = (svg, height, width) => {
 const createForestPlot = (margin, height, width, data) => {
     // get all the data types available in the data.
     const mDataTypes = getAllDataTypes(data);
+    // create selection options.
+    createSelectionOptions(mDataTypes);
     // creating the svg canvas.
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
     // min and max.
@@ -397,7 +428,7 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const updatedData = data.map(el => {
         return {
             ...el,
-            mDataType: dataTypeMaping[el.mDataType],
+            mDataType: mDataTypeMaping[el.mDataType],
         };
     });
 
@@ -406,7 +437,26 @@ const ForestPlot = ({ height, width, margin, data }) => {
     }, []);
 
     return (
-        <div id="forestplot" />
+        <>
+            <div style={{ position: 'relative' }}>
+                <select
+                    className="select"
+                    id="selection"
+                    style={{
+                        display: 'block',
+                        align: 'right',
+                        height: '30px',
+                        position: 'absolute',
+                        width: '140px',
+                        right: '20px',
+                        fontSize: '16px',
+                        color: `${colors.dark_teal_heading}`
+                    }}
+                />
+            </div>
+            <div id="forestplot" />
+        </>
+
     );
 };
 
