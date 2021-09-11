@@ -143,7 +143,6 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
     } else {
         return (
             <>
-                {/*<h2>{datasetString}</h2>*/}
                 <h2>List of Datasets</h2>
                 <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
             </>
