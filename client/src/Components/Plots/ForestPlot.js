@@ -3,13 +3,12 @@ import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
-import forest_colors from '../../styles/forest_colors';
 
 // data length and multiplier variables.
 const ADDITIONAL = 2;
 
 // variable to calculate chart width relative to the svg width.
-const CHART_WIDTH = 0.65;
+const CHART_WIDTH = 0.70;
 
 // width & height of square/rectangle for legend.
 const RECTANGLE_DIMENSIONS = 20;
@@ -20,6 +19,12 @@ const dataTypeMaping = {
     cnv: 'cnv',
     'Kallisto_0.46.1.rnaseq': 'rnaseq',
 };
+
+// legend variable.
+const legend = [
+    { text: 'FDR < 0.05 and ρ > 0.7', color: `${colors.dark_pink_highlight}` },
+    { text: 'FDR > 0.05 and ρ < 0.7', color: `${colors.light_pink}` },
+];
 
 // margin for the svg element.
 const margin = {
@@ -113,7 +118,7 @@ const createXAxis = (svg, scale, height, width, margin) => {
         .attr('x', (width * CHART_WIDTH * 0.40))
         .attr('y', height + (margin.bottom * 0.75))
         .attr('fill', `${colors.dark_teal_heading}`)
-        .text('pearson correlation coefficient')
+        .text('pearson correlation coefficient (r)')
         .attr('font-size', '16px');
 
 };
@@ -163,18 +168,21 @@ const createHorizontalLines = (svg, scale, data, height) => {
  * @param {Object} circleScale - scale to set the radius of the circle.
  * @param {Array} data - data array.
  */
-const createCircles = (svg, xScale, circleScale, data, colorScale, height) => {
+const createCircles = (svg, xScale, circleScale, data, height) => {
     const circles = svg.append('g')
         .attr('id', 'cirlces');
 
     data.forEach((element, i) => {
+        const fdr = element.fdr_permutation || element.fdr_analytic;
+        const pc = element.upper_permutation || element.upper_analytic;
+
         circles
             .append('circle')
             .attr('id', `cirlce-${element.dataset.name}`)
             .attr('cx', xScale(element.estimate))
             .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
-            .attr('fill', `${colorScale(element.mDataType)}`);
+            .attr('fill', (fdr < 0.05 && pc > 0.70) ? `${colors.dark_pink_highlight}` : `${colors.light_pink}`);
     });
 };
 
@@ -271,39 +279,73 @@ const appendEstimateText = (svg, data, height, width) => {
 };
 
 /**
+ * Appends estimate text to the chart.
+ * @param {Object} svg
+ * @param {Array} data - data array.
+ */
+const appendFdrText = (svg, data, height, width) => {
+    // append header (dataset)
+    svg.append('g')
+        .attr('id', 'estimate-header')
+        .append('text')
+        .attr('font-weight', 700)
+        .attr('x', (width * CHART_WIDTH) + 10)
+        .attr('y', -20)
+        .attr('fill', `${colors.dark_teal_heading}`)
+        .text('FDR')
+        .attr('font-size', '20px');
+
+    const estimate = svg.append('g')
+        .attr('id', 'estimate');
+
+    // append dataset name.
+    data.forEach((element, i) => {
+        estimate
+            .append('text')
+            .attr('id', `estimate-${element.dataset.name}`)
+            .attr('font-weight', 200)
+            .attr('x', (width * CHART_WIDTH) + 10)
+            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
+            .attr('fill', `${colors.dark_teal_heading}`)
+            .text(`${(element.fdr_permutation || element.fdr_analytic).toFixed(3)}`)
+            .attr('font-size', '16px');
+    });
+};
+
+/**
  * Creates legend text and label.
  * @param {Object} svg - svg element
- * @param {Array} data - input data array
- * @param {Array} mDataTypes - data type array
- * @param {Object} scale - scale object
+ * @param {number} height - height of the graph
+ * @param {number} width - width of the graph
  */
-const createLegend = (svg, data, mDataTypes, scale, height, width) => {
+const createLegend = (svg, height, width) => {
     // append legends.
     const legends = svg.append('g')
         .attr('id', 'legends');
 
-    mDataTypes.forEach((dataType, i) => {
+    legend.forEach((el, i) => {
         legends.append('rect')
             .attr('x', width - 160)
             .attr('y', ((height * 0.2) + ((i + 1) * RECTANGLE_DIMENSIONS)))
             .attr('width', RECTANGLE_DIMENSIONS)
             .attr('height', RECTANGLE_DIMENSIONS)
             .attr('stroke', 'none')
-            .attr('fill', `${scale(dataType)}`);
+            .attr('fill', `${el.color}`);
     });
 
     // append legend text.
     const legendText = svg.append('g')
         .attr('id', 'legend-text');
 
-    mDataTypes.forEach((dataType, i) => {
+    legend.forEach((el, i) => {
         legendText
             .append('text')
-            .attr('id', `legend-${dataType}`)
+            .attr('id', `legend-${el}`)
             .attr('x', width - 135)
             .attr('y', ((height * 0.2) + (((i + 1) * RECTANGLE_DIMENSIONS) + (0.75 * RECTANGLE_DIMENSIONS))))
-            .text(`${dataType}`)
-            .attr('font-size', '12px');
+            .text(`${el.text}`)
+            .attr('font-size', '12px')
+            .attr('fill', `${colors.dark_teal_heading}`);
     });
 };
 
@@ -317,8 +359,6 @@ const createLegend = (svg, data, mDataTypes, scale, height, width) => {
 const createForestPlot = (margin, height, width, data) => {
     // get all the data types available in the data.
     const mDataTypes = getAllDataTypes(data);
-    // create a color scale with mDataTypes.
-    const colorScale = d3.scaleOrdinal().domain(mDataTypes).range(forest_colors);
     // creating the svg canvas.
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin });
     // min and max.
@@ -334,21 +374,22 @@ const createForestPlot = (margin, height, width, data) => {
     // create horizontal lines for the plot.
     createHorizontalLines(svg, xScale, data, height);
     // create the circles for the plot.
-    createCircles(svg, xScale, circleScale, data, colorScale, height);
+    createCircles(svg, xScale, circleScale, data, height);
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data, height);
     // append estimate as text to the svg.
-    appendEstimateText(svg, data, height, width);
+    appendFdrText(svg, data, height, width);
     // create legend.
-    createLegend(svg, data, mDataTypes, colorScale, height, width);
+    createLegend(svg, height, width);
 };
 
 /**
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ height, width, margin, data }) => {
+    console.log(data);
     // calculate the height based on the data size.
     const updatedHeight = data.length * 50 - margin.top - margin.bottom;
 
