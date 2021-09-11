@@ -22,8 +22,8 @@ const dataTypeMaping = {
 
 // legend variable.
 const legend = [
-    { text: 'FDR < 0.05 and ρ > 0.7', color: `${colors.dark_pink_highlight}` },
-    { text: 'FDR > 0.05 and ρ < 0.7', color: `${colors.light_pink}` },
+    { text: 'FDR < 0.05 and r > 0.7', color: `${colors.dark_pink_highlight}` },
+    { text: 'FDR > 0.05 and r < 0.7', color: `${colors.light_pink}` },
 ];
 
 // margin for the svg element.
