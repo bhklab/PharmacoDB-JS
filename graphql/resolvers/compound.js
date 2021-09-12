@@ -212,7 +212,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         }
 
         // execute the query.
-        const compounds = await query;
+        const compounds = await query.orderBy('fda_status', 'desc');
 
         // return the transformed data.
         return transformCompounds(compounds);
