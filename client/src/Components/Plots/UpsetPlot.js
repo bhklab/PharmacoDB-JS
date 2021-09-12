@@ -8,6 +8,7 @@ import Loading from '../UtilComponents/Loading';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
+
 // canvas id.
 const CANVAS_ID = 'upsetplot-canvas';
 

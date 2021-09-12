@@ -8,6 +8,10 @@ import StyledWrapper from '../../../styles/utils';
 import BarPlot from '../../Plots/BarPlot';
 import Loading from '../../UtilComponents/Loading';
 
+// links for pubchem and dtc.
+const PUBCHEM_LINK = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
+const DTC_LINK = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+
 const table_columns = [
   {
     Header: 'Name',
@@ -25,7 +29,12 @@ const table_columns = [
   {
     Header: 'PubChem',
     accessor: 'pubchem',
-    Cell: (row) => (<a href={`https://pubchem.ncbi.nlm.nih.gov/compound/${row.value}`}>{row.value}</a>),
+    Cell: (row) => (<a href={`${PUBCHEM_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+  },
+  {
+    Header: 'Chembl',
+    accessor: 'chembl',
+    Cell: (row) => (<a href={`${DTC_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
   {
     Header: 'FDA Status',
@@ -43,7 +52,7 @@ const getTableData = (data) => {
     table_data = data.compounds.map((value) => {
       const { name, annotation, id } = value;
       const {
-        smiles, inchikey, pubchem, fda_status,
+        smiles, inchikey, pubchem, fda_status, chembl
       } = annotation;
       return {
         id,
@@ -52,6 +61,7 @@ const getTableData = (data) => {
         inchikey,
         pubchem,
         fda_status,
+        chembl
       };
     });
   }
