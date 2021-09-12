@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
+import createToolTip from '../../utils/toolTip';
 
 // data length and multiplier variables.
 const ADDITIONAL = 2;
@@ -15,6 +16,9 @@ const RECTANGLE_DIMENSIONS = 20;
 
 // canvas id.
 const CANVAS_ID = 'forestplot-canvas';
+
+// tooltip ID.
+const TOOLTIP_ID = 'forestplot-tooltip';
 
 // data type mapping variable.
 const mDataTypeMaping = {
@@ -101,6 +105,43 @@ const calculateMinMax = (data) => {
     }
 };
 
+
+/**
+ * mouseover event for horizontal line as well as the circle.
+ * @param {Object} event 
+ * @param {Object} element 
+ */
+const mouseOverEvent = (event, element) => {
+    // make the visibility of the tool tip to visible.
+    const toolTip = d3.select('#tooltip')
+        .style('visibility', 'visible')
+        .style('left', `${event.pageX + 10}px`)
+        .style('top', `${event.pageY + 10}px`)
+        .style('color', `${colors.black}`)
+        .style('background-color', `${colors.white}`);
+
+    // append text.
+    const fdr = element.fdr_permutation || element.fdr_analytic;
+    const pc = element.upper_permutation || element.upper_analytic;
+    const text = fdr < 0.05 && pc > 0.70 ? 'Strong Biomarker' : 'Weak Biomarker';
+
+    toolTip.
+        append('text')
+        .attr('id', 'tooltiptext')
+        .text(text);
+};
+
+/**
+ * mouseout event handler for horizontal line as well as the circle.
+ */
+const mouseOutEvent = () => {
+    // make visibility hidden.
+    d3.select('#tooltip')
+        .style('visibility', 'hidden');
+    // remove all the divs with id tooltiptext.
+    d3.selectAll('#tooltiptext').remove();
+};
+
 /**
  * @returns - d3 linear scale for circles.
  * mapped the min and max values to a range.
@@ -182,14 +223,12 @@ const createHorizontalLines = (svg, scale, data, height) => {
             .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('x2', scale(element.upper_permutation || element.upper_analytic))
             .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .on('mouseover', function () {
-                console.log('hey');
-                d3.select(`#horizontal-line-${element.dataset.name}`).append("svg:title").text("Your tooltip info");
+            .on('mouseover', (event) => {
+                mouseOverEvent(event, element);
             })
-            .on('mousemove', function () {
-                console.log('hey1');
-                d3.select(`#horizontal-line-${element.dataset.name}`).append("svg:title").text("Your tooltip info");
-            });
+            .on('mouseout', () => {
+                mouseOutEvent();
+            })
     })
 
 };
@@ -215,7 +254,13 @@ const createCircles = (svg, xScale, circleScale, data, height) => {
             .attr('cx', xScale(element.estimate))
             .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
-            .attr('fill', (fdr < 0.05 && pc > 0.70) ? `${colors.dark_pink_highlight}` : `${colors.light_pink}`);
+            .attr('fill', (fdr < 0.05 && pc > 0.70) ? `${colors.dark_pink_highlight}` : `${colors.light_pink}`)
+            .on('mouseover', (event) => {
+                mouseOverEvent(event, element);
+            })
+            .on('mouseout', () => {
+                mouseOutEvent();
+            });
     });
 };
 
@@ -480,6 +525,9 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
 
     useEffect(() => {
+        // create tooltip.
+        createToolTip(`${TOOLTIP_ID}`);
+
         // get all the data types available in the data.
         const mDataTypes = getAllDataTypes(updatedData);
 
@@ -510,7 +558,8 @@ const ForestPlot = ({ height, width, margin, data }) => {
                     }}
                 />
             </div>
-            <div id="forestplot" />
+            <div id='forestplot' />
+            <div id='forestplot-tooltip' />
         </>
 
     );
