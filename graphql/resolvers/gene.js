@@ -63,17 +63,25 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+
         // query to grab the genes.
         let query = knex.select().from('gene');
+
         // add a join to grab the gene annotations in case it's queried by the user.
         if (listOfFields.includes('annotation')) query = query.join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
+
         // if the user has not queried to get all the genes, 
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
+
         // execute the query.
-        const genes = await query;
+        const genes = await query
+            .whereNot('name', 'like', '%AFFX%')
+            .orderBy('symbol', 'desc');
+
+        // return the transformed query.
         return transformGene(genes);
     } catch (err) {
         console.log(err);
