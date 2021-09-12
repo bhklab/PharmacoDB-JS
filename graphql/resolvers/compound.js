@@ -10,9 +10,17 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  * @returns {number} - compound id
  */
 const getIdBasedOnCompound = async (compound) => {
-    const compoundId = await knex.select('compound.id')
-        .from('compound')
-        .where('name', compound);
+    // compound id.
+    let compoundId = '';
+
+    // if compound is passed, query the db else return an Error.
+    if (compound) {
+        compoundId = await knex.select('compound.id')
+            .from('compound')
+            .where('name', compound);
+    } else {
+        return Error('Please provide a valid compound name!!');
+    }
 
     // returns the compound id.
     return compoundId[0].id;

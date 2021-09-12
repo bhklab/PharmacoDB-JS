@@ -10,10 +10,18 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  * @returns {number} - gene id
  */
 const getIdBasedOnGene = async (gene) => {
-    const geneId = await knex.select('gene.id')
-        .from('gene')
-        .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
-        .where('symbol', gene);
+    // gene id variable
+    let geneId = '';
+
+    // if gene is passed, query the db else return an Error.
+    if (gene) {
+        geneId = await knex.select('gene.id')
+            .from('gene')
+            .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
+            .where('symbol', gene);
+    } else {
+        return Error('Please provide a valid gene name!!');
+    }
 
     // returns the gene id
     return geneId[0].id;
@@ -63,17 +71,25 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+
         // query to grab the genes.
         let query = knex.select().from('gene');
+
         // add a join to grab the gene annotations in case it's queried by the user.
         if (listOfFields.includes('annotation')) query = query.join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
+
         // if the user has not queried to get all the genes, 
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
         }
+
         // execute the query.
-        const genes = await query;
+        const genes = await query
+            .whereNot('name', 'like', '%AFFX%')
+            .orderBy('symbol', 'desc');
+
+        // return the transformed query.
         return transformGene(genes);
     } catch (err) {
         console.log(err);
