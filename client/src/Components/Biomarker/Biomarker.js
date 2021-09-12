@@ -182,10 +182,13 @@ const Biomarker = (props) => {
                 <StyledIndivPage >
                     <div className='heading'>
                         <span className='title' style={{ fontSize: '2vw' }}>
-                            {
-                                // Object.values(params).map(el => TitleCase(el)).join(' + ')
-                                `Association of ${TitleCase(compound)} and ${TitleCase(gene)} in ${TitleCase(tissue)} tissue`
-                            }
+                            <span> Association of </span>
+                            <span className='link'> {`${TitleCase(compound)}`} </span>
+                            <span> and </span>
+                            <span className='link'> {`${TitleCase(gene)}`} </span>
+                            <span> in </span>
+                            <span className='link'> {`${TitleCase(tissue)}`} </span>
+                            <span> tissue </span>
                         </span>
                     </div>
                     <div className='wrapper'>
