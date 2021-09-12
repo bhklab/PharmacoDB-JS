@@ -14,6 +14,7 @@ const getCompoundsQuery = gql`
         smiles
         inchikey
         pubchem
+        chembl
         fda_status
       }
     }
@@ -37,6 +38,7 @@ const getCompoundQuery = gql`
           inchikey
           pubchem
           fda_status
+          chembl
         }
       }
       synonyms {
