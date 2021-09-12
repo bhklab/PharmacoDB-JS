@@ -10,10 +10,18 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
  * @returns {number} - gene id
  */
 const getIdBasedOnGene = async (gene) => {
-    const geneId = await knex.select('gene.id')
-        .from('gene')
-        .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
-        .where('symbol', gene);
+    // gene id variable
+    let geneId = '';
+
+    // if gene is passed, query the db else return an Error.
+    if (gene) {
+        geneId = await knex.select('gene.id')
+            .from('gene')
+            .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
+            .where('symbol', gene);
+    } else {
+        return Error('Please provide a valid gene name!!');
+    }
 
     // returns the gene id
     return geneId[0].id;
