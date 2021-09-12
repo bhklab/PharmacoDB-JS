@@ -32,6 +32,7 @@ const table_columns = [
  */
 const getTableData = (data) => {
   let table_data = [];
+  // create updated data.
   if (data) {
     table_data = data.genes.map((value) => {
       const { name, annotation, id } = value;
@@ -40,14 +41,16 @@ const getTableData = (data) => {
         id,
         // name: symbol ? symbol : name,
         name: name,
-        symbol: symbol ? symbol : "N/A",
+        symbol: symbol || "N/A",
         ensg,
         gene_seq_start,
         gene_seq_end,
       };
     });
   }
-  table_data.sort((a, b) => a.name.localeCompare(b.name));
+  // sorting the data based on the symbol.
+  table_data.sort((a, b) => a.symbol.toUpperCase().localeCompare(b.symbol.toUpperCase()));
+
   return table_data;
 };
 
