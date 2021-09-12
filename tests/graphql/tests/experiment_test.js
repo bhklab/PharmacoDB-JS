@@ -46,7 +46,7 @@ const test = (server) => {
                 expect(compound.annotation).to.be.an('object');
                 expect(compound.annotation).to.have.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
                 // checks correct format of fda_status (database contains 0s or 1s)
-                expect(compound.annotation.fda_status).to.be.oneOf(['Approved', 'Not Approved']);
+                expect(compound.annotation.fda_status).to.be.oneOf(['Approved', 'NA']);
                 // checks if all profiles are present
                 expect(profile).to.have.all.keys('HS', 'Einf', 'EC50', 'AAC', 'IC50', 'DSS1', 'DSS2', 'DSS3');
                 // checks the list of dose response
