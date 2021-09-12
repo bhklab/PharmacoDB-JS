@@ -124,7 +124,7 @@ const transformExperiments = data => {
                     id: compound_id,
                     name: compound_name,
                     annotation: {
-                        fda_status: fda_status ? 'Approved' : 'Not Approved',
+                        fda_status: fda_status ? 'Approved' : 'NA',
                         smiles,
                         inchikey,
                         pubchem
@@ -192,13 +192,13 @@ const experiments = async (args, context, info) => {
                 .from('experiment');
 
             if (compoundId || compoundName) {
-                subquery = subquery.where(compoundId ? {'experiment.compound_id': compoundId} : {'compound.name': compoundName});
+                subquery = subquery.where(compoundId ? { 'experiment.compound_id': compoundId } : { 'compound.name': compoundName });
             }
             if (cellLineId || cellLineName) {
-                subquery.where(cellLineId ? { 'experiment.cell_id': cellLineId } : {'cell.name': cellLineName});
+                subquery.where(cellLineId ? { 'experiment.cell_id': cellLineId } : { 'cell.name': cellLineName });
             }
             if (tissueId || tissueName) {
-                subquery.where(tissueId ? { 'experiment.tissue_id': tissueId } : {'tissue.name': tissueName});
+                subquery.where(tissueId ? { 'experiment.tissue_id': tissueId } : { 'tissue.name': tissueName });
             }
 
             subtypes.forEach(subtype => {

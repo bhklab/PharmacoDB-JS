@@ -12,19 +12,20 @@ import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
 import ManhattanPlot from '../Plots/ManhattanPlot';
+import Loading from '../UtilComponents/Loading';
 
 // side links.
 const SIDE_LINKS = [
-    { label: 'Gene Information', name: 'gene_info' },
-    { label: 'Compound Information', name: 'compound_info' },
     { label: 'Forest Plot', name: 'forest_plot' },
     { label: 'Manhattan Plot', name: 'manhattan_plot' },
+    { label: 'Gene Information', name: 'gene_info' },
+    { label: 'Compound Information', name: 'compound_info' },
 ];
 
 // gene information columns.
 const GENE_INFO_COLUMNS = [
     {
-        Header: 'Gene Codes for Target of Compound | Yes/No',
+        Header: 'Gene Status as Drug Target',
         accessor: 'target',
     },
     {
@@ -119,7 +120,7 @@ const Biomarker = (props) => {
     const [finalGeneCompoundTissueDatasetData, setGeneCompoundTissueDatasetData] = useState([]);
 
     // A section to display on the page
-    const [display, setDisplay] = useState('gene_info');
+    const [display, setDisplay] = useState('forest_plot');
 
     /**
      * @param {String} link
@@ -180,23 +181,43 @@ const Biomarker = (props) => {
             <StyledWrapper>
                 <StyledIndivPage >
                     <div className='heading'>
-                        <span className='title'>
-                            {
-                                Object.values(params).map(el => TitleCase(el)).join(' + ')
-                            }
+                        <span className='title' style={{ fontSize: '2vw' }}>
+                            <span> Association of </span>
+                            <span className='link'> {`${TitleCase(compound)}`} </span>
+                            <span> and </span>
+                            <span className='link'> {`${TitleCase(gene)}`} </span>
+                            <span> in </span>
+                            <span className='link'> {`${TitleCase(tissue)}`} </span>
+                            <span> tissue </span>
                         </span>
                     </div>
                     <div className='wrapper'>
                         <StyledSidebarList>
                             {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
                         </StyledSidebarList>
-                        <div className="container">
-                            <div className="content">
+                        <div className='container'>
+                            <div className='content'>
+                                {
+                                    finalGeneCompoundTissueDatasetData.length > 0
+                                        ? (
+                                            display === 'forest_plot' &&
+                                            <Element className='section' name='forest_plot'>
+                                                <ForestPlot data={finalGeneCompoundTissueDatasetData} />
+                                            </Element>
+                                        )
+                                        : <Loading />
+                                }
+                                {
+                                    display === 'manhattan_plot' &&
+                                    <Element className='section' name='manhattan_plot'>
+                                        <ManhattanPlot />
+                                    </Element>
+                                }
                                 {
                                     display === 'gene_info' &&
                                     <Element
-                                        className="section"
-                                        name="gene_information"
+                                        className='section'
+                                        name='gene_information'
                                     >
                                         <div className='section-title'>Gene Information</div>
                                         <Table
@@ -209,8 +230,8 @@ const Biomarker = (props) => {
                                 {
                                     display === 'compound_info' &&
                                     <Element
-                                        className="section"
-                                        name="compound_information"
+                                        className='section'
+                                        name='compound_information'
                                     >
                                         <div className='section-title'>Compound Information</div>
                                         <Table
@@ -218,18 +239,6 @@ const Biomarker = (props) => {
                                             data={transformedCompoundData}
                                             disablePagination
                                         />
-                                    </Element>
-                                }
-                                {
-                                    display === 'forest_plot' &&
-                                    <Element className="section" name="forest_plot">
-                                        <ForestPlot data={finalGeneCompoundTissueDatasetData} />
-                                    </Element>
-                                }
-                                {
-                                    display === 'manhattan_plot' &&
-                                    <Element className="section" name="manhattan_plot">
-                                        <ManhattanPlot />
                                     </Element>
                                 }
                             </div>
