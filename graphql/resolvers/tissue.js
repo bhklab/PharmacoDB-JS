@@ -10,9 +10,16 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  * @returns {number} - tissue id
  */
 const getIdBasedOnTissue = async (tissue) => {
-    const tissueId = await knex.select('tissue.id')
-        .from('tissue')
-        .where('name', tissue);
+    let tissueId = '';
+
+    // if tissue is passed, query the db else return an Error.
+    if (tissue) {
+        tissueId = await knex.select('tissue.id')
+            .from('tissue')
+            .where('name', tissue);
+    } else {
+        return Error('Please provide a valid tissue name!!');
+    }
 
     // returns the tissue id.
     return tissueId[0].id;

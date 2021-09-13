@@ -10,6 +10,7 @@ const StyledIndivPage = styled.div`
     justify-content: space-between;
     align-items: center;
     color: ${colors.dark_teal_heading};
+
     .title {
       color: ${colors.dark_pink_highlight};
       font-size: clamp(32px, calc(2vw + 10px), 44px);
@@ -19,7 +20,11 @@ const StyledIndivPage = styled.div`
       margin-bottom: 20px;
       white-space: normal;
       line-height: 40px;
+      .link {
+        color: ${colors.dark_teal_heading};
+      }
     }
+
     .attributes {
       min-width: 200px;
       margin-left: 10px;
@@ -30,7 +35,8 @@ const StyledIndivPage = styled.div`
         color: ${colors.dark_pink_highlight};
       }
     }
-  }
+
+  };
 
   .wrapper {
     width: 100%;

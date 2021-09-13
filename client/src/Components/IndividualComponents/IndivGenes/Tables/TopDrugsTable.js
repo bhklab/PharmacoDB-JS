@@ -10,7 +10,7 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const parseTableData = (data, gene) => {
     let tableData = [];
-    if(typeof data !== 'undefined'){
+    if (typeof data !== 'undefined') {
         let filtered = data.filter(item => !!item.pvalue_analytic);
         tableData = filtered.map(item => ({
             gene_id: gene.id,
@@ -65,25 +65,25 @@ const TopDrugsTable = (props) => {
             accessor: 'correlation',
             Cell: (item) => item.value.toFixed(2),
             sortType: 'basic',
-            sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
+            sortMethod: (a, b) => parseFloat(a) - parseFloat(b)
         },
         {
             Header: `Analytic P Value`,
             accessor: 'pvalue_analytic',
             Cell: (item) => item.value.toExponential(2),
             sortType: 'basic',
-            sortMethod: (a, b) => parseFloat(a)-parseFloat(b)
+            sortMethod: (a, b) => parseFloat(a) - parseFloat(b)
         },
         {
             Header: `Permutation P Value`,
             accessor: 'permutation_pvalue',
-            Cell: (item) => item.value? item.value.toExponential(2): 'N/A',
+            Cell: (item) => item.value ? item.value.toExponential(2) : 'N/A',
             sortType: 'basic',
         },
         {
             Header: `Significant by Permutation Test`,
             accessor: 'significant_permutation',
-            Cell: (item) => item.value ? item.value: 'N/A',
+            Cell: (item) => item.value ? item.value : 'N/A',
             sortType: 'basic',
         }
     ];
@@ -94,6 +94,7 @@ const TopDrugsTable = (props) => {
     const { loading } = useQuery(getGeneCompoundTissueDatasetQuery, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
+            console.log(data);
             setTableData(parseTableData(data.gene_compound_tissue_dataset, gene));
         },
         onError: (err) => {
@@ -102,30 +103,30 @@ const TopDrugsTable = (props) => {
         }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                tableData.length > 0 &&
-                <React.Fragment>
-                    <h4>
-                        <p align="center">
-                            { `Top compounds associated with response to ${gene.annotation.symbol}` }
-                        </p>
-                    </h4>
-                    <div className='download-button'>
-                        <DownloadButton
-                            label='CSV'
-                            data={tableData}
-                            mode='csv'
-                            filename={`${gene.annotation.symbol} - top compounds`}
-                        />
-                    </div>
-                    <Table columns={columns} data={tableData} />
-                </React.Fragment>
+                    :
+                    error ? <Error />
+                        :
+                        tableData.length > 0 &&
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    {`Top compounds associated with response to ${gene.annotation.symbol}`}
+                                </p>
+                            </h4>
+                            <div className='download-button'>
+                                <DownloadButton
+                                    label='CSV'
+                                    data={tableData}
+                                    mode='csv'
+                                    filename={`${gene.annotation.symbol} - top compounds`}
+                                />
+                            </div>
+                            <Table columns={columns} data={tableData} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );

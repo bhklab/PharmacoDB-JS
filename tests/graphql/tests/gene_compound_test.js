@@ -73,7 +73,7 @@ const testGeneCompoundData = (res, done) => {
         expect(compound.annotation).to.be.an('object');
         expect(compound.annotation).to.have.all.keys('smiles', 'inchikey', 'pubchem', 'fda_status');
         // checks correct format of fda_status (database contains 0s or 1s)
-        expect(compound.annotation.fda_status).to.be.oneOf(['Approved', 'Not Approved']);
+        expect(compound.annotation.fda_status).to.be.oneOf(['Approved', 'NA']);
     });
 
     return done();
