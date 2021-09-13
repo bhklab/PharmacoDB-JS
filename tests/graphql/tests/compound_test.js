@@ -64,7 +64,7 @@ const test = (server) => {
                 expect(smiles).to.be.string;
                 expect(inchikey).to.be.string;
                 expect(pubchem).to.be.string;
-                expect(fda_status).to.be.oneOf(['Approved', 'Not Approved']);
+                expect(fda_status).to.be.oneOf(['Approved', 'NA']);
 
                 const { synonyms, targets } = compound;
 

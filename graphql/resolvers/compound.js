@@ -10,9 +10,17 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  * @returns {number} - compound id
  */
 const getIdBasedOnCompound = async (compound) => {
-    const compoundId = await knex.select('compound.id')
-        .from('compound')
-        .where('name', compound);
+    // compound id.
+    let compoundId = '';
+
+    // if compound is passed, query the db else return an Error.
+    if (compound) {
+        compoundId = await knex.select('compound.id')
+            .from('compound')
+            .where('name', compound);
+    } else {
+        return Error('Please provide a valid compound name!!');
+    }
 
     // returns the compound id.
     return compoundId[0].id;
@@ -72,6 +80,7 @@ const transformCompounds = data => {
             inchikey,
             pubchem,
             fda_status,
+            chembl_id,
             dataset_id,
             dataset_name,
         } = compound;
@@ -94,7 +103,8 @@ const transformCompounds = data => {
                 smiles: returnList['smiles'].join(', '),
                 inchikey: returnList['inchikey'].join(', '),
                 pubchem: pubchem,
-                fda_status: transformFdaStatus(fda_status)
+                fda_status: transformFdaStatus(fda_status),
+                chembl: chembl_id,
             },
             dataset: {
                 id: dataset_id,
@@ -193,7 +203,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         // add dataset detail to the list of knex columns to select.
         if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
         // add compound annotation to the list of knex columns to select.
-        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey');
+        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id');
 
         // query to get the data for all the compounds.
         let query = knex.select(...selectFields).from('compound as c');
@@ -210,7 +220,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         }
 
         // execute the query.
-        const compounds = await query;
+        const compounds = await query.orderBy('fda_status', 'desc');
 
         // return the transformed data.
         return transformCompounds(compounds);

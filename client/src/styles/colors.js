@@ -15,4 +15,5 @@ export default {
   white_smoke: '#E8e8e8',
   pale_tint: '#F2F9F8',
   silver: '#C0C0C0',
+  light_pink: '#fbf5f6',
 };

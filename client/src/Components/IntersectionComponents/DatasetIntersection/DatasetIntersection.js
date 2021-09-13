@@ -35,7 +35,7 @@ const parseCellLineData = (data) => {
 };
 
 /**
- * 
+ *
  * @param {Object} data - input data.
  * @param {Array} subsets - list of all the subsets.
  */
@@ -72,7 +72,7 @@ const createUpsetPlotData = (data, subsets) => {
 };
 
 /**
- * 
+ *
  * @param {Object} data - data for the venn diagram.
  */
 const createVennDiagramData = (data) => {
@@ -96,7 +96,7 @@ const createVennDiagramData = (data) => {
 };
 
 /**
- * 
+ *
  * @param {Array | string} datasets - array or string of datasets.
  * @returns {Array} - an array of datasets in the upper case.
  */
@@ -106,9 +106,9 @@ const createDatasetArray = (datasets) => (
 
 
 /**
- * 
- * @param {Array} datasets 
- * @param {Array} keys 
+ *
+ * @param {Array} datasets
+ * @param {Array} keys
  */
 const createUpdatedDatasetArray = (datasets, keys) => {
     let data = [];
@@ -122,11 +122,11 @@ const createUpdatedDatasetArray = (datasets, keys) => {
 };
 
 /**
- * 
- * @param {boolean} cellDataLoading 
- * @param {boolean} datasetDataLoading 
- * @param {Object} parsedCellData 
- * @param {Array} updatedDatasets 
+ *
+ * @param {boolean} cellDataLoading
+ * @param {boolean} datasetDataLoading
+ * @param {Object} parsedCellData
+ * @param {Array} updatedDatasets
  */
 const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn = false) => {
     const datasetString = updatedDatasets.join(' + ');
@@ -143,7 +143,8 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
     } else {
         return (
             <>
-                <h2>{datasetString}</h2>
+                {/*<h2>{datasetString}</h2>*/}
+                <h2>List of Datasets</h2>
                 <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
             </>
         )
@@ -181,7 +182,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
             const datasetSubSets = createAllSubsets(updatedDatasetArray);
             const subSetCells = createUpsetPlotData(parsedCells, datasetSubSets);
 
-            // update the state to include a dataset list and 
+            // update the state to include a dataset list and
             setDatasets(updatedDatasetArray);
             setParsedCellData(subSetCells);
 

@@ -11,12 +11,11 @@ import Loading from '../../UtilComponents/Loading';
 
 const tableColumns = [
   {
-    Header: 'Id',
-    accessor: 'id',
-  },
-  {
     Header: 'Name',
     accessor: 'name',
+    center: true,
+    rowSpan: 2,
+    width: 50,
     Cell: (row) => (<Link to={`/tissues/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
@@ -124,7 +123,7 @@ const renderComponent = (tissueQueryLoading, cellLineQueryLoading, cellLineQuery
       <h2 className="new-section"> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
       <PieChart data={pieData} />
       <h2 className="new-section"> List of Tissues </h2>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} center={true} />
     </>
   );
 };
