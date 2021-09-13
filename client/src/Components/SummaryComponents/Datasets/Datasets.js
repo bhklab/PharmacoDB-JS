@@ -16,6 +16,7 @@ const table_columns = [
     Header: 'Name',
     accessor: 'name',
     center: true,
+    rowSpan: 2,
     Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
