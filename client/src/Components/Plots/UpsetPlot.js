@@ -135,7 +135,7 @@ const appendRectangles = (svg, data, scale, height) => {
 };
 
 /**
- * 
+ *
  * @param {Object} svg - svg canvas object.
  * @param {Array} datasets - array of the datasets.
  * @param {number} height - height of svg canvas.
@@ -272,12 +272,12 @@ const createUpsetPlot = (data, datasets, type) => {
  *  <UpsetPlot/>
  * )
  */
-const UpsetPlot = ({ data, datasets }) => {
+const UpsetPlot = ({ data, datasets, type}) => {
     useEffect(() => {
         // remove the alrady existing upset plot.
         d3.select(`#${CANVAS_ID}`).remove();
         // create upset plot.
-        createUpsetPlot(data, datasets);
+        createUpsetPlot(data, datasets, type);
     })
     return (
         <UpsetPlotStyle>
