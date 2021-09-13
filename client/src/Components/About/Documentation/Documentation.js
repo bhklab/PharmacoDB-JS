@@ -21,7 +21,6 @@ import StyledWrapper from '../../../styles/utils';
 const Documentation = () => (
     <Layout page="documentation">
         <StyledWrapper>
-            <ScrollToTop smooth />
             <DocDescription/>
         </StyledWrapper>
     </Layout>

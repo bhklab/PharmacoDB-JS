@@ -11,12 +11,10 @@ import DatasetIntersection from '../../IntersectionComponents/DatasetIntersectio
 // an array with the columns of dataset table.
 const table_columns = [
   {
-    Header: 'Id',
-    accessor: 'id',
-  },
-  {
     Header: 'Name',
     accessor: 'name',
+    center: true,
+    rowSpan: 2,
     Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
@@ -36,11 +34,11 @@ const renderComponent = (loading, error, columns, data) => {
     return <p> Error! </p>;
   }
   return (
-    <>
-      <DatasetIntersection />
-      <h2>Dataset names</h2>
-      <Table columns={columns} data={data} />
-    </>
+      <>
+        <DatasetIntersection />
+        <h2>Dataset names</h2>
+        <Table columns={columns} data={data} />
+      </>
   );
 };
 
@@ -53,19 +51,19 @@ const renderComponent = (loading, error, columns, data) => {
  * returns (
  *   <Datasets/>
  * )
-*/
+ */
 const Datasets = () => {
   const { loading, error, data } = useQuery(getDatasetsQuery);
   const columns = React.useMemo(() => table_columns, []);
   const dataset_data = React.useMemo(() => (data ? data.datasets : []), [data]);
   return (
-    <Layout page="datasets">
-      <StyledWrapper>
-        {
-          renderComponent(loading, error, columns, dataset_data)
-        }
-      </StyledWrapper>
-    </Layout>
+      <Layout page="datasets">
+        <StyledWrapper>
+          {
+            renderComponent(loading, error, columns, dataset_data)
+          }
+        </StyledWrapper>
+      </Layout>
   );
 };
 
