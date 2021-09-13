@@ -94,7 +94,7 @@ const renderComponent = (loading, error, columns, data) => {
       <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
       <h2 className="new-section">List of Compounds</h2>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} defaultSort={[{id: 'fda_status'}]}/>
     </>
   );
 };
