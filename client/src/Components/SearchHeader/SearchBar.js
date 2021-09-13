@@ -11,24 +11,12 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
+import defaultOptions from './SearchDefaultOptions'
 
 /** CONSTANTS */
 // input must be greater than this length to
 // display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
-
-// default options for the search.
-const DEFAULT_OPTIONS = [{
-  label: 'default_options',
-  options: [
-    { value: 'cell', label: 'cell' }, { value: 'cells', label: 'cells' },
-    { value: 'cell line', label: 'cell line' }, { value: 'cell lines', label: 'cell lines' },
-    { value: 'tissue', label: 'tissue' }, { value: 'tissues', label: 'tissues' },
-    { value: 'drug', label: 'drug' }, { value: 'drugs', label: 'drugs' },
-    { value: 'gene', label: 'gene' }, { value: 'genes', label: 'genes' },
-    { value: 'dataset', label: 'dataset' }, { value: 'datasets', label: 'datasets' },
-  ],
-}];
 
 // placeholders for react-select
 const placeholders = [
@@ -95,9 +83,10 @@ const formatGroupLabel = (data) => (
  */
 const SearchBar = (props) => {
   const { onClick } = props;
+
   /** SETTING STATE */
   // all options available - sent to react-select
-  const [options, setOptions] = useState(DEFAULT_OPTIONS);
+  const [options, setOptions] = useState(defaultOptions);
 
   // entirety of data
   const [data, setData] = useState({
@@ -161,16 +150,21 @@ const SearchBar = (props) => {
   const handleKeyDown = (event) => {
     const { history } = props;
     const { selected } = selectState;
+    let queryParams = '/';
+
     if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
-      let queryParams = '/';
-      if (selected.length === 1) {
-        queryParams = `/${selected[0].type}/${selected[0].value}`;
+      const { type, value, label } = selected[0];
+      if (selected.length === 1 && selected && label === value) {
+        queryParams = `/${type}`;
+      } else if (selected.length === 1 && selected) {
+        queryParams = `/${type}/${value}`;
       } else {
         // TODO: multiple queries
         for (let i = 1; i < selected.length; i += 1) {
           queryParams = queryParams.concat();
         }
       }
+
       // calls callback to hide popup in searchheader
       onClick(false);
 
@@ -222,7 +216,7 @@ const SearchBar = (props) => {
 
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
-  const compoundsData = useQuery(getCompoundsQuery).data;
+  // const compoundsData = useQuery(getCompoundsQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
   const cellsData = useQuery(getCellLinesQuery).data;
   const datasetsData = useQuery(getDatasetsQuery).data;
@@ -233,19 +227,19 @@ const SearchBar = (props) => {
   useEffect(() => {
     setData({
       ...data,
-      compounds: compoundsData ? compoundsData.compounds : [],
+      // compounds: compoundsData ? compoundsData.compounds : [],
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
       datasets: datasetsData ? datasetsData.datasets : [],
       dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
     });
     setDataLoaded({
-      compounds: !!compoundsData,
+      // compounds: !!compoundsData,
       tissues: !!tissuesData,
       cell_lines: !!cellsData,
       datasets: !!datasetsData,
     });
-  }, [compoundsData, tissuesData, cellsData, datasetsData]);
+  }, [tissuesData, cellsData, datasetsData]);
 
   useEffect(() => {
     // if all values of loaded are true
