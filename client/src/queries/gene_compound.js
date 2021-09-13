@@ -40,7 +40,7 @@ const getGeneCompoundDatasetQuery = gql`
  */
 const getGeneCompoundTissueDatasetQuery = gql`
     query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int, $tissueId: Int, $geneName: String, $compoundName: String, $tissueName: String) {
-        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, geneName: $geneName, compoundName: $compoundName, tissueName: $tissueName, all: true) {
+        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, geneName: $geneName, compoundName: $compoundName, tissueName: $tissueName, all: false) {
             ${geneCompound}
             dataset {
                 id
@@ -59,7 +59,9 @@ const getGeneCompoundTissueDatasetQuery = gql`
             estimate
             pvalue_analytic
             pvalue_permutation
-            significant_permutation,
+            significant_permutation
+            fdr_analytic
+            fdr_permutation
             sens_stat
             mDataType
             n
@@ -67,7 +69,38 @@ const getGeneCompoundTissueDatasetQuery = gql`
     }
 `;
 
+/**
+ * Query used to get data for the Manhattan plot on Biomarker page.
+ * @param compoundId/compoundName - identifier for the compound.
+ * @param tissueId/tissueName = identifier for the tissue.
+ * mDataType is specified as "rna" to filter the experiment data rna data type. 
+ */
+const getManhattanPlotDataQuery = gql`
+    query getManhattanPlotDataQuery($compoundId: Int, $tissueId: Int, $compoundName: String, $tissueName: String) {
+        gene_compound_tissue_dataset(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: "rna", all: true) {
+            gene {
+                id
+                name
+                annotation {
+                    symbol
+                    chr
+                    gene_seq_start
+                    gene_seq_end
+                }
+            }
+            dataset {
+                id
+                name
+            }
+            fdr_analytic
+            fdr_permutation
+            mDataType
+        }
+    }
+`;
+
 export {
     getGeneCompoundDatasetQuery,
-    getGeneCompoundTissueDatasetQuery
+    getGeneCompoundTissueDatasetQuery,
+    getManhattanPlotDataQuery
 };

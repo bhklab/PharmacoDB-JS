@@ -76,7 +76,7 @@ const CiteUsDescription = () => (
          <a href="https://zenodo.org/record/1027721#.YTIuMdNKj0o" target="_blank"> Zenodo DOI</a> to specify the version of the data used in your study (see all available DOIs below):
         <ul>
           <li>
-            PharmacoDB-1.1.0 and PharmacoDB-1.0.0 share the same data (see Version 2) - <a href="https://zenodo.org/record/1038045" target="_blank">10.5281/zenodo.1038045</a>
+            PharmacoDB-1.1.0 and PharmacoDB-1.0.0 share the same data (see Version 2 in Zenodo page) - <a href="https://zenodo.org/record/1038045" target="_blank">10.5281/zenodo.1038045</a>
           </li>
         </ul>
       </span>

@@ -10,7 +10,7 @@ import Loading from '../../UtilComponents/Loading';
 
 // links for pubchem and dtc.
 const PUBCHEM_LINK = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
-const DTC_LINK = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+const CHEMBL_LINK = 'https://www.ebi.ac.uk/chembl/compound_report_card/';
 
 const table_columns = [
   {
@@ -34,7 +34,7 @@ const table_columns = [
   {
     Header: 'Chembl',
     accessor: 'chembl',
-    Cell: (row) => (<a href={`${DTC_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+    Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
   {
     Header: 'FDA Status',
@@ -94,7 +94,7 @@ const renderComponent = (loading, error, columns, data) => {
       <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
       <h2 className="new-section">List of Compounds</h2>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} defaultSort={[{id: 'fda_status'}]}/>
     </>
   );
 };

@@ -11,8 +11,8 @@ import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
-import ManhattanPlot from '../Plots/ManhattanPlot';
 import Loading from '../UtilComponents/Loading';
+import ManhattanPlotContainer from './ManhattanPlotContainer';
 
 // side links.
 const SIDE_LINKS = [
@@ -154,7 +154,6 @@ const Biomarker = (props) => {
         data: geneCompoundTissueDatasetQueryData,
     } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
 
-
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
     const geneInfoColumns = React.useMemo(() => GENE_INFO_COLUMNS, []);
@@ -209,8 +208,8 @@ const Biomarker = (props) => {
                                 }
                                 {
                                     display === 'manhattan_plot' &&
-                                    <Element className='section' name='manhattan_plot'>
-                                        <ManhattanPlot />
+                                    <Element className="section" name="manhattan_plot">
+                                        <ManhattanPlotContainer compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                                 {

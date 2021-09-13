@@ -181,8 +181,8 @@ const IndivCompounds = (props) => {
                         <div className='heading'>
                             <StyledIndivPageTitle smalltxt={data.compound.name.length > 30}>{data.compound.name}</StyledIndivPageTitle>
                             <span className='attributes'>
-                                <span>FDA Approval Status:</span>
-                                <span className={`value ${data.compound.annotation.fda_status === 'Approved' ? 'highlight' : 'regular'}`}>
+                                <span>FDA Approval Status: </span>
+                                <span className='regular'>
                                     {data.compound.annotation.fda_status}
                                 </span>
                             </span>

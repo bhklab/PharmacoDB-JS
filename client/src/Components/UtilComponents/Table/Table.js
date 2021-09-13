@@ -34,12 +34,12 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 };
 
 /**
- * 
+ *
  * @param {Array} columns - an array of table columns.
  * @param {Array} data - an array of data for the table.
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
  */
-const Table = ({ columns, data, disablePagination = false }) => {
+const Table = ({ columns, data, disablePagination = false, defaultSort }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -60,7 +60,7 @@ const Table = ({ columns, data, disablePagination = false }) => {
   } = useTable({
     columns,
     data,
-    initialState: { pageIndex: 0 },
+    initialState: { pageIndex: 0, sortBy: defaultSort ? defaultSort : [] },
   },
     useGlobalFilter,
     useSortBy,
@@ -70,7 +70,7 @@ const Table = ({ columns, data, disablePagination = false }) => {
    * Function to format and render table rows.
    * Handles merging of cells with an identical value.
    * In order for the merge to work, the values need to be sorted.
-   * @returns rows to be rendered 
+   * @returns rows to be rendered
    */
   const renderRows = () => {
     // Get all the columns that are marked as merged
@@ -95,9 +95,9 @@ const Table = ({ columns, data, disablePagination = false }) => {
               (cell) => {
                 let rowSpan = 0;
                 /**
-                 * If a column is marked as merged, 
+                 * If a column is marked as merged,
                  *  1. Find the values to be merged.
-                 *  2. Set the rowSpan to the number of occurences of the merged value. 
+                 *  2. Set the rowSpan to the number of occurences of the merged value.
                  *  3. Set the rendered property as true (rendered only once)
                  */
                 if(cell.column.merged){
@@ -109,12 +109,12 @@ const Table = ({ columns, data, disablePagination = false }) => {
                       merged.rendered = true;
                     }
                   }else{
-                    rowSpan = 1;
+                    rowSpan = cell.column.rowSpan ? cell.column.rowSpan : 1;
                   }
                 }else{
-                  rowSpan = 1
+                  rowSpan = cell.column.rowSpan ? cell.column.rowSpan : 1;
                 }
-                return rowSpan > 0 ? 
+                return rowSpan > 0 ?
                 <td className={cell.column.center ? 'center' : ''}{...cell.getCellProps()} rowSpan={rowSpan}>
                   {cell.render('Cell')}
                 </td>
@@ -170,7 +170,12 @@ const Table = ({ columns, data, disablePagination = false }) => {
                 headerGroup.headers.map((column) => (
                   // Add the sorting props to control sorting. For this example
                   // we can add them into the header props
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}
+                      {...column.getHeaderProps({
+                        style: { width: '60' },
+                      })}
+                      colSpan={column.rowSpan ? column.rowSpan: 1}
+                      >
                     {column.render('Header')}
                     {/* Add a sort direction indicator */}
                     <span>
@@ -230,6 +235,7 @@ Table.propTypes = {
   columns: PropTypes.arrayOf(Object).isRequired,
   data: PropTypes.arrayOf(Object).isRequired,
   disablePagination: PropTypes.bool,
+  defaultSort: PropTypes.arrayOf(Object)
 };
 
 Table.defaultProps = {
