@@ -129,36 +129,27 @@ const DrawUpsetPlot = (props) => {
     } = props;
 
     const [selectedType, setSelectedType] = useState('Cell line');
-    // const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
 
-    // preformats the data and creates selection options for datasets and profiles
-    // const formattedData = useMemo(() => formatCellData(data), [data]);
-    // const [profileOptions, datasetOptions] = useMemo(() => generateOptions(data), [data]);
     const dataTypeOptions = [
         { value: 'cell', label: 'Cell Line' },
         { value: 'compound', label: 'Compound' },
         { value: 'tissue', label: 'Tissue' }
     ]
-    // updates the plot every time user selects new profile or dataset
-    // useEffect(() => {
-    //     const values = runDataAnalysis(formattedData, selectedDataset);
-    //     setPlotData(generateRenderData(cellLine, values, selectedDataset));
-    // }, [selectedDataset]);
 
     return (
         <div className="plot">
             <h2>List of Datasets</h2>
-            <StyledSelectorContainer className="single">
-                <div className="selector-container">
-                    <div className='label'>Type:</div>
-                    <Select
-                        className='selector'
-                        defaultValue={{ value: selectedType, label: selectedType }}
-                        options={dataTypeOptions}
-                        onChange={(e) => setSelectedType(e.label)}
-                    />
-                </div>
-            </StyledSelectorContainer>
+            {/*<StyledSelectorContainer className="single">*/}
+            {/*    <div className="selector-container">*/}
+            {/*        <div className='label'>Type:</div>*/}
+            {/*        <Select*/}
+            {/*            className='selector'*/}
+            {/*            defaultValue={{ value: selectedType, label: selectedType }}*/}
+            {/*            options={dataTypeOptions}*/}
+            {/*            onChange={(e) => setSelectedType(e.label)}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</StyledSelectorContainer>*/}
             <UpsetPlot data={props.data} datasets={props.datasets} type={selectedType}/>
         </div>
     );

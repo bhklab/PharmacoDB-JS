@@ -11,7 +11,7 @@ const CIRCLE_RADIUS = 8;
 
 // canvas id.
 const CANVAS_ID = 'upsetplot-canvas';
-
+const TABLE_CANVAS_ID = 'table-canvas';
 // styling the upset plot.
 const UpsetPlotStyle = styled.div`
     width: 800px;
@@ -155,6 +155,13 @@ const circleAxis = (svg, datasets, height) => {
 };
 
 /**
+ * create table for list of types
+ */
+function makeTable(svg, names, tableId) {
+    console.log("List:" ,names);
+}
+
+/**
  * creates the heatmap circles for the upset plot.
  * @param {Object} svg - svg canavas object.
  * @param {Object} data - input data object.
@@ -191,7 +198,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style("cursor", "default");
                 })
                 .on('click', function () {
-                    console.log("circle",data[dataKeys[i]].values);
+                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot');
                 });
         }
 
@@ -214,7 +221,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 d3.select(this).style("cursor", "default");
             })
             .on('click', function () {
-                console.log("line",data[dataKeys[i]].values);
+                makeTable(svg, data[dataKeys[i]].values, "upsetplot");
             });
     }
 };
@@ -229,6 +236,8 @@ const createUpsetPlot = (data, datasets, type) => {
     const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
     const height = 700 - margin.top - margin.bottom;
 
+    const tableHeight = 400;
+    const tableWidth = 800;
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
     // sorted data.
@@ -243,7 +252,7 @@ const createUpsetPlot = (data, datasets, type) => {
     const sortedDataLength = Object.keys(sortedData).length;
 
     // svg canvas.
-    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID })
+    const svg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID });
 
     // create scale for x axis.
     const scaleXAxis = xScale(0, sortedDataLength, width);
