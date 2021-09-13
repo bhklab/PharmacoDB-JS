@@ -9,7 +9,6 @@ import { getTissuesQuery } from '../../queries/tissue';
 import { getCellLinesQuery } from '../../queries/cell';
 import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
-
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 
@@ -17,6 +16,19 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 // input must be greater than this length to
 // display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
+
+// default options for the search.
+const DEFAULT_OPTIONS = [{
+  label: 'default_options',
+  options: [
+    { value: 'cell', label: 'cell' }, { value: 'cells', label: 'cells' },
+    { value: 'cell line', label: 'cell line' }, { value: 'cell lines', label: 'cell lines' },
+    { value: 'tissue', label: 'tissue' }, { value: 'tissues', label: 'tissues' },
+    { value: 'drug', label: 'drug' }, { value: 'drugs', label: 'drugs' },
+    { value: 'gene', label: 'gene' }, { value: 'genes', label: 'genes' },
+    { value: 'dataset', label: 'dataset' }, { value: 'datasets', label: 'datasets' },
+  ],
+}];
 
 // placeholders for react-select
 const placeholders = [
@@ -85,7 +97,7 @@ const SearchBar = (props) => {
   const { onClick } = props;
   /** SETTING STATE */
   // all options available - sent to react-select
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(DEFAULT_OPTIONS);
 
   // entirety of data
   const [data, setData] = useState({
@@ -256,7 +268,7 @@ const SearchBar = (props) => {
       <Select
         isMulti
         filterOption={customFilterOption}
-        options={options}
+        options={(options)}
         components={{
           // MenuList: (props) => (<MenuList {...props} />),
           Option: CustomOption,
