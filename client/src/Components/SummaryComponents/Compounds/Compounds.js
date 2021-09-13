@@ -32,7 +32,7 @@ const table_columns = [
     Cell: (row) => (<a href={`${PUBCHEM_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
   {
-    Header: 'Chembl',
+    Header: 'ChEMBL',
     accessor: 'chembl',
     Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
@@ -94,7 +94,7 @@ const renderComponent = (loading, error, columns, data) => {
       <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
       <h2 className="new-section">List of Compounds</h2>
-      <Table columns={columns} data={data} defaultSort={[{id: 'fda_status'}]}/>
+      <Table columns={columns} data={data} defaultSort={[{ id: 'fda_status' }]} />
     </>
   );
 };
