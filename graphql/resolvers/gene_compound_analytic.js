@@ -176,7 +176,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
 
     // grab the ids of each data type if data type is passed in the parameters
-    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId : null;
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId ? geneId : null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
     tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId;
 
