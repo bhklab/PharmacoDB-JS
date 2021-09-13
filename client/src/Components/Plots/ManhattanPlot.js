@@ -31,7 +31,7 @@ const ManhattanPlot = (props) => {
             zeroline: false,
             showticklabels: true,
             range: xRange,
-            // tickangle: -90,
+            tickangle: -90,
             tickmode: "array",
             tickvals: xLabelValues.values,
             ticktext: xLabelValues.labels,
