@@ -152,7 +152,7 @@ const Biomarker = (props) => {
         loading: geneCompoundTissueDatasetDataLoading,
         error: geneCompoundTissueDatasetDataError,
         data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { compoundName: compound, tissueName: tissue } });
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
 
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
