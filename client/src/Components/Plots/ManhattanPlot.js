@@ -60,7 +60,6 @@ const ManhattanPlot = (props) => {
     const [traces, setTraces] = useState([]);
 
     useEffect(() => {
-        console.log(data);
         let plotData = [];
         
         plotData.push({

@@ -4,6 +4,7 @@ import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
+import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
@@ -146,6 +147,12 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
+    const {
+        loading: geneCompoundTissueDatasetDataLoading,
+        error: geneCompoundTissueDatasetDataError,
+        data: geneCompoundTissueDatasetQueryData,
+    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { compoundName: compound, tissueName: tissue } });
+
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
     const geneInfoColumns = React.useMemo(() => GENE_INFO_COLUMNS, []);
@@ -153,7 +160,7 @@ const Biomarker = (props) => {
     // setting the state on load of compound data.
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
-        if (compoundQueryData && geneQueryData) {
+        if (compoundQueryData && geneQueryData && geneCompoundTissueDatasetQueryData) {
             setTransformedCompoundData(
                 transformCompoundTableData(compoundQueryData.singleCompound)
             );
@@ -163,8 +170,9 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
+            setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
         }
-    }, [compoundQueryData, geneQueryData]);
+    }, [compoundQueryData, geneQueryData, geneCompoundTissueDatasetQueryData]);
 
     return (
         <Layout>
