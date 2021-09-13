@@ -82,25 +82,43 @@ const formatSynonymData = (data) => {
  * @param {Array} data annotation data from the compound API
  */
 const formatAnnotationData = (data) => {
-    const modifiedData = [];
+    let annotationData = {
+        identifiers: [],
+        externalLinks: []
+    }
     const pubchem = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
+    const drugTargetCommons = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
     if (data) {
         const { annotation } = data;
         if (annotation.smiles) {
-            modifiedData.push({ db: 'SMILES', identifier: annotation.smiles, });
+            annotationData.identifiers.push({ db: 'SMILES', identifier: annotation.smiles, });
         }
         if (annotation.inchikey) {
-            modifiedData.push({ db: 'InChiKey', identifier: annotation.inchikey, });
+            annotationData.identifiers.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
         if (annotation.pubchem) {
-            modifiedData.push(
+            annotationData.externalLinks.push(
                 {
-                    db: 'PubChem ID',
-                    identifier: <a href= {`${pubchem}${annotation.pubchem}`} target="_blank">{annotation.pubchem}</a>,
+                    db: 'PubChem',
+                    identifier: <a href= {`${pubchem}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">{annotation.pubchem}</a>,
                 });
         }
+        if (annotation.chembl) {
+            annotationData.identifiers.push(
+                {
+                    db: 'Chembl',
+                    identifier: <a href= {`https://www.ebi.ac.uk/chembl/compound_report_card/${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>,
+                }
+            )
+            annotationData.externalLinks.push(
+                {
+                    db: 'Drug Target Commons',
+                    identifier: <a href= {`${drugTargetCommons}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>
+                }
+            )
+        }
     }
-    return modifiedData;
+    return annotationData;
 };
 
 /**
@@ -135,6 +153,7 @@ const IndivCompounds = (props) => {
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
+            console.log(queryData.singleCompound);
             setCompound({
                 data: queryData.singleCompound,
                 loaded: true,
@@ -205,19 +224,32 @@ const IndivCompounds = (props) => {
                                                 />
                                             </Element>
                                             {
-                                                annotationData.length > 0 ?
-                                                    <Element
-                                                        className="section"
-                                                        name="external_ids"
-                                                    >
-                                                        <div className='section-title'>External IDs</div>
+                                                annotationData.identifiers.length > 0 ?
+                                                    <Element className="section" name="external_ids">
+                                                        <div className='section-title'>Identifiers</div>
                                                         <Table
                                                             columns={annotationColumns}
-                                                            data={annotationData}
+                                                            data={annotationData.identifiers}
                                                             disablePagination
+                                                            showHeader={false}
                                                         />
-                                                    </Element> :
+                                                    </Element> 
+                                                    :
                                                     ''
+                                            }
+                                            {
+                                                annotationData.externalLinks.length > 0 ?
+                                                <Element className="section" name="external_ids">
+                                                    <div className='section-title'>External Links</div>
+                                                    <Table
+                                                        columns={annotationColumns}
+                                                        data={annotationData.externalLinks}
+                                                        disablePagination
+                                                        showHeader={false}
+                                                    />
+                                                </Element> 
+                                                :
+                                                ''
                                             }
                                         </React.Fragment>
                                     }
