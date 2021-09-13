@@ -11,7 +11,7 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from './SearchDefaultOptions'
+import defaultOptions from '../../utils/searchDefaultOptions'
 
 /** CONSTANTS */
 // input must be greater than this length to
