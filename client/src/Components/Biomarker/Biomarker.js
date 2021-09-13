@@ -11,6 +11,7 @@ import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
+import Loading from '../UtilComponents/Loading';
 import ManhattanPlotContainer from './ManhattanPlotContainer';
 
 // side links.
@@ -207,8 +208,8 @@ const Biomarker = (props) => {
                                 }
                                 {
                                     display === 'manhattan_plot' &&
-                                    <Element className='section' name='manhattan_plot'>
-                                        <ManhattanPlot />
+                                    <Element className="section" name="manhattan_plot">
+                                        <ManhattanPlotContainer compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                                 {
@@ -237,18 +238,6 @@ const Biomarker = (props) => {
                                             data={transformedCompoundData}
                                             disablePagination
                                         />
-                                    </Element>
-                                }
-                                {
-                                    display === 'forest_plot' &&
-                                    <Element className="section" name="forest_plot">
-                                        <ForestPlot data={finalGeneCompoundTissueDatasetData} />
-                                    </Element>
-                                }
-                                {
-                                    display === 'manhattan_plot' &&
-                                    <Element className="section" name="manhattan_plot">
-                                        <ManhattanPlotContainer compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                             </div>
