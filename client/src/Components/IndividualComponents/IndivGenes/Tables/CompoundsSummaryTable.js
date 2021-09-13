@@ -21,10 +21,9 @@ const parseTableData = (data, gene) => {
         tableData.numDatasets = datasetIds.length;
         for (const compoundId of compoundIds) {
             let filtered = data.filter(item => item.compound.id === compoundId);
-            let experiments = filtered.map(item => item.n).reduce((a, b) => a + b, 0);
-
             let datasetIds = filtered.map(item => item.dataset.id);
             datasetIds = [...new Set(datasetIds)];
+            let experiments = datasetIds.length;
             let datasets = [];
             for (const datasetId of datasetIds) {
                 let dataset = filtered.find(item => item.dataset.id === datasetId).dataset;
@@ -37,7 +36,7 @@ const parseTableData = (data, gene) => {
                 compound: filtered[0].compound.name,
                 datasets: datasets.map(item => item.name).join(', '),
                 dataset_ids: datasets.map(item => item.id).join(', '),
-                experiments: filtered.length
+                experiments: experiments
             });
         }
         tableData.data.sort((a, b) => b.experiments - a.experiments);

@@ -11,6 +11,10 @@ import logoLight from '../../images/pharmacodb-logo.png';
 import magnifImg from '../../images/magnif-glass.png';
 import closeSearchImg from '../../images/close.png';
 import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../styles/SearchHeaderStyles';
+import colors from '../../styles/colors';
+
+// link to old pharmacodb.
+const OLD_PHARMACODB = 'https://pharmacodb.ca/'; //TODO: Update when we will change the domain.
 
 /**
  * Component for the navigation with links and logo.
@@ -112,7 +116,9 @@ const NavBar = (props) => {
               {dropdownItems(dataLinks)}
             </Dropdown.Menu>
           </Dropdown>
-
+          <a className="header-links link" href={`${OLD_PHARMACODB}`} target='_blank' style={{ color: `${colors.dark_pink_highlight}` }}>
+            PharmacoDB-v1
+          </a>
           {page === 'home' ? null : (
             <StyledSearchButton className="search-button" onClick={handleClick}>
               {isOpen ? (
