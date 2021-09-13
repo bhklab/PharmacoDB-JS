@@ -21,7 +21,8 @@ const plotColors = {
         ['#652e34', '#883e46', '#aa4e58', '#bd6f77'],
         ['#b372ff', '#c18bff', '#cea5ff', '#dcbeff']
     ],
-    default: ['#525252', "#7A7A7A", "#A3A3A3", "#CCCCCC"]
+    default: ['#525252', "#7A7A7A", "#A3A3A3", "#CCCCCC"],
+    unique24: ['#9acd32', '#000080', '#483d8b', '#808000', '#006400', '#8b4513', '#2f4f4f', '#dc143c', '#00ff7f', '#8a2be2', '#00ff00', '#ffff00', '#ffa500', '#ff4500', '#48d1cc', '#8b008b', '#ee82ee', '#ffa07a', '#ff1493', '#f0e68c', '#db7093', '#1e90ff', '#ff00ff', '#00bfff']
 };
 
 export default plotColors;
