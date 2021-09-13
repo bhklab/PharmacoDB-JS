@@ -191,7 +191,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style("cursor", "default");
                 })
                 .on('click', function () {
-                    console.log("circle",data[dataKeys[i]]);
+                    console.log("circle",data[dataKeys[i]].values);
                 });
         }
 
@@ -214,7 +214,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 d3.select(this).style("cursor", "default");
             })
             .on('click', function () {
-                console.log("circle",data[dataKeys[i]]);
+                console.log("line",data[dataKeys[i]].values);
             });
     }
 };
