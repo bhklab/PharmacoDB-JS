@@ -13,12 +13,9 @@ import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContain
 // an array with the columns of dataset table.
 const table_columns = [
   {
-    Header: 'Id',
-    accessor: 'id',
-  },
-  {
     Header: 'Name',
     accessor: 'name',
+    center: true,
     Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
   },
 ];
@@ -38,11 +35,11 @@ const renderComponent = (loading, error, columns, data) => {
     return <p> Error! </p>;
   }
   return (
-    <>
+    <React.Fragment>
       <DatasetIntersection />
       <h2>Dataset names</h2>
-      <Table columns={columns} data={data} />
-    </>
+      <Table columns={columns} data={data} center={true}/>
+    </React.Fragment>
   );
 };
 
