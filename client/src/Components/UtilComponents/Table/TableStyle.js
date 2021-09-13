@@ -25,7 +25,7 @@ const TableStyles = styled.div`
       
       a {
         // color: ${colors.dark_gray_text};
-        color: ${colors.dark_blue};
+        color: ${colors.blue};
         :hover {
             color: ${colors.dark_pink_highlight};
         }
