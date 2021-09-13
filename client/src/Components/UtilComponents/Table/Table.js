@@ -38,8 +38,9 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} columns - an array of table columns.
  * @param {Array} data - an array of data for the table.
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
+ * @param {boolean} showHeader - a boolean value to indicate whether the header is shown. Default is true.
  */
-const Table = ({ columns, data, disablePagination = false, defaultSort }) => {
+const Table = ({ columns, data, disablePagination = false, defaultSort, showHeader= true }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -163,34 +164,37 @@ const Table = ({ columns, data, disablePagination = false, defaultSort }) => {
 
       ) : null}
       <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {
-                headerGroup.headers.map((column) => (
-                  // Add the sorting props to control sorting. For this example
-                  // we can add them into the header props
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}
-                      {...column.getHeaderProps({
-                        style: { width: '60' },
-                      })}
-                      colSpan={column.rowSpan ? column.rowSpan: 1}
-                      >
-                    {column.render('Header')}
-                    {/* Add a sort direction indicator */}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
-                    </span>
-                  </th>
-                ))
-              }
-            </tr>
-          ))}
-        </thead>
+        {
+          showHeader && 
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {
+                  headerGroup.headers.map((column) => (
+                    // Add the sorting props to control sorting. For this example
+                    // we can add them into the header props
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}
+                        {...column.getHeaderProps({
+                          style: { width: '60' },
+                        })}
+                        colSpan={column.rowSpan ? column.rowSpan: 1}
+                        >
+                      {column.render('Header')}
+                      {/* Add a sort direction indicator */}
+                      <span>
+                        {column.isSorted
+                          ? column.isSortedDesc
+                            ? ' 🔽'
+                            : ' 🔼'
+                          : ''}
+                      </span>
+                    </th>
+                  ))
+                }
+              </tr>
+            ))}
+          </thead>
+        }
         <tbody {...getTableBodyProps()}>
           {
             renderRows()
