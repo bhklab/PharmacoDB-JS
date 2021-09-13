@@ -4,14 +4,12 @@ import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
-// import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
 import { StyledIndivPage, StyledSidebarList } from '../../styles/IndivPageStyles';
 import Table from '../UtilComponents/Table/Table';
 import ForestPlot from '../Plots/ForestPlot';
-// import ManhattanPlot from '../Plots/ManhattanPlot';
 import ManhattanPlotContainer from './ManhattanPlotContainer';
 
 // side links.
@@ -148,13 +146,6 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
-    // const {
-    //     loading: geneCompoundTissueDatasetDataLoading,
-    //     error: geneCompoundTissueDatasetDataError,
-    //     data: geneCompoundTissueDatasetQueryData,
-    // } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { compoundName: compound, tissueName: tissue } });
-
-
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
     const geneInfoColumns = React.useMemo(() => GENE_INFO_COLUMNS, []);
@@ -172,7 +163,6 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
-            // setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
         }
     }, [compoundQueryData, geneQueryData]);
 
@@ -230,8 +220,7 @@ const Biomarker = (props) => {
                                 {
                                     display === 'manhattan_plot' &&
                                     <Element className="section" name="manhattan_plot">
-                                        {/* <ManhattanPlot /> */}
-                                        <ManhattanPlotContainer gene={gene} compound={compound} tissue={tissue} />
+                                        <ManhattanPlotContainer compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                             </div>

@@ -173,7 +173,7 @@ const gene_compound_dataset = async (args, context, info) => {
  */
 const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
-    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
+    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
 
     geneId = geneId || geneName ? await getIdBasedOnGene(geneName) : null;
     compoundId = compoundId || await getIdBasedOnCompound(compoundName);

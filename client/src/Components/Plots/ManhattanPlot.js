@@ -1,25 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
+import DownloadButton from '../UtilComponents/DownloadButton';
+import styled from 'styled-components';
+
+const StyledManhattanPlot = styled.div`
+    .download-buttons {
+        display: flex;
+        justify-content: flex-end;
+        .left {
+            margin-right: 5px;
+        }
+    }
+`;
 
 const ManhattanPlot = (props) => {
-    const { data, plotId} = props;
+    const { title, data, xRange, xLabelValues, plotId} = props;
     const layout = {
+        autoresize: true,
+        height: 400,
+        margin: {
+            t: 40,
+            b: 50,
+            l: 65,
+            r: 10,
+        },
         xaxis: {
             title: {
                 text: 'Chromosome'
             },
             zeroline: false,
-            showticklabels: false,
-            range:[0, Math.max(...data.map(item => item.x))]
+            showticklabels: true,
+            range: xRange,
+            tickangle: 90,
+            tickmode: "array",
+            tickvals: xLabelValues.values,
+            ticktext: xLabelValues.labels,
+            tickfont: {
+                size: 11
+            },
+            showgrid: false
         },
         yaxis: {
             title: {
                 text: '-log10(P)'
             },
             zeroline: false,
-            range:[0, Math.max(...data.map(item => item.y)) + 1]
+            range:[0, Math.max(...data.map(item => item.y)) + 0.5]
         },
-        title: 'Manhattan Plot',
+        title: title,
         hovermode: "closest",
     };
     
@@ -33,33 +61,40 @@ const ManhattanPlot = (props) => {
 
     useEffect(() => {
         console.log(data);
-        let xVals = data.map(item => item.x);
-        let plotData = data.map(item => ({
-            x: item.x,
-            y: item.y,
+        let plotData = [];
+        
+        plotData.push({
+            x: data.map(item => item.x),
+            y: data.map(item => item.y),
+            name: '',
             mode: 'markers',
-            type: 'scatter',
-            name: item.chr,
-            text: [`${item.gene.symbol} - ${item.dataset.name} (${item.chr})`],
+            type: 'scattergl',
             marker: {
-                color: item.color,
-                size: 4
+                color: data.map(item => item.color),
+                size: 3
             },
             showlegend: false,
-            hovertemplate: 
+            hoverlabel: {
+                bgcolor: data.map(item => item.color),
+                font: {
+                    size: 11
+                }
+            },
+            hovertemplate: data.map(item => (
                 `Gene: ${item.gene.symbol}<br>` +
                 `Dataset: ${item.dataset.name}<br>` +
-                `${item.fdr}<br>` +
-                `${item.chr} - ${item.gene_seq_start}<br>`
-        }));
+                `Chromosome: ${item.chrLabel}<br>` +
+                `-log10(P): ${item.y.toFixed(2)}`
+            ))
+        });
         plotData.push({
-            x: [Math.min(...xVals), Math.max(...xVals)],
+            x: xRange,
             y: [-Math.log10(0.5), -Math.log10(0.5)],
             mode: 'lines',
+            type: 'scattergl',
             line: {
-                color: '#000000',
-                width: 1,
-                dash: 'dot'
+                color: '#666666',
+                width: 1
             },
             showlegend: false,
             hoverinfo: 'skip',
@@ -68,12 +103,18 @@ const ManhattanPlot = (props) => {
     }, []);
 
     return(
-        <Plot 
-            divId={plotId}
-            data={traces} 
-            layout={layout} 
-            config={config} 
-        />
+        <StyledManhattanPlot>
+            <Plot 
+                divId={plotId}
+                data={traces} 
+                layout={layout} 
+                config={config} 
+            />
+            <div className='download-buttons'>
+                <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
+                <DownloadButton label='PNG' mode='png' filename={title} plotId={plotId} />
+            </div>
+        </StyledManhattanPlot>
     );
 };
 

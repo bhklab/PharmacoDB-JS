@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import ManhattanPlot from '../Plots/ManhattanPlot';
 import { getManhattanPlotDataQuery } from '../../queries/gene_compound';
@@ -8,14 +8,14 @@ import chromosomeInfo from '../../utils/chromosomeInfo.json';
 import plotColors from '../../styles/plot_colors';
 
 const ManhattanPlotContainer = (props) => {
-    const { gene, compound, tissue } = props;
-    const [plotData, setPlotData] = useState([]);
-    const [ready, setReady] = useState(false);
+    const { compound, tissue } = props;
+    const [plotData, setPlotData] = useState({
+        ready: false
+    });
     const { loading, error } = useQuery(getManhattanPlotDataQuery, { 
         variables: { compoundName: compound, tissueName: tissue },
         onCompleted: (data) => {
             setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
-            setReady(true);
         },
         onError: (error) => {
             console.log(error);
@@ -39,28 +39,43 @@ const ManhattanPlotContainer = (props) => {
             .filter(item => item["molecule-name"] !== 'all')
             .map((item, i) => ({
                 name: `chr${item["molecule-name"]}`,
+                label: item["molecule-name"],
                 start: item.value,
+                length: item.value,
                 color: plotColors.unique24[i]
             }));
         let start = 0;
         chromosomes.forEach(chr => {
             let prev = chr.start;
             chr.start = start;
+            chr.end = start + chr.length;
+            chr.labelValue = start + Math.floor(((start + chr.length) - start)/2);
             start += prev + 1
         });
 
+        let chromosomeNames = chromosomes.map(item => item.name);
         let formatted = [];
         parsed.forEach(item => {
-            let chromosome = chromosomes.find(chr => chr.name === item.chr);
-            if(chromosome){
-                item.x = [item.gene_seq_start + chromosome.start];
-                item.y = [-Math.log10(item.fdr)];
+            if(chromosomeNames.includes(item.chr)){
+                let chromosome = chromosomes.find(chr => chr.name === item.chr);
+                item.x = item.gene_seq_start + chromosome.start;
+                item.y = -Math.log10(item.fdr);
                 item.color = chromosome.color;
+                item.chrLabel = chromosome.label;
                 formatted.push(item);
             }
         });
         formatted.sort((a, b) => a.x - b.x);
-        return formatted;
+
+        return {
+            data: formatted,
+            xRange: [0, Math.max(...chromosomes.map(item => item.end))],
+            xLabelValues: {
+                values: chromosomes.map(item => item.labelValue),
+                labels: chromosomes.map(item => item.label)
+            },
+            ready: true
+        };
     };
 
     return(
@@ -70,8 +85,14 @@ const ManhattanPlotContainer = (props) => {
                 :
                 error ? <Error />
                 :
-                ready &&
-                <ManhattanPlot plotId='biomarkerManhattanPlot' data={plotData} />
+                plotData.ready &&
+                <ManhattanPlot 
+                    plotId='biomarkerManhattanPlot' 
+                    title={`${compound} + ${tissue}`}
+                    data={plotData.data} 
+                    xRange={plotData.xRange} 
+                    xLabelValues={plotData.xLabelValues} 
+                />
             }
         </div>
     );
