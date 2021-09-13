@@ -129,17 +129,26 @@ const mouseOverEvent = (event, element) => {
         append('text')
         .attr('id', 'tooltiptext')
         .text(text);
+
+    // show pearson correlation cofficient on mouse over.
+    d3.select(`#estimate-${element.dataset.name}-x1`).attr('visibility', 'visible');
+    d3.select(`#estimate-${element.dataset.name}-x2`).attr('visibility', 'visible');
 };
 
 /**
  * mouseout event handler for horizontal line as well as the circle.
+ * @param {Object} event 
+ * @param {Object} element 
  */
-const mouseOutEvent = () => {
+const mouseOutEvent = (event, element) => {
     // make visibility hidden.
     d3.select('#tooltip')
         .style('visibility', 'hidden');
     // remove all the divs with id tooltiptext.
     d3.selectAll('#tooltiptext').remove();
+    // hide pearson correlation cofficient on mouse over.
+    d3.select(`#estimate-${element.dataset.name}-x1`).attr('visibility', 'hidden');
+    d3.select(`#estimate-${element.dataset.name}-x2`).attr('visibility', 'hidden');
 };
 
 /**
@@ -226,9 +235,9 @@ const createHorizontalLines = (svg, scale, data, height) => {
             .on('mouseover', (event) => {
                 mouseOverEvent(event, element);
             })
-            .on('mouseout', () => {
-                mouseOutEvent();
-            })
+            .on('mouseout', (event) => {
+                mouseOutEvent(event, element);
+            });
     })
 
 };
@@ -258,8 +267,8 @@ const createCircles = (svg, xScale, circleScale, data, height) => {
             .on('mouseover', (event) => {
                 mouseOverEvent(event, element);
             })
-            .on('mouseout', () => {
-                mouseOutEvent();
+            .on('mouseout', (event) => {
+                mouseOutEvent(event, element);
             });
     });
 };
@@ -324,18 +333,7 @@ const appendDatasetName = (svg, data, height) => {
  * @param {Object} svg
  * @param {Array} data - data array.
  */
-const appendEstimateText = (svg, data, height, width) => {
-    // append header (dataset)
-    svg.append('g')
-        .attr('id', 'estimate-header')
-        .append('text')
-        .attr('font-weight', 700)
-        .attr('x', (width * CHART_WIDTH) + 10)
-        .attr('y', -20)
-        .attr('fill', `${colors.dark_teal_heading}`)
-        .text('Estimate')
-        .attr('font-size', '20px');
-
+const appendEstimateText = (svg, data, height, width, scale) => {
     const estimate = svg.append('g')
         .attr('id', 'estimate');
 
@@ -343,16 +341,25 @@ const appendEstimateText = (svg, data, height, width) => {
     data.forEach((element, i) => {
         estimate
             .append('text')
-            .attr('id', `estimate-${element.dataset.name}`)
+            .attr('id', `estimate-${element.dataset.name}-x1`)
             .attr('font-weight', 200)
-            .attr('x', (width * CHART_WIDTH) + 10)
-            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
+            .attr('x', scale(element.lower_permutation || element.lower_analytic) - 15)
+            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`(
-                ${(element.lower_permutation || element.lower_analytic).toFixed(2)}, 
-                ${(element.upper_permutation || element.upper_analytic).toFixed(2)}
-            )`)
-            .attr('font-size', '16px');
+            .text(`${(element.lower_permutation || element.lower_analytic).toFixed(2)}`)
+            .attr('visibility', 'hidden')
+            .attr('font-size', '14px');
+
+        estimate
+            .append('text')
+            .attr('id', `estimate-${element.dataset.name}-x2`)
+            .attr('font-weight', 200)
+            .attr('x', scale(element.upper_permutation || element.upper_analytic) - 15)
+            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
+            .attr('fill', `${colors.dark_teal_heading}`)
+            .text(`${(element.upper_permutation || element.upper_analytic).toFixed(2)}`)
+            .attr('visibility', 'hidden')
+            .attr('font-size', '14px');
     });
 };
 
@@ -495,6 +502,9 @@ const createForestPlot = (margin, heightInput, width, data) => {
 
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
+
+    // append the estimate text along the horizontal lines.
+    appendEstimateText(svg, data, height, width, xScale);
 
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data, height);
