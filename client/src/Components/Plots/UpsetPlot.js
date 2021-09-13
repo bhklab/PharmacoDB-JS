@@ -74,7 +74,7 @@ const xAxis = (svg, scale, height) => svg
     .call(d3.axisBottom(scale).tickSize(0).tickValues(0));
 
 
-const appendTextYAxis = (svg, height) => svg
+const appendTextYAxis = (svg, height, type) => svg
     .append('g')
     .attr('id', 'y-axis-text')
     .attr('transform', `rotate(-90)`)
@@ -83,7 +83,7 @@ const appendTextYAxis = (svg, height) => svg
     .attr('y', 0)
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
-    .text("Number of cell lines");
+    .text("Number of " + `${type}`);
 
 /**
  * append the rectangles to the bar chart (bars)
@@ -95,7 +95,6 @@ const appendTextYAxis = (svg, height) => svg
 const appendRectangles = (svg, data, scale, height) => {
     // get the data object keys.
     const keys = Object.keys(data);
-
     // for each key append rectangle and text.
     const rectangles = svg.append('g')
         .attr('class', 'bar-rectangles');
@@ -174,7 +173,6 @@ const upsetCircle = (svg, data, datasets, length, height) => {
     for (let i = 0; i < length; i++) {
         // get set.
         const set = data[dataKeys[i]];
-
         for (let j = 0; j < datasets.length; j++) {
             // append circles.
             circles.append('circle')
@@ -183,7 +181,18 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 .attr('r', CIRCLE_RADIUS)
                 .attr('cx', i * CIRCLE_RADIUS * 3)
                 .attr('cy', j * CIRCLE_RADIUS * 3)
-                .attr('class', `circle-set-${i}`);
+                .attr('class', `circle-set-${i}`)
+                .on('mouseover', function () {
+                    // change the cursor type.
+                    d3.select(this).style("cursor", "pointer")
+                })
+                .on('mouseout', function () {
+                    // change the cursor to default.
+                    d3.select(this).style("cursor", "default");
+                })
+                .on('click', function () {
+                    console.log("circle",data[dataKeys[i]]);
+                });
         }
 
         // append line to the upset circles.
@@ -195,7 +204,18 @@ const upsetCircle = (svg, data, datasets, length, height) => {
             .attr('y2', datasets.indexOf(set.keys[set.keys.length - 1]) * CIRCLE_RADIUS * 3)
             .style('stroke', `${colors.dark_teal_heading}`)
             .attr('stroke-width', 3)
-            .attr('class', `line-set-${i}`);;
+            .attr('class', `line-set-${i}`)
+            .on('mouseover', function () {
+            // change the cursor type.
+            d3.select(this).style("cursor", "pointer");
+            })
+            .on('mouseout', function () {
+                // change the cursor to default.
+                d3.select(this).style("cursor", "default");
+            })
+            .on('click', function () {
+                console.log("circle",data[dataKeys[i]]);
+            });
     }
 };
 
@@ -204,7 +224,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  * @param {Object} data - input data object.
  * @param {Array} datasets - array of datasets.
  */
-const createUpsetPlot = (data, datasets) => {
+const createUpsetPlot = (data, datasets, type) => {
     // width and height of the SVG canvas.
     const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
     const height = 700 - margin.top - margin.bottom;
@@ -236,7 +256,7 @@ const createUpsetPlot = (data, datasets) => {
     yAxis(svg, scaleYAxis);
 
     // append text to the y axis.
-    appendTextYAxis(svg, height);
+    appendTextYAxis(svg, height, type);
 
     // append rectangle for the bar chart.
     appendRectangles(svg, sortedData, scaleYAxis, height);
@@ -270,6 +290,7 @@ const UpsetPlot = ({ data, datasets }) => {
 UpsetPlot.propTypes = {
     data: PropTypes.object.isRequired,
     datasets: PropTypes.arrayOf(PropTypes.string).isRequired,
+    type: PropTypes.string.isRequired,
 };
 
 export default UpsetPlot;
