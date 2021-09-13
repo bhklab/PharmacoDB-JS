@@ -206,12 +206,14 @@ const SearchBar = (props) => {
       return {
         id: i,
         name: el.toString().replaceAll(',', ' '),
+        __typename: 'dataset_intersection',
       }
     });
-    // remove the first element from the subsets being an empty string.
-    subsets.shift();
 
-    return subsets;
+    // remove the elements with the set of lenght 0 or 1 from the subsets being an empty string.
+    const finalSubsets = subsets.filter(el => el.name.split(' ').length > 1);
+
+    return finalSubsets;
   }
 
   /** DATA LOADING */
