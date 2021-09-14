@@ -2,6 +2,8 @@ const cellLineType = `
     type CellLine {
         """cell line id in the database"""
         id: Int!
+        """cell line uid in the database"""
+        cell_uid: String!
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
@@ -15,6 +17,8 @@ const cellLineDetailType = `
     type CellLineDetail {
         """cell line id in the database"""
         id: Int!
+        """cell line uid in the database"""
+        cell_uid: String!
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
