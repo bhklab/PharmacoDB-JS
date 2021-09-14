@@ -103,6 +103,7 @@ query getSingleTissueCellLines($tissueId: Int!) {
     id
     cell_line {
       id
+      cell_uid
       name
     }
   }
@@ -119,6 +120,7 @@ const getSingleTissueCompoundsQuery = gql`
       id
       compound {
         id
+        uid
         name
       }
       dataset {
