@@ -141,8 +141,8 @@ const IndivCompounds = (props) => {
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
         variables: { 
             compoundUID: params.id,
-            compoundId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
-            compoundName: typeof params.id === 'string' ? params.id : undefined
+            // compoundId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
+            // compoundName: typeof params.id === 'string' ? params.id : undefined
         },
         fetchPolicy: "no-cache",
     });

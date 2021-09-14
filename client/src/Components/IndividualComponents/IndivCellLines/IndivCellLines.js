@@ -124,8 +124,8 @@ const IndivCellLines = (props) => {
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
         variables: { 
           cellUID: params.id,
-          // cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
-          // cellName: typeof params.id === 'string' ? params.id : undefined
+          cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
+          cellName: typeof params.id === 'string' ? params.id : undefined
         },
     });
     // load data from query into state
