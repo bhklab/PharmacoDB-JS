@@ -65,9 +65,11 @@ const CellLineCompound = (props) => {
 
     // query to get the data for the single gene.
     const { loading } = useQuery(getCellLineCompoundExperimentsQuery, {
-        variables: { 
+        variables: {
+            cellLineUID: cell_line, 
             cellLineId: typeof Number(cell_line) === 'number' ? Number(cell_line) : undefined,
             cellLineName: typeof cell_line === 'string' ? cell_line : undefined,
+            compoundUID: compound,
             compoundId: typeof Number(compound) === 'number' ? Number(compound) : undefined,
             compoundName: typeof compound === 'string' ? compound : undefined
         },

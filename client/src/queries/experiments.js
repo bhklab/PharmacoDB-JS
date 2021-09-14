@@ -143,9 +143,11 @@ const getSingleGeneExperimentsQuery = gql`
 
 /**
  * Takes cell line and compound ids/names, and returns all the experiment records that 
- * is perfoemd using the given cell line and compound combination.
+ * is performed using the given cell line and compound combination.
+ * @param { String } cellLineUID
  * @param { Number } cellLineId 
  * @param { String } cellLineName
+ * @param {String} compoundUID
  * @param { Number } compoundId
  * @param { String } compoundName
  * @returns - All the experiments with given cell line and compound combination.

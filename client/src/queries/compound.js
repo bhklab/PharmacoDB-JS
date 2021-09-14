@@ -41,8 +41,8 @@ const getCompoundsQuery = gql`
  * and also providing the target object.
  */
 const getCompoundQuery = gql`
-  query getSingleCompound($compoundId: Int, $compoundName: String) {
-    singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {
+  query getSingleCompound($compoundId: Int, $compoundName: String, $compoundUID: String) {
+    singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName, compoundUID: $compoundUID) {
       compound {
         id
         name

@@ -27,14 +27,17 @@ const GENE_INFO_COLUMNS = [
     {
         Header: 'Gene Status as Drug Target',
         accessor: 'target',
+        center: true
     },
     {
-        Header: 'ENSGID',
+        Header: 'Ensembl Gene ID',
         accessor: 'ensg',
+        center: true
     },
     {
         Header: 'Gene Location',
         accessor: 'location',
+        center: true
     },
 ];
 
