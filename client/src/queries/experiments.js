@@ -44,6 +44,7 @@ const getSingleCellLineExperimentsQuery = gql`
       id
       compound {
         id
+        uid
         name
       }
       tissue {
