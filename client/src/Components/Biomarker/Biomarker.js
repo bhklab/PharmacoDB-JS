@@ -184,7 +184,7 @@ const Biomarker = (props) => {
                             <span> Association of </span>
                             <span className='link'> {`${TitleCase(compound)}`} </span>
                             <span> and </span>
-                            <span className='link'> {`${TitleCase(gene)}`} </span>
+                            <span className='link'> {`${gene.toUpperCase()}`} </span>
                             <span> in </span>
                             <span className='link'> {`${TitleCase(tissue)}`} </span>
                             <span> tissue </span>
