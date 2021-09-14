@@ -1,4 +1,7 @@
 import React from 'react';
+import tissueSearch from '../../../../images/DocumentationImages/tissueSearch.png';
+import homeTissue from '../../../../images/DocumentationImages/homeTissue.PNG';
+import pieChart from '../../../../images/DocumentationImages/pieChart.png';
 import doseImg from '../../../../images/pharmacodb-logo.png'
 
 /**
@@ -16,20 +19,19 @@ const DocTissue = () => {
         <div className='documentation'>
             <div>
                 <p>
-                    Each tissue type included in PharmacoDB has a webpage associated with it. These pages can be accessed
-                    either by searching for a tissue through the search bar, or by clicking on the tissues link at the
-                    bottom of the homepage.
+                    Each tissue type included in PharmacoDB has a webpage associated with it. These pages can be accessed either by searching for a tissue through the search bar, or by clicking on the tissues link at the bottom of the homepage.
                 </p>
-                <img height="50px" alt="dose-response curves" className="dose-img" src={doseImg} title="Lung on search bar or homepage toolbar"/>
+                <img height="auto" width="650px"  alt="Searching Lung on search bar" className="documentation" src={tissueSearch} title="Search tissues" />
                 <p>
-                    Tissues link takes you to a page starting with a pie chart representing the relative percentage of
-                    cell lines per tissue in PharmacoDB. Hovering over each color on the pie chart shows the name of the
-                    tissue associated with that color.
+                    Or
                 </p>
-                <img height="50px" alt="dose-response curves" className="dose-img" src={doseImg} title="Pie chart"/>
+                <img height="auto" width="650px"  alt="Searching Lung on search bar" className="documentation" src={homeTissue} title="Tissues icon" />
                 <p>
-                    The page also includes a table that lists the names of all the tissues included in PharmacoDB.
-                    Clicking on each tissue name takes you to the webpage associated with that tissue.
+                    Tissues link takes you to a page starting with a pie chart representing the relative percentage of cell lines per tissue in PharmacoDB. Hovering over each color on the pie chart shows the name of the tissue associated with that color.
+                </p>
+                <img height="auto" width="650px"  alt="Relative Percentage of cell lines per tissue" className="documentation" src={pieChart} title="Cell lines per tissue" />
+                <p>
+                    The page also includes a table that lists the names of all the tissues included in PharmacoDB. Clicking on each tissue name takes you to the webpage associated with that tissue.
                 </p>
                 <img height="50px" alt="dose-response curves" className="dose-img" src={doseImg} title="List of Tissues on tissue summary page"/>
                 <p>

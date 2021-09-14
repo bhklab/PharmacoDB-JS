@@ -90,6 +90,18 @@ const StyledIndivPage = styled.div`
     font-family: Raleway, sans-serif;
   }
 
+  h6 {
+    text-align: left;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: ${colors.silver};
+    font-size: clamp(12px, calc(1vw + 2px), 15px);;
+  }
+  
+  img {
+    margin-bottom: 25px;
+  }
+
   // full size container when too small
   @media only screen and (max-width: 765px) {
     .heading {
