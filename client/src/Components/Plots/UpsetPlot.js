@@ -157,7 +157,69 @@ const circleAxis = (svg, datasets, height) => {
 /**
  * create table for list of types
  */
-function makeTable(svg, names, tableId) {
+function makeTable(svg, names, tableId,) {
+    // prepare data: divide data into data.len / 3 rows table and each row has 3 columns
+
+    // const tableData = [];
+    // const addElems = names.length % 3;
+    // const names_copy = names.slice(0);
+    // for (let i = 0; i < 3-addElems; i++) {
+    //     names_copy.push(" ");
+    // }
+    // //make multidimensional array of 3
+    // for (let i = 0; i < names.length; i += 3) {
+    //     const temp = []
+    //     for (let j = 0; j < 3; j++) {
+    //         temp.push({"name": names_copy[i+j]})
+    //     }
+    //     tableData.push(temp)
+    // }
+    //
+    // const table = d3.select("#"+tableId).append('table')
+    //     .attr("id", tableId)
+    //     .style("border", "1px solid silver")
+    //     .style("opacity", "0");
+    //
+    // var tbody = table.append("tbody");
+    //
+    // //create table rows
+    // var tr = tbody.selectAll("tr")
+    //     .data(tableData)
+    //     .enter()
+    //     .append("tr")
+    //     .style("border", "1px solid silver");
+    //
+    // // create table cells
+    // var td = tr.selectAll("td")
+    //     .data(function(d) {return d;})
+    //     .enter()
+    //     .append("td")
+    //     .style("font-size", "15px")
+    //     .style("border", "1px solid silver")
+    //     .attr("width", 250)
+    //     .style("padding-top", "5px")
+    //     .html(function(d,i){
+    //         return "<a href=\"" + "/search?q=" + d.name + "\">" + d.name.replaceAll("_", " ") + "</a>"
+    //     });
+    //
+    //
+    // // width and height of the SVG canvas.
+    // const width = 700;
+    // const height = 700 - margin.top - margin.bottom;
+    //
+    // const keys = Object.keys(names);
+    //
+    // // const tableSvg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID });
+    // // tableSvg.remove(CANVAS_ID )
+    // keys.forEach((key, i) => {
+    //     svg.append('circle')
+    //         .attr('cx', 100+i)
+    //         .attr('cy', 800)
+    //         .attr('r', 50)
+    //         .attr('stroke', 'black')
+    //         .attr('fill', '#69a3b2')
+    //         .attr('opacity', 0.1);
+    // })
     console.log("List:" ,names);
 }
 
@@ -198,7 +260,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style("cursor", "default");
                 })
                 .on('click', function () {
-                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot');
+                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot', );
                 });
         }
 
