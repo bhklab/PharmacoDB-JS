@@ -142,7 +142,7 @@ const StyledNavBar = styled.div`
  * Styles for the dropdowns in the navbar component.
  */
 const StyledLinkDropdowns = styled.div`
-    width: ${(props) => (props.page === 'home' ? '30%' : '40%')};
+    width: ${(props) => (props.page === 'home' ? '40%' : '45%')};
     display: flex;
     justify-content: space-around;
     align-items: center;
