@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
-import { getTissuesQuery } from '../../../queries/tissue';
+import { getDatasetsTypesQuery } from '../../../queries/dataset';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
@@ -137,8 +137,13 @@ const DrawUpsetPlot = (props) => {
         { value: 'compound', label: 'Compound' },
     ]
 
-    const { loading: tissueLoading, error: tissueError, data: tissueData } = useQuery(getTissuesQuery);
-    if(!tissueLoading) console.log(data)
+    const { loading: typesLoading, error: typesError, data: types } = useQuery(getDatasetsTypesQuery);
+    if(!typesLoading) {
+        const datasets = types.datasets_types.map(item => item.dataset.name);
+        const datasetSubSets = createAllSubsets(datasets);
+        // const subSetCells = createUpsetPlotData(parsedCells, datasetSubSets);
+        // const subSetCells = createUpsetPlotData(parsedCells, datasetSubSets);
+    }
 
     return (
         <div className="plot">
@@ -202,7 +207,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
     // cell line and dataset data from the APIs.
     const { loading: cellDataLoading, error: cellDataError, data: cellLineData } = useQuery(getCellLinesQuery);
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
-    if(!cellDataLoading) console.log("cell Line data",cellLineData);
+
     // setting the state to grab the updated dataset array and cell line data.
     const [updatedDatasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
@@ -213,7 +218,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
             // array of the datasets from the database and parsed cell line data.
             const datasets = datasetData.datasets.map(dataset => dataset.name);
             const parsedCells = parseCellLineData(cellLineData.cell_lines);
-            console.log("parsed cell",parsedCells)
+
             // update the dataset names according to the names in the database.
             const updatedDatasetArray = createUpdatedDatasetArray(datasetsPropArray, datasets);
 
