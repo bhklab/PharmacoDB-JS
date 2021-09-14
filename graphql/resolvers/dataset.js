@@ -106,43 +106,30 @@ const typeDatasetsQuery = async (type) => {
 };
 
 /**
- * @param {Object} args - arguments for the dataset function.
- * @param {number} args.datasetId - datasetId passed as an argument to the function.
  * @returns {Array} - return an array of Object (defined below).
  *  Object = {
  *      id: 'id of the dataset',
  *      name: 'name of the dataset',
- *      cell_count: 'number of cell lines across the dataset'
- *      tissue_count: 'number of tissues across the dataset'
- *      compound_count: 'number of compounds across the dataset'
- *      experiment_count: 'number of experiments held accross the dataset'
- *      cells_tested (data only for the datasetId): 'a list of all the cell lines that have been tested in the dataset'
- *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
+ *      tissus_tested (grouped by datasets): 'lists of all tissues that have been tested in the datasets'
+ *      cells_tested (grouped by datasets): 'lists of all cell lines that have been tested in the datasets'
+ *      compounds_tested (grouped by datasets): 'lists of all compounds that have been tested in the datasets'
  *  }
  */
+//TODO: Update to return only fields asked on the query
 const datasets_types = async (parent, info) => {
     try {
-        // // extracts list of fields requested by the client
-        // const listOfFields = retrieveFields(info).map(el => el.name);
-        // data returned from the graphql API.
         const returnData = [];
         let tissues, cells, compounds;
         const datasets = await datasetQuery();
-        // if (listOfFields.includes('tissues_tested'))
-            tissues = await typeDatasetsQuery('tissue');
-        // if (listOfFields.includes('cells_tested'))
-            cells = await typeDatasetsQuery('cell');
-        // if (listOfFields.includes('compounds_tested'))
-            compounds = await typeDatasetsQuery('compound');
+        tissues = await typeDatasetsQuery('tissue');
+        cells = await typeDatasetsQuery('cell');
+        compounds = await typeDatasetsQuery('compound');
         datasets.forEach(dataset =>{
             const data = {};
             data['dataset'] = {id: dataset.dataset_id, name: dataset.dataset_name };
-            // if (listOfFields.includes('tissue_tested'))
-                data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
-            // if (listOfFields.includes('cells_tested'))
-                data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
-            // if (listOfFields.includes('compounds_tested'))
-                data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+            data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
+            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
+            data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
             returnData.push(data);
         })
         return returnData;
@@ -243,14 +230,14 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('tissue_tested_count')) data['tissue_tested_count'] = tissue_count.count;
         if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count.count;
         if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count.count;
-        
-        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ 
-            id: value['cell_id'], 
-            cell_uid: value['cell_uid'], 
-            name: value['cell_name'] 
+
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({
+            id: value['cell_id'],
+            cell_uid: value['cell_uid'],
+            name: value['cell_name']
         }));
-        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ 
-            id: value['compound_id'], 
+        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({
+            id: value['compound_id'],
             uid: value['compound_uid'],
             name: value['compound_name']
         }));
