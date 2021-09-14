@@ -9,6 +9,7 @@ const getCompoundsIdNameQuery = gql`
     compounds(all: true) {
       id
       name
+      uid
     }
   }
 `;
@@ -23,12 +24,14 @@ const getCompoundsQuery = gql`
     compounds(all: true) {
       id
       name
+      uid
       annotation {
         smiles
         inchikey
         pubchem
         chembl
         fda_status
+        reactome
       }
     }
   }
@@ -46,12 +49,14 @@ const getCompoundQuery = gql`
       compound {
         id
         name
+        uid
         annotation {
           smiles
           inchikey
           pubchem
           fda_status
           chembl
+          reactome
         }
       }
       synonyms {
