@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { useQuery} from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import { getDatasetsTypesQuery } from '../../../queries/dataset';
 import { getDatasetsQuery } from '../../../queries/dataset';

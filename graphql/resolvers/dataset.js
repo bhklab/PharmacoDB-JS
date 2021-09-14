@@ -76,7 +76,7 @@ const summaryQuery = async (type, datasetId, datasetName) => {
     // query to get the id and name for the type.
     const query = knex
         .select('d.name as dataset_name', 'd.id as dataset_id')
-        .distinct(`e.${type}_id`, `t.name as ${type}_name`)
+        .distinct(`e.${type}_id`, `t.${type}_uid`, `t.name as ${type}_name`)
         .from('experiment as e')
         .join('dataset as d', 'd.id', 'e.dataset_id')
         .join(`${type} as t`, 't.id', `e.${type}_id`);
@@ -244,8 +244,16 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count.count;
         if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count.count;
 
-        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
-        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({
+            id: value['cell_id'],
+            cell_uid: value['cell_uid'],
+            name: value['cell_name']
+        }));
+        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({
+            id: value['compound_id'],
+            uid: value['compound_uid'],
+            name: value['compound_name']
+        }));
         returnData.push(data);
         return returnData;
 
