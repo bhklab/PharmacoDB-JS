@@ -1,5 +1,18 @@
 import { gql } from 'apollo-boost';
 
+
+/**
+ * @returns - ids and names of all the compounds
+ */
+const getCompoundsIdNameQuery = gql`
+  query getAllCompoundsIdName {
+    compounds(all: true) {
+      id
+      name
+    }
+  }
+`;
+
 /**
  * @param {boolean} all - takes a boolean value if to search all the compounds or not.
  * @returns - Query returns the list of compounds with the id and name of the compound
@@ -66,4 +79,5 @@ export {
   getCompoundsQuery,
   getCompoundQuery,
   disableDrug,
+  getCompoundsIdNameQuery,
 };
