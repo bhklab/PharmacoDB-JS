@@ -11,6 +11,7 @@ const getSingleCompoundExperimentsQuery = gql`
       id
       cell_line {
         id
+        cell_uid
         name
         tissue {
           id
@@ -43,6 +44,7 @@ const getSingleCellLineExperimentsQuery = gql`
       id
       compound {
         id
+        uid
         name
       }
       tissue {
@@ -103,6 +105,7 @@ query getSingleTissueCellLines($tissueId: Int!) {
     id
     cell_line {
       id
+      cell_uid
       name
     }
   }
@@ -119,6 +122,7 @@ const getSingleTissueCompoundsQuery = gql`
       id
       compound {
         id
+        uid
         name
       }
       dataset {
@@ -163,10 +167,12 @@ const getCellLineCompoundExperimentsQuery = gql`
     ) {
       cell_line {
         id
+        cell_uid
         name
       }
       compound {
         id
+        uid
         name
       }
       dataset {
@@ -206,10 +212,12 @@ const getTissueCompoundExperimentsQuery = gql`
       }
       cell_line {
         id
+        cell_uid
         name
       }
       compound {
         id
+        uid
         name
       }
       dataset {

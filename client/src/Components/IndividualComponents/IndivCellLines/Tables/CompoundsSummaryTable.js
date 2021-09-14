@@ -11,7 +11,7 @@ const DRUG_SUMMARY_COLUMNS = [
   {
     Header: 'Compounds',
     accessor: 'compound',
-    Cell: (item) => (<Link to={`/compounds/${item.row.original.id}`}>{item.value}</Link>),
+    Cell: (item) => (<Link to={`/compounds/${item.row.original.uid}`}>{item.value}</Link>),
   },
   {
     Header: 'Datasets',
@@ -59,6 +59,7 @@ const generateTableData = (data) => {
         dataset: datasetList.map(item => item.name).join(' '),
         num_experiments: experiments.length,
         id: experiments[0].compound.id,
+        uid: experiments[0].compound.uid,
         datasetList: datasetList
       });
     }
@@ -95,7 +96,7 @@ const CompoundsSummaryTable = (props) => {
         setCSV(parsed.compound.map(item => ({
           cellLineId: cellLine.id,
           cellLineName: cellLine.name,
-          compoundId: item.id,
+          compoundUID: item.uid,
           compound: item.compound,
           dataset: item.dataset,
           numExperiments: item.num_experiments,
