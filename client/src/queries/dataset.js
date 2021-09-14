@@ -73,6 +73,7 @@ const getDatasetCellLinesQuery = gql`
       name,
       cells_tested {
         id
+        cell_uid
         name
       }
     }
@@ -86,6 +87,7 @@ const getDatasetCompoundQuery = gql`
       name,
       compounds_tested {
         id
+        uid
         name
       }
     }
