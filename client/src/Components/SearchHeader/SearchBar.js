@@ -285,27 +285,27 @@ const SearchBar = (props) => {
   }, [tissuesData, cellsData, datasetsData, compoundsData]);
 
   useEffect(() => {
+    setOptions(defaultOptions);
     // if all the data is loaded.
     if (isDataLoaded) {
       // for every datatype, push the options into groups
+      const finalOptions = [];
       Object.keys(data).forEach((d) => {
-        setOptions((prevOptions) => {
-          prevOptions.push({
-            label: d,
-            options: data[d].map((x) => {
-              let returnObject = {};
-              if (x.name) {
-                returnObject = { value: x.id, label: x.name, type: d };
-              }
-              else if (x.annotation.symbol) { // for genes
-                returnObject = { value: x.id, label: x.annotation.symbol, type: d };
-              }
-              return returnObject;
-            }),
-          });
-          return prevOptions;
+        finalOptions.push({
+          label: d,
+          options: data[d].map((x) => {
+            let returnObject = {};
+            if (x.name) {
+              returnObject = { value: x.id, label: x.name, type: d };
+            }
+            else if (x.annotation.symbol) { // for genes
+              returnObject = { value: x.id, label: x.annotation.symbol, type: d };
+            }
+            return returnObject;
+          }),
         });
       });
+      setOptions(finalOptions);
     }
   }, [data]);
 
