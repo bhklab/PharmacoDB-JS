@@ -55,21 +55,19 @@ const ManhattanPlotContainer = (props) => {
         ready: false
     });
 
-    // const { loading, error } = useQuery(getManhattanPlotDataQuery, { 
-    //     variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType },
-    //     onCompleted: (data) => {
-    //         setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
-    //     },
-    //     onError: (error) => {
-    //         console.log(error);
-    //     }
-    // });
-
     // Use lazy query to trigger query upon mDataType selection.
     const [ getData, { loading, error } ] = useLazyQuery(getManhattanPlotDataQuery, {
+        onCompleted: (data) => {
+            setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
 
     useEffect(() => {
         console.log(mDataType);
+        setPlotData({ ready: false }); // reset the plot data every time the mDataType changes.
         getData({ variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType } });
     }, [mDataType]);
 
@@ -148,7 +146,7 @@ const ManhattanPlotContainer = (props) => {
                         plotData.ready &&
                         <ManhattanPlot
                             plotId='biomarkerManhattanPlot'
-                            // title={`${compound} + ${tissue}`}
+                            title={`${compound} + ${tissue}`}
                             data={plotData.data}
                             xRange={plotData.xRange}
                             xLabelValues={plotData.xLabelValues}
