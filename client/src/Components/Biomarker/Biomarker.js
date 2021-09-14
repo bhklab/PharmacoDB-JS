@@ -29,8 +29,9 @@ const GENE_INFO_COLUMNS = [
         accessor: 'target',
     },
     {
-        Header: 'ENSGID',
+        Header: 'Ensembl Gene ID',
         accessor: 'ensg',
+        center: true
     },
     {
         Header: 'Gene Location',

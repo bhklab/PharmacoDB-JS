@@ -1,19 +1,72 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import ManhattanPlot from '../Plots/ManhattanPlot';
 import { getManhattanPlotDataQuery } from '../../queries/gene_compound';
 import Loading from '../UtilComponents/Loading';
 import Error from '../UtilComponents/Error';
 import chromosomeInfo from '../../utils/chromosomeInfo.json';
 import plotColors from '../../styles/plot_colors';
+import colors from '../../styles/colors';
+import styled from 'styled-components';
+import Select from 'react-select';
+
+const StyledManhattanPlotContainer = styled.div`
+    .dropdown-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        .dropdown {
+            width: 140px;
+            font-size: 14px;
+            color: ${colors.dark_teal_heading};
+            .dropdown__control {
+                min-height: 20px;
+                .dropdown__single-value {
+                    color: ${colors.dark_teal_heading};
+                }
+                .dropdown__indicators {
+                    .dropdown__indicator {
+                        padding: 0px;
+                    }
+                }
+            }
+            .dropdown__menu {
+                .dropdown__menu-list {
+                    padding 3px
+                    .dropdown__option {
+                        padding: 3px;
+                    }
+                }
+            }
+        }
+    }
+`;
+
+const mDataTypeOptions = [
+    { label: 'cnv', value: 'cnv' },
+    { label: 'microarray', value: 'rna' },
+    { label: 'rnaseq', value: 'Kallisto_0.46.1.rnaseq' },
+];
 
 const ManhattanPlotContainer = (props) => {
     const { compound, tissue } = props;
+    const [mDataType, setMDataType] = useState('cnv');
     const [plotData, setPlotData] = useState({
         ready: false
     });
-    const { loading, error } = useQuery(getManhattanPlotDataQuery, { 
-        variables: { compoundName: compound, tissueName: tissue },
+
+    // const { loading, error } = useQuery(getManhattanPlotDataQuery, { 
+    //     variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType },
+    //     onCompleted: (data) => {
+    //         setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
+    //     },
+    //     onError: (error) => {
+    //         console.log(error);
+    //     }
+    // });
+
+    // Use lazy query to trigger query upon mDataType selection.
+    const [ getData, { loading, error } ] = useLazyQuery(getManhattanPlotDataQuery, {
         onCompleted: (data) => {
             setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
         },
@@ -21,6 +74,11 @@ const ManhattanPlotContainer = (props) => {
             console.log(error);
         }
     });
+
+    useEffect(() => {
+        console.log(mDataType);
+        getData({ variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType } });
+    }, [mDataType]);
 
     const parsePlotData = (data) => {
         let parsed = data.map(item => ({
@@ -66,7 +124,7 @@ const ManhattanPlotContainer = (props) => {
             }
         });
         formatted.sort((a, b) => a.x - b.x);
-
+        console.log(formatted);
         return {
             data: formatted,
             xRange: [0, Math.max(...chromosomes.map(item => item.end))],
@@ -79,7 +137,16 @@ const ManhattanPlotContainer = (props) => {
     };
 
     return(
-        <div>
+        <StyledManhattanPlotContainer>
+            <div className='dropdown-container'>
+                <Select 
+                    className='dropdown' 
+                    classNamePrefix='dropdown'
+                    options={mDataTypeOptions} 
+                    defaultValue={mDataTypeOptions[0]}
+                    onChange={(e) => setMDataType(e.value)}
+                />
+            </div>
             {
                 loading ? <Loading />
                 :
@@ -94,7 +161,7 @@ const ManhattanPlotContainer = (props) => {
                     xLabelValues={plotData.xLabelValues} 
                 />
             }
-        </div>
+        </StyledManhattanPlotContainer>
     );
 }
 
