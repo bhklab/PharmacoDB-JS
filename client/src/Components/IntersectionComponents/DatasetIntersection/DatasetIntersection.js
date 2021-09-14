@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
+import { getTissuesQuery } from '../../../queries/tissue';
 import { getDatasetsQuery } from '../../../queries/dataset';
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
@@ -136,20 +137,24 @@ const DrawUpsetPlot = (props) => {
         { value: 'tissue', label: 'Tissue' }
     ]
 
+
+    const { loading: tissueLoading, error: tissueError, data: tissueData } = useQuery(getTissuesQuery);
+    if(!tissueLoading) console.log(tissueData)
+
     return (
         <div className="plot">
             <h2>List of Datasets</h2>
-            {/*<StyledSelectorContainer className="single">*/}
-            {/*    <div className="selector-container">*/}
-            {/*        <div className='label'>Type:</div>*/}
-            {/*        <Select*/}
-            {/*            className='selector'*/}
-            {/*            defaultValue={{ value: selectedType, label: selectedType }}*/}
-            {/*            options={dataTypeOptions}*/}
-            {/*            onChange={(e) => setSelectedType(e.label)}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*</StyledSelectorContainer>*/}
+            <StyledSelectorContainer className="single">
+                <div className="selector-container">
+                    <div className='label'>Type:</div>
+                    <Select
+                        className='selector'
+                        defaultValue={{ value: selectedType, label: selectedType }}
+                        options={dataTypeOptions}
+                        onChange={(e) => setSelectedType(e.label)}
+                    />
+                </div>
+            </StyledSelectorContainer>
             <UpsetPlot data={props.data} datasets={props.datasets} type={selectedType}/>
         </div>
     );

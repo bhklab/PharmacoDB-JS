@@ -131,6 +131,9 @@ const appendRectangles = (svg, data, scale, height) => {
                 // change the cursor to default.
                 d3.select(this).style("cursor", "default");
             })
+            .on('click', function () {
+                makeTable(svg, data[key].values, 'upsetplot', );
+            });
     })
 };
 
