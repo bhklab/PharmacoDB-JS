@@ -17,6 +17,12 @@ import Loading from '../../UtilComponents/Loading';
 import { StyledIndivPageTitle, StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
 
+// different external links.
+const PUBCHEM = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
+const DTC = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+const CHEMBL = 'https://www.ebi.ac.uk/chembl/compound_report_card/';
+const REACTOME = 'https://reactome.org/content/detail/R-ALL-';
+
 const SYNONYM_COLUMNS = [
     {
         Header: 'Sources',
@@ -24,12 +30,15 @@ const SYNONYM_COLUMNS = [
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
             return (datasets.map((obj, i) => (
-                obj.id ? (
-                    <span key={i}>
-                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
-                    </span>
-                ) :
-                    (<span key={i}>{obj.name}</span>)
+                obj.id
+                    ? (
+                        <span key={i}>
+                            <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                        </span>
+                    )
+                    : (
+                        <span key={i}>{obj.name}</span>
+                    )
             )
             ));
         }
@@ -86,8 +95,7 @@ const formatAnnotationData = (data) => {
         identifiers: [],
         externalLinks: []
     }
-    const pubchem = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
-    const drugTargetCommons = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+
     if (data) {
         const { annotation } = data;
         if (annotation.smiles) {
@@ -99,20 +107,28 @@ const formatAnnotationData = (data) => {
         if (annotation.pubchem) {
             annotationData.externalLinks.push(
                 {
-                    db: <a href={`${pubchem}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">PubChem</a>,
+                    db: <a href={`${PUBCHEM}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">PubChem</a>,
                     identifier: `${annotation.pubchem}`,
                 });
         }
         if (annotation.chembl) {
             annotationData.externalLinks.push(
                 {
-                    db: <a href={`https://www.ebi.ac.uk/chembl/compound_report_card/${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
+                    db: <a href={`${CHEMBL}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
                     identifier: `${annotation.chembl}`,
                 }
             )
             annotationData.externalLinks.push(
                 {
-                    db: <a href={`${drugTargetCommons}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">Drug Target Commons</a>
+                    db: <a href={`${DTC}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">Drug Target Commons</a>
+                }
+            )
+        }
+        if (annotation.reactome) {
+            annotationData.externalLinks.push(
+                {
+                    db: <a href={`${REACTOME}${annotation.reactome}`} target="_blank" rel="noopener noreferrer">Reactome</a>,
+                    identifier: `${annotation.reactome}`,
                 }
             )
         }
@@ -138,7 +154,7 @@ const IndivCompounds = (props) => {
 
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
-        variables: { 
+        variables: {
             compoundUID: params.id,
             compoundId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
             compoundName: typeof params.id === 'string' ? params.id : undefined
