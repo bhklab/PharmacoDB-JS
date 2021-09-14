@@ -13,7 +13,7 @@ const tableColumns = [
   {
     Header: 'Name',
     accessor: 'name',
-    Cell: (row) => (<Link to={`/cell_lines/${row.row.original.id}`}>{row.value}</Link>),
+    Cell: (row) => (<Link to={`/cell_lines/${row.row.original.cell_uid}`}>{row.value}</Link>),
   },
   {
     Header: 'Tissue',
@@ -29,10 +29,12 @@ const tableColumns = [
 const getTableData = (data) => {
   let tableData = [];
   if (data) {
+    console.log(data);
     tableData = data.cell_lines.map((value) => {
-      const { name, tissue, id } = value;
+      const { name, tissue, id, cell_uid } = value;
       return {
         id,
+        cell_uid,
         name: name.replace(/_/g, ' '),
         tissue: convertToTitleCase(tissue.name),
         tissue_id: tissue.id

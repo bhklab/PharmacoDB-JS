@@ -9,6 +9,8 @@ import createAllSubsets from '../../../utils/createAllSubsets';
 import UpsetPlot from '../../Plots/UpsetPlot';
 import VennDiagram from '../../Plots/VennDiagram';
 import Loading from '../../UtilComponents/Loading';
+import Select from 'react-select';
+import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 
 /**
  * Parses the data and prepare an object for each dataset and all the related types in the dataset.
@@ -121,6 +123,38 @@ const createUpdatedDatasetArray = (datasets, keys) => {
     return data;
 };
 
+const DrawUpsetPlot = (props) => {
+    const {
+        plotId, data, cellLine, title, datasets
+    } = props;
+
+    const [selectedType, setSelectedType] = useState('Cell line');
+
+    const dataTypeOptions = [
+        { value: 'cell', label: 'Cell Line' },
+        { value: 'compound', label: 'Compound' },
+        { value: 'tissue', label: 'Tissue' }
+    ]
+
+    return (
+        <div className="plot">
+            <h2>List of Datasets</h2>
+            {/*<StyledSelectorContainer className="single">*/}
+            {/*    <div className="selector-container">*/}
+            {/*        <div className='label'>Type:</div>*/}
+            {/*        <Select*/}
+            {/*            className='selector'*/}
+            {/*            defaultValue={{ value: selectedType, label: selectedType }}*/}
+            {/*            options={dataTypeOptions}*/}
+            {/*            onChange={(e) => setSelectedType(e.label)}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</StyledSelectorContainer>*/}
+            <UpsetPlot data={props.data} datasets={props.datasets} type={selectedType}/>
+        </div>
+    );
+};
+
 /**
  *
  * @param {boolean} cellDataLoading
@@ -143,9 +177,10 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
     } else {
         return (
             <>
-                {/*<h2>{datasetString}</h2>*/}
-                <h2>List of Datasets</h2>
-                <UpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+                {/*<h2>List of Datasets</h2>*/}
+                {/*<UpsetPlot data={parsedCellData} datasets={updatedDatasets} />*/}
+                <DrawUpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+
             </>
         )
     }
