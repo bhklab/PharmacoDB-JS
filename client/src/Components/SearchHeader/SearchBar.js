@@ -91,7 +91,7 @@ const SearchBar = (props) => {
 
   // entirety of data
   const [data, setData] = useState({
-    genes: [],
+    // genes: [],
     compounds: [],
     tissues: [],
     cell_lines: [],
@@ -99,7 +99,7 @@ const SearchBar = (props) => {
     dataset_intersection: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
-    genes: false,
+    // genes: false,
     compounds: false,
     tissues: false,
     cell_lines: false,
@@ -162,12 +162,31 @@ const SearchBar = (props) => {
         queryParams = `/search?${type}=${datasets}`;
       } else if (selected.length === 1 && selected && label === value) {
         queryParams = `/${type}`;
-      } else if (selected.length === 1 && selected) {
+      } else if (selected.length === 1 && selected && label !== value) {
         queryParams = `/${type}/${value}`;
-      } else {
-        // TODO: multiple queries
-        for (let i = 1; i < selected.length; i += 1) {
-          queryParams = queryParams.concat();
+      } else if (selected.length === 2 && selected && label !== value) {
+        const selectedTypes = selected.map(el => el.type);
+
+        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
+          let tissue, compound = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'tissues') {
+              tissue = el.label;
+            }
+          })
+          queryParams = `/search?compound=${compound}&tissue=${tissue}`
+        } else if (selectedTypes.includes('cell_lines') && selectedTypes.includes('compounds')) {
+          let cell, compound = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'cell_lines') {
+              cell = el.label;
+            }
+          })
+          queryParams = `/search?compound=${compound}&cell_line=${cell}`
         }
       }
 
@@ -232,7 +251,7 @@ const SearchBar = (props) => {
 
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
-  // const compoundsData = useQuery(getCompoundsIdNameQuery).data;
+  const compoundsData = useQuery(getCompoundsIdNameQuery).data;
   // const genesData = useQuery(getGenesIdSymbolQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
   const cellsData = useQuery(getCellLinesQuery).data;
@@ -244,7 +263,7 @@ const SearchBar = (props) => {
   useEffect(() => {
     setData({
       ...data,
-      // compounds: compoundsData ? compoundsData.compounds : [],
+      compounds: compoundsData ? compoundsData.compounds : [],
       // genes: genesData ? genesData.genes : [],
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
@@ -252,13 +271,13 @@ const SearchBar = (props) => {
       dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
     });
     setDataLoaded({
-      // compounds: !!compoundsData,
+      compounds: !!compoundsData,
       // genes: !!genesData,
       tissues: !!tissuesData,
       cell_lines: !!cellsData,
       datasets: !!datasetsData,
     });
-  }, [tissuesData, cellsData, datasetsData]);
+  }, [tissuesData, cellsData, datasetsData, compoundsData]);
 
   useEffect(() => {
     // if all values of loaded are true
