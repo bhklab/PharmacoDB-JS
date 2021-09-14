@@ -99,7 +99,9 @@ const StyledIndivPage = styled.div`
   }
   
   img {
+    margin-top: 25px;
     margin-bottom: 25px;
+    align-items: center;
   }
 
   // full size container when too small
