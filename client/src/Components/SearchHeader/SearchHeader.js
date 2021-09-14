@@ -46,11 +46,11 @@ const SearchHeader = () => {
         <SearchBar onClick={onClick} />
         <span className="example">
           <span> Example: </span>
-          <span> paclitaxel </span>
+          <span> <a className={page === 'home' ? 'home-link' : ''} href='/compounds/PDBC00058'>paclitaxel</a> </span>
           <span> • </span>
-          <span> 22rv1 </span>
+          <span> <a className={page === 'home' ? 'home-link' : ''} href='/cell_lines/22RV1_12_2019'>22rv1</a> </span>
           <span> • </span>
-          <span> mcf7 paclitaxel </span>
+          <span> <a className={page === 'home' ? 'home-link' : ''} href='/search?compound=paclitaxel&cell_line=mcf-7'>mcf7 paclitaxel</a> </span>
         </span>
       </div>
     </StyledSearchHeader>

@@ -31,7 +31,7 @@ const ManhattanPlot = (props) => {
             zeroline: false,
             showticklabels: true,
             range: xRange,
-            // tickangle: -90,
+            tickangle: -90,
             tickmode: "array",
             tickvals: xLabelValues.values,
             ticktext: xLabelValues.labels,
@@ -47,7 +47,6 @@ const ManhattanPlot = (props) => {
             zeroline: false,
             range: [0, Math.max(...data.map(item => item.y)) + 0.5]
         },
-        title: title,
         hovermode: "closest",
     };
 
@@ -70,7 +69,8 @@ const ManhattanPlot = (props) => {
             type: 'scattergl',
             marker: {
                 color: data.map(item => item.color),
-                size: 3
+                size: data.map(item => item.y >= 1.5 ? 8 : item.y >= -Math.log10(0.5) ? 5 : 3),
+                opacity: data.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1)
             },
             showlegend: false,
             hoverlabel: {

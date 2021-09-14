@@ -15,7 +15,7 @@ const RootQuery = `type RootQuery {
         'compoundName' is the name of the compound in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the compound Name
     """
-    compound(compoundId: Int, compoundName: String): CompoundDetail!
+    compound(compoundId: Int, compoundName: String, compoundUID: String): CompoundDetail!
 
 
     """
@@ -32,7 +32,7 @@ const RootQuery = `type RootQuery {
         'cellName' is the name of the cell in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the cell Name
     """
-    cell_line(cellId: Int, cellName: String): CellLineDetail!
+    cell_line(cellId: Int, cellName: String, cellUID: String): CellLineDetail!
 
 
     """

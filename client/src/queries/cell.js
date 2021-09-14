@@ -27,8 +27,8 @@ const getCellLinesQuery = gql`
  * diseases, accessions, and synonym for the cell line in different datasets.
  */
 const getCellLineQuery = gql`
-  query getSingleCellLine($cellId: Int!) {
-    cell_line(cellId: $cellId) {
+  query getSingleCellLine($cellId: Int, $cellName: String, $cellUID: String) {
+    cell_line(cellId: $cellId, cellName: $cellName, cellUID: $cellUID) {
       id
       name
       diseases
