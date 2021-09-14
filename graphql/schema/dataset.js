@@ -44,8 +44,23 @@ const datasetStatsType = `
     }
 `;
 
+
+const datasetsTypesType = `
+    type DatasetsTypes {
+        """name and id of the dataset"""
+        dataset: Generic!
+        """tissue ids and names tested in the dataset"""
+        tissues_tested: [Tissue!]
+        """cell line ids and names tested in the dataset"""
+        cells_tested: [CellLine!]
+        """compound ids and names tested in the dataset"""
+        compounds_tested: [Compound!]
+    }
+`;
+
 module.exports = {
     datasetType,
     datasetDetailType,
     datasetStatsType,
+    datasetsTypesType,
 };

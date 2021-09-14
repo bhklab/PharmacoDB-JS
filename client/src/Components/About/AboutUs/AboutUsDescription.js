@@ -29,6 +29,14 @@ const StyledDescription = styled.div`
             font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
         }
+
+        .caption {
+          text-align: left;
+          margin-top: 15px;
+          margin-bottom: 5px;
+          color: ${colors.silver};
+          font-size: clamp(12px, calc(1vw + 2px), 15px);;
+        }
     }
 
     /* mobile */
@@ -92,39 +100,31 @@ const AboutUsDescription = () => {
           Examples of queries
         </h1>
         <span>
-          <p>Cell lines? Try typing <a id="hide-cl-overlay" href="javaScript:void(0);" onClick={() =>onClick("cell")}>MCF7</a>
+          <p>Cell lines? Try typing <a id="hide-cl-overlay" href="javaScript:void(0);" onClick={() =>onClick("cell")}>MCF-7</a>
             {
               showCell ?
-                <div id="cl-info"  className="about-search">
-                  <p id=" overlay-caption"> Example search for a cell line. </p>
-                </div>
+                  <div className="caption" id=" overlay-caption"> Example search for a cell line. </div>
                 : null
             }
           </p>
           <p>Tissues? Try typing <a id="hide-t-overlay" href="javaScript:void(0);" onClick={() =>onClick("tissue")}>Breast</a>
             {
               showTissue ?
-                <div id="t-info" className="about-search">
-                  <p id=" overlay-caption"> Example search for a tissue.</p>
-                </div>
+                  <div className="caption" id=" overlay-caption"> Example search for a tissue.</div>
                 : null
             }
           </p>
           <p>Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
             {
               showDrug ?
-                  <div id="drugs-info"  className="about-search">
-                    <p id=" overlay-caption"> Example search for a drug. </p>
-                  </div>
+                    <div className="caption" id=" overlay-caption"> Example search for a drug. </div>
                   : null
             }
           </p>
           <p>Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF7 Paclitaxel</a>
             {
               showDDRC ?
-                  <div id="ddrc-info"  className="about-search">
-                    <p id=" overlay-caption"> Example search for a drug dose-response curve. </p>
-                  </div>
+                    <div className="caption" id=" overlay-caption"> Example search for a drug dose-response curve. </div>
                   : null
             }
           </p>

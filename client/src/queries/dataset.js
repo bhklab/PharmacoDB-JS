@@ -94,6 +94,32 @@ const getDatasetCompoundQuery = gql`
   }
 `;
 
+/**
+ * @returns - Query returns the list of datasets with information about how many
+ * cell lines, tissues, experiments and compounds are in those datsets.
+ */
+const getDatasetsTypesQuery = gql`
+  {
+    datasets_types {
+      dataset {
+        id
+        name
+      }
+      tissues_tested {
+        id
+        name
+      }
+      cells_tested {
+        id
+        name
+      }
+      compounds_tested {
+        id
+        name
+      }
+    }
+  }
+`;
 
 export {
   getDatasetStatsQuery,
@@ -102,4 +128,5 @@ export {
   getCellLinesGroupedByDatasetQuery,
   getDatasetCellLinesQuery,
   getDatasetCompoundQuery,
+  getDatasetsTypesQuery,
 };

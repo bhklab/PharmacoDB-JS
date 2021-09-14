@@ -89,6 +89,55 @@ const summaryQuery = async (type, datasetId, datasetName) => {
     return transformObject(datasets);
 };
 
+/**
+ *
+ * @param {string} type - 'cell' or 'compound' or 'tissue'
+ * @return {Array} - returns an array of cells, compounds, or tissues tested or various datasets.
+ */
+const typeDatasetsQuery = async (type) => {
+    // query to get the ids and names for the type and datasets.
+    const query = knex
+        .select('d.id as dataset_id', 'd.name as dataset_name',`t.id as ${type}_id`, `t.name as ${type}_name` )
+        .from(`dataset_${type} as dt`)
+        .join('dataset as d', 'd.id', 'dt.dataset_id')
+        .join(`${type} as t`, 't.id', `dt.${type}_id`);
+    const datasets = await query;
+    return transformObject(datasets);
+};
+
+/**
+ * @returns {Array} - return an array of Object (defined below).
+ *  Object = {
+ *      id: 'id of the dataset',
+ *      name: 'name of the dataset',
+ *      tissus_tested (grouped by datasets): 'lists of all tissues that have been tested in the datasets'
+ *      cells_tested (grouped by datasets): 'lists of all cell lines that have been tested in the datasets'
+ *      compounds_tested (grouped by datasets): 'lists of all compounds that have been tested in the datasets'
+ *  }
+ */
+//TODO: Update to return only fields asked on the query
+const datasets_types = async (parent, info) => {
+    try {
+        const returnData = [];
+        let tissues, cells, compounds;
+        const datasets = await datasetQuery();
+        tissues = await typeDatasetsQuery('tissue');
+        cells = await typeDatasetsQuery('cell');
+        compounds = await typeDatasetsQuery('compound');
+        datasets.forEach(dataset =>{
+            const data = {};
+            data['dataset'] = {id: dataset.dataset_id, name: dataset.dataset_name };
+            data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
+            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
+            data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+            returnData.push(data);
+        })
+        return returnData;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 /**
  * Returns the transformed data for all the datasets in the database.
@@ -182,15 +231,15 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count.count;
         if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count.count;
 
-        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ 
-            id: value['cell_id'], 
-            cell_uid: value['cell_uid'], 
-            name: value['cell_name'] 
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({
+            id: value['cell_id'],
+            cell_uid: value['cell_uid'],
+            name: value['cell_name']
         }));
-        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ 
-            id: value['compound_id'], 
+        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({
+            id: value['compound_id'],
             uid: value['compound_uid'],
-            name: value['compound_name'] 
+            name: value['compound_name']
         }));
         returnData.push(data);
         return returnData;
@@ -317,5 +366,6 @@ module.exports = {
     cell_lines_grouped_by_dataset,
     type_tested_on_dataset_summary,
     typeCountGroupByDataset,
+    datasets_types,
     dataset_stats
 };
