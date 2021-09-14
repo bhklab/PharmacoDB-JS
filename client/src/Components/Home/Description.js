@@ -66,14 +66,14 @@ const Description = () => (
         Mine multiple cancer
         {' '}
         <br />
-        pharmacogenomic datasets.
+        pharmacogenomic datasets
       </h1>
       <span>
         PharmacoDB allows scientists to search across publicly
         available datasets to find instances where a drug or cell
         line of interest has been profiled, and to view and compare
         the dose-response data for a specific cell line - drug pair
-        from any of the studies included in the database.
+        from any of the studies included in the database
       </span>
     </div>
     <img alt="dose-response curves" className="dose-img" src={doseImg} />
