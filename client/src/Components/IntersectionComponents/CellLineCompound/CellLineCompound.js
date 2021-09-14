@@ -74,6 +74,7 @@ const CellLineCompound = (props) => {
             compoundName: typeof compound === 'string' ? compound : undefined
         },
         onCompleted: (data) => { 
+            console.log(data);
             parseExperiments(data.experiments, true);
         },
         onError: (err) => {

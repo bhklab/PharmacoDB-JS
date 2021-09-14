@@ -116,7 +116,7 @@ const useExpIntersection = () => {
             id: item.id,
             experiment: item.experiment,
             dataset: item.dataset,
-            cell_line: item.cell_line,
+            cell_line: { ...item.cell_line, uid: item.cell_line.cell_uid } ,
             compound: item.compound,
             tissue: item.tissue,
             color: item.color,
@@ -397,7 +397,7 @@ const useExpIntersection = () => {
      * @returns 
      */
     const getLink = (datatype) => (
-        <a href={`/${datatype}s/${experiments[0][datatype].id}`}>{experiments[0][datatype].name}</a>
+        <a href={`/${datatype}s/${datatype === 'tissue' ? experiments[0][datatype].id : experiments[0][datatype].uid}`}>{experiments[0][datatype].name}</a>
     );
 
     return({

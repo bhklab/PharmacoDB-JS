@@ -167,10 +167,12 @@ const getCellLineCompoundExperimentsQuery = gql`
     ) {
       cell_line {
         id
+        cell_uid
         name
       }
       compound {
         id
+        uid
         name
       }
       dataset {
@@ -210,10 +212,12 @@ const getTissueCompoundExperimentsQuery = gql`
       }
       cell_line {
         id
+        cell_uid
         name
       }
       compound {
         id
+        uid
         name
       }
       dataset {
