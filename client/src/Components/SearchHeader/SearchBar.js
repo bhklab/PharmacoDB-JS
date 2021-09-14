@@ -4,7 +4,8 @@ import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getCompoundsQuery } from '../../queries/compound';
+import { getCompoundsIdNameQuery } from '../../queries/compound';
+import { getGenesIdSymbolQuery } from '../../queries/gene';
 import { getTissuesQuery } from '../../queries/tissue';
 import { getCellLinesQuery } from '../../queries/cell';
 import { getDatasetsQuery } from '../../queries/dataset';
@@ -90,6 +91,7 @@ const SearchBar = (props) => {
 
   // entirety of data
   const [data, setData] = useState({
+    genes: [],
     compounds: [],
     tissues: [],
     cell_lines: [],
@@ -97,6 +99,7 @@ const SearchBar = (props) => {
     dataset_intersection: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
+    genes: false,
     compounds: false,
     tissues: false,
     cell_lines: false,
@@ -191,7 +194,15 @@ const SearchBar = (props) => {
    * @param {Object} option react-select option
    * @param {Str} rawInput input from the search bar
    */
-  const customFilterOption = (option, rawInput) => option.label.toLowerCase().startsWith(rawInput.toLowerCase());
+  const customFilterOption = (option, rawInput) => {
+    let returnObject = {};
+
+    if (option.label && option.label !== 'null') {
+      returnObject = option.label.toLowerCase().startsWith(rawInput.toLowerCase());
+    }
+
+    return returnObject;
+  };
 
   /**
    * Creates the dataset intersection array.
@@ -218,7 +229,8 @@ const SearchBar = (props) => {
 
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
-  // const compoundsData = useQuery(getCompoundsQuery).data;
+  // const compoundsData = useQuery(getCompoundsIdNameQuery).data;
+  // const genesData = useQuery(getGenesIdSymbolQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
   const cellsData = useQuery(getCellLinesQuery).data;
   const datasetsData = useQuery(getDatasetsQuery).data;
@@ -230,6 +242,7 @@ const SearchBar = (props) => {
     setData({
       ...data,
       // compounds: compoundsData ? compoundsData.compounds : [],
+      // genes: genesData ? genesData.genes : [],
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
       datasets: datasetsData ? datasetsData.datasets : [],
@@ -237,6 +250,7 @@ const SearchBar = (props) => {
     });
     setDataLoaded({
       // compounds: !!compoundsData,
+      // genes: !!genesData,
       tissues: !!tissuesData,
       cell_lines: !!cellsData,
       datasets: !!datasetsData,
@@ -251,7 +265,16 @@ const SearchBar = (props) => {
         setOptions((prevOptions) => {
           prevOptions.push({
             label: d,
-            options: data[d].map((x) => ({ value: x.id, label: x.name, type: d })),
+            options: data[d].map((x) => {
+              let returnObject = {};
+              if (x.name) {
+                returnObject = { value: x.id, label: x.name, type: d };
+              }
+              else if (x.annotation.symbol) { // for genes
+                returnObject = { value: x.id, label: x.annotation.symbol, type: d };
+              }
+              return returnObject;
+            }),
           });
           return prevOptions;
         });
