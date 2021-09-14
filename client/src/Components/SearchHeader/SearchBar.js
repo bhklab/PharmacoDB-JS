@@ -4,14 +4,15 @@ import ReactTypingEffect from 'react-typing-effect';
 import { useQuery } from '@apollo/react-hooks';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { getCompoundsQuery } from '../../queries/compound';
+import { getCompoundsIdNameQuery } from '../../queries/compound';
+import { getGenesIdSymbolQuery } from '../../queries/gene';
 import { getTissuesQuery } from '../../queries/tissue';
 import { getCellLinesQuery } from '../../queries/cell';
 import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from './SearchDefaultOptions'
+import defaultOptions from '../../utils/searchDefaultOptions'
 
 /** CONSTANTS */
 // input must be greater than this length to
@@ -90,6 +91,7 @@ const SearchBar = (props) => {
 
   // entirety of data
   const [data, setData] = useState({
+    // genes: [],
     compounds: [],
     tissues: [],
     cell_lines: [],
@@ -97,6 +99,7 @@ const SearchBar = (props) => {
     dataset_intersection: [],
   });
   const [dataLoaded, setDataLoaded] = useState({
+    // genes: false,
     compounds: false,
     tissues: false,
     cell_lines: false,
@@ -154,14 +157,36 @@ const SearchBar = (props) => {
 
     if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
       const { type, value, label } = selected[0];
-      if (selected.length === 1 && selected && label === value) {
+      if (selected.length === 1 && type === 'dataset_intersection') {
+        const datasets = label.split(' ').join(',');
+        queryParams = `/search?${type}=${datasets}`;
+      } else if (selected.length === 1 && selected && label === value) {
         queryParams = `/${type}`;
-      } else if (selected.length === 1 && selected) {
+      } else if (selected.length === 1 && selected && label !== value) {
         queryParams = `/${type}/${value}`;
-      } else {
-        // TODO: multiple queries
-        for (let i = 1; i < selected.length; i += 1) {
-          queryParams = queryParams.concat();
+      } else if (selected.length === 2 && selected && label !== value) {
+        const selectedTypes = selected.map(el => el.type);
+
+        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
+          let tissue, compound = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'tissues') {
+              tissue = el.label;
+            }
+          })
+          queryParams = `/search?compound=${compound}&tissue=${tissue}`
+        } else if (selectedTypes.includes('cell_lines') && selectedTypes.includes('compounds')) {
+          let cell, compound = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'cell_lines') {
+              cell = el.label;
+            }
+          })
+          queryParams = `/search?compound=${compound}&cell_line=${cell}`
         }
       }
 
@@ -191,7 +216,15 @@ const SearchBar = (props) => {
    * @param {Object} option react-select option
    * @param {Str} rawInput input from the search bar
    */
-  const customFilterOption = (option, rawInput) => option.label.toLowerCase().startsWith(rawInput.toLowerCase());
+  const customFilterOption = (option, rawInput) => {
+    let returnObject = {};
+
+    if (option.label && option.label !== 'null') {
+      returnObject = option.label.toLowerCase().startsWith(rawInput.toLowerCase());
+    }
+
+    return returnObject;
+  };
 
   /**
    * Creates the dataset intersection array.
@@ -206,17 +239,20 @@ const SearchBar = (props) => {
       return {
         id: i,
         name: el.toString().replaceAll(',', ' '),
+        __typename: 'dataset_intersection',
       }
     });
-    // remove the first element from the subsets being an empty string.
-    subsets.shift();
 
-    return subsets;
+    // remove the elements with the set of lenght 0 or 1 from the subsets being an empty string.
+    const finalSubsets = subsets.filter(el => el.name.split(' ').length > 1);
+
+    return finalSubsets;
   }
 
   /** DATA LOADING */
   /** Can't run hooks in a loop, so must do manually */
-  // const compoundsData = useQuery(getCompoundsQuery).data;
+  const compoundsData = useQuery(getCompoundsIdNameQuery).data;
+  // const genesData = useQuery(getGenesIdSymbolQuery).data;
   const tissuesData = useQuery(getTissuesQuery).data;
   const cellsData = useQuery(getCellLinesQuery).data;
   const datasetsData = useQuery(getDatasetsQuery).data;
@@ -227,19 +263,21 @@ const SearchBar = (props) => {
   useEffect(() => {
     setData({
       ...data,
-      // compounds: compoundsData ? compoundsData.compounds : [],
+      compounds: compoundsData ? compoundsData.compounds : [],
+      // genes: genesData ? genesData.genes : [],
       tissues: tissuesData ? tissuesData.tissues : [],
       cell_lines: cellsData ? cellsData.cell_lines : [],
       datasets: datasetsData ? datasetsData.datasets : [],
       dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
     });
     setDataLoaded({
-      // compounds: !!compoundsData,
+      compounds: !!compoundsData,
+      // genes: !!genesData,
       tissues: !!tissuesData,
       cell_lines: !!cellsData,
       datasets: !!datasetsData,
     });
-  }, [tissuesData, cellsData, datasetsData]);
+  }, [tissuesData, cellsData, datasetsData, compoundsData]);
 
   useEffect(() => {
     // if all values of loaded are true
@@ -249,7 +287,16 @@ const SearchBar = (props) => {
         setOptions((prevOptions) => {
           prevOptions.push({
             label: d,
-            options: data[d].map((x) => ({ value: x.id, label: x.name, type: d })),
+            options: data[d].map((x) => {
+              let returnObject = {};
+              if (x.name) {
+                returnObject = { value: x.id, label: x.name, type: d };
+              }
+              else if (x.annotation.symbol) { // for genes
+                returnObject = { value: x.id, label: x.annotation.symbol, type: d };
+              }
+              return returnObject;
+            }),
           });
           return prevOptions;
         });
@@ -259,6 +306,7 @@ const SearchBar = (props) => {
 
   return (
     <>
+      {console.log(options)}
       <Select
         isMulti
         filterOption={customFilterOption}

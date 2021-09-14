@@ -13,6 +13,7 @@ const geneCompound = `
     }
     compound {
         id
+        uid
         name
     }
 `;

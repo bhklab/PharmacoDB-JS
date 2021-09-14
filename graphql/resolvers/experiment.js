@@ -34,8 +34,8 @@ const generateExperimentsColumns = listOfFields => {
     listOfFields.forEach(field => {
         switch (field.name) {
             case 'cell_line':
-                columns.push(...['cell_id', 'cell_name']);
-                subqueryColumns.push(...['experiment.cell_id as cell_id', 'cell.name as cell_name']);
+                columns.push(...['cell_id', 'cell_uid', 'cell_name']);
+                subqueryColumns.push(...['experiment.cell_id as cell_id', 'cell.cell_uid as cell_uid', 'cell.name as cell_name']);
                 // adds tissue columns if they are in the subfields of cell_line type and have been already added
                 if (field.fields.some(subfield => subfield.name === 'tissue') && !tissueRequested) {
                     tissueRequested = true;
@@ -51,8 +51,8 @@ const generateExperimentsColumns = listOfFields => {
                 break;
             case 'compound':
                 const compoundColumns = ['fda_status', 'smiles', 'inchikey', 'pubchem'];
-                columns.push('compound_id', 'compound_name', ...compoundColumns);
-                subqueryColumns.push('experiment.compound_id as compound_id', 'compound.name as compound_name', ...compoundColumns);
+                columns.push('compound_id', 'compound_uid', 'compound_name', ...compoundColumns);
+                subqueryColumns.push('experiment.compound_id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', ...compoundColumns);
                 break;
             case 'dataset':
                 columns.push(...['dataset_id', 'dataset_name']);
@@ -80,8 +80,10 @@ const transformExperiments = data => {
         const {
             experiment_id,
             cell_id,
+            cell_uid,
             cell_name,
             compound_id,
+            compound_uid,
             dataset_id,
             tissue_id,
             tissue_name,
@@ -114,6 +116,7 @@ const transformExperiments = data => {
                 },
                 cell_line: {
                     id: cell_id,
+                    cell_uid: cell_uid,
                     name: cell_name,
                     tissue: {
                         id: tissue_id,
@@ -122,6 +125,7 @@ const transformExperiments = data => {
                 },
                 compound: {
                     id: compound_id,
+                    uid: compound_uid,
                     name: compound_name,
                     annotation: {
                         fda_status: fda_status ? 'Approved' : 'NA',

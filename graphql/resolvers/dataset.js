@@ -243,14 +243,14 @@ const dataset = async (args, parent, info) => {
         if (listOfFields.includes('tissue_tested_count')) data['tissue_tested_count'] = tissue_count.count;
         if (listOfFields.includes('compound_tested_count')) data['compound_tested_count'] = compound_count.count;
         if (listOfFields.includes('experiment_count')) data['experiment_count'] = experiment_count.count;
-
-        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({
-            id: value['cell_id'],
-            cell_uid: value['cell_uid'],
-            name: value['cell_name']
+        
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ 
+            id: value['cell_id'], 
+            cell_uid: value['cell_uid'], 
+            name: value['cell_name'] 
         }));
-        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({
-            id: value['compound_id'],
+        if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ 
+            id: value['compound_id'], 
             uid: value['compound_uid'],
             name: value['compound_name']
         }));

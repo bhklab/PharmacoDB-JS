@@ -14,8 +14,14 @@ import TissuesSummaryTable from './Tables/TissuesSummaryTable';
 import MolecularFeaturesTable from './Tables/MolecularFeaturesTable';
 import AnnotatedTargetsTable from './Tables/AnnotatedTargetsTable';
 import Loading from '../../UtilComponents/Loading';
-import {StyledIndivPageTitle, StyledIndivPage, StyledSidebarList} from '../../../styles/IndivPageStyles';
+import { StyledIndivPageTitle, StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
 import StyledWrapper from '../../../styles/utils';
+
+// different external links.
+const PUBCHEM = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
+const DTC = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+const CHEMBL = 'https://www.ebi.ac.uk/chembl/compound_report_card/';
+const REACTOME = 'https://reactome.org/content/detail/R-ALL-';
 
 const SYNONYM_COLUMNS = [
     {
@@ -23,14 +29,17 @@ const SYNONYM_COLUMNS = [
         accessor: 'source',
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
-            return(datasets.map((obj, i) => (
-                    obj.id? (
-                            <span key={i}>
-                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-                    </span>
-                        ) :
-                        (<span key={i}>{obj.name}</span>)
-                )
+            return (datasets.map((obj, i) => (
+                obj.id
+                    ? (
+                        <span key={i}>
+                            <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                        </span>
+                    )
+                    : (
+                        <span key={i}>{obj.name}</span>
+                    )
+            )
             ));
         }
     },
@@ -52,14 +61,14 @@ const ANNOTATION_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-    {label: 'Synonyms and IDs', name: 'synonyms'},
-    {label: 'Annotated Targets', name: 'targets'},
-    {label: 'Bar Plots', name: 'barplots'},
-    {label: 'AAC (Cell Lines)', name: 'aacCells'},
-    {label: 'AAC (Tissues)', name: 'aacTissues'},
-    {label: 'Cell Line Summary', name: 'cellSummary'},
-    {label: 'Tissue Summary', name: 'tissueSummary'},
-    {label: 'Molecular Features', name: 'molFeature'},
+    { label: 'Synonyms and IDs', name: 'synonyms' },
+    { label: 'Annotated Targets', name: 'targets' },
+    { label: 'Bar Plots', name: 'barplots' },
+    { label: 'AAC (Cell Lines)', name: 'aacCells' },
+    { label: 'AAC (Tissues)', name: 'aacTissues' },
+    { label: 'Cell Line Summary', name: 'cellSummary' },
+    { label: 'Tissue Summary', name: 'tissueSummary' },
+    { label: 'Molecular Features', name: 'molFeature' },
 ];
 
 /**
@@ -69,8 +78,8 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
-            returnObj.push({name:data.compound.name , source:[{name: "PharmacoGx", id: ''}]});
+        if (returnObj.filter(obj => { return obj.source[0].name === "PharmacoGx" }).length === 0) {
+            returnObj.push({ name: data.compound.name, source: [{ name: "PharmacoGx", id: '' }] });
         }
         return returnObj;
     }
@@ -86,34 +95,41 @@ const formatAnnotationData = (data) => {
         identifiers: [],
         externalLinks: []
     }
-    const pubchem = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
-    const drugTargetCommons = 'https://drugtargetcommons.fimm.fi/search?txtSearchClient=';
+
     if (data) {
         const { annotation } = data;
-        if (annotation.smiles) {
+
+        if (annotation.smiles && !(annotation.reactome.match(/na|null/i))) {
             annotationData.identifiers.push({ db: 'SMILES', identifier: annotation.smiles, });
         }
-        if (annotation.inchikey) {
+        if (annotation.inchikey && !(annotation.reactome.match(/na|null/i))) {
             annotationData.identifiers.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
-        if (annotation.pubchem) {
+        if (annotation.pubchem && !(annotation.reactome.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
-                    db: 'PubChem',
-                    identifier: <a href= {`${pubchem}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">{annotation.pubchem}</a>,
+                    db: <a href={`${PUBCHEM}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">PubChem</a>,
+                    identifier: `${annotation.pubchem}`,
                 });
         }
-        if (annotation.chembl) {
-            annotationData.identifiers.push(
+        if (annotation.chembl && !(annotation.reactome.match(/na|null/i))) {
+            annotationData.externalLinks.push(
                 {
-                    db: 'Chembl',
-                    identifier: <a href= {`https://www.ebi.ac.uk/chembl/compound_report_card/${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>,
+                    db: <a href={`${CHEMBL}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
+                    identifier: `${annotation.chembl}`,
                 }
             )
             annotationData.externalLinks.push(
                 {
-                    db: 'Drug Target Commons',
-                    identifier: <a href= {`${drugTargetCommons}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>
+                    db: <a href={`${DTC}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">Drug Target Commons</a>
+                }
+            )
+        }
+        if (annotation.reactome && !(annotation.reactome.match(/na|null/i))) {
+            annotationData.externalLinks.push(
+                {
+                    db: <a href={`${REACTOME}${annotation.reactome}`} target="_blank" rel="noopener noreferrer">Reactome</a>,
+                    identifier: `${annotation.reactome}`,
                 }
             )
         }
@@ -139,7 +155,7 @@ const IndivCompounds = (props) => {
 
     // query to get the data for the single compound.
     const { loading, error, data: queryData } = useQuery(getCompoundQuery, {
-        variables: { 
+        variables: {
             compoundUID: params.id,
             // compoundId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
             // compoundName: typeof params.id === 'string' ? params.id : undefined
@@ -187,7 +203,7 @@ const IndivCompounds = (props) => {
      * @param {String} link
      */
     const createSideLink = (link, i) => (
-        <li key={i} className={display === link.name ? 'selected': undefined}>
+        <li key={i} className={display === link.name ? 'selected' : undefined}>
             <button type='button' onClick={() => setDisplay(link.name)}>
                 {link.label}
             </button>
@@ -201,108 +217,108 @@ const IndivCompounds = (props) => {
                 ) : error ? (
                     <NotFoundContent />
                 ) : (
-                    <StyledIndivPage className="indiv-compounds">
-                        <div className='heading'>
-                            <StyledIndivPageTitle smalltxt={data.compound.name.length > 30}>{data.compound.name}</StyledIndivPageTitle>
-                            <span className='attributes'>
-                                <span>FDA Approval Status: </span>
-                                <span className='regular'>
-                                    {data.compound.annotation.fda_status}
-                                </span>
-                            </span>
-                        </div>
-                        <div className='wrapper'>
-                            <StyledSidebarList>
-                                {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                            </StyledSidebarList>
-                            <div className="container">
-                                <div className="content">
-                                    {
-                                        display === 'synonyms' &&
-                                        <React.Fragment>
-                                            <Element className="section" name="synonyms">
-                                                <div className='section-title'>Synonyms</div>
-                                                <Table
-                                                    columns={SYNONYM_COLUMNS}
-                                                    data={synonymData}
-                                                    disablePagination
+                            <StyledIndivPage className="indiv-compounds">
+                                <div className='heading'>
+                                    <StyledIndivPageTitle smalltxt={data.compound.name.length > 30}>{data.compound.name}</StyledIndivPageTitle>
+                                    <span className='attributes'>
+                                        <span>FDA Approval Status: </span>
+                                        <span className='regular'>
+                                            {data.compound.annotation.fda_status}
+                                        </span>
+                                    </span>
+                                </div>
+                                <div className='wrapper'>
+                                    <StyledSidebarList>
+                                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                                    </StyledSidebarList>
+                                    <div className="container">
+                                        <div className="content">
+                                            {
+                                                display === 'synonyms' &&
+                                                <React.Fragment>
+                                                    <Element className="section" name="synonyms">
+                                                        <div className='section-title'>Synonyms</div>
+                                                        <Table
+                                                            columns={SYNONYM_COLUMNS}
+                                                            data={synonymData}
+                                                            disablePagination
+                                                        />
+                                                    </Element>
+                                                    {
+                                                        annotationData.identifiers.length > 0 ?
+                                                            <Element className="section" name="external_ids">
+                                                                <div className='section-title'>Identifiers</div>
+                                                                <Table
+                                                                    columns={annotationColumns}
+                                                                    data={annotationData.identifiers}
+                                                                    disablePagination
+                                                                    showHeader={false}
+                                                                />
+                                                            </Element>
+                                                            :
+                                                            ''
+                                                    }
+                                                    {
+                                                        annotationData.externalLinks.length > 0 ?
+                                                            <Element className="section" name="external_ids">
+                                                                <div className='section-title'>External Links</div>
+                                                                <Table
+                                                                    columns={annotationColumns}
+                                                                    data={annotationData.externalLinks}
+                                                                    disablePagination
+                                                                    showHeader={false}
+                                                                />
+                                                            </Element>
+                                                            :
+                                                            ''
+                                                    }
+                                                </React.Fragment>
+                                            }
+                                            {
+                                                display === 'targets' &&
+                                                <Element className="section">
+                                                    <div className='section-title'>Annotated Targets</div>
+                                                    <AnnotatedTargetsTable compound={({ id: data.compound.id, name: data.compound.name })} />
+                                                </Element>
+                                            }
+                                            <Element>
+                                                <PlotSection
+                                                    display={display}
+                                                    compound={{
+                                                        id: data.compound.id,
+                                                        name: data.compound.name,
+                                                    }}
                                                 />
                                             </Element>
                                             {
-                                                annotationData.identifiers.length > 0 ?
-                                                    <Element className="section" name="external_ids">
-                                                        <div className='section-title'>Identifiers</div>
-                                                        <Table
-                                                            columns={annotationColumns}
-                                                            data={annotationData.identifiers}
-                                                            disablePagination
-                                                            showHeader={false}
-                                                        />
-                                                    </Element> 
-                                                    :
-                                                    ''
+                                                display === 'cellSummary' &&
+                                                <Element className="section">
+                                                    <div className='section-title'>Cell Line Summary</div>
+                                                    <CellLinesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })} />
+                                                </Element>
                                             }
                                             {
-                                                annotationData.externalLinks.length > 0 ?
-                                                <Element className="section" name="external_ids">
-                                                    <div className='section-title'>External Links</div>
-                                                    <Table
-                                                        columns={annotationColumns}
-                                                        data={annotationData.externalLinks}
-                                                        disablePagination
-                                                        showHeader={false}
-                                                    />
-                                                </Element> 
-                                                :
-                                                ''
+                                                display === 'tissueSummary' &&
+                                                <Element className="section">
+                                                    <div className='section-title'>Tissue Summary</div>
+                                                    <TissuesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })} />
+                                                </Element>
                                             }
-                                        </React.Fragment>
-                                    }
-                                    {
-                                        display === 'targets' &&
-                                        <Element className="section">
-                                            <div className='section-title'>Annotated Targets</div>
-                                            <AnnotatedTargetsTable compound={({ id: data.compound.id, name: data.compound.name })}/>
-                                        </Element>
-                                    }
-                                    <Element>
-                                        <PlotSection
-                                            display={display}
-                                            compound={{
-                                                id: data.compound.id,
-                                                name: data.compound.name,
-                                            }}
-                                        />
-                                    </Element>
-                                    {
-                                        display === 'cellSummary' &&
-                                        <Element className="section">
-                                            <div className='section-title'>Cell Line Summary</div>
-                                            <CellLinesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
-                                        </Element>
-                                    }
-                                    {
-                                        display === 'tissueSummary' &&
-                                        <Element className="section">
-                                            <div className='section-title'>Tissue Summary</div>
-                                            <TissuesSummaryTable compound={({ id: data.compound.id, name: data.compound.name })}/>
-                                        </Element>
-                                    }
-                                    {
-                                        display === 'molFeature' &&
-                                        <Element className="section">
-                                            <div className='section-title'>Molecular Features</div>
-                                            <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })}/>
-                                        </Element>
-                                    }
+                                            {
+                                                display === 'molFeature' &&
+                                                <Element className="section">
+                                                    <div className='section-title'>Molecular Features</div>
+                                                    <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })} />
+                                                </Element>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </StyledIndivPage>
-                )}
+                            </StyledIndivPage>
+                        )}
             </StyledWrapper>
         </Layout>
-    ) : <Loading/>;
+    ) : <Loading />;
 };
 
 IndivCompounds.propTypes = {

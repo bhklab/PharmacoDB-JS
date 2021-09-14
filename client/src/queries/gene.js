@@ -18,6 +18,20 @@ const GENE_FIELDS = gql`
 `;
 
 /**
+ * @returns the ids and symbols for all the genes in the dataset.
+ */
+const getGenesIdSymbolQuery = gql`
+  query getAllGeneIdSymbols {
+      genes(all: true) {
+          id
+          annotation {
+              symbol
+          }
+      }
+  }
+`;
+
+/**
  * @param {boolean} all - takes a boolean value if to search all the genes or not.
  * @returns - Query returns the list of genes with the id and name of the gene
  * and also returning the annotation object for each of the gene in the database.
@@ -74,5 +88,6 @@ const getCompoundTargetsQuery = gql`
 export {
     getGenesQuery,
     getGeneQuery,
-    getCompoundTargetsQuery
+    getCompoundTargetsQuery,
+    getGenesIdSymbolQuery,
 };

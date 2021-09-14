@@ -24,7 +24,7 @@ const data_type_stats = async () => {
                 count: cellCount[0].cellCount,
             }, {
                 dataType: 'tissue',
-                count: tissueCount[0].tissueCount,
+                count: tissueCount[0].tissueCount - 1,
             }, {
                 dataType: 'experiment',
                 count: experimentCount[0].experimentCount,

@@ -84,10 +84,16 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
             query.limit(limit).offset(offset);
         }
 
+        // omitting the names that include 'AFFX' in them.
+        query = query.whereNot('name', 'like', '%AFFX%');
+
+        // if includes annotation then order by symbol.
+        if (listOfFields.includes('annotation')) {
+            query.orderBy('symbol', 'desc');
+        }
+
         // execute the query.
-        const genes = await query
-            .whereNot('name', 'like', '%AFFX%')
-            .orderBy('symbol', 'desc');
+        const genes = await query;
 
         // return the transformed query.
         return transformGene(genes);

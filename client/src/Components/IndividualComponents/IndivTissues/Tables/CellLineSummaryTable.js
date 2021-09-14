@@ -14,7 +14,7 @@ const CELL_LINE_SUMMARY_COLUMNS = [
       Header: 'Cell Line',
       accessor: 'cellLine',
       center: true,
-      Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.id}`}>{item.value}</a>
+      Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.uid}`}>{item.value}</a>
     },
 ];
 
@@ -33,6 +33,7 @@ const CELL_LINE_SUMMARY_COLUMNS = [
             tissueId: tissue.id, 
             tissueName: tissue.name, 
             cellLine: item.cell_line.name, 
+            uid: item.cell_line.cell_uid,
             id: item.cell_line.id
         }));
     }

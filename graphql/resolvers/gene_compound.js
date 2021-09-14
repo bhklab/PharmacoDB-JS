@@ -13,7 +13,7 @@ const transformGeneCompounds = (data) => {
             gct_id, compound_id, estimate, lower, upper,
             n, tstat, fstat, pvalue, df,
             fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
-            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name,
+            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name, compound_uid, 
             smiles, inchikey, pubchem, fda_status, tissue_id,
             tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end,
         } = compound_compound;
@@ -47,6 +47,7 @@ const transformGeneCompounds = (data) => {
             },
             compound: {
                 id: compound_id,
+                uid: compound_uid,
                 name: compound_name,
                 annotation: {
                     smiles,
@@ -95,7 +96,7 @@ const gene_compound_tissue = async (args, context, info) => {
                     subtypes.push(el.name);
                     break;
                 case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
                     subtypes.push(el.name);
                     break;
                 case 'tissue':
