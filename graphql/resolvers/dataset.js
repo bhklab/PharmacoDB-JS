@@ -89,6 +89,68 @@ const summaryQuery = async (type, datasetId, datasetName) => {
     return transformObject(datasets);
 };
 
+/**
+ *
+ * @param {string} type - 'cell' or 'compound' or 'tissue'
+ * @return {Array} - returns an array of cells, compounds, or tissues tested or various datasets.
+ */
+const typeDatasetsQuery = async (type) => {
+    // query to get the ids and names for the type and datasets.
+    const query = knex
+        .select('d.id as dataset_id', 'd.name as dataset_name',`t.id as ${type}_id`, `t.name as ${type}_name` )
+        .from(`dataset_${type} as dt`)
+        .join('dataset as d', 'd.id', 'dt.dataset_id')
+        .join(`${type} as t`, 't.id', `dt.${type}_id`);
+    const datasets = await query;
+    return transformObject(datasets);
+};
+
+/**
+ * @param {Object} args - arguments for the dataset function.
+ * @param {number} args.datasetId - datasetId passed as an argument to the function.
+ * @returns {Array} - return an array of Object (defined below).
+ *  Object = {
+ *      id: 'id of the dataset',
+ *      name: 'name of the dataset',
+ *      cell_count: 'number of cell lines across the dataset'
+ *      tissue_count: 'number of tissues across the dataset'
+ *      compound_count: 'number of compounds across the dataset'
+ *      experiment_count: 'number of experiments held accross the dataset'
+ *      cells_tested (data only for the datasetId): 'a list of all the cell lines that have been tested in the dataset'
+ *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
+ *  }
+ */
+const datasets_types = async (parent, info) => {
+    try {
+        // // extracts list of fields requested by the client
+        // const listOfFields = retrieveFields(info).map(el => el.name);
+        // data returned from the graphql API.
+        const returnData = [];
+        let tissues, cells, compounds;
+        const datasets = await datasetQuery();
+        // if (listOfFields.includes('tissues_tested'))
+            tissues = await typeDatasetsQuery('tissue');
+        // if (listOfFields.includes('cells_tested'))
+            cells = await typeDatasetsQuery('cell');
+        // if (listOfFields.includes('compounds_tested'))
+            compounds = await typeDatasetsQuery('compound');
+        datasets.forEach(dataset =>{
+            const data = {};
+            data['dataset'] = {id: dataset.dataset_id, name: dataset.dataset_name };
+            // if (listOfFields.includes('tissue_tested'))
+                data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
+            // if (listOfFields.includes('cells_tested'))
+                data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
+            // if (listOfFields.includes('compounds_tested'))
+                data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+            returnData.push(data);
+        })
+        return returnData;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 /**
  * Returns the transformed data for all the datasets in the database.
@@ -309,5 +371,6 @@ module.exports = {
     cell_lines_grouped_by_dataset,
     type_tested_on_dataset_summary,
     typeCountGroupByDataset,
+    datasets_types,
     dataset_stats
 };

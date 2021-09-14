@@ -30,7 +30,7 @@ const StyledDescription = styled.div`
             margin-bottom: 4vh;
         }
 
-        h6 {
+        .caption {
           text-align: left;
           margin-top: 15px;
           margin-bottom: 5px;
@@ -103,36 +103,28 @@ const AboutUsDescription = () => {
           <p>Cell lines? Try typing <a id="hide-cl-overlay" href="javaScript:void(0);" onClick={() =>onClick("cell")}>MCF-7</a>
             {
               showCell ?
-                <div id="cl-info"  className="about-search">
-                  <h6 id=" overlay-caption"> Example search for a cell line. </h6>
-                </div>
+                  <div className="caption" id=" overlay-caption"> Example search for a cell line. </div>
                 : null
             }
           </p>
           <p>Tissues? Try typing <a id="hide-t-overlay" href="javaScript:void(0);" onClick={() =>onClick("tissue")}>Breast</a>
             {
               showTissue ?
-                <div id="t-info" className="about-search">
-                  <h6 id=" overlay-caption"> Example search for a tissue.</h6>
-                </div>
+                  <div className="caption" id=" overlay-caption"> Example search for a tissue.</div>
                 : null
             }
           </p>
           <p>Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
             {
               showDrug ?
-                  <div id="drugs-info"  className="about-search">
-                    <h6 id=" overlay-caption"> Example search for a drug. </h6>
-                  </div>
+                    <div className="caption" id=" overlay-caption"> Example search for a drug. </div>
                   : null
             }
           </p>
           <p>Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF7 Paclitaxel</a>
             {
               showDDRC ?
-                  <div id="ddrc-info"  className="about-search">
-                    <h6 id=" overlay-caption"> Example search for a drug dose-response curve. </h6>
-                  </div>
+                    <div className="caption" id=" overlay-caption"> Example search for a drug dose-response curve. </div>
                   : null
             }
           </p>

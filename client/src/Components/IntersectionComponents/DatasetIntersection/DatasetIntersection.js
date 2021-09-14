@@ -126,20 +126,19 @@ const createUpdatedDatasetArray = (datasets, keys) => {
 
 const DrawUpsetPlot = (props) => {
     const {
-        plotId, data, cellLine, title, datasets
+        data, datasets
     } = props;
 
     const [selectedType, setSelectedType] = useState('Cell line');
 
     const dataTypeOptions = [
+        { value: 'tissue', label: 'Tissue' },
         { value: 'cell', label: 'Cell Line' },
         { value: 'compound', label: 'Compound' },
-        { value: 'tissue', label: 'Tissue' }
     ]
 
-
     const { loading: tissueLoading, error: tissueError, data: tissueData } = useQuery(getTissuesQuery);
-    if(!tissueLoading) console.log(tissueData)
+    if(!tissueLoading) console.log(data)
 
     return (
         <div className="plot">
@@ -203,7 +202,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
     // cell line and dataset data from the APIs.
     const { loading: cellDataLoading, error: cellDataError, data: cellLineData } = useQuery(getCellLinesQuery);
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
-
+    if(!cellDataLoading) console.log("cell Line data",cellLineData);
     // setting the state to grab the updated dataset array and cell line data.
     const [updatedDatasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
@@ -214,7 +213,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
             // array of the datasets from the database and parsed cell line data.
             const datasets = datasetData.datasets.map(dataset => dataset.name);
             const parsedCells = parseCellLineData(cellLineData.cell_lines);
-
+            console.log("parsed cell",parsedCells)
             // update the dataset names according to the names in the database.
             const updatedDatasetArray = createUpdatedDatasetArray(datasetsPropArray, datasets);
 
