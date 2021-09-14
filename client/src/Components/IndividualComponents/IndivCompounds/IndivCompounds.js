@@ -98,20 +98,21 @@ const formatAnnotationData = (data) => {
 
     if (data) {
         const { annotation } = data;
-        if (annotation.smiles) {
+
+        if (annotation.smiles && !(annotation.reactome.match(/na|null/i))) {
             annotationData.identifiers.push({ db: 'SMILES', identifier: annotation.smiles, });
         }
-        if (annotation.inchikey) {
+        if (annotation.inchikey && !(annotation.reactome.match(/na|null/i))) {
             annotationData.identifiers.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
-        if (annotation.pubchem) {
+        if (annotation.pubchem && !(annotation.reactome.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
                     db: <a href={`${PUBCHEM}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">PubChem</a>,
                     identifier: `${annotation.pubchem}`,
                 });
         }
-        if (annotation.chembl) {
+        if (annotation.chembl && !(annotation.reactome.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
                     db: <a href={`${CHEMBL}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
@@ -124,7 +125,7 @@ const formatAnnotationData = (data) => {
                 }
             )
         }
-        if (annotation.reactome) {
+        if (annotation.reactome && !(annotation.reactome.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
                     db: <a href={`${REACTOME}${annotation.reactome}`} target="_blank" rel="noopener noreferrer">Reactome</a>,
