@@ -16,7 +16,7 @@ const transformGeneCompounds = (data) => {
         const {
             gct_id, compound_id, estimate, lower_analytic, upper_analytic,
             n, pvalue_analytic, df, upper_permutation, lower_permutation,
-            sens_stat, mDataType, compound_name,
+            sens_stat, mDataType, compound_name, compound_uid,
             pvalue_permutation, fdr_analytic, fdr_permutation,
             significant_permutation, permutation_done,
             smiles, inchikey, pubchem, fda_status, tissue_id,
@@ -53,6 +53,7 @@ const transformGeneCompounds = (data) => {
             },
             compound: {
                 id: compound_id,
+                uid: compound_uid,
                 name: compound_name,
                 annotation: {
                     smiles,
@@ -107,7 +108,7 @@ const gene_compound_dataset = async (args, context, info) => {
                     subtypes.push(el.name);
                     break;
                 case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
                     subtypes.push(el.name);
                     break;
                 case 'dataset':
@@ -200,7 +201,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
                     subtypes.push(el.name);
                     break;
                 case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
                     subtypes.push(el.name);
                     break;
                 case 'tissue':

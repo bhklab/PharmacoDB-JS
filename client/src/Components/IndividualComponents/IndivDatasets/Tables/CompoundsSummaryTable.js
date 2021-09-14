@@ -12,7 +12,7 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 const parseTableData = (data, datasetId, datasetName) => {
     if (typeof data !== 'undefined') {
         let compounds = data.dataset.find(item => item.id === datasetId).compounds_tested;
-        return compounds.map(item => ({dataset: datasetName, id: item.id, compound: item.name}));
+        return compounds.map(item => ({dataset: datasetName, id: item.id, uid: item.uid, compound: item.name}));
     }
     return [];
 }
@@ -27,7 +27,7 @@ const CompoundsSummaryTable = (props) => {
           Header: `All compounds lines tested in ${dataset.name}`,
           accessor: 'compound',
           center: true,
-          Cell: (item) => <a href={`/compounds/${item.cell.row.original.id}`}>{item.value}</a> 
+          Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a> 
         }
     ];
 

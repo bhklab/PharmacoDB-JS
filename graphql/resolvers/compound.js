@@ -83,18 +83,25 @@ const transformCompounds = data => {
             chembl_id,
             dataset_id,
             dataset_name,
+            reactome_id,
         } = compound;
-        const returnList = { 'smiles': [], 'inchikey': [] };
-        if (smiles !== null) {
+
+        const returnList = {
+            'smiles': [],
+            'inchikey': []
+        };
+
+        if (smiles) {
             smiles.split(', ').forEach((item) => {
                 if (!returnList['smiles'].includes(item)) returnList['smiles'].push(item);
             });
         }
-        if (inchikey !== null) {
+        if (inchikey) {
             inchikey.split(', ').forEach((item) => {
                 if (!returnList['inchikey'].includes(item)) returnList['inchikey'].push(item);
             });
         }
+
         return {
             id,
             name,
@@ -105,6 +112,7 @@ const transformCompounds = data => {
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status),
                 chembl: chembl_id,
+                reactome: reactome_id || 'NA'
             },
             dataset: {
                 id: dataset_id,
@@ -146,10 +154,11 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
  *  @param {string} - compoundName
  */
 // todo: change the query using `compound` based on the new database compound table.
-const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
+const compoundSourceSynonymQuery = async (compoundUID, compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
         .select('compound.id as compound_id',
+            'compound.compound_uid as compound_uid',
             'compound.name as compound_name',
             'compound_synonym.compound_name as source_compound_name',
             'dataset.id as dataset_id',
@@ -158,7 +167,9 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
         .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
         .join('dataset', 'dataset.id', 'compound_synonym.dataset_id');
     // return sub query based on the compoundId or compoundName.
-    if (compoundId) {
+    if (compoundUID) {
+        return await query.where('compound.compound_uid', compoundUID);
+    } else if (compoundId) {
         return await query.where('compound.id', compoundId);
     } else if (compoundName) {
         return await query.where('compound.name', compoundName);
@@ -201,11 +212,11 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         const listOfFields = retrieveFields(info).map(el => el.name);
 
         // select fields.
-        const selectFields = ['c.id as id', 'c.name as name'];
+        const selectFields = ['c.id as id', 'c.name as name', 'c.compound_uid'];
         // add dataset detail to the list of knex columns to select.
         if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
         // add compound annotation to the list of knex columns to select.
-        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id');
+        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id', 'ca.reactome_id');
 
         // query to get the data for all the compounds.
         let query = knex.select(...selectFields).from('compound as c');
@@ -221,8 +232,13 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
             query.limit(limit).offset(offset);
         }
 
+        // order by fda status if list of fields includes annotation.
+        if (listOfFields.includes('annotation')) {
+            query.orderBy('fda_status', 'desc');
+        }
+
         // execute the query.
-        const compounds = await query.orderBy('fda_status', 'desc');
+        const compounds = await query;
 
         // return the transformed data.
         return transformCompounds(compounds);
@@ -258,7 +274,7 @@ const compound = async (args, parent, info) => {
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundUID, compoundId, compoundName, subtypes);
         // query to get compound source synonyms.
-        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundId, compoundName);
+        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundUID, compoundId, compoundName);
         // return the compound object.
         return transformSingleCompound(compoundId, compoundName, compoundData, compoundSynonyms, subtypes);
     } catch (err) {
