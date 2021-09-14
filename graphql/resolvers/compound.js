@@ -83,6 +83,7 @@ const transformCompounds = data => {
             chembl_id,
             dataset_id,
             dataset_name,
+            reactome_id,
         } = compound;
 
         const returnList = {
@@ -111,6 +112,7 @@ const transformCompounds = data => {
                 pubchem: pubchem,
                 fda_status: transformFdaStatus(fda_status),
                 chembl: chembl_id,
+                reactome: reactome_id || 'NA'
             },
             dataset: {
                 id: dataset_id,
@@ -211,7 +213,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         // add dataset detail to the list of knex columns to select.
         if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
         // add compound annotation to the list of knex columns to select.
-        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id');
+        if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id', 'ca.reactome_id');
 
         // query to get the data for all the compounds.
         let query = knex.select(...selectFields).from('compound as c');

@@ -8,6 +8,7 @@ const compoundAnnotationType = `
             but API gives the output as Approved/Not-Approved """
         fda_status: String
         chembl: String
+        reactome: String
     }
 `;
 
