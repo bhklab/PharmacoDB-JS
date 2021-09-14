@@ -15,6 +15,7 @@ const transformCellLines = data => {
     data.forEach(cell => {
         const {
             cell_id,
+            cell_uid,
             cell_name,
             tissue_id,
             tissue_name,
@@ -33,6 +34,7 @@ const transformCellLines = data => {
         } else {
             finalData[cell_id] = {
                 id: cell_id,
+                cell_uid: cell_uid,
                 name: cell_name,
                 tissue: {
                     id: tissue_id,
@@ -63,6 +65,7 @@ const transformSingleCellLine = (data) => {
     data.forEach((row, i) => {
         const {
             cell_id,
+            cell_uid,
             cell_name,
             tissue_id,
             tissue_name,
@@ -75,6 +78,7 @@ const transformSingleCellLine = (data) => {
         // if it's the first element.
         if (!i) {
             returnObject['id'] = cell_id;
+            returnObject['cell_uid'] = cell_uid;
             returnObject['name'] = cell_name;
             returnObject['diseases'] = diseases ? diseases.split('|||') : diseases;
             returnObject['accessions'] = accessions;
@@ -85,7 +89,7 @@ const transformSingleCellLine = (data) => {
             returnObject['synonyms'] = source_cell_name ? [{
                 name: source_cell_name,
                 source: [{ 'id': dataset_id, 'name': dataset_name }]
-            }] : null;
+            }] : [];
             source_cell_name_list.push(source_cell_name);
         } else {
             // for all other elements.
@@ -124,7 +128,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
 
-        const selectFields = ['c.id as cell_id', 'c.name as cell_name', 'tissue_id'];
+        const selectFields = ['c.id as cell_id', 'c.cell_uid as cell_uid', 'c.name as cell_name', 'tissue_id'];
         // adds tissue name to the list of knex columns to select.
         if (listOfFields.includes('tissue')) selectFields.push('t.name as tissue_name');
         // add dataset detail to the list of knex columns to select.
@@ -171,6 +175,7 @@ const cell_line = async args => {
         // the base query
         let query = knex
             .select('cell.id as cell_id',
+                'cell.cell_uid as cell_uid',
                 'cell.name as cell_name',
                 'tissue.id as tissue_id',
                 'tissue.name as tissue_name',
@@ -186,6 +191,7 @@ const cell_line = async args => {
             .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         // based on the arguments passed to the function.
         if (cellUID) {
+            console.log(cellUID);
             cell_line = await query.where('cell.cell_uid', cellUID);
         }else if (cellId) {
             cell_line = await query.where('cell.id', cellId);
@@ -194,29 +200,30 @@ const cell_line = async args => {
         }
 
         // If the full query does not return any results, query the minimum information that needs to be returned.
-        if(cell_line.length === 0){
-            query = knex
-                .select('cell.id as cell_id',
-                    'cell.name as cell_name',
-                    'tissue.id as tissue_id',
-                    'tissue.name as tissue_name',
-                    'dataset.id as dataset_id',
-                    'dataset.name as dataset_name',
-                    'cellosaurus.di as diseases',
-                    'cellosaurus.accession as accessions')
-                .from('cell')
-                .join('tissue', 'tissue.id', 'cell.tissue_id')
-                .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
-                .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
-                .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
-        }
-        if (cellUID) {
-            cell_line = await query.where('cell.cell_uid', cellUID);
-        }else if (cellId) {
-            cell_line = await query.where('cell.id', cellId);
-        } else if (cellName) {
-            cell_line = await query.where('cell.name', cellName);
-        }
+        // if(cell_line.length === 0){
+        //     query = knex
+        //         .select('cell.id as cell_id',
+        //             'cell.cell_uid as cell_uid',
+        //             'cell.name as cell_name',
+        //             'tissue.id as tissue_id',
+        //             'tissue.name as tissue_name',
+        //             'dataset.id as dataset_id',
+        //             'dataset.name as dataset_name',
+        //             'cellosaurus.di as diseases',
+        //             'cellosaurus.accession as accessions')
+        //         .from('cell')
+        //         .join('tissue', 'tissue.id', 'cell.tissue_id')
+        //         .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
+        //         .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
+        //         .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
+        // }
+        // if (cellUID) {
+        //     cell_line = await query.where('cell.cell_uid', cellUID);
+        // }else if (cellId) {
+        //     cell_line = await query.where('cell.id', cellId);
+        // } else if (cellName) {
+        //     cell_line = await query.where('cell.name', cellName);
+        // }
 
         // return the transformed data.
         return transformSingleCellLine(cell_line);
