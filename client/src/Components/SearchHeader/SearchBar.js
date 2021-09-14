@@ -15,8 +15,7 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 import defaultOptions from '../../utils/searchDefaultOptions'
 
 /** CONSTANTS */
-// input must be greater than this length to
-// display option menu
+// input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
 
 // placeholders for react-select
@@ -27,6 +26,17 @@ const placeholders = [
   'Cell line vs Drug (eg. 22rv1 paclitaxel)',
   'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
+
+/**
+ * Styles for formatting the group header label
+ */
+const groupStyles = {
+  fontSize: '1.5em',
+  padding: '5px',
+  textTransform: 'capitalize',
+  color: colors.dark_teal_heading,
+  fontWeight: 600,
+};
 
 /**
  * Custom options for scrolling with keyboard
@@ -51,17 +61,6 @@ const CustomOption = (innerProps) => (
 );
 
 /**
- * Styles for formatting the group header label
- */
-const groupStyles = {
-  fontSize: '1.5em',
-  padding: '5px',
-  textTransform: 'capitalize',
-  color: colors.dark_teal_heading,
-  fontWeight: 600,
-};
-
-/**
  * JSX for formatting the group header label
  * @param {Object} data contains react-select group label
  */
@@ -70,6 +69,7 @@ const formatGroupLabel = (data) => (
     <span>{data.label.replace('_', ' ')}</span>
   </div>
 );
+
 
 /**
  * Component for the search bar.
@@ -98,6 +98,7 @@ const SearchBar = (props) => {
     datasets: [],
     dataset_intersection: [],
   });
+
   const [dataLoaded, setDataLoaded] = useState({
     // genes: false,
     compounds: false,
