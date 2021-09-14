@@ -16,7 +16,7 @@ const table_columns = [
   {
     Header: 'Name',
     accessor: 'name',
-    Cell: (row) => (<Link to={`/compounds/${row.row.original.id}`}>{row.value}</Link>),
+    Cell: (row) => (<Link to={`/compounds/${row.row.original.uid}`}>{row.value}</Link>),
   },
   {
     Header: 'SMILES',
@@ -32,7 +32,7 @@ const table_columns = [
     Cell: (row) => (<a href={`${PUBCHEM_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
   {
-    Header: 'Chembl',
+    Header: 'ChEMBL',
     accessor: 'chembl',
     Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank'>{row.value}</a>),
   },
@@ -50,13 +50,14 @@ const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
-      const { name, annotation, id } = value;
+      const { name, annotation, id, uid } = value;
       const {
         smiles, inchikey, pubchem, fda_status, chembl
       } = annotation;
       return {
         id,
         name,
+        uid,
         smiles,
         inchikey,
         pubchem,
@@ -94,7 +95,7 @@ const renderComponent = (loading, error, columns, data) => {
       <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
       <BarPlot />
       <h2 className="new-section">List of Compounds</h2>
-      <Table columns={columns} data={data} defaultSort={[{id: 'fda_status'}]}/>
+      <Table columns={columns} data={data} defaultSort={[{ id: 'fda_status' }]} />
     </>
   );
 };

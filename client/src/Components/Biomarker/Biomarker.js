@@ -27,14 +27,17 @@ const GENE_INFO_COLUMNS = [
     {
         Header: 'Gene Status as Drug Target',
         accessor: 'target',
+        center: true
     },
     {
-        Header: 'ENSGID',
+        Header: 'Ensembl Gene ID',
         accessor: 'ensg',
+        center: true
     },
     {
         Header: 'Gene Location',
         accessor: 'location',
+        center: true
     },
 ];
 
@@ -184,7 +187,7 @@ const Biomarker = (props) => {
                             <span> Association of </span>
                             <span className='link'> {`${TitleCase(compound)}`} </span>
                             <span> and </span>
-                            <span className='link'> {`${TitleCase(gene)}`} </span>
+                            <span className='link'> {`${gene.toUpperCase()}`} </span>
                             <span> in </span>
                             <span className='link'> {`${TitleCase(tissue)}`} </span>
                             <span> tissue </span>

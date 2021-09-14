@@ -76,8 +76,8 @@ const getGeneCompoundTissueDatasetQuery = gql`
  * mDataType is specified as "rna" to filter the experiment data rna data type. 
  */
 const getManhattanPlotDataQuery = gql`
-    query getManhattanPlotDataQuery($compoundId: Int, $tissueId: Int, $compoundName: String, $tissueName: String) {
-        gene_compound_tissue_dataset(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: "rna", all: true) {
+    query getManhattanPlotDataQuery($compoundId: Int, $tissueId: Int, $compoundName: String, $tissueName: String, $mDataType: String) {
+        gene_compound_tissue_dataset(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: $mDataType, all: true) {
             gene {
                 id
                 name

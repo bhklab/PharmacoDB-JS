@@ -1,5 +1,19 @@
 import { gql } from 'apollo-boost';
 
+
+/**
+ * @returns - ids and names of all the compounds
+ */
+const getCompoundsIdNameQuery = gql`
+  query getAllCompoundsIdName {
+    compounds(all: true) {
+      id
+      name
+      uid
+    }
+  }
+`;
+
 /**
  * @param {boolean} all - takes a boolean value if to search all the compounds or not.
  * @returns - Query returns the list of compounds with the id and name of the compound
@@ -10,12 +24,14 @@ const getCompoundsQuery = gql`
     compounds(all: true) {
       id
       name
+      uid
       annotation {
         smiles
         inchikey
         pubchem
         chembl
         fda_status
+        reactome
       }
     }
   }
@@ -28,17 +44,19 @@ const getCompoundsQuery = gql`
  * and also providing the target object.
  */
 const getCompoundQuery = gql`
-  query getSingleCompound($compoundId: Int, $compoundName: String) {
-    singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName) {
+  query getSingleCompound($compoundId: Int, $compoundName: String, $compoundUID: String) {
+    singleCompound: compound(compoundId: $compoundId, compoundName: $compoundName, compoundUID: $compoundUID) {
       compound {
         id
         name
+        uid
         annotation {
           smiles
           inchikey
           pubchem
           fda_status
           chembl
+          reactome
         }
       }
       synonyms {
@@ -66,4 +84,5 @@ export {
   getCompoundsQuery,
   getCompoundQuery,
   disableDrug,
+  getCompoundsIdNameQuery,
 };
