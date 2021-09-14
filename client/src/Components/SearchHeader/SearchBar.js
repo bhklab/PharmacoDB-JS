@@ -157,7 +157,10 @@ const SearchBar = (props) => {
 
     if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
       const { type, value, label } = selected[0];
-      if (selected.length === 1 && selected && label === value) {
+      if (selected.length === 1 && type === 'dataset_intersection') {
+        const datasets = label.split(' ').join(',');
+        queryParams = `/search?${type}=${datasets}`;
+      } else if (selected.length === 1 && selected && label === value) {
         queryParams = `/${type}`;
       } else if (selected.length === 1 && selected) {
         queryParams = `/${type}/${value}`;
@@ -284,6 +287,7 @@ const SearchBar = (props) => {
 
   return (
     <>
+      {console.log(options)}
       <Select
         isMulti
         filterOption={customFilterOption}
