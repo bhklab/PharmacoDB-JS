@@ -69,7 +69,7 @@ const ManhattanPlot = (props) => {
             type: 'scattergl',
             marker: {
                 color: data.map(item => item.color),
-                size: data.map(item => item.y >= 1.5 ? 8 : 3),
+                size: data.map(item => item.y >= 1.5 ? 8 : item.y >= -Math.log10(0.5) ? 5 : 3),
                 opacity: data.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1)
             },
             showlegend: false,
