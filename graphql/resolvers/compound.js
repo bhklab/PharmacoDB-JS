@@ -84,17 +84,23 @@ const transformCompounds = data => {
             dataset_id,
             dataset_name,
         } = compound;
-        const returnList = { 'smiles': [], 'inchikey': [] };
-        if (smiles !== null) {
+
+        const returnList = {
+            'smiles': [],
+            'inchikey': []
+        };
+
+        if (smiles) {
             smiles.split(', ').forEach((item) => {
                 if (!returnList['smiles'].includes(item)) returnList['smiles'].push(item);
             });
         }
-        if (inchikey !== null) {
+        if (inchikey) {
             inchikey.split(', ').forEach((item) => {
                 if (!returnList['inchikey'].includes(item)) returnList['inchikey'].push(item);
             });
         }
+
         return {
             id,
             name,
@@ -219,8 +225,13 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
             query.limit(limit).offset(offset);
         }
 
+        // order by fda status if list of fields includes annotation.
+        if (listOfFields.includes('annotation')) {
+            query.orderBy('fda_status', 'desc');
+        }
+
         // execute the query.
-        const compounds = await query.orderBy('fda_status', 'desc');
+        const compounds = await query;
 
         // return the transformed data.
         return transformCompounds(compounds);
