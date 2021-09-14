@@ -16,7 +16,7 @@ const table_columns = [
   {
     Header: 'Name',
     accessor: 'name',
-    Cell: (row) => (<Link to={`/compounds/${row.row.original.id}`}>{row.value}</Link>),
+    Cell: (row) => (<Link to={`/compounds/${row.row.original.uid}`}>{row.value}</Link>),
   },
   {
     Header: 'SMILES',
@@ -50,13 +50,14 @@ const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
-      const { name, annotation, id } = value;
+      const { name, annotation, id, uid } = value;
       const {
         smiles, inchikey, pubchem, fda_status, chembl
       } = annotation;
       return {
         id,
         name,
+        uid,
         smiles,
         inchikey,
         pubchem,
