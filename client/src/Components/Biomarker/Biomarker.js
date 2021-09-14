@@ -184,13 +184,27 @@ const Biomarker = (props) => {
                 <StyledIndivPage >
                     <div className='heading'>
                         <span className='title' style={{ fontSize: '2vw' }}>
-                            <span> Association of </span>
-                            <span className='link'> {`${TitleCase(compound)}`} </span>
-                            <span> and </span>
-                            <span className='link'> {`${gene.toUpperCase()}`} </span>
-                            <span> in </span>
-                            <span className='link'> {`${TitleCase(tissue)}`} </span>
-                            <span> tissue </span>
+                            {
+                                compound && gene && tissue
+                                    ? (
+                                        <>
+                                            <span> Association of </span>
+                                            <span className='link'> {`${TitleCase(compound)}`} </span>
+                                            <span> and </span>
+                                            <span className='link'> {`${gene.toUpperCase()}`} </span>
+                                            <span> in </span>
+                                            <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                            <span> tissue </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span> Association of </span>
+                                            <span className='link'> {`${TitleCase(compound)}`} </span>
+                                            <span> and </span>
+                                            <span className='link'> {`${gene.toUpperCase()}`} </span>
+                                        </>
+                                    )
+                            }
                         </span>
                     </div>
                     <div className='wrapper'>
