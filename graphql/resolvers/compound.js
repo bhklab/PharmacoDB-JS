@@ -209,7 +209,7 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         const listOfFields = retrieveFields(info).map(el => el.name);
 
         // select fields.
-        const selectFields = ['c.id as id', 'c.name as name'];
+        const selectFields = ['c.id as id', 'c.name as name', 'c.compound_uid'];
         // add dataset detail to the list of knex columns to select.
         if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
         // add compound annotation to the list of knex columns to select.
