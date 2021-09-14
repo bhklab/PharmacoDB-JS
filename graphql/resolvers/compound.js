@@ -170,13 +170,15 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
  * @param {string} - compoundName.
  * @returns {Object} - compound object.
  */
-const compoundQuery = async (compoundId, compoundName, subtypes) => {
+const compoundQuery = async (compoundUID, compoundId, compoundName, subtypes) => {
     // the base query.
     let baseQuery = knex.select().from('compound');
     // if the subtypes contains annotation type
     if (subtypes.includes('annotation')) baseQuery = baseQuery.join('compound_annotation', 'compound.id', 'compound_annotation.compound_id');
     // return value.
-    if (compoundId) {
+    if (compoundUID) {
+        return baseQuery.where('compound.compound_uid', compoundUID);
+    } else if (compoundId) {
         return baseQuery.where('compound.id', compoundId);
     } else if (compoundName) {
         return baseQuery.where('compound.name', compoundName);
@@ -241,10 +243,11 @@ const compound = async (args, parent, info) => {
         // grabbing the compound id from the args.
         const {
             compoundId,
-            compoundName
+            compoundName,
+            compoundUID
         } = args;
         // throw error if neither of the arguments are passed.
-        if (!compoundId && !compoundName) {
+        if (!compoundUID && !compoundId && !compoundName) {
             throw new Error('Please specify atleast one of the ID or the Name of the Compound you want to query!');
         }
         // declaring variables.
@@ -253,7 +256,7 @@ const compound = async (args, parent, info) => {
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
         // query to get the data based on the compound id.
-        let compoundData = await compoundQuery(compoundId, compoundName, subtypes);
+        let compoundData = await compoundQuery(compoundUID, compoundId, compoundName, subtypes);
         // query to get compound source synonyms.
         if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundId, compoundName);
         // return the compound object.

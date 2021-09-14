@@ -159,10 +159,11 @@ const cell_line = async args => {
         // grabbing the cell line id from the args.
         const {
             cellId,
-            cellName
+            cellName,
+            cellUID
         } = args;
         // throw error if neither of the arguments are passed.
-        if (!cellId && !cellName) {
+        if (!cellUID && !cellId && !cellName) {
             throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
         }
         // variable to store cell line data.
@@ -184,7 +185,9 @@ const cell_line = async args => {
             .join('dataset', 'dataset.id', 'cell_synonym.dataset_id')
             .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         // based on the arguments passed to the function.
-        if (cellId) {
+        if (cellUID) {
+            cell_line = await query.where('cell.cell_uid', cellUID);
+        }else if (cellId) {
             cell_line = await query.where('cell.id', cellId);
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);
@@ -207,7 +210,9 @@ const cell_line = async args => {
                 .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
                 .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         }
-        if (cellId) {
+        if (cellUID) {
+            cell_line = await query.where('cell.cell_uid', cellUID);
+        }else if (cellId) {
             cell_line = await query.where('cell.id', cellId);
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);

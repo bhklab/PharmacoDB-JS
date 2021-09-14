@@ -122,7 +122,11 @@ const IndivCellLines = (props) => {
     } = props;
     // query to get the data for the single cell line.
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
-        variables: { cellId: parseInt(params.id) },
+        variables: { 
+          cellUID: params.id,
+          // cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
+          // cellName: typeof params.id === 'string' ? params.id : undefined
+        },
     });
     // load data from query into state
     const [cellLine, setCellLine] = useState({

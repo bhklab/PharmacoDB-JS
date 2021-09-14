@@ -42,6 +42,12 @@ const StyledSearchHeader = styled.div`
             span {
               margin-left: 5px;
             }
+            .home-link {
+              color: ${colors.light_blue};
+            }
+            .home-link:hover {
+              color: ${colors.pale_teal};
+            }
         }
         
         // Search bar placeholder
@@ -173,6 +179,7 @@ const StyledLinkDropdowns = styled.div`
     .dropdown.icon {
         margin-left: 0.5em !important;
     }
+
 `;
 
 /**
