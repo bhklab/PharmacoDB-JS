@@ -8,6 +8,7 @@ const getCellLinesQuery = gql`
   query getAllCellLines {
     cell_lines(all: true) {
       id
+      cell_uid
       name
       tissue {
         id
@@ -30,6 +31,7 @@ const getCellLineQuery = gql`
   query getSingleCellLine($cellId: Int, $cellName: String, $cellUID: String) {
     cell_line(cellId: $cellId, cellName: $cellName, cellUID: $cellUID) {
       id
+      cell_uid
       name
       diseases
       accessions

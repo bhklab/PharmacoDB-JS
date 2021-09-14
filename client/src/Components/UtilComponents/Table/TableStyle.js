@@ -24,7 +24,6 @@ const TableStyles = styled.div`
       overflow-wrap: break-word;
       
       a {
-        // color: ${colors.dark_gray_text};
         color: ${colors.blue};
         :hover {
             color: ${colors.dark_pink_highlight};
