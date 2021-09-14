@@ -67,13 +67,6 @@ const ManhattanPlotContainer = (props) => {
 
     // Use lazy query to trigger query upon mDataType selection.
     const [ getData, { loading, error } ] = useLazyQuery(getManhattanPlotDataQuery, {
-        onCompleted: (data) => {
-            setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
-        },
-        onError: (error) => {
-            console.log(error);
-        }
-    });
 
     useEffect(() => {
         console.log(mDataType);
@@ -107,14 +100,14 @@ const ManhattanPlotContainer = (props) => {
             let prev = chr.start;
             chr.start = start;
             chr.end = start + chr.length;
-            chr.labelValue = start + Math.floor(((start + chr.length) - start)/2);
+            chr.labelValue = start + Math.floor(((start + chr.length) - start) / 2);
             start += prev + 1
         });
 
         let chromosomeNames = chromosomes.map(item => item.name);
         let formatted = [];
         parsed.forEach(item => {
-            if(chromosomeNames.includes(item.chr)){
+            if (chromosomeNames.includes(item.chr)) {
                 let chromosome = chromosomes.find(chr => chr.name === item.chr);
                 item.x = item.gene_seq_start + chromosome.start;
                 item.y = -Math.log10(item.fdr);
@@ -149,17 +142,17 @@ const ManhattanPlotContainer = (props) => {
             </div>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                plotData.ready &&
-                <ManhattanPlot 
-                    plotId='biomarkerManhattanPlot' 
-                    title={`${compound} + ${tissue}`}
-                    data={plotData.data} 
-                    xRange={plotData.xRange} 
-                    xLabelValues={plotData.xLabelValues} 
-                />
+                    :
+                    error ? <Error />
+                        :
+                        plotData.ready &&
+                        <ManhattanPlot
+                            plotId='biomarkerManhattanPlot'
+                            // title={`${compound} + ${tissue}`}
+                            data={plotData.data}
+                            xRange={plotData.xRange}
+                            xLabelValues={plotData.xLabelValues}
+                        />
             }
         </StyledManhattanPlotContainer>
     );

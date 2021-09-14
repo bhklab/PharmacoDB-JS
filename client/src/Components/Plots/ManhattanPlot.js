@@ -14,7 +14,7 @@ const StyledManhattanPlot = styled.div`
 `;
 
 const ManhattanPlot = (props) => {
-    const { title, data, xRange, xLabelValues, plotId} = props;
+    const { title, data, xRange, xLabelValues, plotId } = props;
     const layout = {
         autoresize: true,
         height: 400,
@@ -31,7 +31,7 @@ const ManhattanPlot = (props) => {
             zeroline: false,
             showticklabels: true,
             range: xRange,
-            tickangle: 90,
+            tickangle: -90,
             tickmode: "array",
             tickvals: xLabelValues.values,
             ticktext: xLabelValues.labels,
@@ -42,14 +42,14 @@ const ManhattanPlot = (props) => {
         },
         yaxis: {
             title: {
-                text: '-log10(P)'
+                text: '-log10(p value)'
             },
             zeroline: false,
-            range:[0, Math.max(...data.map(item => item.y)) + 0.5]
+            range: [0, Math.max(...data.map(item => item.y)) + 0.5]
         },
         hovermode: "closest",
     };
-    
+
     const config = {
         responsive: true,
         displayModeBar: false,
@@ -60,7 +60,7 @@ const ManhattanPlot = (props) => {
 
     useEffect(() => {
         let plotData = [];
-        
+
         plotData.push({
             x: data.map(item => item.x),
             y: data.map(item => item.y),
@@ -83,7 +83,7 @@ const ManhattanPlot = (props) => {
                 `Gene: ${item.gene.symbol}<br>` +
                 `Dataset: ${item.dataset.name}<br>` +
                 `Chromosome: ${item.chrLabel}<br>` +
-                `-log10(P): ${item.y.toFixed(2)}`
+                `-log10(p value): ${item.y.toFixed(2)}`
             ))
         });
         plotData.push({
@@ -101,13 +101,13 @@ const ManhattanPlot = (props) => {
         setTraces(plotData);
     }, []);
 
-    return(
+    return (
         <StyledManhattanPlot>
-            <Plot 
+            <Plot
                 divId={plotId}
-                data={traces} 
-                layout={layout} 
-                config={config} 
+                data={traces}
+                layout={layout}
+                config={config}
             />
             <div className='download-buttons'>
                 <DownloadButton className='left' label='SVG' mode='svg' filename={title} plotId={plotId} />
