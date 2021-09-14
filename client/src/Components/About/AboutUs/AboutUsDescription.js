@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom'
 import colors from '../../../styles/colors';
-import cellExmp from '../../../images/DocumentationImages/exmpMCF7.png';
+import cellExmp from '../../../images/DocumentationImages/exmpMCF-7.png';
 import tissueExmp from '../../../images/DocumentationImages/exmpBreast.png';
+import drugExmp from '../../../images/DocumentationImages/exmpPaclitaxel.png';
+import cellDrugExmp from '../../../images/DocumentationImages/exmpMCF-7Paclitaxel.png';
 
 const StyledDescription = styled.div`
     display: flex;
@@ -31,10 +33,13 @@ const StyledDescription = styled.div`
             font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
         }
+        
+        img {
+          margin-top: 5px;
+        }
 
         .caption {
           text-align: left;
-          margin-top: 10px;
           margin-bottom: 10px;
           color: ${colors.silver};
           font-size: clamp(12px, calc(1vw + 2px), 15px);;
@@ -110,7 +115,7 @@ const AboutUsDescription = () => {
             {
               showCell ?
                   <div className="caption" id=" overlay-caption">
-                    <img  height="auto" width="500px" alt="Searching MCF-7" className="documentation" src={cellExmp} title="Query Cell line"/><br/>
+                    <img  height="auto" width="520px" alt="Searching MCF-7" className="documentation" src={cellExmp} title="Query cell line"/><br/>
                     Example search for a cell line.
                   </div>
                 : null
@@ -120,7 +125,7 @@ const AboutUsDescription = () => {
             {
               showTissue ?
                   <div className="caption" id=" overlay-caption">
-                    <img  height="auto" width="500px" alt="Searching Breast" className="documentation" src={tissueExmp} title="Query Tissue"/><br/>
+                    <img  height="auto" width="520px" alt="Searching Breast" className="documentation" src={tissueExmp} title="Query tissue"/><br/>
                     Example search for a tissue.
                   </div>
                 : null
@@ -129,15 +134,20 @@ const AboutUsDescription = () => {
           <div className="paragraph">Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
             {
               showDrug ?
-                    <div className="caption" id=" overlay-caption"> Example search for a drug. </div>
+                    <div className="caption" id=" overlay-caption">
+                      <img  height="auto" width="520px" alt="Searching Paclitaxel" className="documentation" src={drugExmp} title="Query drug"/><br/>
+                      Example search for a drug.
+                    </div>
                   : null
             }
           </div>
-          <div className="paragraph">Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF7 Paclitaxel</a>
+          <div className="paragraph">Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF-7 Paclitaxel</a>
             {
               showDDRC ?
 
-                    <div className="caption" id=" overlay-caption"> Example search for a drug dose-response curve. </div>
+                    <div className="caption" id=" overlay-caption">
+                      <img  height="auto" width="550px" alt="Searching MCF-7 Paclitaxel" className="documentation" src={cellDrugExmp} title="Query dose-response curve"/><br/>
+                      Example search for a drug dose-response curve. </div>
                   : null
             }
           </div>
