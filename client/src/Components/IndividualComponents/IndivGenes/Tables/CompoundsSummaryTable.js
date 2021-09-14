@@ -33,6 +33,7 @@ const parseTableData = (data, gene) => {
                 gene_id: gene.id,
                 gene_name: gene.name,
                 compound_id: filtered[0].compound.id,
+                compound_uid: filtered[0].compound.uid,
                 compound: filtered[0].compound.name,
                 datasets: datasets.map(item => item.name).join(', '),
                 dataset_ids: datasets.map(item => item.id).join(', '),
@@ -52,7 +53,7 @@ const CompoundsSummaryTable = (props) => {
             Header: `Compounds`,
             accessor: 'compound',
             center: true,
-            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</Link>
+            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_uid}`}>{item.value}</Link>
         },
         {
             Header: `Datasets`,
