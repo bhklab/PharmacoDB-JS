@@ -93,7 +93,7 @@ const statsObject = {
     link: '/experiments',
   },
   gene: {
-    name: 'genes', value: '61,273', image: genesImg, link: '/genes',
+    name: 'genes', value: '61,211', image: genesImg, link: '/genes',
   },
   compound: {
     name: 'compounds', value: '0', image: compoundsImg, link: '/compounds',
