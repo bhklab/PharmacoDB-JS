@@ -99,21 +99,20 @@ const formatAnnotationData = (data) => {
         if (annotation.pubchem) {
             annotationData.externalLinks.push(
                 {
-                    db: 'PubChem',
-                    identifier: <a href={`${pubchem}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">{annotation.pubchem}</a>,
+                    db: <a href={`${pubchem}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">PubChem</a>,
+                    identifier: `${annotation.pubchem}`,
                 });
         }
         if (annotation.chembl) {
-            annotationData.identifiers.push(
+            annotationData.externalLinks.push(
                 {
-                    db: 'ChEMBL',
-                    identifier: <a href={`https://www.ebi.ac.uk/chembl/compound_report_card/${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>,
+                    db: <a href={`https://www.ebi.ac.uk/chembl/compound_report_card/${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
+                    identifier: `${annotation.chembl}`,
                 }
             )
             annotationData.externalLinks.push(
                 {
-                    db: 'Drug Target Commons',
-                    identifier: <a href={`${drugTargetCommons}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>
+                    db: <a href={`${drugTargetCommons}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">Drug Target Commons</a>
                 }
             )
         }
