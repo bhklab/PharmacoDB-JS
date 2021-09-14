@@ -27,6 +27,7 @@ const GENE_INFO_COLUMNS = [
     {
         Header: 'Gene Status as Drug Target',
         accessor: 'target',
+        center: true
     },
     {
         Header: 'Ensembl Gene ID',
@@ -36,6 +37,7 @@ const GENE_INFO_COLUMNS = [
     {
         Header: 'Gene Location',
         accessor: 'location',
+        center: true
     },
 ];
 
