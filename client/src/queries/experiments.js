@@ -11,6 +11,7 @@ const getSingleCompoundExperimentsQuery = gql`
       id
       cell_line {
         id
+        cell_uid
         name
         tissue {
           id

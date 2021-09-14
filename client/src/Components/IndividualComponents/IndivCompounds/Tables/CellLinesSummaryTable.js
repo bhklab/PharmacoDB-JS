@@ -16,7 +16,7 @@ const CELL_SUMMARY_COLUMNS = [
     {
         Header: 'Cell Line',
         accessor: 'cellLine',
-        Cell: (item) => (<Link to={`/cell_lines/${item.row.original.id}`}>{item.value}</Link>),
+        Cell: (item) => (<Link to={`/cell_lines/${item.row.original.uid}`}>{item.value}</Link>),
     },
     {
         Header: 'Tissue Type',
@@ -71,6 +71,7 @@ const generateTableData = (data) => {
                 tissue: experiments[0].tissue,
                 num_experiments: experiments.length,
                 id: experiments[0].cell_line.id,
+                uid: experiments[0].cell_line.cell_uid,
                 datasetList: datasetList
             });
         }
@@ -108,7 +109,7 @@ const CellLinesSummaryTable = (props) => {
             setCSV(parsed.cellLine.map(item => ({
                 compoundId: compound.id,
                 compoundName: compound.name,
-                cellLineId: item.id,
+                cellLineUID: item.uid,
                 cellLine: item.cellLine,
                 tissueId: item.tissue.id,
                 tissueName: item.tissue.name,
