@@ -83,6 +83,7 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('y', 0)
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
+    .style("position", "sticky")
     .text("Number of " + `${type}`);
 
 /**
