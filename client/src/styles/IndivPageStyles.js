@@ -105,6 +105,15 @@ const StyledIndivPage = styled.div`
     align-items: center;
   }
 
+  .documentation{
+    img {
+      height: auto;
+      margin-top: 0px;
+      margin-bottom: 35px;
+      align-items: center;
+    }
+  }
+
   // full size container when too small
   @media only screen and (max-width: 765px) {
     .heading {
