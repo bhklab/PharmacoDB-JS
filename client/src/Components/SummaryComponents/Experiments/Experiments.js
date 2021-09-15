@@ -44,21 +44,20 @@ const renderComponent = (loading, error, data) => {
       const { id, name } = dataset;
 
       experimentsPerCell.push({
-        id, name, 
+        id, name,
         // count: Math.log10(el.experiment_count / el.cell_line_count),
-        count: el.experiment_count / el.cell_line_count,  
+        count: el.experiment_count / el.cell_line_count,
         color: dataset_colors[i],
       });
       experimentsPerCompound.push({
-        id, name, 
+        id, name,
         // count: Math.log10(el.experiment_count / el.compound_count), 
-        count: el.experiment_count / el.compound_count, 
+        count: el.experiment_count / el.compound_count,
         color: dataset_colors[i],
       });
     });
     experimentsPerCellXAxis.tickvals = [...new Set(experimentsPerCell.map(item => Math.ceil(item.count)).sort((a, b) => a - b))];
     experimentsPerCellXAxis.ticktext = experimentsPerCellXAxis.tickvals.map(item => Math.pow(10, item));
-    console.log(experimentsPerCellXAxis);
   }
 
   return (

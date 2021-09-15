@@ -12,7 +12,8 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from '../../utils/searchDefaultOptions'
+import defaultOptions from '../../utils/searchDefaultOptions';
+import MenuList from './List';
 
 /** CONSTANTS */
 // input must be greater than this length to display option menu
@@ -280,7 +281,7 @@ const SearchBar = (props) => {
    * Load data in
    */
   useEffect(() => {
-    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading) {
+    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading && !genesDataLoading) {
       setData({
         compounds: compoundsData ? compoundsData.compounds : [],
         genes: genesData ? genesData.genes : [],
@@ -293,7 +294,7 @@ const SearchBar = (props) => {
       // update the isLoading state because all data has been loaded.
       setDataLoadedValue(true);
     }
-  }, [tissuesData, cellsData, datasetsData, compoundsData, genesData]);
+  }, [tissuesData, cellsData, datasetsData, genesData, compoundsData]);
 
   useEffect(() => {
     // set options to default.
@@ -322,20 +323,24 @@ const SearchBar = (props) => {
           options: modifiedOptions
         });
       });
-      setOptions(finalOptions);
+      // make a list out of all the options for now.
+      const finalOptionsList = [];
+      finalOptions.forEach(el => {
+        finalOptionsList.push(...el.options);
+      })
+      setOptions(finalOptionsList);
     }
   }, [data]);
 
   return (
     <>
-      {console.log(options)}
       <Select
         isMulti
         filterOption={customFilterOption}
         options={(options)}
         components={{
-          // MenuList: (props) => (<MenuList {...props} />),
-          Option: CustomOption,
+          MenuList: (props) => (<MenuList {...props} />),
+          // Option: CustomOption,
         }}
         placeholder={(
           <ReactTypingEffect

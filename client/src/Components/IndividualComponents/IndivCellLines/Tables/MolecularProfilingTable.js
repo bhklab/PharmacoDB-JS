@@ -13,31 +13,31 @@ import { Link } from 'react-router-dom';
  * available on the database for a given cellLine
  */
 const generateTableData = (data) => {
-    let tableData = { ready: false, molProf: []};
+    let tableData = { ready: false, molProf: [] };
     const dataObject = {}
-    if (data && data.length>0) {
+    if (data && data.length > 0) {
         data.forEach((x) => {
-                // each data row contains dataset id and name, mDataTypes and num_profs, and allDataTypes
-                const datasetId = x['dataset']['id']
-                // create an object for each dataset if visited for the first time, otherwise just update it
-                if (!dataObject[datasetId]) {
-                    dataObject[datasetId] = {};
-                    dataObject[datasetId]['dataset'] = x['dataset'];
-                    dataObject[datasetId]['dataset']['molProf'] = {};
-                    x['dataTypes'].forEach((dataType) =>
-                        dataObject[datasetId]['dataset']['molProf'][dataType.replace(/[^a-zA-Z]/g, "").toLowerCase()] = "-"
-                    )
-                }
-                dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g, "").toLowerCase()] = x['num_prof'];
+            // each data row contains dataset id and name, mDataTypes and num_profs, and allDataTypes
+            const datasetId = x['dataset']['id']
+            // create an object for each dataset if visited for the first time, otherwise just update it
+            if (!dataObject[datasetId]) {
+                dataObject[datasetId] = {};
+                dataObject[datasetId]['dataset'] = x['dataset'];
+                dataObject[datasetId]['dataset']['molProf'] = {};
+                x['dataTypes'].forEach((dataType) =>
+                    dataObject[datasetId]['dataset']['molProf'][dataType.replace(/[^a-zA-Z]/g, "").toLowerCase()] = "-"
+                )
             }
-        )}
+            dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g, "").toLowerCase()] = x['num_prof'];
+        }
+        )
+    }
     const molProf = [];
     for (const [key, value] of Object.entries(dataObject)) {
-        molProf.push({id: key, dataset_name:value['dataset']['name'] ,...value['dataset']['molProf'] })
+        molProf.push({ id: key, dataset_name: value['dataset']['name'], ...value['dataset']['molProf'] })
     }
     tableData.molProf = molProf;
     tableData.ready = true;
-    console.log(tableData)
     return tableData;
 }
 
@@ -51,18 +51,18 @@ const COLUMNS = (data) => {
     const columns = [];
     columns.push(
         {
-        Header: 'Datasets',
-        accessor: 'dataset_name',
-        Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
+            Header: 'Datasets',
+            accessor: 'dataset_name',
+            Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
         }
     )
     // remove non-alphabetic characters to be able to assign to the accessors
     for (const [key, value] of Object.entries(data)) {
-        value['dataTypes'].forEach ((molProf) =>
-            columns.push({Header: molProf, accessor: molProf.replace(/[^a-zA-Z]/g,"").toLowerCase()})
+        value['dataTypes'].forEach((molProf) =>
+            columns.push({ Header: molProf, accessor: molProf.replace(/[^a-zA-Z]/g, "").toLowerCase() })
         )
         break;
-        };
+    };
     return columns;
 }
 
@@ -80,9 +80,8 @@ const MolecularProfilingTable = (props) => {
     const [error, setError] = useState(false);
 
     const { loading, data } = useQuery(getMolCellQuery, {
-        variables: { cellLineId: cellLine.id},
+        variables: { cellLineId: cellLine.id },
         onCompleted: (data) => {
-            console.log(data);
             let parsed = generateTableData(data["mol_cell"]);
             setTableData(parsed);
         },
@@ -90,7 +89,7 @@ const MolecularProfilingTable = (props) => {
             setError(true);
         }
     });
-    return(
+    return (
         <React.Fragment>
             {
                 error && <p>An error occurred</p>
@@ -101,16 +100,16 @@ const MolecularProfilingTable = (props) => {
                     <React.Fragment>
                         <h4>
                             <p align="center">
-                                { `Available Molecular Profiling in PharmacoGx` }
+                                {`Available Molecular Profiling in PharmacoGx`}
                             </p>
                         </h4>
                         <p align="center">
-                            { `# of profiles of each type per dataset` }
+                            {`# of profiles of each type per dataset`}
                         </p>
                         {
-                            tableData.molProf.length?
+                            tableData.molProf.length ?
                                 <Table columns={COLUMNS(data["mol_cell"])} data={tableData.molProf} center={true} />
-                                :''
+                                : ''
                         }
                     </React.Fragment>
             }

@@ -174,7 +174,6 @@ const IndivCompounds = (props) => {
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
-            console.log(queryData.singleCompound);
             setCompound({
                 data: queryData.singleCompound,
                 loaded: true,

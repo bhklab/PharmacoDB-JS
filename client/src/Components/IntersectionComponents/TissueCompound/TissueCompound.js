@@ -83,14 +83,13 @@ const TissueDrug = (props) => {
 
     // query to get the data for the single gene.
     const { loading } = useQuery(getTissueCompoundExperimentsQuery, {
-        variables: { 
+        variables: {
             tissueId: typeof Number(tissue) === 'number' ? Number(tissue) : undefined,
             tissueName: typeof tissue === 'string' ? tissue : undefined,
             compoundId: typeof Number(compound) === 'number' ? Number(compound) : undefined,
             compoundName: typeof compound === 'string' ? compound : undefined
         },
-        onCompleted: (data) => { 
-            console.log(data);
+        onCompleted: (data) => {
             parseExperiments(data.experiments, false, true);
         },
         onError: (err) => {
@@ -99,98 +98,98 @@ const TissueDrug = (props) => {
         }
     });
 
-    return(
+    return (
         <Layout>
             <StyledWrapper>
                 {
                     loading ? <Loading />
-                    :
-                    error ? <Error />
-                    :
-                    typeof experiments !== 'undefined' &&
-                    <PageContext.Provider value={{showStat, hideStat, alterClickedCells, isClicked, isDisabled}}>
-                        {
-                            experiments.length > 0 ?
-                            <StyledIntersectionComponent>
-                                <h2>
-                                    {getLink('tissue')} treated with {getLink('compound')}
-                                </h2>
-                                <StyledDoseResponseContainer>
-                                    <div className='plot'>
-                                        <DoseResponseCurve 
-                                            plotId='tissue_compound_dose_response'
-                                            plotData={plotData}
-                                            traces={plotData.traces}
-                                            showScatter={false}
-                                            onClick={onCurveClick}
-                                        />
-                                        <div className='download-buttons'>
-                                            <DownloadButton 
-                                                className='left'
-                                                label='SVG' 
-                                                mode='svg' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
-                                                plotId='tissue_compound_dose_response'
-                                            />
-                                            <DownloadButton 
-                                                className='left'
-                                                label='PNG' 
-                                                mode='png' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
-                                                plotId='tissue_compound_dose_response'
-                                            />
-                                            <DownloadButton 
-                                                label='CSV' 
-                                                mode='csv' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}-dose_response`}
-                                                data={plotCSVData}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='right-panel'>
-                                        <div className='checkbox-group'>
-                                            <div className='title'>Dataset Selector</div>
-                                            <div className='dataset-selector'>
-                                            {
-                                                datasets.map((item, i) => (
-                                                    <Checkbox 
-                                                        key={i}
-                                                        value={item.name}
-                                                        label={item.name}
-                                                        checked={item.checked}
-                                                        color={item.color}
-                                                        onChange={(e) => {showHideCurve(e, 'dataset')}}
-                                                    />
-                                                ))
-                                            }
-                                            </div>
-                                        </div>
-                                        <div className='checkbox-group'>
-                                            <div className='title'>Cell Line Selector</div>
-                                            <div className='cell-line-selector'>
-                                                {
-                                                    cellLines.map((item, i) => (
-                                                        <Checkbox 
-                                                            key={i}
-                                                            value={item.name}
-                                                            label={item.name}
-                                                            checked={item.checked}
-                                                            color={item.color}
-                                                            onChange={handleCellLineSelectionChange}
-                                                            disabled={item.disabled}
-                                                        />
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </StyledDoseResponseContainer>
-                                <TissueCompoundTable data={tableData} />
-                            </StyledIntersectionComponent>
+                        :
+                        error ? <Error />
                             :
-                            <h3>No experiments were found with the given combination of tissue and compound.</h3>
-                        }
-                    </PageContext.Provider>
+                            typeof experiments !== 'undefined' &&
+                            <PageContext.Provider value={{ showStat, hideStat, alterClickedCells, isClicked, isDisabled }}>
+                                {
+                                    experiments.length > 0 ?
+                                        <StyledIntersectionComponent>
+                                            <h2>
+                                                {getLink('tissue')} treated with {getLink('compound')}
+                                            </h2>
+                                            <StyledDoseResponseContainer>
+                                                <div className='plot'>
+                                                    <DoseResponseCurve
+                                                        plotId='tissue_compound_dose_response'
+                                                        plotData={plotData}
+                                                        traces={plotData.traces}
+                                                        showScatter={false}
+                                                        onClick={onCurveClick}
+                                                    />
+                                                    <div className='download-buttons'>
+                                                        <DownloadButton
+                                                            className='left'
+                                                            label='SVG'
+                                                            mode='svg'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
+                                                            plotId='tissue_compound_dose_response'
+                                                        />
+                                                        <DownloadButton
+                                                            className='left'
+                                                            label='PNG'
+                                                            mode='png'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}`}
+                                                            plotId='tissue_compound_dose_response'
+                                                        />
+                                                        <DownloadButton
+                                                            label='CSV'
+                                                            mode='csv'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].tissue.name}-dose_response`}
+                                                            data={plotCSVData}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='right-panel'>
+                                                    <div className='checkbox-group'>
+                                                        <div className='title'>Dataset Selector</div>
+                                                        <div className='dataset-selector'>
+                                                            {
+                                                                datasets.map((item, i) => (
+                                                                    <Checkbox
+                                                                        key={i}
+                                                                        value={item.name}
+                                                                        label={item.name}
+                                                                        checked={item.checked}
+                                                                        color={item.color}
+                                                                        onChange={(e) => { showHideCurve(e, 'dataset') }}
+                                                                    />
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div className='checkbox-group'>
+                                                        <div className='title'>Cell Line Selector</div>
+                                                        <div className='cell-line-selector'>
+                                                            {
+                                                                cellLines.map((item, i) => (
+                                                                    <Checkbox
+                                                                        key={i}
+                                                                        value={item.name}
+                                                                        label={item.name}
+                                                                        checked={item.checked}
+                                                                        color={item.color}
+                                                                        onChange={handleCellLineSelectionChange}
+                                                                        disabled={item.disabled}
+                                                                    />
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </StyledDoseResponseContainer>
+                                            <TissueCompoundTable data={tableData} />
+                                        </StyledIntersectionComponent>
+                                        :
+                                        <h3>No experiments were found with the given combination of tissue and compound.</h3>
+                                }
+                            </PageContext.Provider>
                 }
             </StyledWrapper>
         </Layout>

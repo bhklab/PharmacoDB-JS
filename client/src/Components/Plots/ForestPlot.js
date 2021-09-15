@@ -33,17 +33,21 @@ const legend = [
     { text: 'FDR > 0.05 and r < 0.7', color: `${colors.light_pink}` },
 ];
 
+// permutation done text.
+const permutationDoneText = ['* p values and confidence intervals computed using analytical formulas',
+    '† p value and confidence intervals computed using data resampling']
+
 // margin for the svg element.
 const margin = {
     top: 40,
     right: 20,
-    bottom: 50,
+    bottom: 150,
     left: 20,
 };
 
 // width and height of the SVG canvas.
 const width = 900 - margin.left - margin.right;
-const height = 450 - margin.top - margin.bottom;
+const height = 550 - margin.top - margin.bottom;
 
 
 /**
@@ -190,7 +194,7 @@ const createXAxis = (svg, scale, height, width, margin) => {
         .append('text')
         .attr('font-weight', 500)
         .attr('x', (width * CHART_WIDTH * 0.40))
-        .attr('y', height + (margin.bottom * 0.75))
+        .attr('y', height + margin.bottom / 5 + 10)
         .attr('fill', `${colors.dark_teal_heading}`)
         .text('pearson correlation coefficient (r)')
         .attr('font-size', '16px');
@@ -316,6 +320,7 @@ const appendDatasetName = (svg, data, height) => {
 
     // append dataset name.
     data.forEach((element, i) => {
+        const text = element.permutation_done === 1 ? ' † ' : ' * ';
         dataset
             .append('text')
             .attr('id', `dataset-${element.dataset.name}`)
@@ -323,7 +328,7 @@ const appendDatasetName = (svg, data, height) => {
             .attr('x', 10)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${element.dataset.name}`)
+            .text(`${element.dataset.name}${text}`)
             .attr('font-size', '16px');
     });
 };
@@ -464,6 +469,29 @@ const createSelectionOptions = (mDataTypes, data) => {
 };
 
 /**
+ * add description to the bottom of the text.
+ * @param {Object} svg 
+ * @param {number} height 
+ * @param {number} width 
+ */
+const createExplanation = (svg, height, width) => {
+    // append legend text.
+    const explanationText = svg.append('g')
+        .attr('id', 'permutation-done-text');
+
+    permutationDoneText.forEach((el, i) => {
+        explanationText
+            .append('text')
+            .attr('id', `legend-${el}`)
+            .attr('x', width / 5)
+            .attr('y', height + 80 + (20 * i))
+            .text(`${el}`)
+            .attr('font-size', '12px')
+            .attr('fill', `${colors.dark_teal_heading}`);
+    });
+};
+
+/**
  * Main function to create the forest plot.
  * @param {Object} margin - margin for the svg canavas.
  * @param {number} height - height of the svg canvas.
@@ -514,6 +542,9 @@ const createForestPlot = (margin, heightInput, width, data) => {
 
     // create legend.
     createLegend(svg, height, width);
+
+    // add descriptive text to the bottom.
+    createExplanation(svg, height, width);
 };
 
 /**
