@@ -70,7 +70,6 @@ const formatGroupLabel = (data) => (
   </div>
 );
 
-
 /**
  * Component for the search bar.
  *
@@ -285,7 +284,9 @@ const SearchBar = (props) => {
   }, [tissuesData, cellsData, datasetsData, compoundsData]);
 
   useEffect(() => {
+    // set options to default.
     setOptions(defaultOptions);
+
     // if all the data is loaded.
     if (isDataLoaded) {
       // for every datatype, push the options into groups
@@ -295,11 +296,14 @@ const SearchBar = (props) => {
           label: d,
           options: data[d].map((x) => {
             let returnObject = {};
-            if (x.name) {
-              returnObject = { value: x.id, label: x.name, type: d };
-            }
-            else if (x.annotation.symbol) { // for genes
+            if (x.annotation && x.annotation.symbol && x.__typename.match(/gene/i)) { // for gene
               returnObject = { value: x.id, label: x.annotation.symbol, type: d };
+            } else if (x.__typename.match(/compound/i)) { // for compound
+              returnObject = { value: x.uid, label: x.name, type: d };
+            } else if (x.__typename.match(/cellline/i)) { // for cell line
+              returnObject = { value: x.cell_uid, label: x.name, type: d };
+            } else { // for tissue and dataset
+              returnObject = { value: x.id, label: x.name, type: d };
             }
             return returnObject;
           }),
@@ -307,6 +311,7 @@ const SearchBar = (props) => {
       });
       setOptions(finalOptions);
     }
+
   }, [data]);
 
   return (
