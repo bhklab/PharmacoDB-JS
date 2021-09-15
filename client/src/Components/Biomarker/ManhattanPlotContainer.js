@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import ManhattanPlot from '../Plots/ManhattanPlot';
-import { getManhattanPlotDataQuery } from '../../queries/gene_compound';
+import { getTissueSpecificManhattanPlotDataQuery, getPanCancerManhattanPlotDataQuery } from '../../queries/gene_compound';
 import Loading from '../UtilComponents/Loading';
 import Error from '../UtilComponents/Error';
 import chromosomeInfo from '../../utils/chromosomeInfo.json';
@@ -15,6 +15,7 @@ const StyledManhattanPlotContainer = styled.div`
         width: 100%;
         display: flex;
         justify-content: flex-end;
+        align-items: center;
         .dropdown {
             width: 140px;
             font-size: 14px;
@@ -49,16 +50,26 @@ const mDataTypeOptions = [
 ];
 
 const ManhattanPlotContainer = (props) => {
-    const { compound, tissue } = props;
+    const { biomarker, compound, tissue } = props;
     const [mDataType, setMDataType] = useState('cnv');
     const [plotData, setPlotData] = useState({
         ready: false
     });
 
     // Use lazy query to trigger query upon mDataType selection.
-    const [ getData, { loading, error } ] = useLazyQuery(getManhattanPlotDataQuery, {
+    const [ getTissueSpecificData, { loading: loadingTissueSpecific, error: errorTissueSpecific } ] = useLazyQuery(getTissueSpecificManhattanPlotDataQuery, {
         onCompleted: (data) => {
-            setPlotData(parsePlotData(data.gene_compound_tissue_dataset));
+            console.log(data);
+            setPlotData(parsePlotData(biomarker.symbol, compound, tissue, data.gene_compound_tissue_dataset_biomarker));
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
+
+    const [getPanCancerData, { loading: loadingPanCancer, error: errorPanCancer } ] = useLazyQuery(getPanCancerManhattanPlotDataQuery, {
+        onCompleted: (data) => {
+            setPlotData(parsePlotData(biomarker.symbol, compound, tissue, data.gene_compound_dataset_biomarker));
         },
         onError: (error) => {
             console.log(error);
@@ -68,11 +79,17 @@ const ManhattanPlotContainer = (props) => {
     useEffect(() => {
         console.log(mDataType);
         setPlotData({ ready: false }); // reset the plot data every time the mDataType changes.
-        getData({ variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType } });
+        if(typeof tissue !== 'undefined'){
+            getTissueSpecificData({ variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType } });
+        }else{
+            getPanCancerData({ variables: { compoundName: compound, mDataType: mDataType } });
+        }
+        
     }, [mDataType]);
 
-    const parsePlotData = (data) => {
-        let parsed = data.map(item => ({
+    const parsePlotData = (gene, compound, tissue, data) => {
+        let parsed = data.map((item, i) => ({
+            pointId: i,
             dataset: item.dataset,
             gene: {
                 id: item.gene.id,
@@ -115,9 +132,13 @@ const ManhattanPlotContainer = (props) => {
             }
         });
         formatted.sort((a, b) => a.x - b.x);
-        console.log(formatted);
+        let selectedBiomarker = formatted.filter(item => item.gene.symbol === biomarker.symbol);
+        let biomarkerPointIds = selectedBiomarker.map(p => p.pointId);
+        formatted = formatted.filter(item => !biomarkerPointIds.includes(item.pointId));
         return {
+            title: `${gene}-${compound}${tissue ? `-${tissue}` : ''}`,
             data: formatted,
+            selectedBiomarker: selectedBiomarker,
             xRange: [0, Math.max(...chromosomes.map(item => item.end))],
             xLabelValues: {
                 values: chromosomes.map(item => item.labelValue),
@@ -139,15 +160,16 @@ const ManhattanPlotContainer = (props) => {
                 />
             </div>
             {
-                loading ? <Loading />
+                loadingTissueSpecific || loadingPanCancer ? <Loading />
                     :
-                    error ? <Error />
+                    errorTissueSpecific || errorPanCancer ? <Error />
                         :
                         plotData.ready &&
                         <ManhattanPlot
                             plotId='biomarkerManhattanPlot'
-                            title={`${compound} + ${tissue}`}
+                            title={plotData.title}
                             data={plotData.data}
+                            biomarker={plotData.selectedBiomarker}
                             xRange={plotData.xRange}
                             xLabelValues={plotData.xLabelValues}
                         />
