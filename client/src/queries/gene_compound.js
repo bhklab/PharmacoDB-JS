@@ -23,8 +23,8 @@ const geneCompound = `
  * @returns - the information for the queried gene.
  */
 const getGeneCompoundDatasetQuery = gql`
-    query getGeneCompoundDataset($geneId: Int, $compoundId: Int) {
-        gene_compound_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
+    query getGeneCompoundDataset($geneId: Int, $geneName: String, $compoundId: Int, $compoundName: String) {
+        gene_compound_dataset(geneId: $geneId, geneName: $geneName, compoundId: $compoundId, compoundName: $compoundName, all: true) {
             ${geneCompound}
             dataset {
                 id
@@ -41,7 +41,7 @@ const getGeneCompoundDatasetQuery = gql`
  */
 const getGeneCompoundTissueDatasetQuery = gql`
     query getGeneCompoundTissueDataset($geneId: Int, $compoundId: Int, $tissueId: Int, $geneName: String, $compoundName: String, $tissueName: String) {
-        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, geneName: $geneName, compoundName: $compoundName, tissueName: $tissueName, all: false) {
+        gene_compound_tissue_dataset(geneId: $geneId, compoundId: $compoundId, tissueId: $tissueId, geneName: $geneName, compoundName: $compoundName, tissueName: $tissueName, all: true) {
             ${geneCompound}
             dataset {
                 id

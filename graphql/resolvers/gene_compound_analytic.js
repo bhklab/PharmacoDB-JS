@@ -74,6 +74,12 @@ const transformGeneCompounds = (data) => {
     });
 };
 
+/**
+ * Maps dataset object to each gene_compound data rows by dataset_id
+ * @param {*} data // gene_compound data 
+ * @param {*} datasets // list of dataset objects
+ * @returns a complete GraphQL formatted data to be returned.
+ */
 const mapDataset = (data, datasets) => {
     return data.map(item => {
         let found = datasets.find(dataset => dataset.id === item.dataset.id);
@@ -98,7 +104,10 @@ const mapDataset = (data, datasets) => {
  */
 const gene_compound_dataset = async (args, context, info) => {
     // arguments
-    const { geneId, compoundId, page = 1, per_page = 20, all = false } = args;
+    let { geneId, geneName, compoundId, compoundName, page = 1, per_page = 20, all = false } = args;
+    // grab the ids of each data type if data type is passed in the parameters
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId ? geneId : null;
+    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
