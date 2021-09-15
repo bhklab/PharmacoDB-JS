@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getDatasetsTypesQuery } from '../../../../queries/dataset';
+import { getDatasetTestedCellsQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
@@ -13,7 +13,6 @@ const parseTableData = (datasetName, data, datasetId) => {
     console.log(data);
     let cellLines = []
     if (data && typeof data !== 'undefined') {
-        // let cells = data.dataset.find(item => item.id === datasetId).cells_tested;
         let cells = data.cells_tested;
         cellLines = cells.map(item => ({dataset: datasetName, id: item.id, cell_uid: item.cell_uid, cellLine: item.name}));
     }
@@ -34,12 +33,13 @@ const CellLineSummaryTable = (props) => {
         },
     ];
 
-    const { loading } = useQuery(getDatasetsTypesQuery, {
+    const { loading } = useQuery(getDatasetTestedCellsQuery, {
+        variables: { datasetId: dataset.id },
         fetchPolicy: "network-only",
         onCompleted: (res) => {
-            let data = res.datasets_types.filter(d => d.dataset.id === dataset.id)[0];
+            let data = res.dataset_type[0];
             data = { id : data.dataset.id, name: data.dataset.name, cells_tested : data.cells_tested}
-            console.log(dataset);
+            console.log(data);
             setCellLines(parseTableData(data.name, data, data.id));
         },
         onError: () => {setError(true)}

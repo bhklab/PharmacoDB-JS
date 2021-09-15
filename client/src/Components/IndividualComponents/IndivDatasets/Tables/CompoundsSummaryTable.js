@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getDatasetsTypesQuery } from '../../../../queries/dataset';
+import { getDatasetTestedCompoundsQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
@@ -11,7 +11,6 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const parseTableData = ( datasetName, data, datasetId) => {
     if (typeof data !== 'undefined') {
-        // let compounds = data.dataset.find(item => item.id === datasetId).compounds_tested;
         let compounds = data.compounds_tested;
         return compounds.map(item => ({dataset: datasetName, id: item.id, uid: item.uid, compound: item.name}));
     }
@@ -31,13 +30,14 @@ const CompoundsSummaryTable = (props) => {
           Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
         }
     ];
-
-    const { loading } = useQuery(getDatasetsTypesQuery, {
+    
+    const { loading } = useQuery( getDatasetTestedCompoundsQuery, {
+        variables: { datasetId: dataset.id },
         fetchPolicy: "network-only",
         onCompleted: (res) => {
-            let data = res.datasets_types.filter(d => d.dataset.id === dataset.id)[0];
+            let data = res.dataset_type[0];
             data = { id : data.dataset.id, name: data.dataset.name, compounds_tested : data.compounds_tested}
-            console.log(dataset);
+            console.log(data);
             setCompounds(parseTableData(data.name, data, data.id));
         },
         onError: () => {setError(true)}
