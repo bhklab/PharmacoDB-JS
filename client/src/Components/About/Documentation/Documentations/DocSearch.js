@@ -27,22 +27,22 @@ const DocSearch = () => {
             <p>
                 The search bar also allows the user to specify a data type (e.g. cell, drug, dataset), where it would take the user to a page listing all instances of that data type in the database.
             </p>
-            <img height="auto" width="650px" alt="Searching cell line data" className="documentation" src={cellSearch} title="searching MCF-7 seach bar"/>
+            <img width="650px" alt="Searching cell line data" src={cellSearch} title="Searching cell"/>
             <p>
                 Queries consisting of the names of multiple datasets, with a space between dataset names, are also allowed. This query will link the user to a page describing the intersection between the datasets, with tables listing the common cells, drugs and tissue types.
             </p>
-            <img height="auto" width="650px"  alt="Searching CCLE, NCI60, and gCSI" className="documentation" src={intersectionSearch} title="searching multiple datasets" />
+            <img width="650px"  alt="Searching CCLE, NCI60, and gCSI" src={intersectionSearch} title="Searching multiple datasets" />
             <p>
                 Queries consisting of combinations of the name of a drug with cell line or tissue, delimited by a space, will direct to a page plotting all the available drug dose response curves for that combination across all datasets in PharmacoDB.
             </p>
             <h6>Cell line vs. Drug/ Drug vs. Cell line</h6>
-            <img height="auto" width="650px" alt="Searching cell line vs. drug" className="documentation" src={cellDrugSearch} title="Searching MCF-7 cell line vs. Paclitaxel Drug"/>
+            <img width="650px" alt="Searching cell line vs. drug" src={cellDrugSearch} title="Searching cell line vs. Drug"/>
             <h6>Drug vs. Tissue/ Tissue vs. Drug</h6>
-            <img height="auto" width="650px" alt="Searching tissue vs. drug" className="documentation" src={drugTissueSearch} title="Searching Paclitaxel Drug vs. Breast Tissue"/>
+            <img width="650px" alt="Searching tissue vs. drug" src={drugTissueSearch} title="Searching Drug vs. Tissue"/>
             <p>
                 Another main way of interacting with PharmacoDB is by clicking on the data types provided at the bottom of the homepage.
             </p>
-            <img height="auto" width="800px" alt="home page navigation bar" className="documentation" src={homeNav} title="Home page tool bar"/>
+            <img width="800px" alt="home page navigation bar" src={homeNav} title="Home page tool bar"/>
         </div>
     );
 }

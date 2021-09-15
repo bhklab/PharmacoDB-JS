@@ -18,7 +18,6 @@ import DocDrug from './Documentations/DocDrug';
 import DocDatasetsIntersection from './Documentations/DocDatasetsIntersection';
 import DocCellVsDrug from './Documentations/DocCellVsDrug';
 import DocTissueVsDrug from './Documentations/DocTissueVsDrug';
-import DocAPI from './Documentations/DocAPI';
 import DocBiomarker from './Documentations/DocBiomarker';
 
 const SIDE_LINKS = [
@@ -33,7 +32,6 @@ const SIDE_LINKS = [
     { label: 'Datasets Intersection', name: 'intersection' },
     { label: 'Cell line vs. Drug', name: 'cell-drug' },
     { label: 'Tissue vs. Drug', name: 'tissue-drug' },
-    { label: 'API', name: 'api' },
     { label: 'Biomarker', name: 'biomarker' },
 ];
 
@@ -150,12 +148,6 @@ const DocDescription = () => {
                             display === 'tissue-drug' &&
                             <Element className="section" name="tissue-drug">
                                 <DocTissueVsDrug />
-                            </Element>
-                        }
-                        {
-                            display === 'api' &&
-                            <Element className="section" name="api">
-                                <DocAPI />
                             </Element>
                         }
                         {
