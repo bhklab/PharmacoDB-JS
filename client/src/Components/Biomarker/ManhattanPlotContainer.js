@@ -57,9 +57,8 @@ const ManhattanPlotContainer = (props) => {
     });
 
     // Use lazy query to trigger query upon mDataType selection.
-    const [ getTissueSpecificData, { loading: loadingTissueSpecific, error: errorTissueSpecific } ] = useLazyQuery(getTissueSpecificManhattanPlotDataQuery, {
+    const [getTissueSpecificData, { loading: loadingTissueSpecific, error: errorTissueSpecific }] = useLazyQuery(getTissueSpecificManhattanPlotDataQuery, {
         onCompleted: (data) => {
-            console.log(data);
             setPlotData(parsePlotData(biomarker.symbol, compound, tissue, data.gene_compound_tissue_dataset_biomarker));
         },
         onError: (error) => {
@@ -67,7 +66,7 @@ const ManhattanPlotContainer = (props) => {
         }
     });
 
-    const [getPanCancerData, { loading: loadingPanCancer, error: errorPanCancer } ] = useLazyQuery(getPanCancerManhattanPlotDataQuery, {
+    const [getPanCancerData, { loading: loadingPanCancer, error: errorPanCancer }] = useLazyQuery(getPanCancerManhattanPlotDataQuery, {
         onCompleted: (data) => {
             setPlotData(parsePlotData(biomarker.symbol, compound, tissue, data.gene_compound_dataset_biomarker));
         },
@@ -77,14 +76,13 @@ const ManhattanPlotContainer = (props) => {
     });
 
     useEffect(() => {
-        console.log(mDataType);
         setPlotData({ ready: false }); // reset the plot data every time the mDataType changes.
-        if(typeof tissue !== 'undefined'){
+        if (typeof tissue !== 'undefined') {
             getTissueSpecificData({ variables: { compoundName: compound, tissueName: tissue, mDataType: mDataType } });
-        }else{
+        } else {
             getPanCancerData({ variables: { compoundName: compound, mDataType: mDataType } });
         }
-        
+
     }, [mDataType]);
 
     const parsePlotData = (gene, compound, tissue, data) => {
@@ -148,13 +146,13 @@ const ManhattanPlotContainer = (props) => {
         };
     };
 
-    return(
+    return (
         <StyledManhattanPlotContainer>
             <div className='dropdown-container'>
-                <Select 
-                    className='dropdown' 
+                <Select
+                    className='dropdown'
                     classNamePrefix='dropdown'
-                    options={mDataTypeOptions} 
+                    options={mDataTypeOptions}
                     defaultValue={mDataTypeOptions[0]}
                     onChange={(e) => setMDataType(e.value)}
                 />

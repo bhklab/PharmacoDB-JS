@@ -29,7 +29,6 @@ const tableColumns = [
 const getTableData = (data) => {
   let tableData = [];
   if (data) {
-    console.log(data);
     tableData = data.cell_lines.map((value) => {
       const { name, tissue, id, cell_uid } = value;
       return {

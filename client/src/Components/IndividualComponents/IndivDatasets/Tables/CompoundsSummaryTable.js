@@ -12,7 +12,7 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 const parseTableData = (data, datasetId, datasetName) => {
     if (typeof data !== 'undefined') {
         let compounds = data.dataset.find(item => item.id === datasetId).compounds_tested;
-        return compounds.map(item => ({dataset: datasetName, id: item.id, uid: item.uid, compound: item.name}));
+        return compounds.map(item => ({ dataset: datasetName, id: item.id, uid: item.uid, compound: item.name }));
     }
     return [];
 }
@@ -24,10 +24,10 @@ const CompoundsSummaryTable = (props) => {
 
     const columns = [
         {
-          Header: `All compounds lines tested in ${dataset.name}`,
-          accessor: 'compound',
-          center: true,
-          Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a> 
+            Header: `All compounds lines tested in ${dataset.name}`,
+            accessor: 'compound',
+            center: true,
+            Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
         }
     ];
 
@@ -35,25 +35,24 @@ const CompoundsSummaryTable = (props) => {
         variables: { datasetId: dataset.id },
         fetchPolicy: "network-only",
         onCompleted: (data) => {
-            console.log(data);
             setCompounds(parseTableData(data, dataset.id, dataset.name));
         },
-        onError: () => {setError(true)}
+        onError: () => { setError(true) }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                <React.Fragment>
-                    <div className='download-button'>
-                        <DownloadButton label='CSV' data={compounds} mode='csv' filename={`${dataset.name} - compounds`} />
-                    </div>
-                    <Table columns={columns} data={compounds} />
-                </React.Fragment>
+                    :
+                    error ? <Error />
+                        :
+                        <React.Fragment>
+                            <div className='download-button'>
+                                <DownloadButton label='CSV' data={compounds} mode='csv' filename={`${dataset.name} - compounds`} />
+                            </div>
+                            <Table columns={columns} data={compounds} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );

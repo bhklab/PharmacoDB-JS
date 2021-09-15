@@ -10,11 +10,10 @@ import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const parseTableData = (datasetName, data, datasetId) => {
-    console.log(data);
     let cellLines = []
     if (data && typeof data !== 'undefined') {
         let cells = data.dataset.find(item => item.id === datasetId).cells_tested;
-        cellLines = cells.map(item => ({dataset: datasetName, id: item.id, cell_uid: item.cell_uid, cellLine: item.name}));
+        cellLines = cells.map(item => ({ dataset: datasetName, id: item.id, cell_uid: item.cell_uid, cellLine: item.name }));
     }
     return cellLines;
 }
@@ -26,10 +25,10 @@ const CellLineSummaryTable = (props) => {
 
     const columns = [
         {
-          Header: `All cell lines tested in ${dataset.name}`,
-          accessor: 'cellLine',
-          center: true,
-          Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.cell_uid}`}>{item.value}</a>
+            Header: `All cell lines tested in ${dataset.name}`,
+            accessor: 'cellLine',
+            center: true,
+            Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.cell_uid}`}>{item.value}</a>
         },
     ];
 
@@ -37,27 +36,26 @@ const CellLineSummaryTable = (props) => {
         variables: { datasetId: dataset.id },
         fetchPolicy: "network-only",
         onCompleted: (data) => {
-            console.log(data);
             setCellLines(parseTableData(dataset.name, data, dataset.id));
         },
-        onError: () => {setError(true)}
+        onError: () => { setError(true) }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading ?
-                <Loading />
-                :
-                error ?
-                <Error message='this is a test message' />
-                :
-                <React.Fragment>
-                    <div className='download-button'>
-                        <DownloadButton label='CSV' data={cellLines} mode='csv' filename={`${dataset.name} - cell lines`} />
-                    </div>
-                    <Table columns={columns} data={cellLines} center={true} />
-                </React.Fragment>
+                    <Loading />
+                    :
+                    error ?
+                        <Error message='this is a test message' />
+                        :
+                        <React.Fragment>
+                            <div className='download-button'>
+                                <DownloadButton label='CSV' data={cellLines} mode='csv' filename={`${dataset.name} - cell lines`} />
+                            </div>
+                            <Table columns={columns} data={cellLines} center={true} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );

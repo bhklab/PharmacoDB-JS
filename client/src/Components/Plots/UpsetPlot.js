@@ -132,7 +132,7 @@ const appendRectangles = (svg, data, scale, height) => {
                 d3.select(this).style("cursor", "default");
             })
             .on('click', function () {
-                makeTable(svg, data[key].values, 'upsetplot', );
+                makeTable(svg, data[key].values, 'upsetplot',);
             });
     })
 };
@@ -223,7 +223,7 @@ function makeTable(svg, names, tableId,) {
     //         .attr('fill', '#69a3b2')
     //         .attr('opacity', 0.1);
     // })
-    console.log("List:" ,names);
+    // console.log("List:" ,names);
 }
 
 /**
@@ -263,7 +263,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style("cursor", "default");
                 })
                 .on('click', function () {
-                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot', );
+                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot',);
                 });
         }
 
@@ -278,8 +278,8 @@ const upsetCircle = (svg, data, datasets, length, height) => {
             .attr('stroke-width', 3)
             .attr('class', `line-set-${i}`)
             .on('mouseover', function () {
-            // change the cursor type.
-            d3.select(this).style("cursor", "pointer");
+                // change the cursor type.
+                d3.select(this).style("cursor", "pointer");
             })
             .on('mouseout', function () {
                 // change the cursor to default.
@@ -346,7 +346,7 @@ const createUpsetPlot = (data, datasets, type) => {
  *  <UpsetPlot/>
  * )
  */
-const UpsetPlot = ({ data, datasets, type}) => {
+const UpsetPlot = ({ data, datasets, type }) => {
     useEffect(() => {
         // remove the alrady existing upset plot.
         d3.select(`#${CANVAS_ID}`).remove();

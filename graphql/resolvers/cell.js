@@ -103,7 +103,7 @@ const transformSingleCellLine = (data) => {
                 returnObject['synonyms'].forEach((val, i) => {
                     if (val['name'] === source_cell_name) {
                         if (!returnObject['synonyms'][i]['source'].filter(source => source.id === dataset_id).length > 0)
-                            returnObject['synonyms'][i]['source'].push({'id': dataset_id, 'name': dataset_name});
+                            returnObject['synonyms'][i]['source'].push({ 'id': dataset_id, 'name': dataset_name });
                     }
                 });
             }
@@ -191,9 +191,8 @@ const cell_line = async args => {
             .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
         // based on the arguments passed to the function.
         if (cellUID) {
-            console.log(cellUID);
             cell_line = await query.where('cell.cell_uid', cellUID);
-        }else if (cellId) {
+        } else if (cellId) {
             cell_line = await query.where('cell.id', cellId);
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);

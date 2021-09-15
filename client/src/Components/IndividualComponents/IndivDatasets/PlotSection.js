@@ -17,7 +17,6 @@ import colors from '../../../styles/colors';
  * @returns - an object containing parsed plot data for four bar plots.
  */
 const generateCountPlotData = (datasets, id) => {
-  console.log(datasets);
   const cells = datasets.map(item => ({
     name: item.dataset.name,
     count: item.cell_line_count,
