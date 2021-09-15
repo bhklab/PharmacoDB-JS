@@ -13,7 +13,7 @@ const DRUG_SUMMARY_COLUMNS = [
     {
       Header: 'Compounds',
       accessor: 'compound',
-      Cell: (item) => <a href={`/compounds/${item.cell.row.original.id}`}>{item.value}</a>
+      Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
     },
     {
       Header: 'Datasets',
@@ -61,6 +61,7 @@ const generateTableData = (data) => {
                 dataset: datasetObj.map(item => item.name).join(' '),
                 num_experiments: experiments.length,
                 id: experiments[0].compound.id,
+                uid: experiments[0].compound.uid,
                 datasetObj: datasetObj
             });
         }
@@ -90,7 +91,7 @@ const DrugSummaryTable = (props) => {
                 tissueId: tissue.id,
                 tissueName: tissue.name,
                 compound: item.compound,
-                compoundId: item.id,
+                compoundUID: item.uid,
                 dataset: item.dataset,
                 numExperiments: item.num_experiments,
             })));

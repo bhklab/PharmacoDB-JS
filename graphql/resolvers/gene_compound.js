@@ -2,6 +2,9 @@ const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
 const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields } = require('../../helpers/queryHelpers');
+const { getIdBasedOnCompound } = require('./compound');
+const { getIdBasedOnGene } = require('./gene');
+const { getIdBasedOnTissue } = require('./tissue');
 
 /**
  * @param {Array} data
@@ -13,7 +16,7 @@ const transformGeneCompounds = (data) => {
             gct_id, compound_id, estimate, lower, upper,
             n, tstat, fstat, pvalue, df,
             fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
-            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name,
+            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name, compound_uid, 
             smiles, inchikey, pubchem, fda_status, tissue_id,
             tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end,
         } = compound_compound;
@@ -47,6 +50,7 @@ const transformGeneCompounds = (data) => {
             },
             compound: {
                 id: compound_id,
+                uid: compound_uid,
                 name: compound_name,
                 annotation: {
                     smiles,
@@ -76,10 +80,15 @@ const transformGeneCompounds = (data) => {
  */
 const gene_compound_tissue = async (args, context, info) => {
     // arguments
-    const { geneId, compoundId, tissueId, page = 1, per_page = 20, all = false } = args;
+    let { geneId, geneName, compoundId, compoundName, tissueId, tissueName, page = 1, per_page = 20, all = false } = args;
+
+    // grab the ids of each data type if data type is passed in the parameters
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
+    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
-    if (!geneId && !compoundId && tissueId) throw new Error('Invalid input! Query must include geneId and compoundId and tissueId');
+    if (!geneId && !compoundId && !tissueId) throw new Error('Invalid input! Query must include geneId and compoundId and tissueId');
 
     try {
         const { limit, offset } = calcLimitOffset(page, per_page);
@@ -95,7 +104,7 @@ const gene_compound_tissue = async (args, context, info) => {
                     subtypes.push(el.name);
                     break;
                 case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
                     subtypes.push(el.name);
                     break;
                 case 'tissue':

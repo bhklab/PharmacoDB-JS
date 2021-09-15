@@ -17,6 +17,7 @@ const parseTableData = (data, gene) => {
             gene: gene.name,
             feature_type: item.mDataType,
             compound_id: item.compound.id,
+            compound_uid: item.compound.uid,
             compound: item.compound.name,
             dataset_id: item.dataset.id,
             dataset: item.dataset.name,
@@ -44,7 +45,7 @@ const TopDrugsTable = (props) => {
         {
             Header: `Compound`,
             accessor: 'compound',
-            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_id}`}>{item.value}</Link>
+            Cell: (item) => <Link to={`/compounds/${item.cell.row.original.compound_uid}`}>{item.value}</Link>
         },
         {
             Header: `Dataset`,

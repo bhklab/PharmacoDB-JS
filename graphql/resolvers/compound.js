@@ -154,10 +154,11 @@ const transformSingleCompound = async (compoundId, compoundName, compoundData, c
  *  @param {string} - compoundName
  */
 // todo: change the query using `compound` based on the new database compound table.
-const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
+const compoundSourceSynonymQuery = async (compoundUID, compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
         .select('compound.id as compound_id',
+            'compound.compound_uid as compound_uid',
             'compound.name as compound_name',
             'compound_synonym.compound_name as source_compound_name',
             'dataset.id as dataset_id',
@@ -166,7 +167,9 @@ const compoundSourceSynonymQuery = async (compoundId, compoundName) => {
         .join('compound_synonym', 'compound.id', 'compound_synonym.compound_id')
         .join('dataset', 'dataset.id', 'compound_synonym.dataset_id');
     // return sub query based on the compoundId or compoundName.
-    if (compoundId) {
+    if (compoundUID) {
+        return await query.where('compound.compound_uid', compoundUID);
+    } else if (compoundId) {
         return await query.where('compound.id', compoundId);
     } else if (compoundName) {
         return await query.where('compound.name', compoundName);
@@ -271,7 +274,7 @@ const compound = async (args, parent, info) => {
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundUID, compoundId, compoundName, subtypes);
         // query to get compound source synonyms.
-        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundId, compoundName);
+        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundUID, compoundId, compoundName);
         // return the compound object.
         return transformSingleCompound(compoundId, compoundName, compoundData, compoundSynonyms, subtypes);
     } catch (err) {

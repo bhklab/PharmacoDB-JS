@@ -73,6 +73,23 @@ const getDatasetCellLinesQuery = gql`
       name,
       cells_tested {
         id
+        cell_uid
+        name
+      }
+    }
+  }
+`;
+
+const getDatasetTestedCellsQuery = gql`
+  query getDatasetTestedCellsQuery($datasetId: Int!) {
+    dataset_type(datasetId: $datasetId) {
+      dataset {
+        id
+        name
+      }
+      cells_tested {
+        id
+        cell_uid
         name
       }
     }
@@ -86,18 +103,66 @@ const getDatasetCompoundQuery = gql`
       name,
       compounds_tested {
         id
+        uid
         name
       }
     }
   }
 `;
 
+const getDatasetTestedCompoundsQuery = gql`
+  query getDatasetTestedCompoundQuery($datasetId: Int!) {
+    dataset_type(datasetId: $datasetId) {
+      dataset {
+        id
+        name
+      }
+      compounds_tested {
+        id
+        uid
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * @returns - Query returns the list of datasets with information about how many
+ * cell lines, tissues, experiments and compounds are in those datsets.
+ */
+const getDatasetsTypesQuery = gql`
+  {
+    datasets_types {
+      dataset {
+        id
+        name
+      }
+      tissues_tested {
+        id
+        name
+      }
+      cells_tested {
+        id
+        cell_uid
+        name
+      }
+      compounds_tested {
+        id
+        uid
+        name
+      }
+    }
+  }
+`;
 
 export {
   getDatasetStatsQuery,
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
+  getDatasetTestedCompoundsQuery,
+  getDatasetTestedCellsQuery,
   getDatasetCellLinesQuery,
   getDatasetCompoundQuery,
+  getDatasetsTypesQuery,
 };

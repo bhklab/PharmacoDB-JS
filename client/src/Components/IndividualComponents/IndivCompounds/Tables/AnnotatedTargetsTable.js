@@ -11,6 +11,7 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 const parseTableData = (data, compound) => {
     let tableData = {
         data: [],
+        ready: false,
         numGenes: 0,
         numDatasets: 0
     };
@@ -41,6 +42,7 @@ const parseTableData = (data, compound) => {
             });
         }
         tableData.data.sort((a, b) => b.experiments - a.experiments);
+        tableData.ready = true;
     }
     return tableData;
 }
@@ -80,6 +82,7 @@ const AnnotatedTargetsTable = (props) => {
 
     const [tableData, setTableData] = useState({
         data: [],
+        ready: false,
         numGenes: 0,
         numDatasets: 0
     });
@@ -111,9 +114,11 @@ const AnnotatedTargetsTable = (props) => {
                             </h4>
                             <p align="center">
                                 {
-                                    tableData.numGenes
-                                        ? `${tableData.numGenes} genes have been tested on ${compound.name}, using data from ${tableData.numDatasets} dataset(s).`
-                                        : `There is no target information for ${compound.name}.`
+                                    tableData.ready
+                                        ? tableData.numGenes
+                                            ? `${tableData.numGenes} genes have been tested on ${compound.name}, using data from ${tableData.numDatasets} dataset(s).`
+                                            : `There is no target information for ${compound.name}.`
+                                        : `Processing data, please wait...`
                                 }
                             </p>
                             {

@@ -83,6 +83,7 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('y', 0)
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
+    .style("position", "sticky")
     .text("Number of " + `${type}`);
 
 /**
@@ -131,6 +132,9 @@ const appendRectangles = (svg, data, scale, height) => {
                 // change the cursor to default.
                 d3.select(this).style("cursor", "default");
             })
+            .on('click', function () {
+                makeTable(svg, data[key].values, 'upsetplot', );
+            });
     })
 };
 
@@ -157,9 +161,31 @@ const circleAxis = (svg, datasets, height) => {
 /**
  * create table for list of types
  */
-function makeTable(svg, names, tableId,) {
-    // prepare data: divide data into data.len / 3 rows table and each row has 3 columns
-
+function makeTable(svg, names, tableId) {
+    // width and height of the SVG canvas.
+    // const tableWidth = 400;
+    // const tableHeight = 100;
+    // d3.selectAll(`#${TABLE_CANVAS_ID}`).remove();
+    // const tableSvg = createSvgCanvas({ tableHeight, tableWidth, margin, id: 'upsetplot', canvasId: TABLE_CANVAS_ID });
+    //
+    // const keys = Object.keys(names);
+    // names.forEach((x,i) => {
+    //     tableSvg.append('rect')
+    //         .attr('x', i * 15)
+    //         .attr('y', tableHeight/2)
+    //         .text(x.name)
+    // })
+    // tableSvg.append('circle')
+    //     .attr('cx', 200)
+    //     .attr('cy', tableHeight/2)
+    //     .attr('r', 50)
+    //     .attr('stroke', 'black')
+    //     .attr('fill', '#69a3b2')
+    //     .style('position', 'fixed')
+    //     .attr('opacity', 0.3);
+    // console.log("List:" ,names);
+    //
+    // // prepare data: divide data into data.len / 3 rows table and each row has 3 columns
     // const tableData = [];
     // const addElems = names.length % 3;
     // const names_copy = names.slice(0);
@@ -174,14 +200,15 @@ function makeTable(svg, names, tableId,) {
     //     }
     //     tableData.push(temp)
     // }
+
     //
     // const table = d3.select("#"+tableId).append('table')
     //     .attr("id", tableId)
     //     .style("border", "1px solid silver")
     //     .style("opacity", "0");
-    //
+    // //
     // var tbody = table.append("tbody");
-    //
+    // //
     // //create table rows
     // var tr = tbody.selectAll("tr")
     //     .data(tableData)
@@ -201,26 +228,7 @@ function makeTable(svg, names, tableId,) {
     //     .html(function(d,i){
     //         return "<a href=\"" + "/search?q=" + d.name + "\">" + d.name.replaceAll("_", " ") + "</a>"
     //     });
-    //
-    //
-    // // width and height of the SVG canvas.
-    // const width = 700;
-    // const height = 700 - margin.top - margin.bottom;
-    //
-    // const keys = Object.keys(names);
-    //
-    // // const tableSvg = createSvgCanvas({ height, width, margin, id: 'upsetplot', canvasId: CANVAS_ID });
-    // // tableSvg.remove(CANVAS_ID )
-    // keys.forEach((key, i) => {
-    //     svg.append('circle')
-    //         .attr('cx', 100+i)
-    //         .attr('cy', 800)
-    //         .attr('r', 50)
-    //         .attr('stroke', 'black')
-    //         .attr('fill', '#69a3b2')
-    //         .attr('opacity', 0.1);
-    // })
-    console.log("List:" ,names);
+
 }
 
 /**

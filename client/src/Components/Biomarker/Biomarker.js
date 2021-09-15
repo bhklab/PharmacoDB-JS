@@ -188,9 +188,16 @@ const Biomarker = (props) => {
                             <span className='link'> {`${TitleCase(compound)}`} </span>
                             <span> and </span>
                             <span className='link'> {`${gene.toUpperCase()}`} </span>
-                            <span> in </span>
-                            <span className='link'> {`${TitleCase(tissue)}`} </span>
-                            <span> tissue </span>
+                            {
+                                tissue ?
+                                <React.Fragment>
+                                    <span> in </span>
+                                    <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                    <span> tissue </span>
+                                </React.Fragment>
+                                :
+                                ''
+                            }
                         </span>
                     </div>
                     <div className='wrapper'>
@@ -212,7 +219,7 @@ const Biomarker = (props) => {
                                 {
                                     display === 'manhattan_plot' &&
                                     <Element className="section" name="manhattan_plot">
-                                        <ManhattanPlotContainer compound={compound} tissue={tissue} />
+                                        <ManhattanPlotContainer biomarker={transformedGeneData[0]} compound={compound} tissue={tissue} />
                                     </Element>
                                 }
                                 {

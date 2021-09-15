@@ -12,11 +12,11 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from '../../utils/searchDefaultOptions'
+import defaultOptions from '../../utils/searchDefaultOptions';
+import MenuList from './List';
 
 /** CONSTANTS */
-// input must be greater than this length to
-// display option menu
+// input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
 
 // placeholders for react-select
@@ -27,6 +27,17 @@ const placeholders = [
   'Cell line vs Drug (eg. 22rv1 paclitaxel)',
   'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
+
+/**
+ * Styles for formatting the group header label
+ */
+const groupStyles = {
+  fontSize: '1.5em',
+  padding: '5px',
+  textTransform: 'capitalize',
+  color: colors.dark_teal_heading,
+  fontWeight: 600,
+};
 
 /**
  * Custom options for scrolling with keyboard
@@ -49,17 +60,6 @@ const CustomOption = (innerProps) => (
     </div>
   </components.Option>
 );
-
-/**
- * Styles for formatting the group header label
- */
-const groupStyles = {
-  fontSize: '1.5em',
-  padding: '5px',
-  textTransform: 'capitalize',
-  color: colors.dark_teal_heading,
-  fontWeight: 600,
-};
 
 /**
  * JSX for formatting the group header label
@@ -91,20 +91,16 @@ const SearchBar = (props) => {
 
   // entirety of data
   const [data, setData] = useState({
-    // genes: [],
+    genes: [],
     compounds: [],
     tissues: [],
     cell_lines: [],
     datasets: [],
     dataset_intersection: [],
   });
-  const [dataLoaded, setDataLoaded] = useState({
-    // genes: false,
-    compounds: false,
-    tissues: false,
-    cell_lines: false,
-    datasets: false,
-  });
+
+  // is all data loaded?
+  const [isDataLoaded, setDataLoadedValue] = useState(false);
 
   // various states for select:
   // keyboard input in search bar, selected in search bar
@@ -166,7 +162,6 @@ const SearchBar = (props) => {
         queryParams = `/${type}/${value}`;
       } else if (selected.length === 2 && selected && label !== value) {
         const selectedTypes = selected.map(el => el.type);
-
         if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
           let tissue, compound = '';
           selected.forEach(el => {
@@ -176,7 +171,7 @@ const SearchBar = (props) => {
               tissue = el.label;
             }
           })
-          queryParams = `/search?compound=${compound}&tissue=${tissue}`
+          queryParams = `/search?compound=${compound}&tissue=${tissue}`;
         } else if (selectedTypes.includes('cell_lines') && selectedTypes.includes('compounds')) {
           let cell, compound = '';
           selected.forEach(el => {
@@ -186,7 +181,22 @@ const SearchBar = (props) => {
               cell = el.label;
             }
           })
-          queryParams = `/search?compound=${compound}&cell_line=${cell}`
+          queryParams = `/search?compound=${compound}&cell_line=${cell}`;
+        }
+      } else if (selected.length === 3 && selected && label !== value) {
+        const selectedTypes = selected.map(el => el.type);
+        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds') && selectedTypes.includes('genes')) {
+          let tissue, compound, gene = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'tissues') {
+              tissue = el.label;
+            } else if (el.type === 'genes') {
+              gene = el.label;
+            }
+          })
+          queryParams = `/biomarker?compound=${compound}&tissue=${tissue}&gene=${gene}`;
         }
       }
 
@@ -250,57 +260,76 @@ const SearchBar = (props) => {
   }
 
   /** DATA LOADING */
-  /** Can't run hooks in a loop, so must do manually */
-  const compoundsData = useQuery(getCompoundsIdNameQuery).data;
-  // const genesData = useQuery(getGenesIdSymbolQuery).data;
-  const tissuesData = useQuery(getTissuesQuery).data;
-  const cellsData = useQuery(getCellLinesQuery).data;
-  const datasetsData = useQuery(getDatasetsQuery).data;
+  // const {
+  //   data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
+  // } = useQuery(getCompoundsIdNameQuery);
+  // const {
+  //   data: genesData, loading: genesDataLoading, error: genesDataError,
+  // } = useQuery(getGenesIdSymbolQuery);
+  const {
+    data: tissuesData, loading: tissuesDataLoading, error: tissuesDataError,
+  } = useQuery(getTissuesQuery);
+  const {
+    data: cellsData, loading: cellsDataLoading, error: cellsDataError,
+  } = useQuery(getCellLinesQuery);
+  const {
+    data: datasetsData, loading: datasetsDataLoading, error: datasetsDataError,
+  } = useQuery(getDatasetsQuery);
+
 
   /**
    * Load data in
    */
   useEffect(() => {
-    setData({
-      ...data,
-      compounds: compoundsData ? compoundsData.compounds : [],
-      // genes: genesData ? genesData.genes : [],
-      tissues: tissuesData ? tissuesData.tissues : [],
-      cell_lines: cellsData ? cellsData.cell_lines : [],
-      datasets: datasetsData ? datasetsData.datasets : [],
-      dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
-    });
-    setDataLoaded({
-      compounds: !!compoundsData,
-      // genes: !!genesData,
-      tissues: !!tissuesData,
-      cell_lines: !!cellsData,
-      datasets: !!datasetsData,
-    });
-  }, [tissuesData, cellsData, datasetsData, compoundsData]);
+    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading) {
+      setData({
+        // compounds: compoundsData ? compoundsData.compounds : [],
+        // genes: genesData ? genesData.genes : [],
+        tissues: tissuesData ? tissuesData.tissues : [],
+        cell_lines: cellsData ? cellsData.cell_lines : [],
+        datasets: datasetsData ? datasetsData.datasets : [],
+        dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
+      });
+
+      // update the isLoading state because all data has been loaded.
+      setDataLoadedValue(true);
+    }
+  }, [tissuesData, cellsData, datasetsData]);
 
   useEffect(() => {
-    // if all values of loaded are true
-    if (Object.values(dataLoaded).every((x) => x)) {
+    // set options to default.
+    setOptions(defaultOptions);
+
+    // if all the data is loaded.
+    if (isDataLoaded) {
       // for every datatype, push the options into groups
+      const finalOptions = [];
       Object.keys(data).forEach((d) => {
-        setOptions((prevOptions) => {
-          prevOptions.push({
-            label: d,
-            options: data[d].map((x) => {
-              let returnObject = {};
-              if (x.name) {
-                returnObject = { value: x.id, label: x.name, type: d };
-              }
-              else if (x.annotation.symbol) { // for genes
-                returnObject = { value: x.id, label: x.annotation.symbol, type: d };
-              }
-              return returnObject;
-            }),
-          });
-          return prevOptions;
+        let modifiedOptions = [];
+        data[d].forEach((x) => {
+          if (x.annotation && x.annotation.symbol && x.__typename.match(/gene/i)) { // for gene
+            modifiedOptions.push({ value: x.id, label: x.annotation.symbol, type: d });
+          } else if (x.__typename.match(/compound/i)) { // for compound
+            modifiedOptions.push({ value: x.uid, label: x.name, type: d });
+          } else if (x.__typename.match(/cellline/i)) { // for cell line
+            modifiedOptions.push({ value: x.cell_uid, label: x.name, type: d });
+          } else if (x.__typename.match(/tissue|dataset/i)) { // for tissue and dataset
+            modifiedOptions.push({ value: x.id, label: x.name, type: d });
+          }
+        });
+        // pushing the final options.
+        finalOptions.push({
+          label: d,
+          options: modifiedOptions
         });
       });
+      const testit = [];
+      finalOptions.forEach(el => {
+
+        testit.push(...el.options);
+
+      })
+      setOptions(testit);
     }
   }, [data]);
 
@@ -312,8 +341,8 @@ const SearchBar = (props) => {
         filterOption={customFilterOption}
         options={(options)}
         components={{
-          // MenuList: (props) => (<MenuList {...props} />),
-          Option: CustomOption,
+          MenuList: (props) => (<MenuList {...props} />),
+          // Option: CustomOption,
         }}
         placeholder={(
           <ReactTypingEffect

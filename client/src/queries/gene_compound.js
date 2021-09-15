@@ -13,6 +13,7 @@ const geneCompound = `
     }
     compound {
         id
+        uid
         name
     }
 `;
@@ -22,8 +23,8 @@ const geneCompound = `
  * @returns - the information for the queried gene.
  */
 const getGeneCompoundDatasetQuery = gql`
-    query getGeneCompoundDataset($geneId: Int, $compoundId: Int) {
-        gene_compound_dataset(geneId: $geneId, compoundId: $compoundId, all: true) {
+    query getGeneCompoundDataset($geneId: Int, $geneName: String, $compoundId: Int, $compoundName: String) {
+        gene_compound_dataset(geneId: $geneId, geneName: $geneName, compoundId: $compoundId, compoundName: $compoundName, all: true) {
             ${geneCompound}
             dataset {
                 id
@@ -50,6 +51,7 @@ const getGeneCompoundTissueDatasetQuery = gql`
                 id
                 name
             }
+            permutation_done
             fdr_analytic
             fdr_permutation
             lower_analytic
@@ -70,14 +72,43 @@ const getGeneCompoundTissueDatasetQuery = gql`
 `;
 
 /**
- * Query used to get data for the Manhattan plot on Biomarker page.
+ * Query used to get data for the tissue specific Manhattan plot on Biomarker page.
  * @param compoundId/compoundName - identifier for the compound.
  * @param tissueId/tissueName = identifier for the tissue.
- * mDataType is specified as "rna" to filter the experiment data rna data type. 
+ * @param mDataType - selected molecular data type
  */
-const getManhattanPlotDataQuery = gql`
+const getTissueSpecificManhattanPlotDataQuery = gql`
     query getManhattanPlotDataQuery($compoundId: Int, $tissueId: Int, $compoundName: String, $tissueName: String, $mDataType: String) {
-        gene_compound_tissue_dataset(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: $mDataType, all: true) {
+        gene_compound_tissue_dataset_biomarker(compoundId: $compoundId, tissueId: $tissueId, compoundName: $compoundName, tissueName: $tissueName, mDataType: $mDataType, all: true) {
+            gene {
+                id
+                name
+                annotation {
+                    symbol
+                    chr
+                    gene_seq_start
+                    gene_seq_end
+                }
+            }
+            dataset {
+                id
+                name
+            }
+            fdr_analytic
+            fdr_permutation
+            mDataType
+        }
+    }
+`;
+
+/**
+ * Query used to get data for the pan cancer Manhattan plot on Biomarker page. (without specified tissue)
+ * @param compoundId/compoundName - identifier for the compound.
+ * @param mDataType - selected molecular data type
+ */
+const getPanCancerManhattanPlotDataQuery = gql`
+    query getPanCancerManhattanPlotDataQuery($compoundId: Int, $compoundName: String, $mDataType: String) {
+        gene_compound_dataset_biomarker(compoundId: $compoundId, compoundName: $compoundName, mDataType: $mDataType, all: true) {
             gene {
                 id
                 name
@@ -102,5 +133,6 @@ const getManhattanPlotDataQuery = gql`
 export {
     getGeneCompoundDatasetQuery,
     getGeneCompoundTissueDatasetQuery,
-    getManhattanPlotDataQuery
+    getTissueSpecificManhattanPlotDataQuery,
+    getPanCancerManhattanPlotDataQuery
 };
