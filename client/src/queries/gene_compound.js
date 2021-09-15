@@ -51,6 +51,7 @@ const getGeneCompoundTissueDatasetQuery = gql`
                 id
                 name
             }
+            permutation_done
             fdr_analytic
             fdr_permutation
             lower_analytic
