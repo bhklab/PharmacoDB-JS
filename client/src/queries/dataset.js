@@ -80,11 +80,43 @@ const getDatasetCellLinesQuery = gql`
   }
 `;
 
+const getDatasetTestedCellsQuery = gql`
+  query getDatasetTestedCellsQuery($datasetId: Int!) {
+    dataset_type(datasetId: $datasetId) {
+      dataset {
+        id
+        name
+      }
+      cells_tested {
+        id
+        cell_uid
+        name
+      }
+    }
+  }
+`;
+
 const getDatasetCompoundQuery = gql`
   query getDatasetCompoundQuery($datasetId: Int!) {
     dataset(datasetId: $datasetId) {
       id,
       name,
+      compounds_tested {
+        id
+        uid
+        name
+      }
+    }
+  }
+`;
+
+const getDatasetTestedCompoundsQuery = gql`
+  query getDatasetTestedCompoundQuery($datasetId: Int!) {
+    dataset_type(datasetId: $datasetId) {
+      dataset {
+        id
+        name
+      }
       compounds_tested {
         id
         uid
@@ -128,6 +160,8 @@ export {
   getDatasetsQuery,
   getDatasetQuery,
   getCellLinesGroupedByDatasetQuery,
+  getDatasetTestedCompoundsQuery,
+  getDatasetTestedCellsQuery,
   getDatasetCellLinesQuery,
   getDatasetCompoundQuery,
   getDatasetsTypesQuery,
