@@ -1,9 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
+import Switch from 'react-switch';
 import DownloadButton from '../UtilComponents/DownloadButton';
 import styled from 'styled-components';
+import colors from '../../styles/colors';
 
 const StyledManhattanPlot = styled.div`
+    .header {
+        width: 100%;
+        margin-left: 10px;
+        .title {
+            font-size: 14px;
+        }
+        .switch-wrapper {
+            display: flex;
+            align-items: center;
+            .switch-container {
+                display: flex;
+                alight-items: center;
+                .switch {
+                    margin-left: 5px;
+                    margin-right: 5px;
+                }
+                .label {
+                    font-size: 12px;
+                }
+            }
+            .highlight {
+                font-weight: bold;
+                color: ${colors.dark_pink_highlight};
+            }
+            .disclaimer {
+                margin-left: 10px;
+                font-size: 10px;
+                line-height: 1.5;
+            }
+        }
+    }
     .download-buttons {
         display: flex;
         justify-content: flex-end;
@@ -14,7 +47,7 @@ const StyledManhattanPlot = styled.div`
 `;
 
 const ManhattanPlot = (props) => {
-    const { title, data, xRange, xLabelValues, plotId } = props;
+    const { title, data, biomarker, xRange, xLabelValues, plotId } = props;
     const layout = {
         autoresize: true,
         height: 400,
@@ -42,7 +75,7 @@ const ManhattanPlot = (props) => {
         },
         yaxis: {
             title: {
-                text: '-log10(p value)'
+                text: '-log10(FDR value)'
             },
             zeroline: false,
             range: [0, Math.max(...data.map(item => item.y)) + 0.5]
@@ -57,6 +90,7 @@ const ManhattanPlot = (props) => {
     }
 
     const [traces, setTraces] = useState([]);
+    const [highRes, setHighRes] = useState(false);
 
     useEffect(() => {
         let plotData = [];
@@ -66,11 +100,14 @@ const ManhattanPlot = (props) => {
             y: data.map(item => item.y),
             name: '',
             mode: 'markers',
-            type: 'scattergl',
+            type: highRes ? 'scatter' : 'scattergl',
             marker: {
                 color: data.map(item => item.color),
                 size: data.map(item => item.y >= 1.5 ? 8 : item.y >= -Math.log10(0.5) ? 5 : 3),
-                opacity: data.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1)
+                opacity: data.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1),
+                line: {
+                    width: 1
+                }
             },
             showlegend: false,
             hoverlabel: {
@@ -83,14 +120,15 @@ const ManhattanPlot = (props) => {
                 `Gene: ${item.gene.symbol}<br>` +
                 `Dataset: ${item.dataset.name}<br>` +
                 `Chromosome: ${item.chrLabel}<br>` +
-                `-log10(p value): ${item.y.toFixed(2)}`
+                `-log10(FDR value): ${item.y.toFixed(2)}`
             ))
         });
+
         plotData.push({
             x: xRange,
             y: [-Math.log10(0.5), -Math.log10(0.5)],
             mode: 'lines',
-            type: 'scattergl',
+            type: highRes ? 'scatter' : 'scattergl',
             line: {
                 color: '#666666',
                 width: 1
@@ -98,11 +136,72 @@ const ManhattanPlot = (props) => {
             showlegend: false,
             hoverinfo: 'skip',
         });
+
+        if(biomarker.length){
+            let pointLabels = [...new Set(biomarker.map(item => item.y))].map(item => {
+                let datasetNames = biomarker.filter(p => p.y === item).map(p => p.dataset.name);
+                return {
+                    y: item,
+                    datasets: datasetNames.join(', ')
+                }
+            });
+            plotData.push({
+                x: biomarker.map(item => item.x),
+                y: biomarker.map(item => item.y),
+                text: biomarker.map(item => `${item.gene.symbol}(${pointLabels.find(label => label.y === item.y).datasets})`),
+                textposition: 'top',
+                mode: 'markers+text',
+                type: highRes ? 'scatter' : 'scattergl',
+                marker: {
+                    color: '#666666',
+                    size: 8,
+                    opacity: biomarker.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1)
+                },
+                showlegend: false,
+                hoverlabel: {
+                    bgcolor: '#666666',
+                    font: {
+                        size: 11
+                    }
+                },
+                hovertemplate: biomarker.map(item => (
+                    `Selected Biomarker: ${item.gene.symbol}<br>` +
+                    `Dataset: ${item.dataset.name}<br>` +
+                    `Chromosome: ${item.chrLabel}<br>` +
+                    `-log10(FDR value): ${item.y.toFixed(2)}`
+                ))
+            });
+        }
         setTraces(plotData);
-    }, []);
+    }, [highRes]);
 
     return (
         <StyledManhattanPlot>
+            <div className='header'>
+                <div className='title'>Plot Resolution</div>
+                <div className='switch-wrapper'>
+                    <div className='switch-container'>
+                        <span className={`label ${!highRes ? 'highlight' : ''}`}>Low</span>
+                        <Switch
+                            className='switch' 
+                            checked={highRes}
+                            onChange={(checked) => {setHighRes(checked)}} 
+                            onColor={colors.dark_teal_heading}
+                            onHandleColor={colors.light_teal}
+                            uncheckedIcon={false}
+                            checkedIcon={false}
+                            height={20}
+                            width={40}
+                        />
+                        <span className={`label ${highRes ? 'highlight' : ''}`}>High</span>
+                    </div>
+                    <div className='disclaimer'>
+                        Please allow up to 15 seconds to switch to high resolution due to re-rendering of large amount of data points. <br />
+                        Please note that switching to high resolution adds strain to your web browser. 
+                        It may significantly slow down plot rendering and other features such as hover-over legends and downloading plot image.
+                    </div>
+                </div>
+            </div>
             <Plot
                 divId={plotId}
                 data={traces}
