@@ -156,7 +156,7 @@ const DrawUpsetPlot = (props) => {
         const datasets = types.datasets_types.map(item => item.dataset.name);
         datasetSubSets = createAllSubsets(datasets);
         types.datasets_types.map(item => tissues_tested[item.dataset.name]= item.tissues_tested.map(t=> t.name));
-        types.datasets_types.map(item => cells_tested[item.dataset.name]= item.cells_tested);
+        // types.datasets_types.map(item => cells_tested[item.dataset.name]= item.cells_tested);
         types.datasets_types.map(item => compounds_tested[item.dataset.name]= item.compounds_tested.map(c=> c.name));
     }
 

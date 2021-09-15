@@ -58,11 +58,21 @@ const StyledIndivPage = styled.div`
     .content{
       // width: calc(100% - (5vw + 4em) - 2em);
       width: 100%;
+      .section{
+        .documentation{
+          img {
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 35px;
+          }
+      }
+      }
     }
   }
   .section {
     width: 100%;
     margin-bottom: 50px;
+    text-align: justify;
     .section-title {
       font-size: clamp(18px, calc(1vw + 3px), 28px);
       font-weight: bold;

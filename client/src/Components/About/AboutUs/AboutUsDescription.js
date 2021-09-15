@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom'
 import colors from '../../../styles/colors';
+import cellExmp from '../../../images/DocumentationImages/exmpMCF-7.png';
+import tissueExmp from '../../../images/DocumentationImages/exmpBreast.png';
+import drugExmp from '../../../images/DocumentationImages/exmpPaclitaxel.png';
+import cellDrugExmp from '../../../images/DocumentationImages/exmpMCF-7Paclitaxel.png';
 
 const StyledDescription = styled.div`
     display: flex;
@@ -29,13 +33,20 @@ const StyledDescription = styled.div`
             font-size: calc(1.8vw + 1em) !important;
             margin-bottom: 4vh;
         }
+        
+        img {
+          margin-top: 5px;
+        }
 
         .caption {
           text-align: left;
-          margin-top: 15px;
-          margin-bottom: 5px;
+          margin-bottom: 10px;
           color: ${colors.silver};
           font-size: clamp(12px, calc(1vw + 2px), 15px);;
+        }
+      
+        .paragraph {
+          margin-bottom: 15px;
         }
     }
 
@@ -100,36 +111,48 @@ const AboutUsDescription = () => {
           Examples of queries
         </h1>
         <span>
-          <p>Cell lines? Try typing <a id="hide-cl-overlay" href="javaScript:void(0);" onClick={() =>onClick("cell")}>MCF-7</a>
+          <div className="paragraph">Cell lines? Try typing <a id="hide-cl-overlay" href="javaScript:void(0);" onClick={() =>onClick("cell")}>MCF-7</a>
             {
               showCell ?
-                  <div className="caption" id=" overlay-caption"> Example search for a cell line. </div>
+                  <div className="caption" id=" overlay-caption">
+                    <img  height="auto" width="520px" alt="Searching MCF-7" className="documentation" src={cellExmp} title="Query cell line"/><br/>
+                    Example search for a cell line.
+                  </div>
                 : null
             }
-          </p>
-          <p>Tissues? Try typing <a id="hide-t-overlay" href="javaScript:void(0);" onClick={() =>onClick("tissue")}>Breast</a>
+          </div>
+          <div className="paragraph">Tissues? Try typing <a id="hide-t-overlay" href="javaScript:void(0);" onClick={() =>onClick("tissue")}>Breast</a>
             {
               showTissue ?
-                  <div className="caption" id=" overlay-caption"> Example search for a tissue.</div>
+                  <div className="caption" id=" overlay-caption">
+                    <img  height="auto" width="520px" alt="Searching Breast" className="documentation" src={tissueExmp} title="Query tissue"/><br/>
+                    Example search for a tissue.
+                  </div>
                 : null
             }
-          </p>
-          <p>Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
+          </div>
+          <div className="paragraph">Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
             {
               showDrug ?
-                    <div className="caption" id=" overlay-caption"> Example search for a drug. </div>
+                    <div className="caption" id=" overlay-caption">
+                      <img  height="auto" width="520px" alt="Searching Paclitaxel" className="documentation" src={drugExmp} title="Query drug"/><br/>
+                      Example search for a drug.
+                    </div>
                   : null
             }
-          </p>
-          <p>Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF7 Paclitaxel</a>
+          </div>
+          <div className="paragraph">Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF-7 Paclitaxel</a>
             {
               showDDRC ?
-                    <div className="caption" id=" overlay-caption"> Example search for a drug dose-response curve. </div>
+
+                    <div className="caption" id=" overlay-caption">
+                      <img  height="auto" width="550px" alt="Searching MCF-7 Paclitaxel" className="documentation" src={cellDrugExmp} title="Query dose-response curve"/><br/>
+                      Example search for a drug dose-response curve. </div>
                   : null
             }
-          </p>
-          <p><Link to="/">Start searching</Link> across pharmacogenomic datasets and do not hesitate to give us feedback on
-            <a href="https://github.com/bhklab/PharmacoDB" target="_blank"> GitHub</a>.</p>
+          </div>
+          <div><Link to="/">Start searching</Link> across pharmacogenomic datasets and do not hesitate to give us feedback on
+            <a href="https://github.com/bhklab/PharmacoDB-JS" target="_blank"> GitHub</a>.</div>
         </span><br/><br/><br/>
         <h1>
           About the Lab
@@ -140,7 +163,7 @@ const AboutUsDescription = () => {
           develop new predictive tools foranticancer therapies. We develop databases and analysis pipelines to leverage
           large compendia of pharmacogenomic datasets for biomarker discovery and drug repurposing. The BHKLAB is part of
           the Princess Margaret Cancer Centre – University Health Network, located in the heart of the Toronto Discovery
-          District in Ontario, Canada <br/>
+          District in Ontario, Canada. <br/>
           <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2886.4364889480303!2d-79.39081378450204!3d43.65989117912103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b34b632b77689%3A0x901c210dff19e5a4!2s101+College+St%2C+Toronto%2C+ON+M5G+1L7!5e0!3m2!1sen!2sca!4v1502307889999"
               width="100%" height="600" align="center" allowFullScreen>
