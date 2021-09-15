@@ -90,7 +90,7 @@ const SearchBar = (props) => {
 
   // entirety of data
   const [data, setData] = useState({
-    // genes: [],
+    genes: [],
     compounds: [],
     tissues: [],
     cell_lines: [],
@@ -161,7 +161,6 @@ const SearchBar = (props) => {
         queryParams = `/${type}/${value}`;
       } else if (selected.length === 2 && selected && label !== value) {
         const selectedTypes = selected.map(el => el.type);
-
         if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
           let tissue, compound = '';
           selected.forEach(el => {
@@ -171,7 +170,7 @@ const SearchBar = (props) => {
               tissue = el.label;
             }
           })
-          queryParams = `/search?compound=${compound}&tissue=${tissue}`
+          queryParams = `/search?compound=${compound}&tissue=${tissue}`;
         } else if (selectedTypes.includes('cell_lines') && selectedTypes.includes('compounds')) {
           let cell, compound = '';
           selected.forEach(el => {
@@ -181,7 +180,22 @@ const SearchBar = (props) => {
               cell = el.label;
             }
           })
-          queryParams = `/search?compound=${compound}&cell_line=${cell}`
+          queryParams = `/search?compound=${compound}&cell_line=${cell}`;
+        }
+      } else if (selected.length === 3 && selected && label !== value) {
+        const selectedTypes = selected.map(el => el.type);
+        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds') && selectedTypes.includes('genes')) {
+          let tissue, compound, gene = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'tissues') {
+              tissue = el.label;
+            } else if (el.type === 'genes') {
+              gene = el.label;
+            }
+          })
+          queryParams = `/biomarker?compound=${compound}&tissue=${tissue}&gene=${gene}`;
         }
       }
 
@@ -248,11 +262,9 @@ const SearchBar = (props) => {
   const {
     data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
   } = useQuery(getCompoundsIdNameQuery);
-  // const {
-  //   data: genesData,
-  //   loading: genesDataLoading,
-  //   error: genesDataError,
-  // } = useQuery(getGenesIdSymbolQuery);
+  const {
+    data: genesData, loading: genesDataLoading, error: genesDataError,
+  } = useQuery(getGenesIdSymbolQuery);
   const {
     data: tissuesData, loading: tissuesDataLoading, error: tissuesDataError,
   } = useQuery(getTissuesQuery);
@@ -271,7 +283,7 @@ const SearchBar = (props) => {
     if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading) {
       setData({
         compounds: compoundsData ? compoundsData.compounds : [],
-        // genes: genesData ? genesData.genes : [],
+        genes: genesData ? genesData.genes : [],
         tissues: tissuesData ? tissuesData.tissues : [],
         cell_lines: cellsData ? cellsData.cell_lines : [],
         datasets: datasetsData ? datasetsData.datasets : [],
@@ -281,7 +293,7 @@ const SearchBar = (props) => {
       // update the isLoading state because all data has been loaded.
       setDataLoadedValue(true);
     }
-  }, [tissuesData, cellsData, datasetsData, compoundsData]);
+  }, [tissuesData, cellsData, datasetsData, compoundsData, genesData]);
 
   useEffect(() => {
     // set options to default.
@@ -292,26 +304,26 @@ const SearchBar = (props) => {
       // for every datatype, push the options into groups
       const finalOptions = [];
       Object.keys(data).forEach((d) => {
+        let modifiedOptions = [];
+        data[d].forEach((x) => {
+          if (x.annotation && x.annotation.symbol && x.__typename.match(/gene/i)) { // for gene
+            modifiedOptions.push({ value: x.id, label: x.annotation.symbol, type: d });
+          } else if (x.__typename.match(/compound/i)) { // for compound
+            modifiedOptions.push({ value: x.uid, label: x.name, type: d });
+          } else if (x.__typename.match(/cellline/i)) { // for cell line
+            modifiedOptions.push({ value: x.cell_uid, label: x.name, type: d });
+          } else if (x.__typename.match(/tissue|dataset/i)) { // for tissue and dataset
+            modifiedOptions.push({ value: x.id, label: x.name, type: d });
+          }
+        });
+        // pushing the final options.
         finalOptions.push({
           label: d,
-          options: data[d].map((x) => {
-            let returnObject = {};
-            if (x.annotation && x.annotation.symbol && x.__typename.match(/gene/i)) { // for gene
-              returnObject = { value: x.id, label: x.annotation.symbol, type: d };
-            } else if (x.__typename.match(/compound/i)) { // for compound
-              returnObject = { value: x.uid, label: x.name, type: d };
-            } else if (x.__typename.match(/cellline/i)) { // for cell line
-              returnObject = { value: x.cell_uid, label: x.name, type: d };
-            } else { // for tissue and dataset
-              returnObject = { value: x.id, label: x.name, type: d };
-            }
-            return returnObject;
-          }),
+          options: modifiedOptions
         });
       });
       setOptions(finalOptions);
     }
-
   }, [data]);
 
   return (
