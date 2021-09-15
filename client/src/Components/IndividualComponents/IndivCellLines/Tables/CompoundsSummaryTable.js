@@ -48,7 +48,7 @@ const generateTableData = (data) => {
       let datasets = experiments.map(item => item.dataset);
       let datasetIds = [...new Set(datasets.map(item => item.id))];
       let datasetList = [];
-      for(let id of datasetIds){
+      for (let id of datasetIds) {
         let found = datasets.find(item => item.id === id);
         datasetList.push(found);
       }
@@ -87,31 +87,30 @@ const CompoundsSummaryTable = (props) => {
   const [csv, setCSV] = useState([]);
   const [error, setError] = useState(false);
 
-  const { loading, data: queryData,} = useQuery(getSingleCellLineExperimentsQuery, {
-      variables: { cellLineId: cellLine.id },
-      onCompleted: (data) => {
-        console.log(data);
-        let parsed = generateTableData(data.experiments);
-        setTableData(parsed);
-        setCSV(parsed.compound.map(item => ({
-          cellLineId: cellLine.id,
-          cellLineName: cellLine.name,
-          compoundUID: item.uid,
-          compound: item.compound,
-          dataset: item.dataset,
-          numExperiments: item.num_experiments,
-        })));
-      },
-      onError: (err) => {
-        setError(true);
-      }
+  const { loading, data: queryData, } = useQuery(getSingleCellLineExperimentsQuery, {
+    variables: { cellLineId: cellLine.id },
+    onCompleted: (data) => {
+      let parsed = generateTableData(data.experiments);
+      setTableData(parsed);
+      setCSV(parsed.compound.map(item => ({
+        cellLineId: cellLine.id,
+        cellLineName: cellLine.name,
+        compoundUID: item.uid,
+        compound: item.compound,
+        dataset: item.dataset,
+        numExperiments: item.num_experiments,
+      })));
+    },
+    onError: (err) => {
+      setError(true);
+    }
   });
-    // load data from query into state
+  // load data from query into state
   const [experiment, setExperiment] = useState({
     data: {},
     loaded: false,
   });
-    // to set the state on the change of the data.
+  // to set the state on the change of the data.
   useEffect(() => {
     if (queryData !== undefined) {
       setExperiment({
@@ -121,40 +120,40 @@ const CompoundsSummaryTable = (props) => {
     }
   }, [queryData]);
   return (
-      <React.Fragment>
-        {
-          error && <p> Error! </p>
-        }
-        {
-          loading || !tableData.ready ? <Loading />
-              :
-              <React.Fragment>
-                <h4>
-                  <p align="center">
-                    { `Compounds tested with ${cellLine.name}` }
-                  </p>
-                </h4>
-                <p align="center">
-                  { `${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).` }
-                </p>
-                {
-                  tableData.compound.length?
-                    <React.Fragment>
-                      <div className='download-button'>
+    <React.Fragment>
+      {
+        error && <p> Error! </p>
+      }
+      {
+        loading || !tableData.ready ? <Loading />
+          :
+          <React.Fragment>
+            <h4>
+              <p align="center">
+                {`Compounds tested with ${cellLine.name}`}
+              </p>
+            </h4>
+            <p align="center">
+              {`${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).`}
+            </p>
+            {
+              tableData.compound.length ?
+                <React.Fragment>
+                  <div className='download-button'>
                     <DownloadButton
-                        label='CSV'
-                        data={csv}
-                        mode='csv'
-                        filename={`${cellLine.name} - compounds`}
+                      label='CSV'
+                      data={csv}
+                      mode='csv'
+                      filename={`${cellLine.name} - compounds`}
                     />
                   </div>
-                      <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
-                    </React.Fragment>
-                    :''
-                }
-              </React.Fragment>
-        }
-      </React.Fragment>
+                  <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+                </React.Fragment>
+                : ''
+            }
+          </React.Fragment>
+      }
+    </React.Fragment>
   );
 };
 

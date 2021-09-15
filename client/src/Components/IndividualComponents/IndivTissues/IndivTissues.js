@@ -22,11 +22,11 @@ const ANNOTATION_COLUMNS = [
         accessor: 'sources',
         Cell: (item) => {
             let datasets = item.cell.row.original.source;
-            return(datasets.map((obj, i) => (
-                    <span key={i}>
-                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-            </span>
-                )
+            return (datasets.map((obj, i) => (
+                <span key={i}>
+                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                </span>
+            )
             ));
         }
     },
@@ -38,7 +38,7 @@ const ANNOTATION_COLUMNS = [
 
 const SIDE_LINKS = [
     { label: 'Annotations', name: 'annotations' },
-    { label: 'Bar Plots', name: 'barPlots'},
+    { label: 'Bar Plots', name: 'barPlots' },
     { label: 'Cell Line summary', name: 'cellLineSummary' },
     { label: 'Drug Summary', name: 'drugSummary' }
 ];
@@ -56,8 +56,8 @@ const formatName = (string) =>
 const formatAnnotationData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
-            returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
+        if (returnObj.filter(obj => { return obj.source[0].name === "PharmacoGx" }).length === 0) {
+            returnObj.push({ name: data.name, source: [{ name: "PharmacoGx", id: '' }] });
         }
         return returnObj;
     }
@@ -97,7 +97,6 @@ const IndivTissues = (props) => {
     // to set the state on the change of the data.
     useEffect(() => {
         if (queryData !== undefined) {
-            console.log(queryData);
             setTissue({
                 data: queryData.tissue,
                 loaded: true,
@@ -113,7 +112,7 @@ const IndivTissues = (props) => {
      * @param {String} link
      */
     const createSideLink = (link, i) => (
-        <li key={i} className={display === link.name ? 'selected': undefined}>
+        <li key={i} className={display === link.name ? 'selected' : undefined}>
             <button type='button' onClick={() => setDisplay(link.name)}>
                 {link.label}
             </button>
@@ -169,7 +168,7 @@ const IndivTissues = (props) => {
                         ))}
             </StyledWrapper>
         </Layout>
-    ) : <Loading/>);
+    ) : <Loading />);
 };
 
 IndivTissues.propTypes = {

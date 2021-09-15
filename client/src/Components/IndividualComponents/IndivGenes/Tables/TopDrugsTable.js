@@ -95,7 +95,6 @@ const TopDrugsTable = (props) => {
     const { loading } = useQuery(getGeneCompoundTissueDatasetQuery, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
-            console.log(data);
             setTableData(parseTableData(data.gene_compound_tissue_dataset, gene));
         },
         onError: (err) => {

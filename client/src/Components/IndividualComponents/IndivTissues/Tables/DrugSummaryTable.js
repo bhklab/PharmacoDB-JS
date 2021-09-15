@@ -11,26 +11,26 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const DRUG_SUMMARY_COLUMNS = [
     {
-      Header: 'Compounds',
-      accessor: 'compound',
-      Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
+        Header: 'Compounds',
+        accessor: 'compound',
+        Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
     },
     {
-      Header: 'Datasets',
-      accessor: 'dataset',
-      Cell: (item) => {
-          let datasets = item.cell.row.original.datasetObj;
-          return(datasets.map((obj, i) => (
-            <span key={i}>
-                <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-            </span>
-          )
-        ));
-      }
+        Header: 'Datasets',
+        accessor: 'dataset',
+        Cell: (item) => {
+            let datasets = item.cell.row.original.datasetObj;
+            return (datasets.map((obj, i) => (
+                <span key={i}>
+                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                </span>
+            )
+            ));
+        }
     },
     {
-      Header: 'Experiments',
-      accessor: 'num_experiments',
+        Header: 'Experiments',
+        accessor: 'num_experiments',
     },
 ];
 
@@ -44,13 +44,13 @@ const generateTableData = (data) => {
         let uniqueCompounds = [...new Set(data.map(item => item.compound.id))];
         let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
         let compounds = [];
-        for(let id of uniqueCompounds){
+        for (let id of uniqueCompounds) {
             let experiments = data.filter(item => item.compound.id === id);
-            
+
             let datasets = experiments.map(item => item.dataset);
             let datasetIds = [...new Set(datasets.map(item => item.id))];
             let datasetObj = [];
-            for(let id of datasetIds){
+            for (let id of datasetIds) {
                 let found = datasets.find(item => item.id === id);
                 datasetObj.push(found);
             }
@@ -84,7 +84,6 @@ const DrugSummaryTable = (props) => {
         variables: { tissueId: tissue.id },
         // fetchPolicy: "network-only",
         onCompleted: (data) => {
-            console.log(data);
             let parsed = generateTableData(data.experiments);
             setTableData(parsed);
             setCSV(parsed.compound.map(item => ({
@@ -101,32 +100,32 @@ const DrugSummaryTable = (props) => {
         }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading || !tableData.ready ? <Loading />
-                :
-                error ? <Error />
-                :
-                <React.Fragment>
-                    <h4>
-                        <p align="center">
-                            { `Compounds tested with ${tissue.name}` }
-                        </p>
-                    </h4>
-                    <p align="center">
-                        { `${tableData.numCompounds} compounds have been tested with this tissue, using data from ${tableData.numDataset} dataset(s).` }
-                    </p>
-                    <div className='download-button'>
-                        <DownloadButton 
-                            label='CSV' 
-                            data={csv} 
-                            mode='csv' 
-                            filename={`${tissue.name} - compounds`} 
-                        />
-                    </div>
-                    <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
-                </React.Fragment>
+                    :
+                    error ? <Error />
+                        :
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    {`Compounds tested with ${tissue.name}`}
+                                </p>
+                            </h4>
+                            <p align="center">
+                                {`${tableData.numCompounds} compounds have been tested with this tissue, using data from ${tableData.numDataset} dataset(s).`}
+                            </p>
+                            <div className='download-button'>
+                                <DownloadButton
+                                    label='CSV'
+                                    data={csv}
+                                    mode='csv'
+                                    filename={`${tissue.name} - compounds`}
+                                />
+                            </div>
+                            <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );

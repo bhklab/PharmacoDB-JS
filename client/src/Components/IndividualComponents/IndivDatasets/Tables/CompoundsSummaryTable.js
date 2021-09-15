@@ -40,22 +40,22 @@ const CompoundsSummaryTable = (props) => {
             console.log(data);
             setCompounds(parseTableData(data.name, data, data.id));
         },
-        onError: () => {setError(true)}
+        onError: () => { setError(true) }
     });
 
-    return(
+    return (
         <React.Fragment>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                <React.Fragment>
-                    <div className='download-button'>
-                        <DownloadButton label='CSV' data={compounds} mode='csv' filename={`${dataset.name} - compounds`} />
-                    </div>
-                    <Table columns={columns} data={compounds} />
-                </React.Fragment>
+                    :
+                    error ? <Error />
+                        :
+                        <React.Fragment>
+                            <div className='download-button'>
+                                <DownloadButton label='CSV' data={compounds} mode='csv' filename={`${dataset.name} - compounds`} />
+                            </div>
+                            <Table columns={columns} data={compounds} />
+                        </React.Fragment>
             }
         </React.Fragment>
     );

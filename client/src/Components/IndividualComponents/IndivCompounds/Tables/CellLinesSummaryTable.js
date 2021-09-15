@@ -28,9 +28,9 @@ const CELL_SUMMARY_COLUMNS = [
         accessor: 'dataset',
         Cell: (item) => {
             let datasets = item.cell.row.original.datasetList;
-            return(datasets.map((obj, i) => (
+            return (datasets.map((obj, i) => (
                 <span key={i}>
-                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
                 </span>)
             ));
         }
@@ -53,13 +53,13 @@ const generateTableData = (data) => {
         let uniqueDatasets = [...new Set(data.map(item => item.dataset.id))];
         let uniqueCellLines = [...new Set(data.map(item => item.cell_line.id))];
         let cellLines = [];
-        for(let id of uniqueCellLines){
+        for (let id of uniqueCellLines) {
             let experiments = data.filter(item => item.cell_line.id === id);
 
             let datasets = experiments.map(item => item.dataset);
             let datasetIds = [...new Set(datasets.map(item => item.id))];
             let datasetList = [];
-            for(let id of datasetIds){
+            for (let id of datasetIds) {
                 let found = datasets.find(item => item.id === id);
                 datasetList.push(found);
             }
@@ -100,10 +100,9 @@ const CellLinesSummaryTable = (props) => {
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
 
-    const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
+    const { loading, data: queryData, } = useQuery(getSingleCompoundExperimentsQuery, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            console.log(data);
             let parsed = generateTableData(data.experiments);
             setTableData(parsed);
             setCSV(parsed.cellLine.map(item => ({
@@ -147,11 +146,11 @@ const CellLinesSummaryTable = (props) => {
                     <React.Fragment>
                         <h4>
                             <p align="center">
-                                { `Cell lines tested with ${compound.name}` }
+                                {`Cell lines tested with ${compound.name}`}
                             </p>
                         </h4>
                         <p align="center">
-                            { `${tableData.numCellLines} cell line(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).` }
+                            {`${tableData.numCellLines} cell line(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).`}
                         </p>
                         <div className='download-button'>
                             <DownloadButton
@@ -161,7 +160,7 @@ const CellLinesSummaryTable = (props) => {
                                 filename={`${compound.name} - cellLines`}
                             />
                         </div>
-                        <Table columns={CELL_SUMMARY_COLUMNS} data={tableData.cellLine}/>
+                        <Table columns={CELL_SUMMARY_COLUMNS} data={tableData.cellLine} />
                     </React.Fragment>
             }
         </React.Fragment>

@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useState }from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getGeneCompoundDatasetQuery } from '../../../queries/gene_compound';
@@ -23,7 +23,7 @@ const generateCountPlotData = (geneCompounds) => {
   let uniqueDatasetIds = geneCompounds.map(item => item.dataset.id);
   uniqueDatasetIds = [...new Set(uniqueDatasetIds)];
   let plotData = [];
-  for(const [i, datasetId] of uniqueDatasetIds.entries()){
+  for (const [i, datasetId] of uniqueDatasetIds.entries()) {
     let filtered = geneCompounds.filter(item => item.dataset.id === datasetId);
     let uniqueCompounds = filtered.map(item => item.compound.id);
     uniqueCompounds = [...new Set(uniqueCompounds)];
@@ -54,7 +54,6 @@ const PlotSection = (props) => {
   const { loading } = useQuery(getGeneCompoundDatasetQuery, {
     variables: { geneId: gene.id },
     onCompleted: (data) => {
-      console.log(data);
       setData(generateCountPlotData(data.gene_compound_dataset));
     },
     onError: (err) => {
@@ -62,22 +61,22 @@ const PlotSection = (props) => {
       setError(true);
     }
   });
-  
+
   return (
     <React.Fragment>
       {
         loading ? <Loading />
-        :
-        error ? <Error />
-        :
-        <PlotsWrapper single={true}>
-          <DatasetHorizontalPlot
-            plotId='gene_compound_dataset_plot'
-            data={data}
-            xaxis="# of compounds"
-            title={`Number of compounds tested targeting ${gene.annotation.symbol} (per dataset)`}
-          />
-        </PlotsWrapper>
+          :
+          error ? <Error />
+            :
+            <PlotsWrapper single={true}>
+              <DatasetHorizontalPlot
+                plotId='gene_compound_dataset_plot'
+                data={data}
+                xaxis="# of compounds"
+                title={`Number of compounds tested targeting ${gene.annotation.symbol} (per dataset)`}
+              />
+            </PlotsWrapper>
       }
     </React.Fragment>
   );
