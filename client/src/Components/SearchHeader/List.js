@@ -8,6 +8,8 @@ const StyledList = styled.div`
     div {
         padding-top: 15px;
         padding-bottom: 15px;
+        padding-left: 5px;
+        padding-right: 5px;
         color: colors.dark_gray_text;
         font-weight: 400;
         font-size: 1em;
