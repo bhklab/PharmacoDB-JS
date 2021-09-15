@@ -74,6 +74,16 @@ const transformGeneCompounds = (data) => {
     });
 };
 
+const mapDataset = (data, datasets) => {
+    return data.map(item => {
+        let found = datasets.find(dataset => dataset.id === item.dataset.id);
+        item.dataset = {
+            id: found.id,
+            name: found.name
+        }
+        return item;
+    });
+};
 
 /**
  * Returns the transformed data for all the compounds in the database.
@@ -174,12 +184,11 @@ const gene_compound_dataset = async (args, context, info) => {
  */
 const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
-    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
-
+    let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId ? geneId : null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId ? tissueId : null;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) {
@@ -267,7 +276,107 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     }
 };
 
+const gene_compound_dataset_biomarker = async (args, context, info) => {
+    // arguments
+    let { compoundId, compoundName, mDataType, page = 1, per_page = 200, all = false } = args;
+    // grab the ids of each data type if data type is passed in the parameters
+    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    
+    // check if the compound id is passed?
+    if (!compoundId || !mDataType) {
+        throw new Error('Invalid Input! Query must include data type IDs or Names!');
+    }
+
+    try {
+        const { limit, offset } = calcLimitOffset(page, per_page);
+
+        // creates list of columns and list of subtypes for the knex query builder based on the fields requested by graphQL client
+        const columns = [
+            'dataset_id',
+            'fdr_analytic',
+            'fdr_permutation',
+            'mDataType',
+            'gene.id as gene_id', 
+            'gene.name as gene_name', 
+            'gene_seq_start', 
+            'gene_seq_end', 
+            'gene_annotation.symbol as symbol', 
+            'gene_annotation.chr as chr'
+        ];
+        
+        let query = knex.select(columns)
+            .from('gene_compound_dataset as GD')
+            .join('gene', 'gene.id', 'GD.gene_id')
+            .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id')
+            .where({ 'GD.compound_id': compoundId })
+            .andWhere({ 'GD.mDataType': mDataType });
+
+        if (!all) query = query.limit(limit).offset(offset);
+
+        // transform and return the data.
+        const geneCompoundResults = await query;
+        let transformed = transformGeneCompounds(geneCompoundResults);
+        let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
+        return mapDataset(transformed, datasets);
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
+    // arguments
+    let { compoundId, tissueId, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
+    // grab the ids of each data type if data type is passed in the parameters
+    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId ? tissueId : null;
+
+    // check if the gene or compound id is passed?
+    if (!compoundId && !tissueId) {
+        throw new Error('Invalid Input! Query must include data type IDs or Names!');
+    }
+
+    try {
+        const { limit, offset } = calcLimitOffset(page, per_page);
+
+        // creates list of columns and list of subtypes for the knex query builder based on the fields requested by graphQL client
+        const columns = [
+            'dataset_id',
+            'fdr_analytic',
+            'fdr_permutation',
+            'mDataType',
+            'gene.id as gene_id', 
+            'gene.name as gene_name', 
+            'gene_seq_start', 
+            'gene_seq_end', 
+            'gene_annotation.symbol as symbol', 
+            'gene_annotation.chr as chr'
+        ];
+        
+        let query = knex.select(columns)
+            .from('gene_compound_tissue_dataset as GD')
+            .join('gene', 'gene.id', 'GD.gene_id')
+            .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id')
+            .where({ 'GD.compound_id': compoundId })
+            .andWhere({ 'GD.tissue_id': tissueId })
+            .andWhere({ 'GD.mDataType': mDataType });
+
+        if (!all) query = query.limit(limit).offset(offset);
+
+        // transform and return the data.
+        const geneCompoundResults = await query;
+        let transformed = transformGeneCompounds(geneCompoundResults);
+        let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
+        return mapDataset(transformed, datasets); 
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = {
     gene_compound_dataset,
-    gene_compound_tissue_dataset
+    gene_compound_tissue_dataset,
+    gene_compound_dataset_biomarker,
+    gene_compound_tissue_dataset_biomarker
 };
