@@ -52,7 +52,7 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        const returnObj = data.synonyms;
+        const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
         if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
             returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
         }
@@ -122,7 +122,7 @@ const IndivCellLines = (props) => {
     } = props;
     // query to get the data for the single cell line.
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
-        variables: { 
+        variables: {
           cellUID: params.id,
           cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
           cellName: typeof params.id === 'string' ? params.id : undefined
