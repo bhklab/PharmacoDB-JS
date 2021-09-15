@@ -14,7 +14,7 @@ import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../sty
 import colors from '../../styles/colors';
 
 // link to old pharmacodb.
-const OLD_PHARMACODB = 'https://pharmacodb.ca/'; //TODO: Update when we will change the domain.
+const OLD_PHARMACODB = 'https://pharmacodbv1.ca/';
 
 /**
  * Component for the navigation with links and logo.
@@ -109,7 +109,7 @@ const NavBar = (props) => {
               <Dropdown.Item><a href="https://github.com/bhklab/PharmacoDB-JS" target="_blank">Github</a></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-           <Link className="header-links link" to="/documentation">Documentation</Link>
+          <Link className="header-links link" to="/documentation">Documentation</Link>
           {/* <Link className="header-links link" to="/explore">Explore</Link> */}
           <Dropdown className="header-links link-dropdown" text="Data" simple>
             <Dropdown.Menu className="link-menu">

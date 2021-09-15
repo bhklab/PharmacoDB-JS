@@ -66,15 +66,14 @@ const CellLineCompound = (props) => {
     // query to get the data for the single gene.
     const { loading } = useQuery(getCellLineCompoundExperimentsQuery, {
         variables: {
-            cellLineUID: cell_line, 
+            cellLineUID: cell_line,
             cellLineId: typeof Number(cell_line) === 'number' ? Number(cell_line) : undefined,
             cellLineName: typeof cell_line === 'string' ? cell_line : undefined,
             compoundUID: compound,
             compoundId: typeof Number(compound) === 'number' ? Number(compound) : undefined,
             compoundName: typeof compound === 'string' ? compound : undefined
         },
-        onCompleted: (data) => { 
-            console.log(data);
+        onCompleted: (data) => {
             parseExperiments(data.experiments, true);
         },
         onError: (err) => {
@@ -83,75 +82,75 @@ const CellLineCompound = (props) => {
         }
     });
 
-    return(
+    return (
         <Layout>
             <StyledWrapper>
                 {
                     loading ? <Loading />
-                    :
-                    error ? <Error />
-                    :
-                    typeof experiments !== 'undefined' &&
-                    <PageContext.Provider value={{showStat, hideStat, alterClickedCells, isClicked, isDisabled}}>
-                        {
-                            experiments.length > 0 ?
-                            <StyledIntersectionComponent>
-                                <h2>
-                                    {getLink('cell_line')} treated with {getLink('compound')}
-                                </h2>
-                                <StyledDoseResponseContainer>
-                                    <div className='plot'>
-                                        <DoseResponseCurve 
-                                            plotId='cell_compound_dose_response'
-                                            showScatter={true}
-                                            plotData={plotData}
-                                            traces={plotData.traces}
-                                        />
-                                        <div className='download-buttons'>
-                                            <DownloadButton 
-                                                className='left'
-                                                label='SVG' 
-                                                mode='svg' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
-                                                plotId='cell_compound_dose_response'
-                                            />
-                                            <DownloadButton 
-                                                className='left'
-                                                label='PNG' 
-                                                mode='png' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
-                                                plotId='cell_compound_dose_response'
-                                            />
-                                            <DownloadButton 
-                                                label='CSV' 
-                                                mode='csv' 
-                                                filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-dose_response`}
-                                                data={plotCSVData}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='right-panel'>
-                                        {
-                                            experiments.map((item, i) => (
-                                                <Checkbox 
-                                                    key={i}
-                                                    value={item.experiment.name}
-                                                    label={item.experiment.name}
-                                                    checked={item.visible}
-                                                    color={item.color}
-                                                    onChange={(e) => {showHideCurve(e, 'experiment')}}
-                                                    disabled={!item.displayCurve}
-                                                />
-                                            ))
-                                        }
-                                    </div>
-                                </StyledDoseResponseContainer>
-                                <CellLineCompoundTable data={tableData} />
-                            </StyledIntersectionComponent>
+                        :
+                        error ? <Error />
                             :
-                            <h3>No experiments were found with the given combination of cell line and compound.</h3>
-                        }
-                    </PageContext.Provider>
+                            typeof experiments !== 'undefined' &&
+                            <PageContext.Provider value={{ showStat, hideStat, alterClickedCells, isClicked, isDisabled }}>
+                                {
+                                    experiments.length > 0 ?
+                                        <StyledIntersectionComponent>
+                                            <h2>
+                                                {getLink('cell_line')} treated with {getLink('compound')}
+                                            </h2>
+                                            <StyledDoseResponseContainer>
+                                                <div className='plot'>
+                                                    <DoseResponseCurve
+                                                        plotId='cell_compound_dose_response'
+                                                        showScatter={true}
+                                                        plotData={plotData}
+                                                        traces={plotData.traces}
+                                                    />
+                                                    <div className='download-buttons'>
+                                                        <DownloadButton
+                                                            className='left'
+                                                            label='SVG'
+                                                            mode='svg'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                                                            plotId='cell_compound_dose_response'
+                                                        />
+                                                        <DownloadButton
+                                                            className='left'
+                                                            label='PNG'
+                                                            mode='png'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}`}
+                                                            plotId='cell_compound_dose_response'
+                                                        />
+                                                        <DownloadButton
+                                                            label='CSV'
+                                                            mode='csv'
+                                                            filename={`${experiments[0].compound.name}-${experiments[0].cell_line.name}-dose_response`}
+                                                            data={plotCSVData}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='right-panel'>
+                                                    {
+                                                        experiments.map((item, i) => (
+                                                            <Checkbox
+                                                                key={i}
+                                                                value={item.experiment.name}
+                                                                label={item.experiment.name}
+                                                                checked={item.visible}
+                                                                color={item.color}
+                                                                onChange={(e) => { showHideCurve(e, 'experiment') }}
+                                                                disabled={!item.displayCurve}
+                                                            />
+                                                        ))
+                                                    }
+                                                </div>
+                                            </StyledDoseResponseContainer>
+                                            <CellLineCompoundTable data={tableData} />
+                                        </StyledIntersectionComponent>
+                                        :
+                                        <h3>No experiments were found with the given combination of cell line and compound.</h3>
+                                }
+                            </PageContext.Provider>
                 }
             </StyledWrapper>
         </Layout>

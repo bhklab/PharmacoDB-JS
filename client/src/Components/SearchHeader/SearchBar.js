@@ -334,7 +334,6 @@ const SearchBar = (props) => {
 
   return (
     <>
-      {console.log(options)}
       <Select
         isMulti
         filterOption={customFilterOption}

@@ -67,17 +67,17 @@ const formatSynonymData = (data) => {
   return null;
 };
 
-  /**
-   * Format data for link table
-   * @param data link data from the gene API
-   */
-  const formatLinkData = (data) => {
-    if (data) {
-      const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
-      return formatTableLinks(data.name, link);
-    }
-    return null;
-  };
+/**
+ * Format data for link table
+ * @param data link data from the gene API
+ */
+const formatLinkData = (data) => {
+  if (data) {
+    const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
+    return formatTableLinks(data.name, link);
+  }
+  return null;
+};
 
 /**
  * Parent component for the individual gene page.
@@ -108,23 +108,22 @@ const IndivGenes = (props) => {
   const { loading } = useQuery(getGeneQuery, {
     variables: { geneId: parseInt(params.id) },
     onCompleted: (data) => {
-        console.log(data);
-        if (data.gene.name !== 'empty') {
-            setGene({
-              ...gene,
-              data: {
-                ...data.gene,
-                synonyms: formatSynonymData(data.gene),
-                links: formatLinkData(data.gene)
-              },
-              loaded: true
-            });
-        }else{
-            setGene({...gene, notFound: true});
-        }
+      if (data.gene.name !== 'empty') {
+        setGene({
+          ...gene,
+          data: {
+            ...data.gene,
+            synonyms: formatSynonymData(data.gene),
+            links: formatLinkData(data.gene)
+          },
+          loaded: true
+        });
+      } else {
+        setGene({ ...gene, notFound: true });
+      }
     },
     onError: () => {
-        setGene({...gene, error: true});
+      setGene({ ...gene, error: true });
     }
   });
 
@@ -145,68 +144,68 @@ const IndivGenes = (props) => {
       <StyledWrapper>
         {
           loading ? <Loading />
-          :
-          gene.notFound ? <NotFoundContent />
-          :
-          gene.error ? <Error />
-          :
-          gene.loaded &&
-          <StyledIndivPage className="indiv-genes">
-            <div className='heading'>
-              <span className='title'>{gene.data.annotation.symbol}</span>
-              <span className='attributes'>
-              </span>
-            </div>
-            <div className='wrapper'>
-              <StyledSidebarList>
-                {
-                  SIDE_LINKS.map((link, i) => createSideLink(link, i))
-                }
-              </StyledSidebarList>
-              <div className="container">
-                <div className="content">
-                  {
-                    display === 'synonyms' &&
-                    <React.Fragment>
-                      <Element className="section" name="synonyms">
-                        <div className='section-title'>Synonyms and Links</div>
-                        <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
-                      </Element>
-                      <Element className="section" name="links">
-                        <div className='section-title'>Links</div>
-                        <Table columns={LINK_COLUMNS} data={gene.data.links} disablePagination />
-                      </Element>
-                    </React.Fragment>
-                  }
-                  {
-                    display === 'plots' &&
-                    <Element className='section'>
-                      <div className='section-title'>Plots</div>
-                      <PlotSection gene={gene.data} />
-                    </Element>
-                  }
-                  {
-                    display === 'drugsSummary' &&
-                    <Element className='section'>
-                      <div className='section-title'>Compounds Summary</div>
-                      <CompoundsSummaryTable gene={gene.data} />
-                    </Element>
-                  }
-                  {
-                    display === 'topDrugs' &&
-                    <Element className='section'>
-                      <div className='section-title'>Top Drugs</div>
-                      <TopDrugsTable gene={gene.data} />
-                    </Element>
-                  }
-                </div>
-              </div>
-            </div>
-          </StyledIndivPage>
+            :
+            gene.notFound ? <NotFoundContent />
+              :
+              gene.error ? <Error />
+                :
+                gene.loaded &&
+                <StyledIndivPage className="indiv-genes">
+                  <div className='heading'>
+                    <span className='title'>{gene.data.annotation.symbol}</span>
+                    <span className='attributes'>
+                    </span>
+                  </div>
+                  <div className='wrapper'>
+                    <StyledSidebarList>
+                      {
+                        SIDE_LINKS.map((link, i) => createSideLink(link, i))
+                      }
+                    </StyledSidebarList>
+                    <div className="container">
+                      <div className="content">
+                        {
+                          display === 'synonyms' &&
+                          <React.Fragment>
+                            <Element className="section" name="synonyms">
+                              <div className='section-title'>Synonyms and Links</div>
+                              <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
+                            </Element>
+                            <Element className="section" name="links">
+                              <div className='section-title'>Links</div>
+                              <Table columns={LINK_COLUMNS} data={gene.data.links} disablePagination />
+                            </Element>
+                          </React.Fragment>
+                        }
+                        {
+                          display === 'plots' &&
+                          <Element className='section'>
+                            <div className='section-title'>Plots</div>
+                            <PlotSection gene={gene.data} />
+                          </Element>
+                        }
+                        {
+                          display === 'drugsSummary' &&
+                          <Element className='section'>
+                            <div className='section-title'>Compounds Summary</div>
+                            <CompoundsSummaryTable gene={gene.data} />
+                          </Element>
+                        }
+                        {
+                          display === 'topDrugs' &&
+                          <Element className='section'>
+                            <div className='section-title'>Top Drugs</div>
+                            <TopDrugsTable gene={gene.data} />
+                          </Element>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </StyledIndivPage>
         }
       </StyledWrapper>
     </Layout>
-    ) : <Loading/>
+  ) : <Loading />
   );
 };
 
