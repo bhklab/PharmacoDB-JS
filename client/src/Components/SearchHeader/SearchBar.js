@@ -12,7 +12,8 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from '../../utils/searchDefaultOptions'
+import defaultOptions from '../../utils/searchDefaultOptions';
+import MenuList from './List';
 
 /** CONSTANTS */
 // input must be greater than this length to display option menu
@@ -259,12 +260,12 @@ const SearchBar = (props) => {
   }
 
   /** DATA LOADING */
-  const {
-    data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
-  } = useQuery(getCompoundsIdNameQuery);
-  const {
-    data: genesData, loading: genesDataLoading, error: genesDataError,
-  } = useQuery(getGenesIdSymbolQuery);
+  // const {
+  //   data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
+  // } = useQuery(getCompoundsIdNameQuery);
+  // const {
+  //   data: genesData, loading: genesDataLoading, error: genesDataError,
+  // } = useQuery(getGenesIdSymbolQuery);
   const {
     data: tissuesData, loading: tissuesDataLoading, error: tissuesDataError,
   } = useQuery(getTissuesQuery);
@@ -280,10 +281,10 @@ const SearchBar = (props) => {
    * Load data in
    */
   useEffect(() => {
-    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading) {
+    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading) {
       setData({
-        compounds: compoundsData ? compoundsData.compounds : [],
-        genes: genesData ? genesData.genes : [],
+        // compounds: compoundsData ? compoundsData.compounds : [],
+        // genes: genesData ? genesData.genes : [],
         tissues: tissuesData ? tissuesData.tissues : [],
         cell_lines: cellsData ? cellsData.cell_lines : [],
         datasets: datasetsData ? datasetsData.datasets : [],
@@ -293,7 +294,7 @@ const SearchBar = (props) => {
       // update the isLoading state because all data has been loaded.
       setDataLoadedValue(true);
     }
-  }, [tissuesData, cellsData, datasetsData, compoundsData, genesData]);
+  }, [tissuesData, cellsData, datasetsData]);
 
   useEffect(() => {
     // set options to default.
@@ -322,7 +323,13 @@ const SearchBar = (props) => {
           options: modifiedOptions
         });
       });
-      setOptions(finalOptions);
+      const testit = [];
+      finalOptions.forEach(el => {
+
+        testit.push(...el.options);
+
+      })
+      setOptions(testit);
     }
   }, [data]);
 
@@ -334,8 +341,8 @@ const SearchBar = (props) => {
         filterOption={customFilterOption}
         options={(options)}
         components={{
-          // MenuList: (props) => (<MenuList {...props} />),
-          Option: CustomOption,
+          MenuList: (props) => (<MenuList {...props} />),
+          // Option: CustomOption,
         }}
         placeholder={(
           <ReactTypingEffect
