@@ -106,7 +106,7 @@ const ManhattanPlot = (props) => {
                 size: data.map(item => item.y >= 1.5 ? 8 : item.y >= -Math.log10(0.5) ? 5 : 3),
                 opacity: data.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1),
                 line: {
-                    width: 1
+                    width: 0
                 }
             },
             showlegend: false,
@@ -155,7 +155,10 @@ const ManhattanPlot = (props) => {
                 marker: {
                     color: '#666666',
                     size: 8,
-                    opacity: biomarker.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1)
+                    opacity: biomarker.map(item => item.y < -Math.log10(0.5) ? 0.3 : 1),
+                    line: {
+                        width: 0
+                    }
                 },
                 showlegend: false,
                 hoverlabel: {
