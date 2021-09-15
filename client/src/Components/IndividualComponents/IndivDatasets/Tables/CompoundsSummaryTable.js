@@ -29,7 +29,7 @@ const CompoundsSummaryTable = (props) => {
           Header: `All compounds tested in ${dataset.name}`,
           accessor: 'compound',
           center: true,
-          Cell: (item) => <a href={`/compounds/${item.cell.row.original.id}`}>{item.value}</a>
+          Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
         }
     ];
 

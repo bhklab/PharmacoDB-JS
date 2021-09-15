@@ -111,10 +111,12 @@ const getDatasetsTypesQuery = gql`
       }
       cells_tested {
         id
+        cell_uid
         name
       }
       compounds_tested {
         id
+        uid
         name
       }
     }

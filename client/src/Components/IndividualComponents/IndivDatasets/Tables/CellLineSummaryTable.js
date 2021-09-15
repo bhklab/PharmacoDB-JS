@@ -31,7 +31,7 @@ const CellLineSummaryTable = (props) => {
           Header: `All cell lines tested in ${dataset.name}`,
           accessor: 'cellLine',
           center: true,
-          Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.id}`}>{item.value}</a>
+          Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.cell_uid}`}>{item.value}</a>
         },
     ];
 
