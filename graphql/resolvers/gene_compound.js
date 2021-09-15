@@ -83,9 +83,9 @@ const gene_compound_tissue = async (args, context, info) => {
     let { geneId, geneName, compoundId, compoundName, tissueId, tissueName, page = 1, per_page = 20, all = false } = args;
 
     // grab the ids of each data type if data type is passed in the parameters
-    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId ? geneId : null;
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId ? tissueId : null;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) throw new Error('Invalid input! Query must include geneId and compoundId and tissueId');
