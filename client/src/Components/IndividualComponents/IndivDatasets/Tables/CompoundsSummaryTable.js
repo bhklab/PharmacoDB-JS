@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-// import { getDatasetCompoundQuery } from '../../../../queries/dataset';
 import { getDatasetsTypesQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
@@ -32,16 +31,6 @@ const CompoundsSummaryTable = (props) => {
           Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
         }
     ];
-
-    // const { loading } = useQuery(getDatasetCompoundQuery, {
-    //     variables: { datasetId: dataset.id },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: (data) => {
-    //         console.log(data);
-    //         setCompounds(parseTableData(data, dataset.id, dataset.name));
-    //     },
-    //     onError: () => {setError(true)}
-    // });
 
     const { loading } = useQuery(getDatasetsTypesQuery, {
         fetchPolicy: "network-only",

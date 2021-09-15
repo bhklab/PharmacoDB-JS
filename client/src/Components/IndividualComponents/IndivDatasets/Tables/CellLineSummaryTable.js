@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-// import { getDatasetCellLinesQuery } from '../../../../queries/dataset';
 import { getDatasetsTypesQuery } from '../../../../queries/dataset';
 import Loading from '../../../UtilComponents/Loading';
 import Error from '../../../UtilComponents/Error';
@@ -34,16 +33,6 @@ const CellLineSummaryTable = (props) => {
           Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.cell_uid}`}>{item.value}</a>
         },
     ];
-
-    // const { loading } = useQuery(getDatasetCellLinesQuery, {
-    //     variables: { datasetId: dataset.id },
-    //     fetchPolicy: "network-only",
-    //     onCompleted: (data) => {
-    //         console.log(data);
-    //         setCellLines(parseTableData(dataset.name, data, dataset.id));
-    //     },
-    //     onError: () => {setError(true)}
-    // });
 
     const { loading } = useQuery(getDatasetsTypesQuery, {
         fetchPolicy: "network-only",
