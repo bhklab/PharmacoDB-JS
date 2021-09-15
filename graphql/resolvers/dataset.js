@@ -92,16 +92,27 @@ const summaryQuery = async (type, datasetId, datasetName) => {
 /**
  *
  * @param {string} type - 'cell' or 'compound' or 'tissue'
+ * @param {number} datasetId
+ * @param {string} datasetName
  * @return {Array} - returns an array of cells, compounds, or tissues tested or various datasets.
  */
-const typeDatasetsQuery = async (type) => {
+const typeDatasetsQuery = async (type, datasetId, datasetName) => {
+    let datasets;
     // query to get the ids and names for the type and datasets.
     const query = knex
         .select('d.id as dataset_id', 'd.name as dataset_name',`t.id as ${type}_id`, `t.name as ${type}_name` )
         .from(`dataset_${type} as dt`)
         .join('dataset as d', 'd.id', 'dt.dataset_id')
         .join(`${type} as t`, 't.id', `dt.${type}_id`);
-    const datasets = await query;
+    // based on the param datasetId and datasetName.
+    if (datasetId) {
+        datasets = await query.where('dataset_id', datasetId);
+    } else if (datasetName) {
+        datasets = await query.where('dataset_name', datasetName);
+    } else {
+        datasets = await query;
+    }
+
     return transformObject(datasets);
 };
 

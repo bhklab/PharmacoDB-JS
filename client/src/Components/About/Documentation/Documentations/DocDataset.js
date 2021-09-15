@@ -52,7 +52,7 @@ const DocDataset = () => {
                 <p>
                     Resources page includes links to resources which provide access to the original data.
                 </p>
-                <img height="auto" width="250px" alt="Resource section of individual dataset page" className="documentation" src={datasetResource} title="Resources"/>
+                <img height="auto" width="280px" alt="Resource section of individual dataset page" className="documentation" src={datasetResource} title="Resources"/>
                 <p>
                     Data types page includes a table of all the available pharmacological and molecular data, with annotations about the assays used to collect them.
                 </p>

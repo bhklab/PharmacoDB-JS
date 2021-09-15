@@ -63,6 +63,7 @@ const StyledIndivPage = styled.div`
   .section {
     width: 100%;
     margin-bottom: 50px;
+    text-align: justify;
     .section-title {
       font-size: clamp(18px, calc(1vw + 3px), 28px);
       font-weight: bold;

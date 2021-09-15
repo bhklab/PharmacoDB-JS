@@ -152,7 +152,7 @@ const AboutUsDescription = () => {
             }
           </div>
           <div><Link to="/">Start searching</Link> across pharmacogenomic datasets and do not hesitate to give us feedback on
-            <a href="https://github.com/bhklab/PharmacoDB" target="_blank"> GitHub</a>.</div>
+            <a href="https://github.com/bhklab/PharmacoDB-JS" target="_blank"> GitHub</a>.</div>
         </span><br/><br/><br/>
         <h1>
           About the Lab

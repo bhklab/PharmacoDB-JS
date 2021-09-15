@@ -56,7 +56,8 @@ const DocTissue = () => {
                 <p>
                     Drug Summary page includes a table of drugs tested on the tissue type, with the studies in which the drug - tissue combination can be found and the total number of experiments across all datasets. Clicking on each drug name or dataset name will take you to the corresponding page to that instance.
                 </p>
-                <img height="auto" width="650px" alt="List of tested compounds" className="documentation" src={tissueDrugList} title="Tested compounds"/>
+                {/*need to add an screen shot from drug summary table on individual tissue page*/}
+                {/*<img height="auto" width="650px" alt="List of tested compounds" className="documentation" src={tissueDrugList} title="Tested compounds"/>*/}
             </div>
         </div>
     );
