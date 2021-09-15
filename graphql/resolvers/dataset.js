@@ -135,45 +135,11 @@ const datasets_types = async () => {
             const data = {};
             data['dataset'] = {id: dataset.dataset_id, name: dataset.dataset_name };
             data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
-            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
-            data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
+            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], cell_uid: value['cell_uid'], name: value['cell_name'] }));
+            data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], uid: value['compound_uid'], name: value['compound_name'] }));
             returnData.push(data);
         })
-        return returnData;
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-};
-
-/**
- * @param
- * @returns {Array} - return an array of Object (defined below).
- *  Object = {
- *      id: 'id of the dataset',
- *      name: 'name of the dataset',
- *      tissus_tested (grouped by datasets): 'lists of all tissues that have been tested in the datasets'
- *      cells_tested (grouped by datasets): 'lists of all cell lines that have been tested in the datasets'
- *      compounds_tested (grouped by datasets): 'lists of all compounds that have been tested in the datasets'
- *  }
- */
-//TODO: Update to return only fields asked on the query
-const dataset_type = async (parent, info, type, datasetId, datasetName) => {
-    try {
-        const returnData = [];
-        let tissues, cells, compounds;
-        const datasets = await datasetQuery();
-        tissues = await typeDatasetsQuery('tissue', datasetId, datasetName);
-        cells = await typeDatasetsQuery('cell', datasetId, datasetName);
-        compounds = await typeDatasetsQuery('compound', datasetId, datasetName);
-        datasets.forEach(dataset =>{
-            const data = {};
-            data['dataset'] = {id: dataset.dataset_id, name: dataset.dataset_name };
-            data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
-            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], name: value['cell_name'] }));
-            data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], name: value['compound_name'] }));
-            returnData.push(data);
-        })
+        console.log(returnData);
         return returnData;
     } catch (err) {
         console.log(err);
