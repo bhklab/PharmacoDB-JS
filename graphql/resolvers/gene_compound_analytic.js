@@ -74,6 +74,12 @@ const transformGeneCompounds = (data) => {
     });
 };
 
+/**
+ * Maps dataset object to each gene_compound data rows by dataset_id
+ * @param {*} data // gene_compound data 
+ * @param {*} datasets // list of dataset objects
+ * @returns a complete GraphQL formatted data to be returned.
+ */
 const mapDataset = (data, datasets) => {
     return data.map(item => {
         let found = datasets.find(dataset => dataset.id === item.dataset.id);
@@ -98,7 +104,10 @@ const mapDataset = (data, datasets) => {
  */
 const gene_compound_dataset = async (args, context, info) => {
     // arguments
-    const { geneId, compoundId, page = 1, per_page = 20, all = false } = args;
+    let { geneId, geneName, compoundId, compoundName, page = 1, per_page = 20, all = false } = args;
+    // grab the ids of each data type if data type is passed in the parameters
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
+    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
@@ -122,6 +131,7 @@ const gene_compound_dataset = async (args, context, info) => {
                     subtypes.push(el.name);
                     break;
                 case 'dataset':
+                    // columns.push(...['GD.dataset_id as dataset_id']);
                     columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
                     subtypes.push(el.name);
                     break;
@@ -164,6 +174,9 @@ const gene_compound_dataset = async (args, context, info) => {
         // transform and return the data.
         const geneCompoundResults = await query;
         return transformGeneCompounds(geneCompoundResults);
+        // let transformed = transformGeneCompounds(geneCompoundResults);
+        // let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
+        // return mapDataset(transformed, datasets); 
     } catch (err) {
         console.log(err);
         throw err;
@@ -186,9 +199,9 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
     let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
-    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId ? geneId : null;
+    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId ? tissueId : null;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) {
@@ -329,7 +342,7 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
     let { compoundId, tissueId, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId ? tissueId : null;
+    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!compoundId && !tissueId) {
