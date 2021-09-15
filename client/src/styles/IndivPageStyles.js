@@ -58,6 +58,15 @@ const StyledIndivPage = styled.div`
     .content{
       // width: calc(100% - (5vw + 4em) - 2em);
       width: 100%;
+      .section{
+        .documentation{
+          img {
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 35px;
+          }
+      }
+      }
     }
   }
   .section {
@@ -103,15 +112,6 @@ const StyledIndivPage = styled.div`
     margin-top: 25px;
     margin-bottom: 25px;
     align-items: center;
-  }
-
-  .documentation{
-    img {
-      height: auto;
-      margin-top: 0px;
-      margin-bottom: 35px;
-      align-items: center;
-    }
   }
 
   // full size container when too small
