@@ -260,12 +260,12 @@ const SearchBar = (props) => {
   }
 
   /** DATA LOADING */
-  // const {
-  //   data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
-  // } = useQuery(getCompoundsIdNameQuery);
-  // const {
-  //   data: genesData, loading: genesDataLoading, error: genesDataError,
-  // } = useQuery(getGenesIdSymbolQuery);
+  const {
+    data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
+  } = useQuery(getCompoundsIdNameQuery);
+  const {
+    data: genesData, loading: genesDataLoading, error: genesDataError,
+  } = useQuery(getGenesIdSymbolQuery);
   const {
     data: tissuesData, loading: tissuesDataLoading, error: tissuesDataError,
   } = useQuery(getTissuesQuery);
@@ -281,10 +281,10 @@ const SearchBar = (props) => {
    * Load data in
    */
   useEffect(() => {
-    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading) {
+    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading && !genesDataLoading) {
       setData({
-        // compounds: compoundsData ? compoundsData.compounds : [],
-        // genes: genesData ? genesData.genes : [],
+        compounds: compoundsData ? compoundsData.compounds : [],
+        genes: genesData ? genesData.genes : [],
         tissues: tissuesData ? tissuesData.tissues : [],
         cell_lines: cellsData ? cellsData.cell_lines : [],
         datasets: datasetsData ? datasetsData.datasets : [],
@@ -294,7 +294,7 @@ const SearchBar = (props) => {
       // update the isLoading state because all data has been loaded.
       setDataLoadedValue(true);
     }
-  }, [tissuesData, cellsData, datasetsData]);
+  }, [tissuesData, cellsData, datasetsData, genesData, compoundsData]);
 
   useEffect(() => {
     // set options to default.
@@ -323,13 +323,12 @@ const SearchBar = (props) => {
           options: modifiedOptions
         });
       });
-      const testit = [];
+      // make a list out of all the options for now.
+      const finalOptionsList = [];
       finalOptions.forEach(el => {
-
-        testit.push(...el.options);
-
+        finalOptionsList.push(...el.options);
       })
-      setOptions(testit);
+      setOptions(finalOptionsList);
     }
   }, [data]);
 
