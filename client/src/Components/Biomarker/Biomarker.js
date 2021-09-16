@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
-import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
+import {
+    getGeneCompoundTissueDatasetQuery,
+    getGeneCompoundDatasetQuery,
+} from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
@@ -151,11 +154,29 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
-    const {
-        loading: geneCompoundTissueDatasetDataLoading,
-        error: geneCompoundTissueDatasetDataError,
-        data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
+
+    const [getGeneCompoundTissueDatasetData, {
+        loading: geneCompoundTissueDatasetDataLoading, error: geneCompoundTissueDatasetDataError
+    }] = useLazyQuery(getGeneCompoundTissueDatasetQuery, {
+        onCompleted: (data) => {
+            setGeneCompoundTissueDatasetData(data.gene_compound_tissue_dataset);
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
+
+    const [getGeneCompoundDatasetData, {
+        loading: geneCompoundDatasetDataLoading, error: geneCompoundDatasetDataError
+    }] = useLazyQuery(getGeneCompoundDatasetQuery, {
+        onCompleted: (data) => {
+            console.log(data);
+            setGeneCompoundTissueDatasetData(data.gene_compound_dataset);
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
 
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
@@ -164,7 +185,7 @@ const Biomarker = (props) => {
     // setting the state on load of compound data.
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
-        if (compoundQueryData && geneQueryData && geneCompoundTissueDatasetQueryData) {
+        if (compoundQueryData && geneQueryData) {
             setTransformedCompoundData(
                 transformCompoundTableData(compoundQueryData.singleCompound)
             );
@@ -174,9 +195,16 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
-            setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
+        };
+
+        // calling right function based on the params.
+        if (gene && compound && tissue) {
+            getGeneCompoundTissueDatasetData({ variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
+        } else if (gene && compound) {
+            getGeneCompoundDatasetData({ variables: { geneName: gene, compoundName: compound } });
         }
-    }, [compoundQueryData, geneQueryData, geneCompoundTissueDatasetQueryData]);
+
+    }, [compoundQueryData, geneQueryData]);
 
     return (
         <Layout>
@@ -190,13 +218,13 @@ const Biomarker = (props) => {
                             <span className='link'> {`${gene.toUpperCase()}`} </span>
                             {
                                 tissue ?
-                                <React.Fragment>
-                                    <span> in </span>
-                                    <span className='link'> {`${TitleCase(tissue)}`} </span>
-                                    <span> tissue </span>
-                                </React.Fragment>
-                                :
-                                ''
+                                    <React.Fragment>
+                                        <span> in </span>
+                                        <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                        <span> tissue </span>
+                                    </React.Fragment>
+                                    :
+                                    ''
                             }
                         </span>
                     </div>
