@@ -96,7 +96,72 @@ const compound_targets = async (args) => {
     }
 };
 
+/**
+ * Used to return targets with associated gene for a given compound.
+ * @param {*} args 
+ */
+const gene_compound_target = async (args) => {
+    try {
+        const {
+            compoundId,
+            compoundName
+        } = args;
+        const returnObject = {};
+        
+        let query = knex.distinct('t.name as target_name')
+            .select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 'gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol')
+            .from('compound_target as ct')
+            .join('target as t', 't.id', 'ct.target_id')
+            .join('compound as c', 'c.id', 'ct.compound_id')
+            .join('gene_target as gt', 'gt.target_id', 'ct.target_id')
+            .join('gene', 'gene.id', 'gt.gene_id')
+            .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
+        
+        if (compoundId) {
+            query = query.where('c.id', compoundId);
+        } else {
+            query = query.where('c.name', compoundName);
+        }
+
+        const targets = await query;
+    
+        targets.forEach((target, i) => {
+            const {
+                target_id,
+                target_name,
+                compound_name,
+                compound_id,
+                gene_id,
+                gene_name,
+                symbol
+            } = target;
+            if (!i) {
+                returnObject['compound_id'] = compound_id;
+                returnObject['compound_name'] = compound_name;
+                returnObject['targets'] = [];
+            }
+            returnObject['targets'].push({
+                id: target_id,
+                name: target_name,
+                gene: {
+                    id: gene_id,
+                    name: gene_name,
+                    annotation: {
+                        gene_id: gene_id,
+                        symbol: symbol
+                    }
+                }
+            });
+        });
+        return returnObject;
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+};
+
 module.exports = {
     compound_target,
-    compound_targets
+    compound_targets,
+    gene_compound_target
 };
