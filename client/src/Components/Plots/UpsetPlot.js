@@ -66,11 +66,13 @@ const xScale = (min = 0, max, width) => d3.scaleLinear()
  * @param {Object} svg - svg canvas object.
  * @param {Object} scale - scale for creating the y axis.
  */
-const yAxis = (svg, scale) => svg
+const yAxis = (svg, scale, tickNum) => svg
     .append('g')
     .attr('id', 'y-axis')
     .attr('transform', `translate(${margin.left * 1.5}, 0)`)
-    .call(d3.axisLeft(scale).tickFormat(d3.format("d")));
+    .call(d3.axisLeft(scale)
+    .ticks(tickNum)
+    .tickFormat(d3.format("d")));
 
 /**
  * Creates x axis.
@@ -341,7 +343,8 @@ const createUpsetPlot = (data, datasets, type) => {
     // create x axis.
     xAxis(svg, scaleXAxis, height);
     // create y axis.
-    yAxis(svg, scaleYAxis);
+    const tickNum = type ==="Compound" ? 5 : type === "Tissue" ? 20 : 10;
+    yAxis(svg, scaleYAxis, tickNum);
 
     // append text to the y axis.
     appendTextYAxis(svg, height, type);
