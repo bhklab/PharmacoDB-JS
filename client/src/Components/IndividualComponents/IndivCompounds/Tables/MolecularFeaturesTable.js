@@ -119,7 +119,7 @@ const MolecularFeaturesTable = (props) => {
                     :
                     error ? <Error />
                         :
-                        tableData.length > 0 &&
+                        tableData.length > 0 ?
                         <React.Fragment>
                             <h4>
                                 <p align="center">
@@ -136,6 +136,8 @@ const MolecularFeaturesTable = (props) => {
                             </div>
                             <Table columns={COLUMNS} data={tableData} />
                         </React.Fragment>
+                            :
+                            <h6 align="center">No molecular feature data is available for this compound.</h6>
             }
         </React.Fragment>
     );
