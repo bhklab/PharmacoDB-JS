@@ -14,7 +14,7 @@ import { StyledLinkDropdowns, StyledNavBar, StyledSearchButton } from '../../sty
 import colors from '../../styles/colors';
 
 // link to old pharmacodb.
-const OLD_PHARMACODB = 'https://pharmacodbv1.ca/';
+const OLD_PHARMACODB = 'http://pharmacodbv1.ca/';
 
 /**
  * Component for the navigation with links and logo.
