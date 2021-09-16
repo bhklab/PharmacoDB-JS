@@ -17,7 +17,7 @@ const parseTableData = (data, compound) => {
             compound: compound.name,
             feature_type: item.mDataType,
             gene_id: item.gene.id,
-            gene: item.gene.name,
+            gene: item.gene.annotation.symbol,
             dataset_id: item.dataset.id,
             dataset: item.dataset.name,
             tissue_id: item.tissue.id,
