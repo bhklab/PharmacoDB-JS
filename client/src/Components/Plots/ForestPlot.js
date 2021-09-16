@@ -30,12 +30,14 @@ const mDataTypeMaping = {
 // legend variable.
 const legend = [
     { text: 'FDR < 0.05 and r > 0.7', color: `${colors.dark_pink_highlight}` },
-    { text: 'FDR > 0.05 and r < 0.7', color: `${colors.light_pink}` },
+    { text: 'FDR > 0.05 and r < 0.7', color: `${colors.silver}` },
 ];
 
 // permutation done text.
-const permutationDoneText = ['* p values and confidence intervals computed using analytical formulas',
-    '† p value and confidence intervals computed using data resampling']
+const permutationDoneText = [
+    '* p values and confidence intervals computed using analytical formulas',
+    '† p value and confidence intervals computed using data resampling'
+];
 
 // margin for the svg element.
 const margin = {
@@ -109,6 +111,15 @@ const calculateMinMax = (data) => {
     }
 };
 
+/**
+ * @param {Array} data 
+ */
+const calculateMinMaxN = (data) => {
+    const minN = Math.min(...data.map((val) => val.n));
+    const maxN = Math.max(...data.map((val) => val.n));
+
+    return { minN, maxN };
+};
 
 /**
  * mouseover event for horizontal line as well as the circle.
@@ -159,7 +170,7 @@ const mouseOutEvent = (event, element) => {
  * @returns - d3 linear scale for circles.
  * mapped the min and max values to a range.
  */
-const circleScaling = () => d3.scaleLinear().domain([0, 150]).range([5, 25]);
+const circleScaling = (min, max) => d3.scaleLinear().domain([min, max]).range([5, 15]);
 
 /**
  * 
@@ -267,7 +278,7 @@ const createCircles = (svg, xScale, circleScale, data, height) => {
             .attr('cx', xScale(element.estimate))
             .attr('cy', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('r', circleScale(element.n))
-            .attr('fill', (fdr < 0.05 && pc > 0.70) ? `${colors.dark_pink_highlight}` : `${colors.light_pink}`)
+            .attr('fill', (fdr < 0.05 && pc > 0.70) ? `${colors.dark_pink_highlight}` : `${colors.silver}`)
             .on('mouseover', (event) => {
                 mouseOverEvent(event, element);
             })
@@ -510,11 +521,14 @@ const createForestPlot = (margin, heightInput, width, data) => {
     // min and max.
     const { min, max } = calculateMinMax(data);
 
+    // min and max n value.
+    const { minN, maxN } = calculateMinMaxN(data);
+
     // scale for x-axis.
     const xScale = createXScale(min, max, width);
 
     // scale for circles.
-    const circleScale = circleScaling();
+    const circleScale = circleScaling(minN, maxN);
 
     // creating x axis.
     createXAxis(svg, xScale, height, width, margin);
