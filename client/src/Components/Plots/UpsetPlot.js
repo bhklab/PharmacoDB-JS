@@ -80,7 +80,7 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('transform', `rotate(-90)`)
     .append('text')
     .attr('x', -200)
-    .attr('y', 0)
+    .attr('y', -20)
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
     .style("position", "sticky")
