@@ -154,11 +154,10 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
-
-    const [getGeneCompoundTissueDatasetData, {
-        loading: geneCompoundTissueDatasetDataLoading, error: geneCompoundTissueDatasetDataError
-    }] = useLazyQuery(getGeneCompoundTissueDatasetQuery, {
+    // query based on gene, compound and tissue.
+    const [getGeneCompoundTissueDatasetData] = useLazyQuery(getGeneCompoundTissueDatasetQuery, {
         onCompleted: (data) => {
+            console.log(data);
             setGeneCompoundTissueDatasetData(data.gene_compound_tissue_dataset);
         },
         onError: (error) => {
@@ -166,9 +165,8 @@ const Biomarker = (props) => {
         }
     });
 
-    const [getGeneCompoundDatasetData, {
-        loading: geneCompoundDatasetDataLoading, error: geneCompoundDatasetDataError
-    }] = useLazyQuery(getGeneCompoundDatasetQuery, {
+    // query based on compound and gene.
+    const [getGeneCompoundDatasetData] = useLazyQuery(getGeneCompoundDatasetQuery, {
         onCompleted: (data) => {
             console.log(data);
             setGeneCompoundTissueDatasetData(data.gene_compound_dataset);
