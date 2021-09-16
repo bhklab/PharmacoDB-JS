@@ -51,7 +51,7 @@ const renderComponent = (loading, error, data) => {
       });
       experimentsPerCompound.push({
         id, name,
-        // count: Math.log10(el.experiment_count / el.compound_count), 
+        // count: Math.log10(el.experiment_count / el.compound_count),
         count: el.experiment_count / el.compound_count,
         color: dataset_colors[i],
       });
@@ -62,18 +62,22 @@ const renderComponent = (loading, error, data) => {
 
   return (
     <>
-      <AverageDatasetBarPlot
-        data={experimentsPerCell}
-        xaxis="Experiments"
-        title="Average experiments per cell line in each data set"
-        logScale={true}
-      />
-      <AverageDatasetBarPlot
-        data={experimentsPerCompound}
-        xaxis="Experiments"
-        title="Average experiments per compound in each dataset"
-        logScale={true}
-      />
+      <PlotsWrapper>
+        <AverageDatasetBarPlot
+            data={experimentsPerCell}
+            xaxis="Experiments"
+            title="Average experiments per cell line in each data set"
+            logScale={true}
+        />
+      </PlotsWrapper>
+      <PlotsWrapper>
+        <AverageDatasetBarPlot
+            data={experimentsPerCompound}
+            xaxis="Experiments"
+            title="Average experiments per compound in each dataset"
+            logScale={true}
+        />
+      </PlotsWrapper>
     </>
   );
 };
@@ -94,9 +98,9 @@ const Experiments = () => {
   return (
     <Layout page="experiments">
       <StyledWrapper>
-        <PlotsWrapper>
+        {/*<PlotsWrapper >*/}
           {renderComponent(loading, error, data)}
-        </PlotsWrapper>
+        {/*</PlotsWrapper>*/}
       </StyledWrapper>
     </Layout>
   );
