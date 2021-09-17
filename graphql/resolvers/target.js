@@ -68,7 +68,7 @@ const compound_target = async (args) => {
 
 };
 
-const compound_targets = async (args) => {
+const compound_targets = async () => {
     try {
         const query = knex.select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 't.name as target_name')
             .from('compound_target as ct')
