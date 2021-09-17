@@ -17,7 +17,6 @@ const parseTableData = (data) => {
         data: [],
         numCompounds: 0,
     };
-    console.log(data);
     if (data.compounds !== null) {
         let compoundIds = [...new Set(data.compounds.map(item => item.compound_id))];
         tableData.numCompounds = compoundIds.length;
@@ -33,24 +32,7 @@ const parseTableData = (data) => {
                 target: compound.targets[0].name,
             });
         })
-
-        console.log(tableData)
-        // for (const compoundId of compoundIds) {
-        //     let filtered = data.filter(item => item.compound.id === compoundId);
-        //     console.log()
-        //
-        //     tableData.data.push({
-        //         gene_id: gene.annotation.id,
-        //         gene: gene.annotation.symbol,
-        //         compound_id: compounds.compound.id,
-        //         compound_uid: compounds.compound.uid,
-        //         compound: compounds.compound_name,
-        //         target_id: compounds.targets.id,
-        //         target: compounds.targets.name,
-        //     });
-        // }
         tableData.data.sort((a, b) => b.compound - a.compound);
-        console.log(tableData)
     }
     return tableData;
 }

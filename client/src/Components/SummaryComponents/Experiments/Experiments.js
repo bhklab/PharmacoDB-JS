@@ -98,9 +98,7 @@ const Experiments = () => {
   return (
     <Layout page="experiments">
       <StyledWrapper>
-        {/*<PlotsWrapper >*/}
           {renderComponent(loading, error, data)}
-        {/*</PlotsWrapper>*/}
       </StyledWrapper>
     </Layout>
   );
