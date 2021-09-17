@@ -58,7 +58,7 @@ const TopDrugsTable = (props) => {
             Cell: (item) => <Link to={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</Link>
         },
         {
-            Header: `Senstivity Matrix`,
+            Header: `Sensitivity Metric`,
             accessor: 'stat',
         },
         {
@@ -75,18 +75,6 @@ const TopDrugsTable = (props) => {
             sortType: 'basic',
             sortMethod: (a, b) => parseFloat(a) - parseFloat(b)
         },
-        // {
-        //     Header: `Permutation P Value`,
-        //     accessor: 'permutation_pvalue',
-        //     Cell: (item) => item.value ? item.value.toExponential(2) : 'N/A',
-        //     sortType: 'basic',
-        // },
-        // {
-        //     Header: `Significant by Permutation Test`,
-        //     accessor: 'significant_permutation',
-        //     Cell: (item) => item.value ? item.value : 'N/A',
-        //     sortType: 'basic',
-        // }
     ];
 
     const [tableData, setTableData] = useState([]);

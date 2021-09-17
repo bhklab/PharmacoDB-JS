@@ -219,7 +219,6 @@ const compounds_gene_target = async (args) => {
                 returnObject['compounds'].filter(item => item.compound_id === compound_id)[0].targets.push({ id: target_id, name: target_name});
             }
         });
-        console.log(returnObject);
         return returnObject;
     } catch(err) {
         console.log(err);
