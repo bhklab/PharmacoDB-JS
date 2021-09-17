@@ -7,6 +7,7 @@ const geneCompound = `
         id
         name
         annotation {
+            symbol
             gene_seq_start
             gene_seq_end
         }

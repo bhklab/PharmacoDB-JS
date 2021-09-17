@@ -107,7 +107,7 @@ const TableStyles = styled.div`
   .top-settings {
     color: ${colors.dark_teal_heading};
     min-height: 40px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -121,6 +121,12 @@ const TableStyles = styled.div`
         border: 1px solid ${colors.white_smoke};
         color: ${colors.dark_teal_heading};
       }
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      width: 70%;
     }
 
     .search {
@@ -143,9 +149,8 @@ const TableStyles = styled.div`
     }
 
     .search-icon {
-      position: absolute;
       width: 10px;
-      margin-left: 20px;
+      margin-left: 10px;
       opacity: 0.8;
     }
 
