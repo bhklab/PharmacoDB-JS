@@ -23,7 +23,7 @@ const parseTableData = (data) => {
         compounds.forEach (compound =>
         {
             tableData.data.push({
-                gene_id: gene.annotation.id,
+                gene_id: gene.id,
                 gene_name: gene.annotation.symbol,
                 compound_id: compound.compound_id,
                 compound_uid: compound.compound_uid,

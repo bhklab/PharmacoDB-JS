@@ -196,7 +196,7 @@ const compounds_gene_target = async (args) => {
                 gene_name,
                 symbol
             } = target;
-            if (!i) {
+            if (!i ) {
                 returnObject['gene'] = {
                     id: gene_id,
                     name: gene_name,
@@ -207,12 +207,17 @@ const compounds_gene_target = async (args) => {
                 }
                 returnObject['compounds'] = [];
             }
-            returnObject['compounds'].push({
-                compound_id: compound_id,
-                compound_name: compound_name,
-                compound_uid: compound_uid,
-                targets: [{ id: target_id, name: target_name}],
-            });
+            if (!returnObject['compounds'].filter(item => item.compound_id === compound_id).length>0)
+            {
+                returnObject['compounds'].push({
+                    compound_id: compound_id,
+                    compound_name: compound_name,
+                    compound_uid: compound_uid,
+                    targets: [{ id: target_id, name: target_name}],
+                });
+            } else {
+                returnObject['compounds'].filter(item => item.compound_id === compound_id)[0].targets.push({ id: target_id, name: target_name});
+            }
         });
         console.log(returnObject);
         return returnObject;
