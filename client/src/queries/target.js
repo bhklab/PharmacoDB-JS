@@ -38,7 +38,31 @@ const getGeneCompountTarget = gql`
     }  
 `;
 
+const getCompountsGeneTarget = gql`
+    query getCompountsGeneTarget($geneId: Int, $geneName: String) {
+        compounds_gene_target(geneId: $geneId, geneName: $geneName) {
+            gene {
+                id
+                name
+                annotation {
+                    symbol
+                }
+            }
+            compounds {
+                compound_id,
+                compound_name,
+                compound_uid,
+                targets  {
+                        id,
+                        name
+                }
+            }
+        }
+    }  
+`;
+
 export {
     getCompoundTarget,
-    getGeneCompountTarget
+    getGeneCompountTarget,
+    getCompountsGeneTarget
 };

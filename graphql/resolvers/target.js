@@ -1,8 +1,8 @@
 const knex = require('../../db/knex');
 
 /**
- * 
- * @param {number} compoundId 
+ *
+ * @param {number} compoundId
  * @param {string} compoundName
  */
 const targetQuery = async (compoundId, compoundName) => {
@@ -23,8 +23,8 @@ const targetQuery = async (compoundId, compoundName) => {
 };
 
 /**
- * 
- * @param {Object} args 
+ *
+ * @param {Object} args
  * @returns {Object} - {
  * 		compound_id: 'compound id - Number',
  * 		compound_name: 'compound name - String',
@@ -42,7 +42,7 @@ const compound_target = async (args) => {
         } = args;
         const returnObject = {};
         const targets = await targetQuery(compoundId, compoundName);
-    
+
         targets.forEach((target, i) => {
             const {
                 target_id,
@@ -98,7 +98,7 @@ const compound_targets = async (args) => {
 
 /**
  * Used to return targets with associated gene for a given compound.
- * @param {*} args 
+ * @param {*} args
  */
 const gene_compound_target = async (args) => {
     try {
@@ -107,7 +107,7 @@ const gene_compound_target = async (args) => {
             compoundName
         } = args;
         const returnObject = {};
-        
+
         let query = knex.select('t.name as target_name', 'c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 'gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol')
             .from('compound_target as ct')
             .join('target as t', 't.id', 'ct.target_id')
@@ -115,7 +115,7 @@ const gene_compound_target = async (args) => {
             .join('gene_target as gt', 'gt.target_id', 'ct.target_id')
             .join('gene', 'gene.id', 'gt.gene_id')
             .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
-        
+
         if (compoundId) {
             query = query.where('c.id', compoundId);
         } else {
@@ -123,7 +123,7 @@ const gene_compound_target = async (args) => {
         }
 
         const targets = await query;
-    
+
         targets.forEach((target, i) => {
             const {
                 target_id,

@@ -53,9 +53,6 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
-        if (returnObj.filter(obj => {return obj.source[0].name === "PharmacoGx"}).length ===0) {
-            returnObj.push({name:data.name , source:[{name: "PharmacoGx", id: ''}]});
-        }
         return returnObj;
     }
     return null;
