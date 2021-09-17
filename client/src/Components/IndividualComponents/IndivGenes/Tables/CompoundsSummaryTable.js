@@ -6,7 +6,7 @@ import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
-import { getCompountsGeneTarget } from '../../../../queries/target';
+import { getCompoundsGeneTarget } from '../../../../queries/target';
 
 const parseTableData = (data) => {
     const {
@@ -60,7 +60,7 @@ const CompoundsSummaryTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getCompountsGeneTarget, {
+    const { loading } = useQuery(getCompoundsGeneTarget, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
             setTableData(parseTableData(data.compounds_gene_target));
