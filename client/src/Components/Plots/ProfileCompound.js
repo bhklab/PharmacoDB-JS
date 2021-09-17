@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Plot from 'react-plotly.js';
 import Select from 'react-select';
+import CustomSwitch from '../UtilComponents/CustomSwitch';
 import PropTypes from 'prop-types';
 import StyledSelectorContainer from '../../styles/Utils/StyledSelectorContainer';
 import generateSelectOptions from '../../utils/generateSelectOptions';
@@ -13,32 +14,6 @@ import colors from '../../styles/colors';
 const config = {
   responsive: true,
   displayModeBar: false,
-};
-
-// reusable layout object
-const baseLayout = {
-  autoresize: true,
-  height: 530,
-  margin: {
-    t: 20,
-    b: 60,
-    l: 65,
-    r: 0,
-  },
-  xaxis: {
-    color: colors.dark_teal_heading,
-    tickfont: {
-      size: 9,
-    },
-    fixedrange: true,
-    tickmode: 'array',
-  },
-  yaxis: {
-    color: colors.dark_teal_heading,
-    fixedrange: true,
-  },
-  bargap: 0,
-  showlegend: false,
 };
 
 /**
@@ -117,23 +92,8 @@ const generateEmptySpace = (distance) => {
  * @param {Array} data - array of object that represent a subset of data to be rendered. Every object has name, value, deviation(optional) and label properties
  * @returns {Object} - returns object with plotData and layout properties
  */
-const generateRenderData = (cellLine, data, dataset, profile) => {
+const generateRenderData = (data, dataset) => {
   const plotData = [];
-  const layout = {
-    ...baseLayout,
-    xaxis: {
-      ...baseLayout.xaxis,
-      tickvals: [],
-      ticktext: [],
-    },
-    yaxis: {
-      ...baseLayout.yaxis,
-      title: {
-        text: profile,
-      },
-      type: profile === 'AAC' ? '' : 'log',
-    },
-  };
   const notifications = {
     subset: data.length > 60 ? 'Plot represents the top and bottom 30 data points' : null,
     errorBars: dataset === 'All' ? 'Error Bars represent the Median Absolute Deviation' : null,
@@ -148,6 +108,7 @@ const generateRenderData = (cellLine, data, dataset, profile) => {
         color: i % 2 === 0 ? colors.blue : colors.green,
       },
       name,
+      label,
       x: [`${name} compound`],
       y: [value],
     };
@@ -160,11 +121,9 @@ const generateRenderData = (cellLine, data, dataset, profile) => {
         visible: true,
       };
     }
-    layout.xaxis.tickvals.push(`${name} compound`);
-    layout.xaxis.ticktext.push(`<a href='${`/search?cell_line=${cellLine}&compound=${name}`}' rel="noopener noreferrer">${label}</a>`);
     plotData.push(trace);
   });
-  return { plotData, layout, notifications };
+  return { plotData, notifications };
 };
 
 /**
@@ -209,7 +168,14 @@ const ProfileCompound = (props) => {
   } = props;
   const [selectedProfile, setSelectedProfile] = useState('AAC');
   const [selectedDataset, setSelectedDataset] = useState('All');
-  const [{ plotData, layout, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  const [zoomOut, setZoomOut] = useState(false);
+  const [{ plotData, notifications }, setPlotData] = useState({ plotData: [], layout: {}, notifications: { subset: null, errorBars: null } });
+  const [layoutVariables, setLayoutVariables] = useState({
+    width: 1500,
+    maxWidth: '800px',
+    overflowX: 'scroll',
+    xTickFontSize: 12,
+  });
   
   const history = useHistory();
   
@@ -219,9 +185,17 @@ const ProfileCompound = (props) => {
   // updates the plot every time user selects new profile or dataset
   useEffect(() => {
     const values = runDataAnalysis(formattedData, selectedDataset, selectedProfile);
-    setPlotData(generateRenderData(cellLine, values, selectedDataset, selectedProfile));
+    setPlotData(generateRenderData(values, selectedDataset));
   }, [selectedProfile, selectedDataset]);
 
+  useEffect(() => {
+    setLayoutVariables({
+      maxWidth: zoomOut ? '1000px' : '800px',
+      overflowX: zoomOut ? undefined : 'scroll',
+      width: zoomOut ? 800 : 1500,
+      xTickFontSize: zoomOut ? 9 : 12
+    });
+  }, [zoomOut]);
 
   /**
    * Redirects to Cell Line vs Compound page when a plot trace is clicked.
@@ -252,6 +226,15 @@ const ProfileCompound = (props) => {
             onChange={(e) => setSelectedProfile(e.value)}
           />
         </div>
+        <div className="selector-container">
+          <div className='label'>Zoom:</div>
+          <CustomSwitch 
+            checked={zoomOut}
+            onChange={(checked) => {setZoomOut(checked)}}
+            labelLeft='In'
+            labelRight='Out'
+          />
+        </div>
       </StyledSelectorContainer>
       <h4>
         {cellLine}
@@ -261,13 +244,47 @@ const ProfileCompound = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot 
-        divId={plotId} 
-        data={plotData} 
-        layout={layout} 
-        config={config} 
-        onClick={redirectToCellLineCompound}
-      />
+      <div style={{height: '650px', maxWidth: layoutVariables.maxWidth, overflowX: layoutVariables.overflowX}}>
+        <Plot 
+          divId={plotId} 
+          data={plotData} 
+          layout={{
+            autoresize: true,
+            height: 600,
+            width: layoutVariables.width,
+            margin: {
+              t: 20,
+              b: 200,
+              l: 65,
+              r: 0,
+            },
+            xaxis: {
+              color: colors.dark_teal_heading,
+              tickvals: plotData.map(trace => `${trace.name} compound`),
+              ticktext: plotData.map(trace => 
+                `<a href='${`/search?cell_line=${cellLine}&compound=${trace.name}`}' rel="noopener noreferrer">${trace.label}</a>`
+              ),
+              tickfont: {
+                size: layoutVariables.xTickFontSize,
+              },
+              fixedrange: true,
+              tickmode: 'array',
+            },
+            yaxis: {
+              color: colors.dark_teal_heading,
+              fixedrange: true,
+              title: {
+                text: selectedProfile,
+              },
+              type: selectedProfile === 'AAC' ? '' : 'log',
+            },
+            bargap: 0,
+            showlegend: false,
+          }} 
+          config={config} 
+          onClick={redirectToCellLineCompound}
+        />
+      </div>
       <div className="notifications">
         {notifications.subset ? (
           <p>
