@@ -95,23 +95,28 @@ const MolecularProfilingTable = (props) => {
                 error && <p>An error occurred</p>
             }
             {
-                loading || !tableData.ready ? <Loading />
-                    :
-                    <React.Fragment>
-                        <h4>
-                            <p align="center">
-                                {`Available Molecular Profiling in PharmacoGx`}
-                            </p>
-                        </h4>
+                loading || !tableData.ready ? 
+                <Loading />
+                :
+                tableData.molProf.length > 0 ?
+                <React.Fragment>
+                    <h4>
                         <p align="center">
-                            {`# of profiles of each type per dataset`}
+                            {`Available Molecular Profiling in PharmacoGx`}
                         </p>
-                        {
-                            tableData.molProf.length ?
-                                <Table columns={COLUMNS(data["mol_cell"])} data={tableData.molProf} center={true} />
-                                : ''
-                        }
-                    </React.Fragment>
+                    </h4>
+                    <p align="center">
+                        {`# of profiles of each type per dataset`}
+                    </p>
+                    {
+                        tableData.molProf.length > 0 &&
+                        <Table columns={COLUMNS(data["mol_cell"])} data={tableData.molProf} center={true} />
+                    }
+                </React.Fragment>
+                :
+                <h6 align="center">
+                    No molecular profiles with {cellLine.name} is available in PharmacoGx.
+                </h6>
             }
         </React.Fragment>
     );
