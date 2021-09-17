@@ -40,6 +40,17 @@ const yScale = (min = 0, max, height) => d3.scaleLinear()
     .nice();
 
 /**
+ * scale for y-axis
+ * @param {number} min - usually begins with one.
+ * @param {number} max - max value along the y axis.
+ * @param {number} height - height of svg canvas.
+ */
+const yLogScale = (min = 1, max, height) => d3.scaleLog()
+    .domain([min, max])
+    .range([height / 1.5, 0])
+    .nice();
+
+/**
  * creates a scale for x-axis.
  * @param {number} min - min value, usually zero.
  * @param {number} max - data length.
@@ -55,11 +66,13 @@ const xScale = (min = 0, max, width) => d3.scaleLinear()
  * @param {Object} svg - svg canvas object.
  * @param {Object} scale - scale for creating the y axis.
  */
-const yAxis = (svg, scale) => svg
+const yAxis = (svg, scale, tickNum) => svg
     .append('g')
     .attr('id', 'y-axis')
     .attr('transform', `translate(${margin.left * 1.5}, 0)`)
-    .call(d3.axisLeft(scale));
+    .call(d3.axisLeft(scale)
+    .ticks(tickNum)
+    .tickFormat(d3.format("d")));
 
 /**
  * Creates x axis.
@@ -80,7 +93,7 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('transform', `rotate(-90)`)
     .append('text')
     .attr('x', -200)
-    .attr('y', 0)
+    .attr('y', -20)
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
     .style("position", "sticky")
@@ -326,12 +339,12 @@ const createUpsetPlot = (data, datasets, type) => {
     // create scale for x axis.
     const scaleXAxis = xScale(0, sortedDataLength, width);
     // create scale for y axis.
-    const scaleYAxis = yScale(0, maxCount, height);
-
+    const scaleYAxis = type ==="Compound" ? yLogScale(1, maxCount, height) : yScale(0, maxCount, height);
     // create x axis.
     xAxis(svg, scaleXAxis, height);
     // create y axis.
-    yAxis(svg, scaleYAxis);
+    const tickNum = type ==="Compound" ? 5 : type === "Tissue" ? 20 : 10;
+    yAxis(svg, scaleYAxis, tickNum);
 
     // append text to the y axis.
     appendTextYAxis(svg, height, type);

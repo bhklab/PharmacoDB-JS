@@ -183,6 +183,17 @@ const SearchBar = (props) => {
           })
           queryParams = `/search?compound=${compound}&cell_line=${cell}`;
         }
+        else if (selectedTypes.includes('genes') && selectedTypes.includes('compounds')) {
+          let gene, compound = '';
+          selected.forEach(el => {
+            if (el.type === 'compounds') {
+              compound = el.label;
+            } else if (el.type === 'genes') {
+              gene = el.label;
+            }
+          })
+          queryParams = `/biomarker?compound=${compound}&gene=${gene}`;
+        }
       } else if (selected.length === 3 && selected && label !== value) {
         const selectedTypes = selected.map(el => el.type);
         if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds') && selectedTypes.includes('genes')) {

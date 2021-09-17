@@ -14,7 +14,7 @@ const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
 const { statType } = require('./stat');
-const { targetType, compoundTargetType } = require('./target');
+const { targetType, compoundTargetType, geneTargetType, geneCompoundTargetType, compoundsGeneTargetType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molType } = require('./mol');
@@ -70,6 +70,9 @@ const schema = `
     "Target Type"
     ${targetType}
     ${compoundTargetType}
+    ${geneTargetType}
+    ${geneCompoundTargetType}
+    ${compoundsGeneTargetType}
 
     "Tissue Type with id and name of the tissues."
     ${tissueType}

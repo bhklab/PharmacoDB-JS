@@ -7,6 +7,7 @@ const geneCompound = `
         id
         name
         annotation {
+            symbol
             gene_seq_start
             gene_seq_end
         }
@@ -30,6 +31,21 @@ const getGeneCompoundDatasetQuery = gql`
                 id
                 name
             }
+            permutation_done
+            fdr_analytic
+            fdr_permutation
+            lower_analytic
+            upper_analytic
+            upper_permutation
+            lower_permutation
+            estimate
+            pvalue_analytic
+            pvalue_permutation
+            significant_permutation
+            fdr_analytic
+            fdr_permutation
+            sens_stat
+            mDataType
             n
         }
     }
