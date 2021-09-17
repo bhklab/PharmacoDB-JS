@@ -3,10 +3,19 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_compound';
+import convertMDataType from '../../../../utils/convertMDataType';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
+import colors from '../../../../styles/colors';
+
+const highlightRowsByCorrelation = (rowData) => {
+    let style = { backgroundColor: '' };
+    if(Math.sign(rowData.correlation) === 1) style.backgroundColor = colors.light_pink_highlight;
+    if(Math.sign(rowData.correlation) === -1) style.backgroundColor = colors.light_teal_highlight;
+    return style;
+};
 
 const parseTableData = (data, gene) => {
     let tableData = [];
@@ -15,7 +24,7 @@ const parseTableData = (data, gene) => {
         tableData = filtered.map(item => ({
             gene_id: gene.id,
             gene: gene.name,
-            feature_type: item.mDataType,
+            feature_type: convertMDataType(item.mDataType),
             compound_id: item.compound.id,
             compound_uid: item.compound.uid,
             compound: item.compound.name,
@@ -58,7 +67,7 @@ const TopDrugsTable = (props) => {
             Cell: (item) => <Link to={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</Link>
         },
         {
-            Header: `Senstivity Matrix`,
+            Header: `Sensitivity Metric`,
             accessor: 'stat',
         },
         {
@@ -75,18 +84,6 @@ const TopDrugsTable = (props) => {
             sortType: 'basic',
             sortMethod: (a, b) => parseFloat(a) - parseFloat(b)
         },
-        // {
-        //     Header: `Permutation P Value`,
-        //     accessor: 'permutation_pvalue',
-        //     Cell: (item) => item.value ? item.value.toExponential(2) : 'N/A',
-        //     sortType: 'basic',
-        // },
-        // {
-        //     Header: `Significant by Permutation Test`,
-        //     accessor: 'significant_permutation',
-        //     Cell: (item) => item.value ? item.value : 'N/A',
-        //     sortType: 'basic',
-        // }
     ];
 
     const [tableData, setTableData] = useState([]);
@@ -125,7 +122,12 @@ const TopDrugsTable = (props) => {
                                     filename={`${gene.annotation.symbol} - top compounds`}
                                 />
                             </div>
-                            <Table columns={columns} data={tableData} />
+                            <Table
+                                columns={columns}
+                                data={tableData}
+                                defaultSort={[{id: 'correlation', desc: true}]}
+                                highlightRows={highlightRowsByCorrelation}
+                            />
                         </React.Fragment>
             }
         </React.Fragment>
