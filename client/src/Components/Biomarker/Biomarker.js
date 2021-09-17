@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
-import { getGeneCompoundTissueDatasetQuery } from '../../queries/gene_compound';
+import {
+    getGeneCompoundTissueDatasetQuery,
+    getGeneCompoundDatasetQuery,
+} from '../../queries/gene_compound';
 import TitleCase from '../../utils/convertToTitleCase';
 import Layout from '../UtilComponents/Layout';
 import StyledWrapper from '../../styles/utils';
@@ -30,6 +33,12 @@ const GENE_INFO_COLUMNS = [
         center: true
     },
     {
+        Header: 'Symbol',
+        accessor: 'symbol',
+        center: true,
+        Cell: (row) => <a href={`genes/${row.row.original.gene_id}`} target='_blank'>{row.row.original.symbol}</a>
+    },
+    {
         Header: 'Ensembl Gene ID',
         accessor: 'ensg',
         center: true
@@ -43,6 +52,11 @@ const GENE_INFO_COLUMNS = [
 
 // compound information columns.
 const COMPOUND_INFO_COLUMNS = [
+    {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: (row) => <a href={`compounds/${row.row.original.uid}`} target='_blank'>{row.row.original.name}</a>
+    },
     {
         Header: 'FDA Approval Status',
         accessor: 'status',
@@ -65,6 +79,8 @@ const COMPOUND_INFO_COLUMNS = [
  */
 const transformCompoundTableData = (data) => {
     // grabs the fda status and targets from the data.
+    const name = data.compound.name;
+    const uid = data.compound.uid;
     const fdaStatus = data.compound.annotation.fda_status;
     const targets = data.targets.map((el) => el.name).join(', ');
     // return an array of object(s).
@@ -72,6 +88,8 @@ const transformCompoundTableData = (data) => {
         {
             status: fdaStatus,
             targets,
+            name,
+            uid,
         },
     ];
 };
@@ -87,6 +105,7 @@ const transformGeneTableData = (geneData, compoundData) => {
     const ensg = geneData.name;
     const location = geneData.annotation.gene_seq_start;
     const symbol = geneData.annotation.symbol;
+    const gene_id = geneData.id;
     const target = [...compoundData.targets.map((el) => el.name)].includes(
         'ERBB2'
     )
@@ -99,6 +118,7 @@ const transformGeneTableData = (geneData, compoundData) => {
             location,
             target,
             symbol,
+            gene_id,
         },
     ];
 };
@@ -151,11 +171,25 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
-    const {
-        loading: geneCompoundTissueDatasetDataLoading,
-        error: geneCompoundTissueDatasetDataError,
-        data: geneCompoundTissueDatasetQueryData,
-    } = useQuery(getGeneCompoundTissueDatasetQuery, { variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
+    // query based on gene, compound and tissue.
+    const [getGeneCompoundTissueDatasetData] = useLazyQuery(getGeneCompoundTissueDatasetQuery, {
+        onCompleted: (data) => {
+            setGeneCompoundTissueDatasetData(data.gene_compound_tissue_dataset);
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
+
+    // query based on compound and gene.
+    const [getGeneCompoundDatasetData] = useLazyQuery(getGeneCompoundDatasetQuery, {
+        onCompleted: (data) => {
+            setGeneCompoundTissueDatasetData(data.gene_compound_dataset);
+        },
+        onError: (error) => {
+            console.log(error);
+        }
+    });
 
     // compound and gene information columns.
     const compoundInfoColumns = React.useMemo(() => COMPOUND_INFO_COLUMNS, []);
@@ -164,7 +198,7 @@ const Biomarker = (props) => {
     // setting the state on load of compound data.
     useEffect(() => {
         // transform the data for the tables in the biomarker page.
-        if (compoundQueryData && geneQueryData && geneCompoundTissueDatasetQueryData) {
+        if (compoundQueryData && geneQueryData) {
             setTransformedCompoundData(
                 transformCompoundTableData(compoundQueryData.singleCompound)
             );
@@ -174,9 +208,16 @@ const Biomarker = (props) => {
                     compoundQueryData.singleCompound
                 )
             );
-            setGeneCompoundTissueDatasetData(geneCompoundTissueDatasetQueryData.gene_compound_tissue_dataset);
+        };
+
+        // calling right function based on the params.
+        if (gene && compound && tissue) {
+            getGeneCompoundTissueDatasetData({ variables: { geneName: gene, compoundName: compound, tissueName: tissue } });
+        } else if (gene && compound) {
+            getGeneCompoundDatasetData({ variables: { geneName: gene, compoundName: compound } });
         }
-    }, [compoundQueryData, geneQueryData, geneCompoundTissueDatasetQueryData]);
+
+    }, [compoundQueryData, geneQueryData]);
 
     return (
         <Layout>
@@ -190,13 +231,13 @@ const Biomarker = (props) => {
                             <span className='link'> {`${gene.toUpperCase()}`} </span>
                             {
                                 tissue ?
-                                <React.Fragment>
-                                    <span> in </span>
-                                    <span className='link'> {`${TitleCase(tissue)}`} </span>
-                                    <span> tissue </span>
-                                </React.Fragment>
-                                :
-                                ''
+                                    <React.Fragment>
+                                        <span> in </span>
+                                        <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                        <span> tissue </span>
+                                    </React.Fragment>
+                                    :
+                                    ''
                             }
                         </span>
                     </div>
