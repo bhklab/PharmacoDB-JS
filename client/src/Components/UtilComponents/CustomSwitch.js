@@ -6,10 +6,10 @@ import colors from '../../styles/colors';
 const CustomSwitchContainer = styled.span`
     display: flex;
     alight-items: center;
-    .label {
+    .switch-label {
         font-size: 12px;
     }
-    .highlight {
+    .switch-highlight {
         font-weight: bold;
         color: ${colors.dark_pink_highlight};
     }
@@ -29,7 +29,7 @@ const CustomSwitch = (props) => {
         <CustomSwitchContainer>
             {
                 labelLeft && labelLeft.length > 0 ?
-                <span className={`label ${!checked ? 'highlight' : ''}`}>{labelLeft}</span>
+                <span className={`switch-label ${!checked ? 'switch-highlight' : ''}`}>{labelLeft}</span>
                 : ''
             }
             <StyledCustomSwitch 
@@ -44,7 +44,7 @@ const CustomSwitch = (props) => {
             />
             {
                 labelRight && labelRight.length > 0 ?
-                <span className={`label ${checked ? 'highlight' : ''}`}>{labelRight}</span>
+                <span className={`switch-label ${checked ? 'switch-highlight' : ''}`}>{labelRight}</span>
                 : ''
             }
         </CustomSwitchContainer>
