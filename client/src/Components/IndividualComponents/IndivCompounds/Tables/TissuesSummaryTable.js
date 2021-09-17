@@ -4,37 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCompoundExperimentsQuery } from '../../../../queries/experiments';
-import dataset_colors from '../../../../styles/dataset_colors';
+// import dataset_colors from '../../../../styles/dataset_colors';
 import Loading from '../../../UtilComponents/Loading';
-import ProfileCompound from '../../../Plots/ProfileCompound';
+// import ProfileCompound from '../../../Plots/ProfileCompound';
 import Table from '../../../UtilComponents/Table/Table';
-import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
+// import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 import { Link } from 'react-router-dom';
-
-const TISSUE_SUMMARY_COLUMNS = [
-    {
-        Header: 'Tissue',
-        accessor: 'tissue',
-        Cell: (item) => (<Link to={`/tissues/${item.row.original.id}`}>{item.value}</Link>),
-    },
-    {
-        Header: 'Datasets',
-        accessor: 'dataset',
-        Cell: (item) => {
-            let datasets = item.cell.row.original.datasetList;
-            return(datasets.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-                </span>)
-            ));
-        }
-    },
-    {
-        Header: 'Experiments',
-        accessor: 'num_experiments',
-    },
-];
 
 /**
  * Format data for the tissue summary table
@@ -92,6 +68,32 @@ const TissuesSummaryTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, tissue: [], numTissues: 0, numDataset: 0 });
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
+
+    const TISSUE_SUMMARY_COLUMNS = [
+        {
+            Header: 'Tissue',
+            accessor: 'tissue',
+            Cell: (item) => (<Link to={`/tissues/${item.row.original.id}`}>{item.value}</Link>),
+        },
+        {
+            Header: 'Datasets',
+            accessor: 'dataset',
+            Cell: (item) => {
+                let datasets = item.cell.row.original.datasetList;
+                return(datasets.map((obj, i) => (
+                    <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
+                    </span>)
+                ));
+            }
+        },
+        {
+            Header: 'Experiments',
+            accessor: 'num_experiments',
+            Cell: (item) => <a href={`/search?compound=${compound.name}&tissue=${item.cell.row.original.tissue}`} target="_blank" rel="noopener noreferrer">{item.value}</a>
+        },
+    ];
+
     const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
