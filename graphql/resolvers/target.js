@@ -226,9 +226,59 @@ const compounds_gene_target = async (args) => {
     }
 };
 
+/**
+ * @param args either geneId or geneName
+ * @returns {Object} returns the list of datasets and the count of compounds in them that are targetting a given gene.
+ */
+const single_gene_targets_group_by_dataset = async (args) => {
+    try {
+        const {
+            geneId,
+            geneName
+        } = args;
+        const returnObject = [];
+        let query = knex.countDistinct('ct.compound_id as compound_count')
+            .select('g.id as gene_id', 'g.name as gene_name', 'd.name as dataset_name','d.id as dataset_id')
+            .from('gene_target as gt')
+            .join('gene as g', 'g.id', 'gt.gene_id')
+            .join('target as t', 't.id', 'gt.target_id')
+            .join('compound_target as ct', 't.id', 'ct.target_id')
+            .join('dataset_compound as dc', 'dc.compound_id', 'ct.compound_id')
+            .join('dataset as d', 'd.id', 'dc.dataset_id');
+            if (geneId) {
+                query = query.where('g.id', geneId).groupBy('d.id');
+            } else {
+                query = query.where('g.name', geneName).groupBy('d.id');
+            };
+        const datasets = await query;
+        const targetCompoundCounts = [];
+        datasets.forEach((dataset, i) => {
+            const {
+                dataset_id,
+                dataset_name,
+                compound_count,
+                gene_id,
+                gene_name,
+            } = dataset;
+            returnObject['gene_id'] = gene_id;
+            returnObject['gene_name'] = gene_name;
+            targetCompoundCounts.push({
+                dataset : { id : dataset_id , name: dataset_name},
+                compound_count: compound_count,
+            })
+        });
+        returnObject['targetCompoundCounts'] = targetCompoundCounts;
+        return returnObject;
+    } catch(err) {
+        console.log(err);
+        throw err;
+    }
+};
+
 module.exports = {
     compound_target,
     compound_targets,
     gene_compound_target,
     compounds_gene_target,
+    single_gene_targets_group_by_dataset,
 };

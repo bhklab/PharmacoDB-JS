@@ -58,9 +58,19 @@ const datasetsTypesType = `
     }
 `;
 
+const datasetsCompoundStatType = `
+    type DatasetCompoundStat{
+        """name and id of the dataset"""
+        dataset: Generic!
+        """compound ids and names tested in the dataset"""
+        compound_count: Int!
+    }
+`;
+
 module.exports = {
     datasetType,
     datasetDetailType,
     datasetStatsType,
     datasetsTypesType,
+    datasetsCompoundStatType,
 };
