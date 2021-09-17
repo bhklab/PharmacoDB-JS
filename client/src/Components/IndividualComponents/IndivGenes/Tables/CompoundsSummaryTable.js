@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
+// import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
+import { getGeneCompountTarget } from '../../../../queries/target';
 
 const parseTableData = (data, gene) => {
     let tableData = {
@@ -85,7 +86,7 @@ const CompoundsSummaryTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getGeneCompoundDatasetQuery, {
+    const { loading } = useQuery(getGeneCompountTarget, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
             setTableData(parseTableData(data.gene_compound_dataset, gene));
@@ -106,13 +107,13 @@ const CompoundsSummaryTable = (props) => {
                         <React.Fragment>
                             <h4>
                                 <p align="center">
-                                    {`Compounds tested targetting ${gene.annotation.symbol}`}
+                                    {`Compounds targetting ${gene.annotation.symbol}`}
                                 </p>
                             </h4>
                             <p align="center">
                                 {
                                     tableData.numCompounds
-                                        ? `${tableData.numCompounds} compounds have been tested on ${gene.annotation.symbol}, using data from ${tableData.numDatasets} dataset(s).`
+                                        ? `${tableData.numCompounds} compounds have targeted ${gene.annotation.symbol}, using data from ${tableData.numDatasets} dataset(s).`
                                         : `There are no drugs targeting ${gene.annotation.symbol} in the database`
                                 }
                             </p>

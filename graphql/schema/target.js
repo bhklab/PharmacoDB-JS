@@ -40,9 +40,19 @@ const geneCompoundTargetType = `
     }
 `;
 
+const compoundsGeneTargetType = `
+    type CompoundsGeneTarget {
+        """gene id, name, annotation in the database"""
+        gene: Gene
+        """target object"""
+        compounds: [CompoundTarget]
+    }
+`;
+
 module.exports = {
     targetType,
     geneTargetType,
     compoundTargetType,
-    geneCompoundTargetType
+    geneCompoundTargetType,
+    compoundsGeneTargetType
 };
