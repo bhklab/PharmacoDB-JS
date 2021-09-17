@@ -78,9 +78,9 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms;
-        // if (returnObj.filter(obj => { return obj.source[0].name === "PharmacoGx" }).length === 0) {
-        //     returnObj.push({ name: data.compound.name, source: [{ name: "PharmacoGx", id: '' }] });
-        // }
+        if (returnObj.filter(obj => { return obj.source[0].name === "PharmacoGx" }).length === 0) {
+            returnObj.push({ name: data.compound.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
+        }
         return returnObj;
     }
     return null;
@@ -305,7 +305,6 @@ const IndivCompounds = (props) => {
                                             {
                                                 display === 'molFeature' &&
                                                 <Element className="section">
-                                                    <div className='section-title'>Molecular Features</div>
                                                     <MolecularFeaturesTable compound={({ id: data.compound.id, name: data.compound.name })} />
                                                 </Element>
                                             }

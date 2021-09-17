@@ -12,35 +12,6 @@ import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 import { Link } from 'react-router-dom';
 
-const CELL_SUMMARY_COLUMNS = [
-    {
-        Header: 'Cell Line',
-        accessor: 'cellLine',
-        Cell: (item) => (<Link to={`/cell_lines/${item.row.original.uid}`}>{item.value}</Link>),
-    },
-    {
-        Header: 'Tissue Type',
-        accessor: 'tissue',
-        Cell: (item) => (<Link to={`/tissues/${item.row.original.tissue.id}`}>{item.row.original.tissue.name}</Link>),
-    },
-    {
-        Header: 'Datasets',
-        accessor: 'dataset',
-        Cell: (item) => {
-            let datasets = item.cell.row.original.datasetList;
-            return (datasets.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
-                </span>)
-            ));
-        }
-    },
-    {
-        Header: 'Experiments',
-        accessor: 'num_experiments',
-    },
-];
-
 /**
  * Format data for the cell Line summary table
  * @param {Array} data from experiment API for a given compound
@@ -99,6 +70,36 @@ const CellLinesSummaryTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, cellLine: [], numCellLines: 0, numDataset: 0 });
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
+
+    const CELL_SUMMARY_COLUMNS = [
+        {
+            Header: 'Cell Line',
+            accessor: 'cellLine',
+            Cell: (item) => (<Link to={`/cell_lines/${item.row.original.uid}`}>{item.value}</Link>),
+        },
+        {
+            Header: 'Tissue Type',
+            accessor: 'tissue',
+            Cell: (item) => (<Link to={`/tissues/${item.row.original.tissue.id}`}>{item.row.original.tissue.name}</Link>),
+        },
+        {
+            Header: 'Datasets',
+            accessor: 'dataset',
+            Cell: (item) => {
+                let datasets = item.cell.row.original.datasetList;
+                return (datasets.map((obj, i) => (
+                    <span key={i}>
+                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                    </span>)
+                ));
+            }
+        },
+        {
+            Header: 'Experiments',
+            accessor: 'num_experiments',
+            Cell: (item) => <a href={`/search?compound=${compound.name}&cell_line=${item.row.original.cellLine}`} target="_blank" rel="noopener noreferrer">{item.value}</a>
+        },
+    ];
 
     const { loading, data: queryData, } = useQuery(getSingleCompoundExperimentsQuery, {
         variables: { compoundId: compound.id },

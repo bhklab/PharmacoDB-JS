@@ -17,7 +17,7 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
   }, 200);
 
   return (
-    <>
+    <div className='search-container'>
       <img className="search-icon" alt="search icon" src={searchIcon} />
       <input
         className="search"
@@ -29,7 +29,7 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
         }}
         placeholder={`Search ${count} rows...`}
       />
-    </>
+    </div>
   );
 };
 
@@ -39,8 +39,10 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} data - an array of data for the table.
  * @param {boolean} disablePagination - a boolean value to whether disable the pagination or not.
  * @param {boolean} showHeader - a boolean value to indicate whether the header is shown. Default is true.
+ * @param {Array} defaultSort - specifies which column to be soted by default.
+ * @param {function} highlightRows - If present, row rendering will use this function to highlight rows in specified color. (Usage example in MolecularFeaturesTable.js)
  */
-const Table = ({ columns, data, disablePagination = false, defaultSort, showHeader= true }) => {
+const Table = ({ columns, data, disablePagination = false, defaultSort, highlightRows=undefined, showHeader= true }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -90,7 +92,7 @@ const Table = ({ columns, data, disablePagination = false, defaultSort, showHead
     let rows = page.map((row) => {
       prepareRow(row);
       return (
-        <tr {...row.getRowProps()}>
+        <tr style={highlightRows ? highlightRows(row.original) : {}} {...row.getRowProps()}>
           {
             row.cells.map(
               (cell) => {
