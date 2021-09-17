@@ -61,7 +61,7 @@ const compound_target = async (args) => {
             });
         });
         return returnObject;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }
@@ -78,7 +78,7 @@ const compound_targets = async () => {
         let data = [];
         let compoundIds = compoundTargets.map(item => item.compound_id);
         compoundIds = [...new Set(compoundIds)];
-        for(let compoundId of compoundIds){
+        for (let compoundId of compoundIds) {
             let filtered = compoundTargets.filter(item => item.compound_id === compoundId);
             data.push({
                 compound_id: compoundId,
@@ -90,7 +90,7 @@ const compound_targets = async () => {
             });
         }
         return data;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery} from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { getCellLinesQuery } from '../../../queries/cell';
 import { getDatasetsTypesQuery } from '../../../queries/dataset';
 import { getDatasetsQuery } from '../../../queries/dataset';
@@ -129,22 +129,22 @@ const DrawUpsetPlot = (props) => {
         data, datasets
     } = props;
 
-    let datasetSubSets = {} , tissues_tested= {}, cells_tested = {} , compounds_tested = {};
+    let datasetSubSets = {}, tissues_tested = {}, cells_tested = {}, compounds_tested = {};
 
     const [plotData, setPlotData] = useState(props.data);
-    useEffect(() => { setPlotData(data)}, [data] )
+    useEffect(() => { setPlotData(data) }, [data])
 
     const [selectedType, setSelectedType] = useState('Cell line');
     useEffect(() => {
         if (selectedType === "Tissue") {
             setPlotData(createUpsetPlotData(tissues_tested, datasetSubSets))
-        }else if (selectedType === "Compound"){
+        } else if (selectedType === "Compound") {
             setPlotData(createUpsetPlotData(compounds_tested, datasetSubSets))
         }
         else {
             setPlotData(props.data)
         }
-    }, [selectedType] )
+    }, [selectedType])
     const dataTypeOptions = [
         { value: 'cell', label: 'Cell Line' },
         { value: 'tissue', label: 'Tissue' },
@@ -152,19 +152,19 @@ const DrawUpsetPlot = (props) => {
     ]
 
     const { loading: typesLoading, error: typesError, data: types } = useQuery(getDatasetsTypesQuery);
-    if(!typesLoading) {
+    if (!typesLoading) {
         const datasets = types.datasets_types.map(item => item.dataset.name);
         datasetSubSets = createAllSubsets(datasets);
-        types.datasets_types.map(item => tissues_tested[item.dataset.name]= item.tissues_tested.map(t=> t.name));
+        types.datasets_types.map(item => tissues_tested[item.dataset.name] = item.tissues_tested.map(t => t.name));
         // types.datasets_types.map(item => cells_tested[item.dataset.name]= item.cells_tested);
-        types.datasets_types.map(item => compounds_tested[item.dataset.name]= item.compounds_tested.map(c=> c.name));
+        types.datasets_types.map(item => compounds_tested[item.dataset.name] = item.compounds_tested.map(c => c.name));
     }
 
     return (
         <React.Fragment>
             <StyledSelectorContainer>
                 <div className="single-selector-container">
-                    <div className='label'>Type:</div>
+                    {/* <div className='label'>Type:</div> */}
                     <Select
                         className='selector'
                         defaultValue={{ value: selectedType, label: selectedType }}
@@ -173,7 +173,7 @@ const DrawUpsetPlot = (props) => {
                     />
                 </div>
             </StyledSelectorContainer>
-            <UpsetPlot data={plotData} datasets={props.datasets} type={selectedType}/>
+            <UpsetPlot data={plotData} datasets={props.datasets} type={selectedType} />
         </React.Fragment>
     );
 };
