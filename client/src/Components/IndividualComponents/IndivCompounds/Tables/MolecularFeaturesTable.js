@@ -5,8 +5,10 @@ import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_comp
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import { Link } from 'react-router-dom';
+import convertMDataType from '../../../../utils/convertMDataType';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 import Error from '../../../UtilComponents/Error';
+import colors from '../../../../styles/colors';
 
 const parseTableData = (data, compound) => {
     let tableData = [];
@@ -15,9 +17,9 @@ const parseTableData = (data, compound) => {
         tableData = filtered.map(item => ({
             compound_id: compound.id,
             compound: compound.name,
-            feature_type: item.mDataType,
+            feature_type: convertMDataType(item.mDataType),
             gene_id: item.gene.id,
-            gene: item.gene.name,
+            gene: item.gene.annotation.symbol,
             dataset_id: item.dataset.id,
             dataset: item.dataset.name,
             tissue_id: item.tissue.id,
@@ -31,7 +33,14 @@ const parseTableData = (data, compound) => {
         tableData.sort((a, b) => a.pvalue - b.pvalue);
     }
     return tableData;
-}
+};
+
+const highlightRowsByCorrelation = (rowData) => {
+    let style = { backgroundColor: '' };
+    if(Math.sign(rowData.correlation) === 1) style.backgroundColor = colors.light_pink_highlight;
+    if(Math.sign(rowData.correlation) === -1) style.backgroundColor = colors.light_teal_highlight; 
+    return style;
+};
 
 const COLUMNS = [
     {
@@ -54,7 +63,7 @@ const COLUMNS = [
         Cell: (item) => <Link to={`/tissues/${item.cell.row.original.tissue_id}`}>{item.value}</Link>
     },
     {
-        Header: 'Stat',
+        Header: 'Sensitivity Metric',
         accessor: 'stat',
     },
     {
@@ -75,12 +84,6 @@ const COLUMNS = [
         Header: `Permutation P Value`,
         accessor: 'permutation_pvalue',
         Cell: (item) => item.value ? item.value.toExponential(2) : 'N/A',
-        sortType: 'basic',
-    },
-    {
-        Header: `Significant by Permutation Test`,
-        accessor: 'significant_permutation',
-        Cell: (item) => item.value ? item.value: 'N/A',
         sortType: 'basic',
     },
 ];
@@ -134,7 +137,12 @@ const MolecularFeaturesTable = (props) => {
                                     filename={`${compound.name} - top molecular features`}
                                 />
                             </div>
-                            <Table columns={COLUMNS} data={tableData} />
+                            <Table 
+                                columns={COLUMNS} 
+                                data={tableData} 
+                                defaultSort={[{id: 'correlation', desc: true}]}
+                                highlightRows={highlightRowsByCorrelation}
+                            />
                         </React.Fragment>
             }
         </React.Fragment>
