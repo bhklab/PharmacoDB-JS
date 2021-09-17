@@ -21,14 +21,14 @@ const baseLayout = {
   height: 530,
   margin: {
     t: 20,
-    b: 120,
+    b: 200,
     l: 65,
     r: 0,
   },
   xaxis: {
     color: colors.dark_teal_heading,
     tickfont: {
-      size: 9,
+      size: 11,
     },
     fixedrange: true,
     tickmode: 'array',

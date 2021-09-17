@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
-import Switch from 'react-switch';
+import CustomSwitch from '../UtilComponents/CustomSwitch';
 import DownloadButton from '../UtilComponents/DownloadButton';
 import styled from 'styled-components';
-import colors from '../../styles/colors';
 
 const StyledManhattanPlot = styled.div`
     .header {
@@ -15,21 +14,6 @@ const StyledManhattanPlot = styled.div`
         .switch-wrapper {
             display: flex;
             align-items: center;
-            .switch-container {
-                display: flex;
-                alight-items: center;
-                .switch {
-                    margin-left: 5px;
-                    margin-right: 5px;
-                }
-                .label {
-                    font-size: 12px;
-                }
-            }
-            .highlight {
-                font-weight: bold;
-                color: ${colors.dark_pink_highlight};
-            }
             .disclaimer {
                 margin-left: 10px;
                 font-size: 10px;
@@ -183,21 +167,12 @@ const ManhattanPlot = (props) => {
             <div className='header'>
                 <div className='title'>Plot Resolution</div>
                 <div className='switch-wrapper'>
-                    <div className='switch-container'>
-                        <span className={`label ${!highRes ? 'highlight' : ''}`}>Low</span>
-                        <Switch
-                            className='switch' 
-                            checked={highRes}
-                            onChange={(checked) => {setHighRes(checked)}} 
-                            onColor={colors.dark_teal_heading}
-                            onHandleColor={colors.light_teal}
-                            uncheckedIcon={false}
-                            checkedIcon={false}
-                            height={20}
-                            width={40}
-                        />
-                        <span className={`label ${highRes ? 'highlight' : ''}`}>High</span>
-                    </div>
+                    <CustomSwitch 
+                        checked={highRes}
+                        onChange={(checked) => {setHighRes(checked)}} 
+                        labelLeft='Low'
+                        labelRight='High'
+                    />
                     <div className='disclaimer'>
                         Please allow up to 15 seconds to switch to high resolution due to re-rendering of large amount of data points. <br />
                         Please note that switching to high resolution adds strain to your web browser. 

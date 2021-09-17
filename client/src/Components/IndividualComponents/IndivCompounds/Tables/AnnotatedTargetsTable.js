@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 // import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
-import { getGeneCompountTarget } from '../../../../queries/target';
+import { getGeneCompoundTarget } from '../../../../queries/target';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
@@ -52,7 +52,7 @@ const AnnotatedTargetsTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getGeneCompountTarget, {
+    const { loading } = useQuery(getGeneCompoundTarget, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
             console.log(data);
