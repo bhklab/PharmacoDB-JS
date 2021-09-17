@@ -41,7 +41,7 @@ const getGeneCompountTarget = gql`
 const getCompountsGeneTarget = gql`
     query getCompountsGeneTarget($geneId: Int, $geneName: String) {
         compounds_gene_target(geneId: $geneId, geneName: $geneName) {
-             gene {
+            gene {
                 id
                 name
                 annotation {
@@ -51,12 +51,12 @@ const getCompountsGeneTarget = gql`
             compounds {
                 compound_id,
                 compound_name,
+                compound_uid,
                 targets  {
-                    id,
-                    name
+                        id,
+                        name
                 }
             }
-        }
         }
     }  
 `;

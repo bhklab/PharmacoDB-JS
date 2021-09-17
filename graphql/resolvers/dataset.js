@@ -223,7 +223,7 @@ const dataset_type = async (args, parent, info) => {
     } catch (err) {
         console.log(err);
         throw err;
-    }
+    }x
 };
 
 /**
