@@ -17,17 +17,18 @@ const config = {
 // reusable layout object
 const baseLayout = {
   autoresize: true,
-  height: 530,
+  height: 600,
+  width: 1500,
   margin: {
     t: 20,
-    b: 60,
+    b: 100,
     l: 65,
     r: 0,
   },
   xaxis: {
     color: colors.dark_teal_heading,
     tickfont: {
-      size: 9,
+      size: 12,
     },
     fixedrange: true,
     tickmode: 'array',
@@ -163,13 +164,15 @@ const ProfileCellLine = (props) => {
         {' '}
         {selectedDataset !== 'All' ? `(${selectedDataset})` : null}
       </h4>
-      <Plot 
-        divId={plotId}  
-        data={plotData} 
-        layout={layout} 
-        config={config} 
-        onClick={redirectToCellLineCompound}
-      />
+      <div style={{maxWidth: '800px', overflowX: 'scroll'}}>
+        <Plot 
+          divId={plotId}  
+          data={plotData} 
+          layout={layout} 
+          config={config} 
+          onClick={redirectToCellLineCompound}
+        />
+      </div>
       <div className="notifications">
         {notifications.subset ? (
           <p>
