@@ -108,8 +108,7 @@ const gene_compound_target = async (args) => {
         } = args;
         const returnObject = {};
         
-        let query = knex.distinct('t.name as target_name')
-            .select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 'gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol')
+        let query = knex.select('t.name as target_name', 'c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 'gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol')
             .from('compound_target as ct')
             .join('target as t', 't.id', 'ct.target_id')
             .join('compound as c', 'c.id', 'ct.compound_id')
