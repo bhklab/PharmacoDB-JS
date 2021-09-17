@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getMolCellQuery } from '../../../../queries/mol';
 import Table from '../../../UtilComponents/Table/Table';
 import Loading from '../../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
+import { convertMDataType, mDataTypeList } from '../../../../utils/convertMDataType';
 
 /**
  * Format data for Molecular Profiling Table
@@ -14,31 +15,35 @@ import { Link } from 'react-router-dom';
  */
 const generateTableData = (data) => {
     let tableData = { ready: false, molProf: [] };
-    const dataObject = {}
     if (data && data.length > 0) {
-        data.forEach((x) => {
-            // each data row contains dataset id and name, mDataTypes and num_profs, and allDataTypes
-            const datasetId = x['dataset']['id']
-            // create an object for each dataset if visited for the first time, otherwise just update it
-            if (!dataObject[datasetId]) {
-                dataObject[datasetId] = {};
-                dataObject[datasetId]['dataset'] = x['dataset'];
-                dataObject[datasetId]['dataset']['molProf'] = {};
-                x['dataTypes'].forEach((dataType) =>
-                    dataObject[datasetId]['dataset']['molProf'][dataType.replace(/[^a-zA-Z]/g, "").toLowerCase()] = "-"
-                )
-            }
-            dataObject[datasetId]['dataset']['molProf'][x['mDataType'].replace(/[^a-zA-Z]/g, "").toLowerCase()] = x['num_prof'];
-        }
-        )
+        // filter only the entries with mDataTypes of interest
+        let converted = data.map(item => ({
+            dataset: item.dataset,
+            mDataType: convertMDataType(item.mDataType),
+            num_prof: item.num_prof
+        })).filter(item => Object.values(mDataTypeList).includes(item.mDataType));
+        
+        // organize the entries by dataset
+        let datasets = [...new Set(converted.map(item => item.dataset.name))].sort((a, b) => a.localeCompare(b));
+        datasets.forEach(dataset => {
+            let filtered = converted.filter(item => item.dataset.name === dataset)
+            let obj = {
+                id: filtered[0].dataset.id,
+                dataset_name: dataset,
+            };
+            Object.keys(mDataTypeList).forEach(key => {
+                let mDataEntries = filtered.filter(item => item.mDataType === mDataTypeList[key]); // filter all the datatype in the dataset by datatype name.
+                if(mDataEntries.length){
+                    obj[key] = mDataEntries.map(item => item.num_prof).reduce((a, b) => a + b, 0);
+                }else{
+                    obj[key] = '-'; // '-' if the molecular data type doesn't exist in the dataset
+                }
+            });
+            tableData.molProf.push(obj);
+        });
+        tableData.ready = true;
+        return tableData;
     }
-    const molProf = [];
-    for (const [key, value] of Object.entries(dataObject)) {
-        molProf.push({ id: key, dataset_name: value['dataset']['name'], ...value['dataset']['molProf'] })
-    }
-    tableData.molProf = molProf;
-    tableData.ready = true;
-    return tableData;
 }
 
 /**
@@ -47,7 +52,7 @@ const generateTableData = (data) => {
  * @return List of objects with headers and accessors
  * Cells of datasets are clickable and other columns change based on the availble mDataTypes on database
  */
-const COLUMNS = (data) => {
+const COLUMNS = () => {
     const columns = [];
     columns.push(
         {
@@ -56,13 +61,12 @@ const COLUMNS = (data) => {
             Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
         }
     )
-    // remove non-alphabetic characters to be able to assign to the accessors
-    for (const [key, value] of Object.entries(data)) {
-        value['dataTypes'].forEach((molProf) =>
-            columns.push({ Header: molProf, accessor: molProf.replace(/[^a-zA-Z]/g, "").toLowerCase() })
-        )
-        break;
-    };
+    Object.keys(mDataTypeList).forEach(key => {
+        columns.push({
+            Header: mDataTypeList[key],
+            accessor: key
+        });
+    });
     return columns;
 }
 
@@ -79,16 +83,17 @@ const MolecularProfilingTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
     const [error, setError] = useState(false);
 
-    const { loading, data } = useQuery(getMolCellQuery, {
+    const { loading } = useQuery(getMolCellQuery, {
         variables: { cellLineId: cellLine.id },
         onCompleted: (data) => {
-            let parsed = generateTableData(data["mol_cell"]);
+            let parsed = generateTableData(data.mol_cell);
             setTableData(parsed);
         },
         onError: (err) => {
             setError(true);
         }
     });
+
     return (
         <React.Fragment>
             {
@@ -110,7 +115,7 @@ const MolecularProfilingTable = (props) => {
                     </p>
                     {
                         tableData.molProf.length > 0 &&
-                        <Table columns={COLUMNS(data["mol_cell"])} data={tableData.molProf} center={true} />
+                        <Table columns={COLUMNS()} data={tableData.molProf} center={true} />
                     }
                 </React.Fragment>
                 :
