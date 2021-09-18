@@ -251,7 +251,7 @@ const single_gene_targets_group_by_dataset = async (args) => {
                 query = query.where('g.name', geneName).groupBy('d.id');
             };
         const datasets = await query;
-        const targetCompoundCounts = [];
+        const targetsStat = [];
         datasets.forEach((dataset, i) => {
             const {
                 dataset_id,
@@ -262,12 +262,12 @@ const single_gene_targets_group_by_dataset = async (args) => {
             } = dataset;
             returnObject['gene_id'] = gene_id;
             returnObject['gene_name'] = gene_name;
-            targetCompoundCounts.push({
+            targetsStat.push({
                 dataset : { id : dataset_id , name: dataset_name},
                 compound_count: compound_count,
             })
         });
-        returnObject['targetCompoundCounts'] = targetCompoundCounts;
+        returnObject['targetsStat'] = targetsStat;
         return returnObject;
     } catch(err) {
         console.log(err);

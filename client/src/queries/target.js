@@ -66,7 +66,7 @@ const getGeneTargetCountCompoundsByDataset = gql`
         single_gene_targets_group_by_dataset(geneId: $geneId, geneName: $geneName) {
             gene_id,
             gene_name,
-            targetCompoundCounts
+            targetsStat
                 {
                   dataset {
                             id 

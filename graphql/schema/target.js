@@ -58,7 +58,7 @@ const geneTargetCompoundCountsType = `
         """gene id in the database"""
         gene_name: String!
         """ array of datasets and the count of targeting compounds in each"""
-        targetCompoundCounts: [DatasetCompoundStat]!
+        targetsStat: [DatasetCompoundStat]!
     }
 `;
 
