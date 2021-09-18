@@ -23,20 +23,20 @@ import StyledWrapper from '../../../styles/utils';
 const SYNONYM_COLUMNS = [
   {
     Header: 'Ensembl Gene ID',
-    accessor: 'id',
+    accessor: 'ensemblId',
+  },
+  {
+    Header: 'Genecard',
+    accessor: 'geneCard',
   },
 ];
 
 const LINK_COLUMNS = [
-  {
-    Header: 'Genecard',
-    accessor: 'id',
-  },
+
 ];
 
 const SIDE_LINKS = [
   { label: 'Synonyms and Links', name: 'synonyms' },
-  { label: 'Plots', name: 'plots' },
   { label: 'Drugs Summary', name: 'drugsSummary' },
   { label: 'Top Drugs', name: 'topDrugs' }
 ];
@@ -45,39 +45,20 @@ const SIDE_LINKS = [
  * Format data for synonym and link tables
  * @param {String} id,link gene id and link to reference
  */
-const formatTableLinks = (id, link) => [
+const formatTableLinks = (data) => [
   {
-    id: (
-      <a href={link} target="_blank">
-        <div style={{ textAlign: 'center' }}> {id} </div>
+    ensemblId: (
+      <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`} target="_blank">
+        <div style={{ textAlign: 'center' }}> {data.name} </div>
+      </a>
+    ),
+    geneCard: (
+      <a href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`} target="_blank">
+        <div style={{ textAlign: 'center' }}> {data.annotation.symbol} </div>
       </a>
     ),
   },
 ];
-
-/**
- * Format data for the synonyms table
- * @param data synonym data from the gene API
- */
-const formatSynonymData = (data) => {
-  if (data) {
-    const link = `http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`;
-    return formatTableLinks(data.name, link);
-  }
-  return null;
-};
-
-/**
- * Format data for link table
- * @param data link data from the gene API
- */
-const formatLinkData = (data) => {
-  if (data) {
-    const link = `https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`;
-    return formatTableLinks(data.name, link);
-  }
-  return null;
-};
 
 /**
  * Parent component for the individual gene page.
@@ -113,8 +94,7 @@ const IndivGenes = (props) => {
           ...gene,
           data: {
             ...data.gene,
-            synonyms: formatSynonymData(data.gene),
-            links: formatLinkData(data.gene)
+            synonyms: formatTableLinks(data.gene)
           },
           loaded: true
         });
@@ -168,21 +148,14 @@ const IndivGenes = (props) => {
                           display === 'synonyms' &&
                           <React.Fragment>
                             <Element className="section" name="synonyms">
-                              <div className='section-title'>Synonyms and Links</div>
+                              <div className='section-title'>Synonyms</div>
                               <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
                             </Element>
-                            <Element className="section" name="links">
-                              <div className='section-title'>Links</div>
-                              <Table columns={LINK_COLUMNS} data={gene.data.links} disablePagination />
+                            <Element className='section' name="plots">
+                              <div className='section-title'>Plots</div>
+                              <PlotSection gene={gene.data} />
                             </Element>
                           </React.Fragment>
-                        }
-                        {
-                          display === 'plots' &&
-                          <Element className='section'>
-                            <div className='section-title'>Plots</div>
-                            <PlotSection gene={gene.data} />
-                          </Element>
                         }
                         {
                           display === 'drugsSummary' &&

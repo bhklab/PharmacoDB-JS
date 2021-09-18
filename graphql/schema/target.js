@@ -51,10 +51,22 @@ const compoundsGeneTargetType = `
     }
 `;
 
+const geneTargetCompoundCountsType = `
+    type GeneTargetCompoundCounts {
+        """gene id in the database"""
+        gene_id: Int!
+        """gene id in the database"""
+        gene_name: String!
+        """ array of datasets and the count of targeting compounds in each"""
+        targetsStat: [DatasetCompoundStat]!
+    }
+`;
+
 module.exports = {
     targetType,
     geneTargetType,
     compoundTargetType,
     geneCompoundTargetType,
-    compoundsGeneTargetType
+    compoundsGeneTargetType,
+    geneTargetCompoundCountsType
 };

@@ -18,7 +18,7 @@ const getCompoundTarget = gql`
     }
 `;
 
-const getGeneCompountTarget = gql`
+const getGeneCompoundTarget = gql`
     query getGeneCompoundTarget($compoundId: Int, $compoundName: String) {
         gene_compound_target(compoundId: $compoundId, compoundName: $compoundName) {
             compound_id,
@@ -38,7 +38,7 @@ const getGeneCompountTarget = gql`
     }  
 `;
 
-const getCompountsGeneTarget = gql`
+const getCompoundsGeneTarget = gql`
     query getCompountsGeneTarget($geneId: Int, $geneName: String) {
         compounds_gene_target(geneId: $geneId, geneName: $geneName) {
             gene {
@@ -61,8 +61,26 @@ const getCompountsGeneTarget = gql`
     }  
 `;
 
+const getGeneTargetCountCompoundsByDataset = gql`
+    query getGeneTargetCountCompoundByDataset($geneId: Int, $geneName: String) {
+        single_gene_targets_group_by_dataset(geneId: $geneId, geneName: $geneName) {
+            gene_id,
+            gene_name,
+            targetsStat
+                {
+                  dataset {
+                            id 
+                            name
+                            }
+                compound_count
+                }
+        }
+    }   
+`;
+
 export {
     getCompoundTarget,
-    getGeneCompountTarget,
-    getCompountsGeneTarget
+    getGeneCompoundTarget,
+    getCompoundsGeneTarget,
+    getGeneTargetCountCompoundsByDataset,
 };
