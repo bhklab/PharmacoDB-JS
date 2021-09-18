@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -6,31 +6,6 @@ import { getSingleCellLineExperimentsQuery } from '../../../../queries/experimen
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
-
-const DRUG_SUMMARY_COLUMNS = [
-  {
-    Header: 'Compounds',
-    accessor: 'compound',
-    Cell: (item) => (<Link to={`/compounds/${item.row.original.uid}`}>{item.value}</Link>),
-  },
-  {
-    Header: 'Datasets',
-    accessor: 'dataset',
-    Cell: (item) => {
-      const datasets = item.cell.row.original.datasetList;
-      return (datasets.map((obj, i) => (
-        <span key={i}>
-          <a href={`/datasets/${obj.id}`}>{obj.name}</a>
-          { i + 1 < datasets.length ? ', ' : ''}
-        </span>
-      )));
-    },
-  },
-  {
-    Header: 'Experiments',
-    accessor: 'num_experiments',
-  },
-];
 
 /**
  * Format data for the compound summary table
@@ -87,6 +62,32 @@ const CompoundsSummaryTable = (props) => {
   const [csv, setCSV] = useState([]);
   const [error, setError] = useState(false);
 
+  const DRUG_SUMMARY_COLUMNS = [
+    {
+      Header: 'Compounds',
+      accessor: 'compound',
+      Cell: (item) => (<Link to={`/compounds/${item.row.original.uid}`}>{item.value}</Link>),
+    },
+    {
+      Header: 'Datasets',
+      accessor: 'dataset',
+      Cell: (item) => {
+        const datasets = item.cell.row.original.datasetList;
+        return (datasets.map((obj, i) => (
+          <span key={i}>
+            <a href={`/datasets/${obj.id}`}>{obj.name}</a>
+            { i + 1 < datasets.length ? ', ' : ''}
+          </span>
+        )));
+      },
+    },
+    {
+      Header: 'Experiments',
+      accessor: 'num_experiments',
+      Cell: (item) => <a href={`/search?compound=${item.row.original.compound}&cell_line=${cellLine.name}`} target="_blank" rel="noopener noreferrer">{item.value}</a>
+    },
+  ];
+
   const { loading, data: queryData, } = useQuery(getSingleCellLineExperimentsQuery, {
     variables: { cellLineId: cellLine.id },
     onCompleted: (data) => {
@@ -105,53 +106,45 @@ const CompoundsSummaryTable = (props) => {
       setError(true);
     }
   });
-  // load data from query into state
-  const [experiment, setExperiment] = useState({
-    data: {},
-    loaded: false,
-  });
-  // to set the state on the change of the data.
-  useEffect(() => {
-    if (queryData !== undefined) {
-      setExperiment({
-        data: queryData.experiments,
-        loaded: true,
-      });
-    }
-  }, [queryData]);
+
   return (
     <React.Fragment>
       {
         error && <p> Error! </p>
       }
       {
-        loading || !tableData.ready ? <Loading />
-          :
-          <React.Fragment>
-            <h4>
-              <p align="center">
-                {`Compounds tested with ${cellLine.name}`}
-              </p>
-            </h4>
+        loading || !tableData.ready ? 
+        <Loading />
+        :
+        tableData.compound.length ?
+        <React.Fragment>
+          <h4>
             <p align="center">
-              {`${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).`}
+              {`Compounds tested with ${cellLine.name}`}
             </p>
-            {
-              tableData.compound.length ?
-                <React.Fragment>
-                  <div className='download-button'>
-                    <DownloadButton
-                      label='CSV'
-                      data={csv}
-                      mode='csv'
-                      filename={`${cellLine.name} - compounds`}
-                    />
-                  </div>
-                  <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
-                </React.Fragment>
-                : ''
-            }
-          </React.Fragment>
+          </h4>
+          <p align="center">
+            {`${tableData.numCompounds} compound(s) have been tested with this cell line, using data from ${tableData.numDataset} dataset(s).`}
+          </p>
+          {
+            tableData.compound.length &&
+            <React.Fragment>
+              <div className='download-button'>
+                <DownloadButton
+                  label='CSV'
+                  data={csv}
+                  mode='csv'
+                  filename={`${cellLine.name} - compounds`}
+                />
+              </div>
+              <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+            </React.Fragment>
+          }
+        </React.Fragment>
+        :
+        <h6 align="center">
+            No compounds have been tested with {cellLine.name}.
+        </h6>
       }
     </React.Fragment>
   );

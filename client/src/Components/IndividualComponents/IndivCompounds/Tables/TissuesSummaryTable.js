@@ -133,27 +133,32 @@ const TissuesSummaryTable = (props) => {
             }
             {
                 loading ?
-                    <Loading />
-                    :
-                    <React.Fragment>
-                        <h4>
-                            <p align="center">
-                                { `Tissues tested with ${compound.name}` }
-                            </p>
-                        </h4>
+                <Loading />
+                :
+                tableData.tissues.length > 0 ?
+                <React.Fragment>
+                    <h4>
                         <p align="center">
-                            { `${tableData.numTissues} tissue(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).` }
+                            { `Tissues tested with ${compound.name}` }
                         </p>
-                        <div className='download-button'>
-                            <DownloadButton
-                                label='CSV'
-                                data={csv}
-                                mode='csv'
-                                filename={`${compound.name} - tissues`}
-                            />
-                        </div>
-                        <Table columns={TISSUE_SUMMARY_COLUMNS} data={tableData.tissue}/>
-                    </React.Fragment>
+                    </h4>
+                    <p align="center">
+                        { `${tableData.numTissues} tissue(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).` }
+                    </p>
+                    <div className='download-button'>
+                        <DownloadButton
+                            label='CSV'
+                            data={csv}
+                            mode='csv'
+                            filename={`${compound.name} - tissues`}
+                        />
+                    </div>
+                    <Table columns={TISSUE_SUMMARY_COLUMNS} data={tableData.tissue}/>
+                </React.Fragment>
+                :
+                <p align="center">
+                    No tissues have been tested with {compound.name}.
+                </p>
             }
         </React.Fragment>
     );

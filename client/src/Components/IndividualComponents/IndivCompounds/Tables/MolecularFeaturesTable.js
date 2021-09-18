@@ -5,7 +5,7 @@ import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_comp
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import { Link } from 'react-router-dom';
-import convertMDataType from '../../../../utils/convertMDataType';
+import { convertMDataType } from '../../../../utils/convertMDataType';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 import Error from '../../../UtilComponents/Error';
 import colors from '../../../../styles/colors';
