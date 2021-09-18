@@ -3,7 +3,7 @@ const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
-const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType } = require('./dataset');
+const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
 const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
@@ -14,7 +14,7 @@ const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
 const { statType } = require('./stat');
-const { targetType, compoundTargetType, geneTargetType, geneCompoundTargetType, compoundsGeneTargetType } = require('./target');
+const { targetType, compoundTargetType, geneTargetType, geneCompoundTargetType, compoundsGeneTargetType, geneTargetCompoundCountsType } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molType } = require('./mol');
@@ -40,6 +40,7 @@ const schema = `
     ${datasetDetailType}
     ${datasetStatsType}
     ${datasetsTypesType}
+    ${datasetsCompoundStatType}
 
     "compound Response Type with dose and response values"
     ${compoundResponseType}
@@ -73,6 +74,7 @@ const schema = `
     ${geneTargetType}
     ${geneCompoundTargetType}
     ${compoundsGeneTargetType}
+    ${geneTargetCompoundCountsType}
 
     "Tissue Type with id and name of the tissues."
     ${tissueType}

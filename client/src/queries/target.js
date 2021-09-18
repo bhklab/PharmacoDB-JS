@@ -61,8 +61,26 @@ const getCompoundsGeneTarget = gql`
     }  
 `;
 
+const getGeneTargetCountCompoundsByDataset = gql`
+    query getGeneTargetCountCompoundByDataset($geneId: Int, $geneName: String) {
+        single_gene_targets_group_by_dataset(geneId: $geneId, geneName: $geneName) {
+            gene_id,
+            gene_name,
+            targetsStat
+                {
+                  dataset {
+                            id 
+                            name
+                            }
+                compound_count
+                }
+        }
+    }   
+`;
+
 export {
     getCompoundTarget,
     getGeneCompoundTarget,
-    getCompoundsGeneTarget
+    getCompoundsGeneTarget,
+    getGeneTargetCountCompoundsByDataset,
 };
