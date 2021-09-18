@@ -135,7 +135,7 @@ const TissuesSummaryTable = (props) => {
                 loading ?
                 <Loading />
                 :
-                tableData.tissues.length > 0 ?
+                tableData.tissue.length > 0 ?
                 <React.Fragment>
                     <h4>
                         <p align="center">
