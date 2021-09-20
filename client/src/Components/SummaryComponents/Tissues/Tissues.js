@@ -5,6 +5,7 @@ import StyledWrapper from '../../../styles/utils';
 import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
 import PieChart from '../../Plots/PieChart';
+import plotColors from '../../../styles/plot_colors';
 import { getTissuesQuery } from '../../../queries/tissue';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../UtilComponents/Loading';
@@ -82,14 +83,7 @@ const pieChartDataObject = (data) => {
     hole: 0.55,
     type: 'pie',
     marker: {
-      // colors: [
-      //   '#053061', '#b2182b', '#d6604d', '#f4a582', '#fddbc7', '#878787',
-      //   '#f7f7f7', '#d1e5f0', '#92c5de', '#4393c3', '#2166ac', '#67001f',
-      // ],
-      colors: [
-        '#CAD2C5', '#84a98c', '#52796F', '#354F52', '#2F3E46', '#284B63',
-        '#2F4858', '#1B263B', '#415A77', '#778DA9', '#E0E1DD', '#6F523B',
-      ],
+      colors: plotColors.tissues
     },
   }];
   Object.keys(data).forEach((key) => {
