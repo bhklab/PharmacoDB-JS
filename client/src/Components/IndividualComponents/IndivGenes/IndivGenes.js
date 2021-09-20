@@ -36,8 +36,8 @@ const LINK_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-  { label: 'Synonyms and Links', name: 'synonyms' },
-  { label: 'Drugs Summary', name: 'drugsSummary' },
+  { label: 'Synonyms and Plots', name: 'synonyms' },
+  { label: 'Drug Summary', name: 'drugsSummary' },
   { label: 'Top Drugs', name: 'topDrugs' }
 ];
 
