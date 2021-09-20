@@ -200,8 +200,7 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
     } else {
         return (
             <>
-                <h2>List of Datasets</h2>
-                {/*<UpsetPlot data={parsedCellData} datasets={updatedDatasets} />*/}
+                <h2>Overlaps among datasets</h2>
                 <DrawUpsetPlot data={parsedCellData} datasets={updatedDatasets} />
             </>
         )
