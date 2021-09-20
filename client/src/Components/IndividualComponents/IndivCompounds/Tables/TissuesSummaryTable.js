@@ -1,14 +1,13 @@
 /* eslint-disable radix */
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { getSingleCompoundExperimentsQuery } from '../../../../queries/experiments';
-// import dataset_colors from '../../../../styles/dataset_colors';
 import Loading from '../../../UtilComponents/Loading';
-// import ProfileCompound from '../../../Plots/ProfileCompound';
+import PieChart from '../../../Plots/PieChart';
 import Table from '../../../UtilComponents/Table/Table';
-// import { NotFoundContent } from '../../../UtilComponents/NotFoundPage';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 import { Link } from 'react-router-dom';
 
@@ -66,8 +65,11 @@ const formatTissueSummaryData = (data) => {
 const TissuesSummaryTable = (props) => {
     const { compound } = props;
     const [tableData, setTableData] = useState({ ready: false, tissue: [], numTissues: 0, numDataset: 0 });
+    const [plotData, setPlotData] = useState([]);
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
+
+    const history = useHistory();
 
     const TISSUE_SUMMARY_COLUMNS = [
         {
@@ -94,10 +96,29 @@ const TissuesSummaryTable = (props) => {
         },
     ];
 
-    const { loading, data: queryData,} = useQuery(getSingleCompoundExperimentsQuery, {
+    /**
+     * Redirects to Tissue vs Compound page when a plot trace is clicked.
+     * @param {*} e onclick event
+     */
+    const redirectToTissueCompound = (e) => {
+        history.push(`/search?tissue=${e.points[0].label}&compound=${compound.name}`);
+    }
+
+    const { loading } = useQuery(getSingleCompoundExperimentsQuery, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
             let parsed = formatTissueSummaryData(data.experiments);
+            setPlotData([{
+                values: parsed.tissue.map(item => item.num_experiments),
+                labels: parsed.tissue.map(item => item.tissue),
+                name: '',
+                hovertemplate: parsed.tissue.map(item => (
+                    `${item.tissue}<br />` + 
+                    `${item.num_experiments} experiments<br />`
+                )),
+                hole: 0.55,
+                type: 'pie',
+              }]);
             setTableData(parsed);
             setCSV(parsed.tissue.map(item => ({
                 compoundId: compound.id,
@@ -112,20 +133,7 @@ const TissuesSummaryTable = (props) => {
             setError(true);
         }
     });
-    // load data from query into state
-    const [experiment, setExperiment] = useState({
-        data: {},
-        loaded: false,
-    });
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            setExperiment({
-                data: queryData.experiments,
-                loaded: true,
-            });
-        }
-    }, [queryData]);
+
     return (
         <React.Fragment>
             {
@@ -137,6 +145,15 @@ const TissuesSummaryTable = (props) => {
                 :
                 tableData.tissue.length > 0 ?
                 <React.Fragment>
+                    <h4>
+                        <p align='center'>Relative percentage of experiments using {compound.name} per tissue</p>
+                    </h4>
+                    <PieChart 
+                        id='tissueSummaryPieChart'
+                        data={plotData} 
+                        height={600} 
+                        onClick={redirectToTissueCompound} 
+                    />
                     <h4>
                         <p align="center">
                             { `Tissues tested with ${compound.name}` }
