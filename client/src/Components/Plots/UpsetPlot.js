@@ -97,7 +97,7 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('stroke', `${colors.dark_teal_heading}`)
     .style("font-size", 13)
     .style("position", "sticky")
-    .text("Number of " + `${type}`);
+    .text(`Number of ${type}s`);
 
 /**
  * append the rectangles to the bar chart (bars)
@@ -110,6 +110,7 @@ const appendRectangles = (svg, data, scale, height) => {
     // get the data object keys.
     const keys = Object.keys(data);
     // for each key append rectangle and text.
+    d3.select('.y-axis').remove();
     const rectangles = svg.append('g')
         .attr('class', 'bar-rectangles');
 
