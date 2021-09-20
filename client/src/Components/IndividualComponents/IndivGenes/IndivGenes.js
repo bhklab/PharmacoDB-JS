@@ -151,10 +151,16 @@ const IndivGenes = (props) => {
                               <div className='section-title'>Synonyms</div>
                               <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
                             </Element>
-                            <Element className='section' name="plots">
-                              <div className='section-title'>Plots</div>
-                              <PlotSection gene={gene.data} />
-                            </Element>
+                            {
+                              gene.data.length ?
+                                  (
+                                      <Element className='section' name="plots">
+                                        <div className='section-title'>Plots</div>
+                                        <PlotSection gene={gene.data} />
+                                      </Element>
+                                  )
+                                  :''
+                            }
                           </React.Fragment>
                         }
                         {
