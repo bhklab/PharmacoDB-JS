@@ -37,7 +37,6 @@ const CompoundsSummaryTable = (props) => {
         onCompleted: (res) => {
             let data = res.dataset_type[0];
             data = { id : data.dataset.id, name: data.dataset.name, compounds_tested : data.compounds_tested}
-            console.log(data);
             setCompounds(parseTableData(data.name, data, data.id));
         },
         onError: () => { setError(true) }

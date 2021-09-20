@@ -51,11 +51,14 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the cell line API
  */
 const formatSynonymData = (data) => {
-    if (data.synonyms) {
-        const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
-        return returnObj;
+  if (data.synonyms) {
+      const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
+      if (returnObj.filter(obj => { return obj.source[0].name === "PharmacoGx" }).length === 0) {
+        returnObj.push({ name: data.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
     }
-    return null;
+      return returnObj;
+  }
+  return null;
 };
 
 /**
@@ -116,13 +119,14 @@ const IndivCellLines = (props) => {
     // parameter.
     const {
         match: { params },
+        location: { pathname }
     } = props;
     // query to get the data for the single cell line.
     const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
         variables: {
-          cellUID: params.id,
+          cellUID: pathname.split('/cell_lines/').pop(),
           cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
-          cellName: typeof params.id === 'string' ? params.id : undefined
+          cellName: typeof pathname.split('/cell_lines/').pop() === 'string' ? pathname.split('/cell_lines/').pop() : undefined
         },
     });
     // load data from query into state
@@ -191,7 +195,7 @@ const IndivCellLines = (props) => {
                             <div className='section-title'>Synonyms</div>
                             {
                               synonymData ?
-                              <Table columns={SYNONYM_COLUMNS} data={synonymData} />
+                              <Table columns={SYNONYM_COLUMNS} data={synonymData} disablePagination={true} />
                               :
                               <div className="text">N/A</div>
                             }
@@ -232,7 +236,6 @@ const IndivCellLines = (props) => {
                       {
                         display === 'molecularProfiling' &&
                         <Element className="section">
-                          <div className='section-title'>Molecular Profiling</div>
                             <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }

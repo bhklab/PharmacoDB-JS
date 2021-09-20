@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getGeneCompoundTissueDatasetQuery } from '../../../../queries/gene_compound';
-import convertMDataType from '../../../../utils/convertMDataType';
+import { convertMDataType } from '../../../../utils/convertMDataType';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
