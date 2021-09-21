@@ -1,7 +1,7 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
-const { compoundType, compoundAnnotationType, compoundDetailType } = require('./compound');
+const { compoundType, compoundAnnotationType, compoundDetailType, compoundTableType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType } = require('./dataset');
 const { compoundResponseType } = require('./compound_response');
@@ -14,7 +14,11 @@ const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { sourceAnnotationType } = require('./source');
 const { statType } = require('./stat');
-const { targetType, compoundTargetType, geneTargetType, geneCompoundTargetType, compoundsGeneTargetType } = require('./target');
+const {
+    targetType, compoundTargetType, geneTargetType,
+    targetWithGeneInfoType, targetWithCompoundInfoType,
+    geneCompoundTargetType, compoundsGeneTargetType,
+} = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molType } = require('./mol');
@@ -24,6 +28,7 @@ const { molType } = require('./mol');
 const schema = `
     "Compound Type with id, name and annotations."
     ${compoundType}
+    ${compoundTableType}
     "Compound Annotation Type with compound id, smiles, inchikey and pubchem."
     ${compoundAnnotationType}
     ${compoundDetailType}
@@ -71,6 +76,8 @@ const schema = `
     ${targetType}
     ${compoundTargetType}
     ${geneTargetType}
+    ${targetWithGeneInfoType}
+    ${targetWithCompoundInfoType}
     ${geneCompoundTargetType}
     ${compoundsGeneTargetType}
 
