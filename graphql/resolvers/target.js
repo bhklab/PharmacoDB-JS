@@ -1,26 +1,20 @@
 const knex = require('../../db/knex');
 
 /**
- *
- * @param {number} compoundId
- * @param {string} compoundName
+ * target query.
  */
-const targetQuery = async (compoundId, compoundName) => {
-    // main query.
-    const query = knex.distinct('t.name as target_name')
-        .select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id')
-        .from('compound_target as ct')
-        .join('target as t', 't.id', 'ct.target_id')
-        .join('compound as c', 'c.id', 'ct.compound_id');
-    // subquery.
-    if (compoundId) {
-        return query.where('c.id', compoundId);
-    } else if (compoundName) {
-        return query.where('c.name', compoundName);
-    } else {
-        return query;
-    }
-};
+const targetQuery = () => (
+    knex.select('compound.name as compound_name', 'compound.id as compound_id', 'compound.compound_uid',
+        'gene.name as gene_name', 'gene.id as gene_id', 'gene_annotation.symbol', 'gene_annotation.gene_seq_start',
+        'gene_annotation.gene_seq_end', 'gene_annotation.chr', 'gene_annotation.strand',
+        'target.id as target_id', 'target.name as target_name')
+        .from('compound_target')
+        .join('target', 'target.id', 'compound_target.target_id')
+        .join('compound', 'compound.id', 'compound_target.compound_id')
+        .join('gene_target', 'gene_target.target_id', 'compound_target.target_id')
+        .join('gene', 'gene.id', 'gene_target.gene_id')
+        .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
+);
 
 /**
  *
@@ -28,45 +22,209 @@ const targetQuery = async (compoundId, compoundName) => {
  * @returns {Object} - {
  * 		compound_id: 'compound id - Number',
  * 		compound_name: 'compound name - String',
+ *      compound_uid: 'compound uid - Number',
  * 		targets: [{
  * 			id: 'target id - Number',
- * 			name: 'target name - String'
- * 		}]
+ * 			name: 'target name - String',
+ *          genes: {
+ *              id: 'gene id - Number',
+ *              name: 'gene name - String',
+ *              annotation: 'annotation object - Object',
+ *          }
+ * 		}],
  * }
  */
-const compound_target = async (args) => {
+const single_compound_target = async (args) => {
     try {
-        const {
-            compoundId,
-            compoundName
-        } = args;
+        // arguments
+        const { compoundId, compoundName } = args;
+
+        // if no argument is provided throw an error.
+        if (!compoundName && !compoundId) throw new Error('Invalid input! Query must include compoundId or compoundName');
+
+        // target query.
+        let query = targetQuery();
+        // subquery.
+        if (compoundId) {
+            query = query.where('compound.id', compoundId);
+        } else if (compoundName) {
+            query = query.where('compound.name', compoundName);
+        }
+
+        // targets.
+        const targets = await query;
+
+        // return object.
         const returnObject = {};
-        const targets = await targetQuery(compoundId, compoundName);
 
         targets.forEach((target, i) => {
             const {
-                target_id,
-                target_name,
-                compound_name,
-                compound_id
+                target_id, target_name,
+                compound_name, compound_id, compound_uid,
+                gene_id, gene_name, symbol,
             } = target;
             if (!i) {
                 returnObject['compound_id'] = compound_id;
                 returnObject['compound_name'] = compound_name;
-                returnObject['targets'] = [];
+                returnObject['compound_uid'] = compound_uid;
+                returnObject['targets'] = {};
+                returnObject['targets'][target_id] = {
+                    target_id: target_id,
+                    target_name: target_name,
+                    genes: [
+                        {
+                            id: gene_id,
+                            name: gene_name,
+                            annotation: {
+                                gene_id: gene_id,
+                                symbol: symbol
+                            }
+                        }
+                    ],
+                };
+            } else {
+                // if the id of the target is already there just add the gene.
+                if (returnObject['targets'][target_id]) {
+                    returnObject['targets'][target_id]['genes'].push({
+                        id: gene_id,
+                        name: gene_name,
+                        annotation: {
+                            gene_id: gene_id,
+                            symbol: symbol
+                        }
+                    });
+                } else {
+                    returnObject['targets'][target_id] = {
+                        target_id: target_id,
+                        target_name: target_name,
+                        genes: [
+                            {
+                                id: gene_id,
+                                name: gene_name,
+                                annotation: {
+                                    gene_id: gene_id,
+                                    symbol: symbol
+                                }
+                            }
+                        ],
+                    };
+                }
             }
-            returnObject['targets'].push({
-                id: target_id,
-                name: target_name
-            });
         });
-        return returnObject;
+        // return object
+        return {
+            ...returnObject,
+            targets: Object.values(returnObject.targets),
+        };
     } catch (err) {
         console.log(err);
         throw err;
     }
-
 };
+
+
+/**
+ *
+ * @param {Object} args
+ * @returns {Object} - {
+ * 		gene_id: 'gene id - Number',
+ * 		gene_name: 'gene name - String',
+ *      gene_annotation: 'gene annotation - Object',
+ * 		targets: [{
+ * 			id: 'target id - Number',
+ * 			name: 'target name - String',
+ *          compounds: {
+ *              id: 'compound id - Number',
+ *              name: 'compound name - String',
+ *              uid: 'compound uid - Number',
+ *          }
+ * 		}],
+ * }
+ */
+const single_gene_target = async (args) => {
+    try {
+        // arguments
+        const { geneId, geneName } = args;
+
+        // if no argument is provided throw an error.
+        if (!geneName && !geneId) throw new Error('Invalid input! Query must include geneId or geneName');
+
+        // target query.
+        let query = targetQuery();
+        // subquery.
+        if (geneId) {
+            query = query.where('gene.id', geneId);
+        } else if (geneName) {
+            query = query.where('gene_annotation.symbol', geneName);
+        }
+
+        // targets.
+        const targets = await query;
+
+        console.log(targets);
+
+        // return object.
+        const returnObject = {};
+
+        targets.forEach((target, i) => {
+            const {
+                target_id, target_name,
+                compound_name, compound_id, compound_uid,
+                gene_id, gene_name, symbol,
+            } = target;
+            if (!i) {
+                returnObject['gene_id'] = gene_id;
+                returnObject['gene_name'] = gene_name;
+                returnObject['gene_annotation'] = {
+                    gene_id: gene_id,
+                    symbol: symbol
+                };
+                returnObject['targets'] = {};
+                returnObject['targets'][target_id] = {
+                    target_id: target_id,
+                    target_name: target_name,
+                    compounds: [
+                        {
+                            id: compound_id,
+                            name: compound_name,
+                            uid: compound_uid,
+                        }
+                    ],
+                };
+            } else {
+                // if the id of the target is already there just add the gene.
+                if (returnObject['targets'][target_id]) {
+                    returnObject['targets'][target_id]['compounds'].push({
+                        id: compound_id,
+                        name: compound_name,
+                        uid: compound_uid,
+                    });
+                } else {
+                    returnObject['targets'][target_id] = {
+                        target_id: target_id,
+                        target_name: target_name,
+                        compounds: [
+                            {
+                                id: compound_id,
+                                name: compound_name,
+                                uid: compound_uid,
+                            }
+                        ],
+                    };
+                }
+            }
+        });
+        // return object
+        return {
+            ...returnObject,
+            targets: Object.values(returnObject.targets),
+        };
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
 
 const compound_targets = async () => {
     try {
@@ -153,7 +311,7 @@ const gene_compound_target = async (args) => {
             });
         });
         return returnObject;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }
@@ -171,7 +329,7 @@ const compounds_gene_target = async (args) => {
         } = args;
         const returnObject = {};
         let query = knex
-            .select('c.id as compound_id','c.compound_uid as compound_uid', 'c.name as compound_name', 'ct.target_id',
+            .select('c.id as compound_id', 'c.compound_uid as compound_uid', 'c.name as compound_name', 'ct.target_id',
                 't.name as target_name', 'gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol')
             .from('compound_target as ct')
             .join('target as t', 't.id', 'ct.target_id')
@@ -204,26 +362,27 @@ const compounds_gene_target = async (args) => {
                         gene_id: gene_id,
                         symbol: symbol
                     }
-                }
+                };
                 returnObject['compounds'] = [];
             }
             returnObject['compounds'].push({
                 compound_id: compound_id,
                 compound_name: compound_name,
                 compound_uid: compound_uid,
-                targets: [{ id: target_id, name: target_name}],
+                targets: [{ id: target_id, name: target_name }],
             });
         });
         console.log(returnObject);
         return returnObject;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         throw err;
     }
 };
 
 module.exports = {
-    compound_target,
+    single_compound_target,
+    single_gene_target,
     compound_targets,
     gene_compound_target,
     compounds_gene_target,
