@@ -1,3 +1,14 @@
+const compoundTableType = `
+    type CompoundTable {
+        """compound id in the database"""
+        id: Int!
+        """compound name in the database"""
+        name: String!
+        """compound uid"""
+        uid: String!
+    }
+`;
+
 const compoundAnnotationType = `
     type CompoundAnnotation {
         """annotations for compound"""
@@ -18,6 +29,7 @@ const compoundType = `
         id: Int!
         """compound name in the database"""
         name: String!
+        """compound uid"""
         uid: String!
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
@@ -42,5 +54,6 @@ const compoundDetailType = `
 module.exports = {
     compoundType,
     compoundAnnotationType,
-    compoundDetailType
+    compoundDetailType,
+    compoundTableType,
 };
