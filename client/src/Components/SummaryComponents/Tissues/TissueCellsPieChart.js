@@ -4,8 +4,6 @@ import styled from "styled-components";
 import PieChart from '../../Plots/PieChart';
 import Table from '../../UtilComponents/Table/Table';
 import plotColors from '../../../styles/plot_colors';
-import Loading from "../../UtilComponents/Loading";
-import Error from "../../UtilComponents/Error";
 
 const StyledTissueCellsPieChart = styled.div`
   width: 100%;
