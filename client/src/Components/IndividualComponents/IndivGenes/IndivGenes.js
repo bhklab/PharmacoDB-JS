@@ -13,6 +13,7 @@ import Table from '../../UtilComponents/Table/Table';
 import PlotSection from './PlotSection';
 import CompoundsSummaryTable from './Tables/CompoundsSummaryTable';
 import TopDrugsTable from './Tables/TopDrugsTable';
+import Description from './Description'
 
 import {
   StyledIndivPage,
@@ -24,10 +25,12 @@ const SYNONYM_COLUMNS = [
   {
     Header: 'Ensembl Gene ID',
     accessor: 'ensemblId',
+    center: true,
   },
   {
     Header: 'Genecard',
     accessor: 'geneCard',
+    center: true,
   },
 ];
 
@@ -36,7 +39,8 @@ const LINK_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-  { label: 'Synonyms and Plots', name: 'synonyms' },
+  { label: 'Synonyms and Links', name: 'synonyms' },
+  { label: 'Plots', name: 'plots' },
   { label: 'Drug Summary', name: 'drugsSummary' },
   { label: 'Top Drugs', name: 'topDrugs' }
 ];
@@ -52,11 +56,11 @@ const formatTableLinks = (data) => [
         <div style={{ textAlign: 'center' }}> {data.name} </div>
       </a>
     ),
-    geneCard: (
+    geneCard: data.annotation.symbol !== "N/A" ? (
       <a href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data.name}`} target="_blank">
         <div style={{ textAlign: 'center' }}> {data.annotation.symbol} </div>
       </a>
-    ),
+    ) : 'N/A',
   },
 ];
 
@@ -148,20 +152,18 @@ const IndivGenes = (props) => {
                           display === 'synonyms' &&
                           <React.Fragment>
                             <Element className="section" name="synonyms">
-                              <div className='section-title'>Synonyms</div>
+                              {/*<div className='section-title'>Synonyms</div>*/}
                               <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
                             </Element>
-                            {
-                              gene.data.length ?
-                                  (
-                                      <Element className='section' name="plots">
-                                        <div className='section-title'>Plots</div>
-                                        <PlotSection gene={gene.data} />
-                                      </Element>
-                                  )
-                                  :''
-                            }
+                            <Description gene={gene.data} />
                           </React.Fragment>
+                        }
+                        {
+                          display === 'plots' &&
+                          <Element className='section' name="plots">
+                            <div className='section-title'>Plots</div>
+                              <PlotSection gene={gene.data} />
+                          </Element>
                         }
                         {
                           display === 'drugsSummary' &&

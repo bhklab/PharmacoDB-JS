@@ -65,14 +65,17 @@ const PlotSection = (props) => {
           :
           error ? <Error />
             :
-            <PlotsWrapper single={true}>
-              <DatasetHorizontalPlot
-                plotId='gene_compound_dataset_plot'
-                data={data}
-                xaxis="# of compounds"
-                title={`Number of compounds targeting ${gene.annotation.symbol} (per dataset)`}
-              />
-            </PlotsWrapper>
+              data.length > 0 ? (
+                <PlotsWrapper single={true}>
+                  <DatasetHorizontalPlot
+                      plotId='gene_compound_dataset_plot'
+                      data={data}
+                      xaxis="# of compounds"
+                      title={`Number of compounds targeting ${gene.annotation.symbol} (per dataset)`}
+                  />
+                </PlotsWrapper>
+              ) :
+                  <h6>No data is available to plot.</h6>
       }
     </React.Fragment>
   );
