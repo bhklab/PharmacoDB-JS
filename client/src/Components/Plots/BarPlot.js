@@ -30,7 +30,7 @@ const parsePlotData = (data) => {
     y: [],
     type: 'bar',
     marker: {
-      color: ['#084081', '#0868ac', '#2b8cbe', '#4eb3d3', '#7bccc4', '#a8ddb5', '#ccebc5', '#e0f3db', '#eff8e4', '#f7fcf0'],
+      color: ['#084081', '#0868ac', '#2b8cbe', '#4eb3d3', '#7bccc4', '#a8ddb5', '#ccebc5', '#e0f3db', '#eef6c9', '#f7fcf0'],
     },
   }
   if (typeof data !== 'undefined') {

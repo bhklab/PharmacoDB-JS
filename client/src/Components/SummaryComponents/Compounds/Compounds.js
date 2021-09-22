@@ -29,7 +29,14 @@ const table_columns = [
   {
     Header: 'PubChem',
     accessor: 'pubchem',
-    Cell: (row) => (<a href={`${PUBCHEM_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+    Cell: (item) => {
+      let pubchem = item.cell.row.original.pubchem;
+      return(pubchem.map((id, i) => (
+        <span key={i}>
+          <a href={`${PUBCHEM_LINK}${id}`}>{id}</a>{ i + 1 < pubchem.length ? ', ' : ''}
+        </span>)
+      ));
+    }
   },
   {
     Header: 'ChEMBL',
@@ -52,8 +59,9 @@ const getTableData = (data) => {
     table_data = data.compounds.map((value) => {
       const { name, annotation, id, uid } = value;
       const {
-        smiles, inchikey, pubchem, fda_status, chembl
+        smiles, inchikey, fda_status, chembl
       } = annotation;
+      const pubchem = annotation.pubchem ? annotation.pubchem.split("///") : null;
       return {
         id,
         name,
