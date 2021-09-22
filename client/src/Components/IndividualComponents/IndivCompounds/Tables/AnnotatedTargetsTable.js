@@ -43,6 +43,13 @@ const AnnotatedTargetsTable = (props) => {
         {
             Header: 'Gene ID',
             accessor: 'gene_name',
+            Cell: (item) => {
+                return item.value.startsWith("ENSG") ?
+                    <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.value}`} target="_blank">
+                        {item.value}
+                    </a>
+                    : <span>{item.value}</span>
+            }
         }
     ];
 
@@ -79,8 +86,8 @@ const AnnotatedTargetsTable = (props) => {
                                 </p>
                             </h4>
                             {
-                                tableData.data.length > 0 ? 
-                                    tableData.ready && 
+                                tableData.data.length > 0 ?
+                                    tableData.ready &&
                                     <React.Fragment>
                                         <div className='download-button'>
                                             <DownloadButton
