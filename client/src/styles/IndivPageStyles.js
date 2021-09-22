@@ -65,6 +65,15 @@ const StyledIndivPage = styled.div`
             margin-top: 0px;
             margin-bottom: 35px;
           }
+          h7 {
+            text-align: left;
+            font-family: Raleway, sans-serif;
+            margin-top: 15px;
+            margin-bottom: 35px;
+            font-weight: bold;
+            color: ${colors.gray_header};
+            font-size: clamp(18px, calc(1vw + 2px), 22px);
+          }
       }
       }
     }

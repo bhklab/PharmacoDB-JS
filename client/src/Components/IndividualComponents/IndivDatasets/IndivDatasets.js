@@ -17,7 +17,7 @@ import StyledWrapper from '../../../styles/utils';
 const SIDE_LINKS = [
   { label: 'Dataset Information', name: 'info' },
   { label: 'Resources', name: 'resources' },
-  { label: 'Data types', name: 'datatype' },
+  { label: 'Data Types', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
   { label: 'Summary Cell Lines', name: 'cellLines' },
   { label: 'Summary Compounds', name: 'compounds' },
