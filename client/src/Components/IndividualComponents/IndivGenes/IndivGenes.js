@@ -152,7 +152,6 @@ const IndivGenes = (props) => {
                           display === 'synonyms' &&
                           <React.Fragment>
                             <Element className="section" name="synonyms">
-                              {/*<div className='section-title'>Synonyms</div>*/}
                               <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
                             </Element>
                             {
@@ -160,7 +159,6 @@ const IndivGenes = (props) => {
                                   <Description gene={gene.data} />
                                   : ''
                             }
-
                           </React.Fragment>
                         }
                         {
