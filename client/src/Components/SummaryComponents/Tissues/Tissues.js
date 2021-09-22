@@ -171,7 +171,7 @@ const Tissues = () => {
           cellLineQueryError || tissuesQueryError ? <Error />
           :
           <React.Fragment>
-            <h2 className="new-section"> Relative Percentage of Cell lines per Tissue in PharmacoDB </h2>
+            <h2 className="new-section">Relative Percentage of Cell lines per Tissue</h2>
             <StyledTissuePieChart>
               <PieChart className='tissue-pie-chart' data={pieData} onClick={onPieChartClick} />
               <div className='tissue-cells-list-container'>

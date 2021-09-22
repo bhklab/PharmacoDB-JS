@@ -15,14 +15,14 @@ const config = {
   displayModeBar: false,
 };
 
-const PieChart = ({ className, id, data, height=700, width=900, onClick }) => (
+const PieChart = ({ className, id, data, height=700, onClick }) => (
   <StyledPieChart className={className} clickable={onClick} >
     <Plot 
       divId={id}
       data={data} 
       layout={{
         height: height,
-        // width: width,
+        // width: 900,
         autosize: true,
         showlegend: window.matchMedia('(min-width: 800px)').matches,
         legend: {
