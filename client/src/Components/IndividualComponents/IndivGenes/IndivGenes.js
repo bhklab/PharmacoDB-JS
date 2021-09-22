@@ -155,7 +155,12 @@ const IndivGenes = (props) => {
                               {/*<div className='section-title'>Synonyms</div>*/}
                               <Table columns={SYNONYM_COLUMNS} data={gene.data.synonyms} disablePagination />
                             </Element>
-                            <Description gene={gene.data} />
+                            {
+                              gene.data.name.startsWith("ENSG") ?
+                                  <Description gene={gene.data} />
+                                  : ''
+                            }
+
                           </React.Fragment>
                         }
                         {

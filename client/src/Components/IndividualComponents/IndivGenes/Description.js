@@ -72,7 +72,7 @@ const Description = (props) => {
                 .then(
                     (result) => {
                         setIsLoaded(true);
-                        setGeneDes(result);
+                        setGeneDes(result.description? result: '');
                     },
                     (error) => {
                         setIsLoaded(true);
@@ -84,7 +84,8 @@ const Description = (props) => {
                 .then(
                     (result) => {
                         setLoaded(true);
-                        setGeneSyn(result.filter(ref => ref.synonyms.length ).map(ref => ref.synonyms));
+                        console.log(result)
+                        setGeneSyn( result[0]? result.filter(ref => ref.synonyms.length).map(ref => ref.synonyms):[]);
                     },
                     (error) => {
                         setLoaded(true);
@@ -93,7 +94,6 @@ const Description = (props) => {
                 )
         }
     }, [gene.annotation])
-    console.log(Object.keys(geneDes).length, geneDes, geneSyn.length, geneSyn)
     return (
         <React.Fragment>
             {
