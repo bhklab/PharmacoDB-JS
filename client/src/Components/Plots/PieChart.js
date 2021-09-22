@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const StyledPieChart = styled.div`
+  width: 100%;
   .slice {
     cursor: ${(props) => props.clickable ? 'pointer' : ''};
   }
@@ -14,14 +15,14 @@ const config = {
   displayModeBar: false,
 };
 
-const PieChart = ({ id, data, height=700, onClick }) => (
-  <StyledPieChart clickable={onClick} >
+const PieChart = ({ className, id, data, height=700, width=900, onClick }) => (
+  <StyledPieChart className={className} clickable={onClick} >
     <Plot 
       divId={id}
       data={data} 
       layout={{
         height: height,
-        // width: 900,
+        // width: width,
         autosize: true,
         showlegend: window.matchMedia('(min-width: 800px)').matches,
         legend: {

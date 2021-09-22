@@ -126,7 +126,7 @@ const TableStyles = styled.div`
     .search-container {
       display: flex;
       align-items: center;
-      width: 70%;
+      width: ${props => props.showPageNumSelect ? '70%' : '100%'};
     }
 
     .search {
@@ -134,7 +134,7 @@ const TableStyles = styled.div`
       border: 1px solid ${colors.white_smoke};
       border-radius: 20px;
       padding: 5px 20px 5px 25px;
-      width: 30%;
+      width: ${props => props.showPageNumSelect ? '30%' : '100%'};
       margin-left: 10px;
     }
 
@@ -143,7 +143,7 @@ const TableStyles = styled.div`
     }
     
     input[type=text]:focus {
-      width: 60%;
+      width: ${props => props.showPageNumSelect ? '60%' : '100%'};
       outline: none !important;
       border: 2px solid ${colors.pale_teal};
     }
