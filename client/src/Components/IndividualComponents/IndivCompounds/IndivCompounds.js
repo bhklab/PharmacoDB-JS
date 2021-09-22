@@ -105,11 +105,19 @@ const formatAnnotationData = (data) => {
             annotationData.identifiers.push({ db: 'InChiKey', identifier: annotation.inchikey, });
         }
         if (annotation.pubchem && !(annotation.pubchem.match(/na|null/i))) {
+            let pubchemIds = annotation.pubchem.split('///');
             annotationData.externalLinks.push(
                 {
                     db: 'PubChem',
-                    identifier: <a href={`${PUBCHEM}${annotation.pubchem}`} target="_blank" rel="noopener noreferrer">{annotation.pubchem}</a>,
-                });
+                    identifier: <span>{
+                        pubchemIds.map((item, i) => (
+                            <span key={i}>
+                                <a href={`${PUBCHEM}${item}`} target="_blank" rel="noopener noreferrer">{item}</a>{i < pubchemIds.length - 1 ? ', ' : ''}
+                            </span>
+                        ))
+                    }</span>,
+                }
+            );
         }
         if (annotation.chembl && !(annotation.chembl.match(/na|null/i))) {
             annotationData.externalLinks.push(
