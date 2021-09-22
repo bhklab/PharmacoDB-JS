@@ -124,6 +124,8 @@ const gene_compound_target = async (args) => {
 
         const targets = await query;
 
+        console.log(targets);
+
         targets.forEach((target, i) => {
             const {
                 target_id,

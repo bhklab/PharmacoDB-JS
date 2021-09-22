@@ -14,7 +14,7 @@ const parseTableData = (data) => {
         data: [],
         ready: false,
     };
-    if (typeof data !== 'undefined') {
+    if (typeof data !== 'undefined' && data.targets) {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
             target: item.name,
