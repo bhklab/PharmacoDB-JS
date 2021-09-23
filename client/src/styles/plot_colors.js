@@ -22,7 +22,11 @@ const plotColors = {
         ['#b372ff', '#c18bff', '#cea5ff', '#dcbeff']
     ],
     default: ['#525252', "#7A7A7A", "#A3A3A3", "#CCCCCC"],
-    unique24: ['#9acd32', '#000080', '#483d8b', '#808000', '#006400', '#8b4513', '#2f4f4f', '#dc143c', '#00ff7f', '#8a2be2', '#00ff00', '#ffff00', '#ffa500', '#ff4500', '#48d1cc', '#8b008b', '#ee82ee', '#ffa07a', '#ff1493', '#f0e68c', '#db7093', '#1e90ff', '#ff00ff', '#00bfff']
+    unique24: ['#9acd32', '#000080', '#483d8b', '#808000', '#006400', '#8b4513', '#2f4f4f', '#dc143c', '#00ff7f', '#8a2be2', '#00ff00', '#ffff00', '#ffa500', '#ff4500', '#48d1cc', '#8b008b', '#ee82ee', '#ffa07a', '#ff1493', '#f0e68c', '#db7093', '#1e90ff', '#ff00ff', '#00bfff'],
+    tissues: [
+        '#CAD2C5', '#84a98c', '#52796F', '#354F52', '#2F3E46', '#284B63',
+        '#2F4858', '#1B263B', '#415A77', '#778DA9', '#E0E1DD', '#6F523B',
+    ]
 };
 
 export default plotColors;

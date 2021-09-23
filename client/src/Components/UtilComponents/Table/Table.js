@@ -42,7 +42,7 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} defaultSort - specifies which column to be soted by default.
  * @param {function} highlightRows - If present, row rendering will use this function to highlight rows in specified color. (Usage example in MolecularFeaturesTable.js)
  */
-const Table = ({ columns, data, disablePagination = false, defaultSort, highlightRows=undefined, showHeader= true }) => {
+const Table = ({ columns, data, disablePagination = false, defaultSort, highlightRows=undefined, showPageNumSelect = true, showHeader= true }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -134,7 +134,7 @@ const Table = ({ columns, data, disablePagination = false, defaultSort, highligh
 
   // Render the UI for your table
   return (
-    <TableStyles>
+    <TableStyles showPageNumSelect={showPageNumSelect}>
       {!disablePagination ? (
         <div className="top-settings">
           <GlobalFilter
@@ -142,26 +142,29 @@ const Table = ({ columns, data, disablePagination = false, defaultSort, highligh
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
           />
-          <div className="show-page">
-            Show
-            {' '}
-            {' '}
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
-              }}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
-            {' '}
-            {' '}
-            entries per page
-          </div>
+          {
+            showPageNumSelect &&
+            <div className="show-page">
+              Show
+              {' '}
+              {' '}
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                }}
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+              {' '}
+              {' '}
+              entries per page
+            </div>
+          }
         </div>
 
       ) : null}

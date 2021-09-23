@@ -334,13 +334,14 @@ const useExpIntersection = () => {
     };
 
     /**
-     * Modify the plot traces on curve click.
+     * Modifies the plot traces on curve click (highlighted or unhighlighted)
+     * Check/uncheck highlighted/unhighlighted cell line checkbox.
      * Used in tissue vs compound page.
      * @param {*} e 
      */
     const onCurveClick = (e) => {
-        let cell = experiments.find(item => item.id === e.points[0].data.id).cell_line.name;
-        let expIds = experiments.filter(item => item.cell_line.name === cell).map(item => item.id);
+        let selectedCell = experiments.find(item => item.id === e.points[0].data.id).cell_line.name;
+        let expIds = experiments.filter(item => item.cell_line.name === selectedCell).map(item => item.id);
         let newTraces = plotData.traces.map(item => {
             if (item.curve && expIds.includes(item.id)) {
                 let newItem = { ...item };
@@ -349,6 +350,17 @@ const useExpIntersection = () => {
             }
             return item;
         });
+        // Check/uncheck cell line checkbox if a seleted cell line that belongs to clicked experiment curve.
+        let newCellLines = cellLines.map(item => {
+            if(item.name === selectedCell){
+                return {
+                    ...item,
+                    checked: !item.checked
+                }
+            }
+            return item;
+        });
+        setCellLines(newCellLines);
         setPlotData({
             ...plotData,
             traces: newTraces

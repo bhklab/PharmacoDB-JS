@@ -34,7 +34,7 @@ const CellLineSummaryTable = (props) => {
 
     const { loading } = useQuery(getDatasetTestedCellsQuery, {
         variables: { datasetId: dataset.id },
-        fetchPolicy: "network-only",
+        fetchPolicy: "cache-first",
         onCompleted: (res) => {
             let data = res.dataset_type[0];
             data = { id : data.dataset.id, name: data.dataset.name, cells_tested : data.cells_tested}

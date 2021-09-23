@@ -14,7 +14,7 @@ const parseTableData = (data) => {
         data: [],
         ready: false,
     };
-    if (typeof data !== 'undefined') {
+    if (typeof data !== 'undefined' && data.targets) {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
             target: item.name,
@@ -43,6 +43,13 @@ const AnnotatedTargetsTable = (props) => {
         {
             Header: 'Gene ID',
             accessor: 'gene_name',
+            Cell: (item) => {
+                return item.value.startsWith("ENSG") ?
+                    <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.value}`} target="_blank">
+                        {item.value}
+                    </a>
+                    : <span>{item.value}</span>
+            }
         }
     ];
 
@@ -55,8 +62,6 @@ const AnnotatedTargetsTable = (props) => {
     const { loading } = useQuery(getGeneCompoundTarget, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            console.log(data);
-            console.log(parseTableData(data.gene_compound_target))
             setTableData(parseTableData(data.gene_compound_target));
         },
         onError: (err) => {
@@ -79,8 +84,8 @@ const AnnotatedTargetsTable = (props) => {
                                 </p>
                             </h4>
                             {
-                                tableData.data.length > 0 ? 
-                                    tableData.ready && 
+                                tableData.data.length > 0 ?
+                                    tableData.ready &&
                                     <React.Fragment>
                                         <div className='download-button'>
                                             <DownloadButton

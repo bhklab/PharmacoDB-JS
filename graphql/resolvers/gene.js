@@ -5,7 +5,7 @@ const { retrieveFields } = require('../../helpers/queryHelpers');
 
 
 /**
- * 
+ *
  * @param {string} gene - gene name
  * @returns {number} - gene id
  */
@@ -78,7 +78,7 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
         // add a join to grab the gene annotations in case it's queried by the user.
         if (listOfFields.includes('annotation')) query = query.join('gene_annotation', 'gene.id', 'gene_annotation.gene_id');
 
-        // if the user has not queried to get all the genes, 
+        // if the user has not queried to get all the genes,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
             query.limit(limit).offset(offset);
@@ -89,7 +89,7 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
 
         // if includes annotation then order by symbol.
         if (listOfFields.includes('annotation')) {
-            query.orderBy('symbol', 'desc');
+            query.orderBy('symbol', 'asc');
         }
 
         // execute the query.

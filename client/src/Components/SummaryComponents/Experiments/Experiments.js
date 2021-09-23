@@ -66,7 +66,7 @@ const renderComponent = (loading, error, data) => {
         <AverageDatasetBarPlot
             data={experimentsPerCell}
             xaxis="Experiments"
-            title="Average experiments per cell line in each data set"
+            title="Average experiments per cell line in each dataset"
             logScale={true}
         />
       </PlotsWrapper>

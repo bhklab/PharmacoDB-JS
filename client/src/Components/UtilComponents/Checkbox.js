@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
@@ -62,7 +62,11 @@ const StyledCheckbox = styled.label`
         font-weight: bold;
     }
 `;
-
+/**
+ * Custom, styled checkbox component.
+ * @param {*} props 
+ * @returns 
+ */
 const Checkbox = (props) => {
     const { value, label, checked, color, onChange, disabled } = props;
     const [isChecked, setIsChecked] = useState(checked);
@@ -71,6 +75,12 @@ const Checkbox = (props) => {
         setIsChecked(!isChecked);
         onChange(e);
     };
+
+    // Auto-check/uncheck the checkbox when props.checked status is changed by external actions (dose response curve click.)
+    // This applies in Tissue vs Compound page where a dose response curves that shares a cell line can be highlighted by being clicked.
+    useEffect(() => {
+        setIsChecked(checked);
+    }, [checked])
 
     return(
         <StyledCheckbox color={color}>
