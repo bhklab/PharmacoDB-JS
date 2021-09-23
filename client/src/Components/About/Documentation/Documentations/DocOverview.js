@@ -17,9 +17,7 @@ const DocOverview = () => {
                 <h2>Welcome to PharmacoDB!</h2><br/>
                 This web-application is a valuable tool in maximizing the usefulness of pharmacogenomics datasets for comparing and assessing drug response phenotypes of cancer models.
             </p>
-            <p>
-                PharmacoDB integrates multiple cancer pharmacogenomics datasets profiling approved and investigational drugs across cell lines from diverse tissue types. The web-application enables users to efficiently navigate across datasets, view and compare drug dose-response data for a specific drug-cell line pair.
-            </p>
+            <p>PharmacoDB integrates multiple cancer pharmacogenomics datasets profiling approved and investigational drugs across cell lines from diverse tissue types. The web-application enables users to efficiently navigate across datasets, view and compare drug dose-response data for a specific drug-cell line pair.</p>
         </div>
     );
 }

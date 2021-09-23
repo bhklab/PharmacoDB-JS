@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
-import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
+import { StyledDocPage, StyledSidebarList } from '../../../styles/DocumentationStyles';
 import StyledWrapper from '../../../styles/utils';
 
 import DocOverview from './Documentations/DocOverview';
@@ -74,7 +74,7 @@ const DocDescription = () => {
     );
 
     return (
-        <StyledIndivPage className="documentation">
+        <StyledDocPage className="documentation">
             <div className='heading'>
                 <span className='title'>{SIDE_LINKS.filter(item=> item.name === display)[0].label}</span>
             </div>
@@ -159,7 +159,7 @@ const DocDescription = () => {
                     </div>
                 </div>
             </div>
-        </StyledIndivPage>
+        </StyledDocPage>
     );
 };
 

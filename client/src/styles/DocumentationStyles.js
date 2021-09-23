@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from './colors';
 
-const StyledIndivPage = styled.div`
+const StyledDocPage = styled.div`
   .heading {
     width: 100%;
     margin-top: 10px;
@@ -45,7 +45,7 @@ const StyledIndivPage = styled.div`
   }
 
   .container {
-    width: 100%;
+    width: 65%;
     margin-top: 10px;
     margin-left: 25px;
     color: ${colors.dark_gray_text};
@@ -58,6 +58,23 @@ const StyledIndivPage = styled.div`
     .content{
       // width: calc(100% - (5vw + 4em) - 2em);
       width: 100%;
+      .section{
+        .documentation{
+          img {
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 35px;
+          }
+          h7 {
+            text-align: left;
+            font-family: Raleway, sans-serif;
+            font-weight: semibold;
+            color: ${colors.gray_header};
+            line-height: 40px;
+            font-size: clamp(20px, calc(1vw + 2px), 24px);
+          }
+      }
+      }
     }
   }
   .section {
@@ -95,7 +112,7 @@ const StyledIndivPage = styled.div`
     text-align: left;
     margin-top: 15px;
     margin-bottom: 5px;
-    color: ${colors.silver};
+    color: ${colors.dark_teal_heading};
     font-size: clamp(12px, calc(1vw + 2px), 15px);;
   }
   
@@ -160,7 +177,7 @@ const StyledSidebar = styled.div`
   .link {
     display:block;
     color: ${colors.dark_teal_heading};
-    border-right: 5px solid ${colors.light_blue_header};
+    border-left: 5px solid ${colors.light_blue_header};
     font-size: calc(0.5vw + 0.7em);
     font-family: 'Overpass', sans-serif;
     text-align: right;
@@ -170,12 +187,12 @@ const StyledSidebar = styled.div`
   }
   .link:hover {
     color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
+    border-left: 5px solid ${colors.dark_pink_highlight};
     transition: all 0.25s ease-out 0s;
   }
   .selected {
     color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
+    border-left: 5px solid ${colors.dark_pink_highlight};
   }
   // hide sidebar when too small
   @media only screen and (max-width: 765px) {
@@ -195,10 +212,10 @@ const StyledSidebarList = styled.ul`
       border: none;
       outline: none;
       cursor: pointer;
-      text-align: right;
+      text-align: left;
       padding-top: 15px;
       padding-bottom: 15px;
-      padding-right: 15px;
+      padding-left: 15px;
       color: ${colors.dark_teal_heading};
       font-size: clamp(12px, calc(1vw + 2px), 16px);
       font-family: Raleway, sans-serif;
@@ -212,7 +229,7 @@ const StyledSidebarList = styled.ul`
   .selected {
     button {
       color: ${colors.dark_pink_highlight};
-      border-right: 3px solid ${colors.dark_pink_highlight};
+      border-left: 3px solid ${colors.dark_pink_highlight};
     }
   }
 
@@ -224,7 +241,7 @@ const StyledSidebarList = styled.ul`
       button {
         padding-top: 5px;
         padding-bottom: 5px;
-        padding-right: 10px;
+        padding-left: 10px;
       }
     }
     .selected {
@@ -236,7 +253,7 @@ const StyledSidebarList = styled.ul`
 `;
 
 export {
-  StyledIndivPage,
+  StyledDocPage,
   StyledIndivPageTitle,
   StyledSidebar,
   StyledSidebarList
