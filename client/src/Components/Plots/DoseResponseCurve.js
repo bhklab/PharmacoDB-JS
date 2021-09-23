@@ -36,8 +36,8 @@ const DoseResponseCurve = (props) => {
                     showline: true,
                     fixedrange: true,
                     range: [
-                        showScatter ? plotData.yMin : 0, 
-                        showScatter ? plotData.yMax + 5 : 100
+                        showScatter ? (plotData.yMin >=0 ? plotData.yMin >=0 : 0) : 0, 
+                        showScatter ? (plotData.yMax + 5 >= 100 ? plotData.yMax + 5 : 100) : 100
                     ]
                 },
                 hovermode: "closest",
