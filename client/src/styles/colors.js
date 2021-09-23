@@ -18,4 +18,5 @@ export default {
   pale_tint: '#F2F9F8',
   silver: '#C0C0C0',
   light_pink: '#fbf5f6',
+  gray_header: '#afb3b3'
 };

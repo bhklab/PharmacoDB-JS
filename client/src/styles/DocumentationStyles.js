@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import colors from './colors';
 
-const StyledIndivPage = styled.div`
+const StyledDocPage = styled.div`
   .heading {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     color: ${colors.dark_teal_heading};
 
@@ -16,26 +16,9 @@ const StyledIndivPage = styled.div`
       font-size: clamp(32px, calc(2vw + 10px), 44px);
       font-weight: bold;
       margin-left: 20%;
-      margin-top: 20px;
-      margin-bottom: 20px;
       white-space: normal;
       line-height: 40px;
-      .link {
-        color: ${colors.dark_teal_heading};
-      }
     }
-
-    .attributes {
-      min-width: 200px;
-      margin-left: 10px;
-      .value {
-        margin-left: 5px;
-      }
-      .highlight {
-        color: ${colors.dark_pink_highlight};
-      }
-    }
-
   };
 
   .wrapper {
@@ -45,64 +28,84 @@ const StyledIndivPage = styled.div`
   }
 
   .container {
-    width: 100%;
+    width: 75%;
     margin-top: 10px;
     margin-left: 25px;
     color: ${colors.dark_gray_text};
     font-size: calc(1vw + 9px);
     
     display:flex;
-    align-items: flex-end;
+    align-items: flex-start;
     flex-direction: column;
-    
-    .content{
-      // width: calc(100% - (5vw + 4em) - 2em);
+    .heading {
       width: 100%;
-    }
-  }
-  .section {
-    width: 100%;
-    margin-bottom: 50px;
-    text-align: justify;
-    .section-title {
-      font-size: clamp(18px, calc(1vw + 3px), 28px);
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: ${colors.dark_teal_heading};
-    }
-    p {
-      font-size: clamp(14px, calc(1vw + 2px), 18px);
-    }
-    .download-button {
+      margin-top: 10px;
+      margin-bottom: 30px;
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 5px;
-    }
-    .text {
-      font-size: clamp(12px, calc(1vw + 1px), 16px);
-    }
-  }
-  .temp {
-    height: 500px;
-  }
-  
-  h3, h4 {
-    text-align: left;
-    font-family: Raleway, sans-serif;
-  }
+      justify-content: center;
+      align-items: center;
+      color: ${colors.dark_teal_heading};
 
-  h6 {
-    text-align: left;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: ${colors.silver};
-    font-size: clamp(12px, calc(1vw + 2px), 15px);;
-  }
-  
-  img {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    align-items: center;
+      .title {
+        color: ${colors.dark_pink_highlight};
+        font-size: clamp(32px, calc(2vw + 10px), 44px);
+        font-weight: bold;
+        margin-left: 20%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        white-space: normal;
+        line-height: 40px;
+      }
+    };
+    .section{
+      width: 100%;
+      margin-bottom: 50px;
+      text-align: justify;
+      p {
+        font-size: clamp(14px, calc(1vw + 2px), 18px);
+      }
+      .text {
+        font-size: clamp(12px, calc(1vw + 1px), 16px);
+      }
+      .documentation{
+        p{
+          margin-bottom: 20px;
+        }
+        .center{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          img {
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 25px;
+          }
+        }
+        h2 {
+          text-align: center;
+          font-family: Raleway, sans-serif;
+          font-weight: normal;
+          font-size: clamp(28px, calc(1vw + 2px), 36px);
+        }
+        h6 {
+          text-align: left;
+          //margin-top: 15px;
+          //margin-bottom: 5px;
+          color: ${colors.dark_teal_heading};
+          font-size: clamp(12px, calc(1vw + 2px), 15px);;
+        }
+        h7 {
+          text-align: left;
+          font-family: Raleway, sans-serif;
+          font-weight: bold;
+          color: ${colors.dark_teal_heading};
+          line-height: 46px;
+          margin-bottom: 10px;
+          font-size: clamp(18px, calc(1vw + 2px), 28px);
+        }
+      }
+    }
   }
 
   // full size container when too small
@@ -122,22 +125,13 @@ const StyledIndivPage = styled.div`
       width: 100% !important;
     }
   }
-
-  .plot {
-    h4, h5 {
-      text-align: center;
-      margin-top: 15px;
-      color: ${colors.dark_teal_heading};
-      font-size: clamp(14px, calc(1vw + 2px), 18px);
-    }
-  }
 `;
 
 /**
  * Used to reduce text size for a long individual page title.
  * Used in IndivCompounds.js to accommodate long compound names.
  */
-const StyledIndivPageTitle = styled.span`
+const StyledDocPageTitle = styled.span`
   color: ${colors.dark_pink_highlight};
   font-size: ${props => props.smalltxt ? `clamp(14px, calc(1vw + 10px), 20px)` : 'clamp(32px, calc(2vw + 10px), 44px)'};
   font-weight: bold;
@@ -152,7 +146,7 @@ const StyledIndivPageTitle = styled.span`
   }
 `;
 
-const StyledSidebar = styled.div`
+const StyledDocSidebar = styled.div`
   width: calc(5vw + 4em);
   margin-top: 5vh;
   padding: 5px 0px;
@@ -160,7 +154,7 @@ const StyledSidebar = styled.div`
   .link {
     display:block;
     color: ${colors.dark_teal_heading};
-    border-right: 5px solid ${colors.light_blue_header};
+    border-left: 5px solid ${colors.light_blue_header};
     font-size: calc(0.5vw + 0.7em);
     font-family: 'Overpass', sans-serif;
     text-align: right;
@@ -170,12 +164,12 @@ const StyledSidebar = styled.div`
   }
   .link:hover {
     color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
+    border-left: 5px solid ${colors.dark_pink_highlight};
     transition: all 0.25s ease-out 0s;
   }
   .selected {
     color: ${colors.dark_pink_highlight};
-    border-right: 5px solid ${colors.dark_pink_highlight};
+    border-left: 5px solid ${colors.dark_pink_highlight};
   }
   // hide sidebar when too small
   @media only screen and (max-width: 765px) {
@@ -183,8 +177,8 @@ const StyledSidebar = styled.div`
   }
 `;
 
-const StyledSidebarList = styled.ul`
-  width: 25%;
+const StyledDocSidebarList = styled.ul`
+  width:18%;
   padding: 5px 0px;
 
   list-style-type: none;
@@ -195,10 +189,10 @@ const StyledSidebarList = styled.ul`
       border: none;
       outline: none;
       cursor: pointer;
-      text-align: right;
+      text-align: left;
       padding-top: 15px;
       padding-bottom: 15px;
-      padding-right: 15px;
+      padding-left: 15px;
       color: ${colors.dark_teal_heading};
       font-size: clamp(12px, calc(1vw + 2px), 16px);
       font-family: Raleway, sans-serif;
@@ -212,7 +206,7 @@ const StyledSidebarList = styled.ul`
   .selected {
     button {
       color: ${colors.dark_pink_highlight};
-      border-right: 3px solid ${colors.dark_pink_highlight};
+      border-left: 3px solid ${colors.dark_pink_highlight};
     }
   }
 
@@ -224,7 +218,7 @@ const StyledSidebarList = styled.ul`
       button {
         padding-top: 5px;
         padding-bottom: 5px;
-        padding-right: 10px;
+        padding-left: 10px;
       }
     }
     .selected {
@@ -236,8 +230,8 @@ const StyledSidebarList = styled.ul`
 `;
 
 export {
-  StyledIndivPage,
-  StyledIndivPageTitle,
-  StyledSidebar,
-  StyledSidebarList
+  StyledDocPage,
+  StyledDocPageTitle,
+  StyledDocSidebar,
+  StyledDocSidebarList
 };
