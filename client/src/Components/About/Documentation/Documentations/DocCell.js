@@ -32,7 +32,7 @@ const DocCell = () => {
             <p>Each cell line page has a sidebar including Cell Line data, Bar Plot, AAC (Compounds), Drugs Summary, and Molecular Profiling.</p>
             <h7>Cell Line Data</h7>
             <p>Cell Line Data page displays information about the synonyms in each dataset that used the cell line of query, the diseases it was used to model, and its Cellosaurus name. Clicking on a dataset name, disease name or Cellosaurus link will direct you to the corresponding page for that instance.</p>
-            <img width="650px" alt="not finalized"  src={doseImg} title=" Cell Line Data"/><br/>
+            {/*<img width="650px" alt="not finalized"  src={doseImg} title=" Cell Line Data"/><br/>*/}
             <h7>Bar Plot</h7>
             <p>Bar Plot page shows a plot comparing the total number of drugs tested on the cell line in each PharmacoDB dataset. Hovering over each bar shows the exact number of compounds.</p>
             <img width="650px" alt="individual cell line - Compounds tested"  src={cellIndBar} title="Tested compounds"/><br/>
@@ -44,7 +44,7 @@ const DocCell = () => {
             <img width="650px" alt="individual cell line - Compound tested with Hela "  src={cellSummaryList} title="Compound tested with Hela "/><br/>
             <h7>Molecular Profiling</h7>
             <p>Molecular Profiling page shows a table summarizing the available molecular profiling in PharmacoGx for the cell line.</p>
-            <img width="650px" alt="individual cell line -  Molecular Profiling"  src={doseImg} title="Molecular Profiling"/>
+            {/*<img width="650px" alt="individual cell line -  Molecular Profiling"  src={doseImg} title="Molecular Profiling"/>*/}
         </div>
     );
 }

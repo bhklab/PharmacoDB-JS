@@ -22,19 +22,19 @@ const DocDrug = () => {
     return(
         <div className='documentation'>
             <p>Each drug included in PharmacoDB has a  webpage page associated with it. These pages can be accessed by searching for a drug through the search bar, or by clicking on the compounds link at the bottom of the homepage or from the Data drop down menu on the top right side of the homepage.</p>
-            <img width="600px" alt="Paclitaxel on search bar or home page bottom toolbar" src={doseImg} title="Searching compound"/>
-            <p>Or</p>
+            {/*<img width="600px" alt="Paclitaxel on search bar or home page bottom toolbar" src={doseImg} title="Searching compound"/>*/}
+            {/*<p>Or</p>*/}
             <img width="600px" alt="Highlighted compound on navigation bar" src={homeCompound} title="Compound"/>
             <p>Compounds link directs you to a page starting with a bar plot showing the number of drugs tested in each dataset included in PharmacoDB. Hovering over each bar shows the exact number of drugs.</p>
             <img width="600px" alt="Compounds tested in each data set" src={drugSummaryBar} title="Tested compounds"/>
             <p>The page also contains a table showing the name, SMILES, InChIKeys, PubChem name, and ChEMBL and FDA status of all the drugs included in the PharmacoDB. Clicking on each drug name will take you to the corresponding drug page.</p>
-            <img width="600px" alt="compound summary page- list of compounds" src={doseImg} title="Compounds"/>
+            {/*<img width="600px" alt="compound summary page- list of compounds" src={doseImg} title="Compounds"/>*/}
             <p>Each drug page has a sidebar including Synonyms and IDS, Annotated Targets, Bar Plots, AAC (Cell Lines), AAC (Tissues), Cell Line Summary, Tissue Summary, and Molecular Features.</p>
             <h7>Synonyms and IDS</h7>
             <p>Synonyms and IDS page displays information about the datasets which performed experiments with the drug of query as well as the name each gave to it. External identifiers such as SMILES, InChiKey and PubChem ID are also available on this page. Clicking on PubChem ID will direct you to the corresponding page on PubChem.</p>
             <h7>Annotated Targets</h7>
             <p>Annotated Targets page shows a table which includes the name of drug targets, genes associated with the targets, and Ensembl IDs of the genes.</p>
-            <img width="600px" alt="compound indiv page- Annotated targets" src={doseImg} title="Annotated targets"/><br/>
+            {/*<img width="600px" alt="compound indiv page- Annotated targets" src={doseImg} title="Annotated targets"/><br/>*/}
             <h7>Bar Plots</h7>
             <p>Bar Plots page shows bar plots comparing the number of cells and tissues tested on with that drug in each PharmacoDB dataset. Hovering over each bar shows the exact number of cells/tissues for that dataset.</p>
             <img width="600px" alt="Bar plot of Paclitaxel associated tests" src={drugIndBar} title="Tests"/><br/>

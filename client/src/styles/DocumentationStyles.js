@@ -7,7 +7,7 @@ const StyledDocPage = styled.div`
     margin-top: 10px;
     margin-bottom: 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     color: ${colors.dark_teal_heading};
 
@@ -16,26 +16,9 @@ const StyledDocPage = styled.div`
       font-size: clamp(32px, calc(2vw + 10px), 44px);
       font-weight: bold;
       margin-left: 20%;
-      margin-top: 20px;
-      margin-bottom: 20px;
       white-space: normal;
       line-height: 40px;
-      .link {
-        color: ${colors.dark_teal_heading};
-      }
     }
-
-    .attributes {
-      min-width: 200px;
-      margin-left: 10px;
-      .value {
-        margin-left: 5px;
-      }
-      .highlight {
-        color: ${colors.dark_pink_highlight};
-      }
-    }
-
   };
 
   .wrapper {
@@ -45,81 +28,83 @@ const StyledDocPage = styled.div`
   }
 
   .container {
-    width: 65%;
+    width: 75%;
     margin-top: 10px;
     margin-left: 25px;
     color: ${colors.dark_gray_text};
     font-size: calc(1vw + 9px);
     
     display:flex;
-    align-items: flex-end;
+    align-items: flex-start;
     flex-direction: column;
-    
-    .content{
-      // width: calc(100% - (5vw + 4em) - 2em);
+    .heading {
       width: 100%;
-      .section{
-        .documentation{
-          img {
-            height: auto;
-            margin-top: 0px;
-            margin-bottom: 35px;
-          }
-          h7 {
-            text-align: left;
-            font-family: Raleway, sans-serif;
-            font-weight: semibold;
-            color: ${colors.gray_header};
-            line-height: 40px;
-            font-size: clamp(20px, calc(1vw + 2px), 24px);
-          }
-      }
-      }
-    }
-  }
-  .section {
-    width: 100%;
-    margin-bottom: 50px;
-    text-align: justify;
-    .section-title {
-      font-size: clamp(18px, calc(1vw + 3px), 28px);
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: ${colors.dark_teal_heading};
-    }
-    p {
-      font-size: clamp(14px, calc(1vw + 2px), 18px);
-    }
-    .download-button {
+      margin-top: 10px;
+      margin-bottom: 30px;
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 5px;
-    }
-    .text {
-      font-size: clamp(12px, calc(1vw + 1px), 16px);
-    }
-  }
-  .temp {
-    height: 500px;
-  }
-  
-  h3, h4 {
-    text-align: left;
-    font-family: Raleway, sans-serif;
-  }
+      justify-content: center;
+      align-items: center;
+      color: ${colors.dark_teal_heading};
 
-  h6 {
-    text-align: left;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: ${colors.dark_teal_heading};
-    font-size: clamp(12px, calc(1vw + 2px), 15px);;
-  }
-  
-  img {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    align-items: center;
+      .title {
+        color: ${colors.dark_pink_highlight};
+        font-size: clamp(32px, calc(2vw + 10px), 44px);
+        font-weight: bold;
+        margin-left: 20%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        white-space: normal;
+        line-height: 40px;
+      }
+    };
+    .section{
+      width: 100%;
+      margin-bottom: 50px;
+      text-align: justify;
+      // .section-title {
+      //   font-size: clamp(18px, calc(1vw + 3px), 28px);
+      //   font-weight: bold;
+      //   margin-bottom: 10px;
+      //   color: ${colors.dark_teal_heading};
+      // }
+      p {
+        font-size: clamp(14px, calc(1vw + 2px), 18px);
+      }
+      .text {
+        font-size: clamp(12px, calc(1vw + 1px), 16px);
+      }
+      .documentation{
+        p{
+          margin-bottom: 20px;
+        }
+        img {
+          height: auto;
+          margin-top: 0px;
+          margin-bottom: 35px;
+        }
+        h2 {
+          text-align: center;
+          font-family: Raleway, sans-serif;
+          font-weight: normal;
+          font-size: clamp(28px, calc(1vw + 2px), 36px);
+        }
+        h6 {
+          text-align: left;
+          margin-top: 15px;
+          margin-bottom: 5px;
+          color: ${colors.dark_teal_heading};
+          font-size: clamp(12px, calc(1vw + 2px), 15px);;
+        }
+        h7 {
+          text-align: left;
+          font-family: Raleway, sans-serif;
+          font-weight: bold;
+          color: ${colors.dark_teal_heading};
+          line-height: 46px;
+          font-size: clamp(18px, calc(1vw + 2px), 28px);
+        }
+      }
+    }
   }
 
   // full size container when too small
@@ -139,22 +124,13 @@ const StyledDocPage = styled.div`
       width: 100% !important;
     }
   }
-
-  .plot {
-    h4, h5 {
-      text-align: center;
-      margin-top: 15px;
-      color: ${colors.dark_teal_heading};
-      font-size: clamp(14px, calc(1vw + 2px), 18px);
-    }
-  }
 `;
 
 /**
  * Used to reduce text size for a long individual page title.
  * Used in IndivCompounds.js to accommodate long compound names.
  */
-const StyledIndivPageTitle = styled.span`
+const StyledDocPageTitle = styled.span`
   color: ${colors.dark_pink_highlight};
   font-size: ${props => props.smalltxt ? `clamp(14px, calc(1vw + 10px), 20px)` : 'clamp(32px, calc(2vw + 10px), 44px)'};
   font-weight: bold;
@@ -169,7 +145,7 @@ const StyledIndivPageTitle = styled.span`
   }
 `;
 
-const StyledSidebar = styled.div`
+const StyledDocSidebar = styled.div`
   width: calc(5vw + 4em);
   margin-top: 5vh;
   padding: 5px 0px;
@@ -200,8 +176,8 @@ const StyledSidebar = styled.div`
   }
 `;
 
-const StyledSidebarList = styled.ul`
-  width: 25%;
+const StyledDocSidebarList = styled.ul`
+  width:18%;
   padding: 5px 0px;
 
   list-style-type: none;
@@ -254,7 +230,7 @@ const StyledSidebarList = styled.ul`
 
 export {
   StyledDocPage,
-  StyledIndivPageTitle,
-  StyledSidebar,
-  StyledSidebarList
+  StyledDocPageTitle,
+  StyledDocSidebar,
+  StyledDocSidebarList
 };
