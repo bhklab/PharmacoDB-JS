@@ -61,12 +61,6 @@ const StyledDocPage = styled.div`
       width: 100%;
       margin-bottom: 50px;
       text-align: justify;
-      // .section-title {
-      //   font-size: clamp(18px, calc(1vw + 3px), 28px);
-      //   font-weight: bold;
-      //   margin-bottom: 10px;
-      //   color: ${colors.dark_teal_heading};
-      // }
       p {
         font-size: clamp(14px, calc(1vw + 2px), 18px);
       }
@@ -77,10 +71,16 @@ const StyledDocPage = styled.div`
         p{
           margin-bottom: 20px;
         }
-        img {
-          height: auto;
-          margin-top: 0px;
-          margin-bottom: 35px;
+        .center{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          img {
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 25px;
+          }
         }
         h2 {
           text-align: center;
@@ -90,8 +90,8 @@ const StyledDocPage = styled.div`
         }
         h6 {
           text-align: left;
-          margin-top: 15px;
-          margin-bottom: 5px;
+          //margin-top: 15px;
+          //margin-bottom: 5px;
           color: ${colors.dark_teal_heading};
           font-size: clamp(12px, calc(1vw + 2px), 15px);;
         }
@@ -101,6 +101,7 @@ const StyledDocPage = styled.div`
           font-weight: bold;
           color: ${colors.dark_teal_heading};
           line-height: 46px;
+          margin-bottom: 10px;
           font-size: clamp(18px, calc(1vw + 2px), 28px);
         }
       }
