@@ -34,9 +34,9 @@ const compoundTargetType = `
 const geneCompoundTargetType = `
     type GeneCompoundTarget {
         """compound id in the database"""
-        compound_id: Int!
+        compound_id: Int
         """compound name in the database"""
-        compound_name: String!
+        compound_name: String
         """target object"""
         targets: [GeneTarget]
     }
