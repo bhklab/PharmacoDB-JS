@@ -18,9 +18,9 @@ const parseTableData = (data) => {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
             target: item.target_name,
-            gene_id: item.genes.map(el => el.id),
-            gene_name: item.genes.map(el => el.name),
-            gene_symbol: item.genes.map(el => el.annotation.symbol),
+            gene_id: item.genes.map(el => el.id).join(', '),
+            gene_name: item.genes.map(el => el.name).join(', '),
+            gene_symbol: item.genes.map(el => el.annotation.symbol).join(', '),
         }));
         tableData.ready = true;
     }
