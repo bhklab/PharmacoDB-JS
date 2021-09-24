@@ -9,31 +9,6 @@ import Error from '../../../UtilComponents/Error';
 import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
-const DRUG_SUMMARY_COLUMNS = [
-    {
-        Header: 'Compounds',
-        accessor: 'compound',
-        Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
-    },
-    {
-        Header: 'Datasets',
-        accessor: 'dataset',
-        Cell: (item) => {
-            let datasets = item.cell.row.original.datasetObj;
-            return (datasets.map((obj, i) => (
-                <span key={i}>
-                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
-                </span>
-            )
-            ));
-        }
-    },
-    {
-        Header: 'Experiments',
-        accessor: 'num_experiments',
-    },
-];
-
 /**
  * Collect data for the drug summary table
  * @param {Array} data drug summary data from the experiment API
@@ -79,6 +54,32 @@ const DrugSummaryTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
     const [csv, setCSV] = useState([]);
     const [error, setError] = useState(false);
+
+    const DRUG_SUMMARY_COLUMNS = [
+        {
+            Header: 'Compounds',
+            accessor: 'compound',
+            Cell: (item) => <a href={`/compounds/${item.cell.row.original.uid}`}>{item.value}</a>
+        },
+        {
+            Header: 'Datasets',
+            accessor: 'dataset',
+            Cell: (item) => {
+                let datasets = item.cell.row.original.datasetObj;
+                return (datasets.map((obj, i) => (
+                        <span key={i}>
+                    <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+                </span>
+                    )
+                ));
+            }
+        },
+        {
+            Header: 'Experiments',
+            accessor: 'num_experiments',
+            Cell: (item) => <a href={`/search?compound=${item.cell.row.original.compound}&tissue=${tissue.name}`} target="_blank" rel="noopener noreferrer">{item.value}</a>
+        },
+    ];
 
     const { loading } = useQuery(getSingleTissueCompoundsQuery, {
         variables: { tissueId: tissue.id },
