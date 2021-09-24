@@ -37,10 +37,12 @@ const targetQuery = () => (
 const single_compound_target = async (args) => {
     try {
         // arguments
-        const { compoundId, compoundName } = args;
+        const { compoundId, compoundName, compoundUID } = args;
 
         // if no argument is provided throw an error.
-        if (!compoundName && !compoundId) throw new Error('Invalid input! Query must include compoundId or compoundName');
+        if (!compoundName && !compoundId && !compoundUID) {
+            throw new Error('Invalid input! Query must include compoundId or compoundName or compoundUID');
+        }
 
         // target query.
         let query = targetQuery();
@@ -49,6 +51,8 @@ const single_compound_target = async (args) => {
             query = query.where('compound.id', compoundId);
         } else if (compoundName) {
             query = query.where('compound.name', compoundName);
+        } else if (compoundUID) {
+            query = query.where('compound.compound_uid', compoundUID);
         }
 
         // targets.
@@ -372,7 +376,6 @@ const compounds_gene_target = async (args) => {
                 targets: [{ id: target_id, name: target_name }],
             });
         });
-        console.log(returnObject);
         return returnObject;
     } catch (err) {
         console.log(err);
