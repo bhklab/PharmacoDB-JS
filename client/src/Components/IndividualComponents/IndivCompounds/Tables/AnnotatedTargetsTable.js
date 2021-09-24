@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
-import { getGeneCompountTarget } from '../../../../queries/target';
+import { getSingleCompoundTarget } from '../../../../queries/target';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
@@ -14,16 +13,18 @@ const parseTableData = (data) => {
         data: [],
         ready: false,
     };
+
     if (typeof data !== 'undefined') {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
-            target: item.name,
-            gene_id: item.gene.id,
-            gene_name: item.gene.name,
-            gene_symbol: item.gene.annotation.symbol
+            target: item.target_name,
+            gene_id: item.genes.map(el => el.id),
+            gene_name: item.genes.map(el => el.name),
+            gene_symbol: item.genes.map(el => el.annotation.symbol),
         }));
         tableData.ready = true;
     }
+
     return tableData;
 }
 
@@ -52,12 +53,10 @@ const AnnotatedTargetsTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getGeneCompountTarget, {
+    const { loading } = useQuery(getSingleCompoundTarget, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            console.log(data);
-            console.log(parseTableData(data.gene_compound_target))
-            setTableData(parseTableData(data.gene_compound_target));
+            setTableData(parseTableData(data.single_compound_target));
         },
         onError: (err) => {
             console.log(err);
@@ -79,8 +78,8 @@ const AnnotatedTargetsTable = (props) => {
                                 </p>
                             </h4>
                             {
-                                tableData.data.length > 0 ? 
-                                    tableData.ready && 
+                                tableData.data.length > 0 ?
+                                    tableData.ready &&
                                     <React.Fragment>
                                         <div className='download-button'>
                                             <DownloadButton
@@ -92,10 +91,10 @@ const AnnotatedTargetsTable = (props) => {
                                         </div>
                                         <Table columns={columns} data={tableData.data} />
                                     </React.Fragment>
-                                :
-                                <p align="center">
-                                    No targets found for {compound.name}
-                                </p>
+                                    :
+                                    <p align="center">
+                                        No targets found for {compound.name}
+                                    </p>
                             }
                         </React.Fragment>
             }
