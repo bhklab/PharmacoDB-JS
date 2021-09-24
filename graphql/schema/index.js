@@ -17,7 +17,6 @@ const { statType } = require('./stat');
 const {
     targetType, compoundTargetType, geneTargetType,
     targetWithGeneInfoType, targetWithCompoundInfoType,
-    geneCompoundTargetType, compoundsGeneTargetType,
 } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
@@ -78,8 +77,6 @@ const schema = `
     ${geneTargetType}
     ${targetWithGeneInfoType}
     ${targetWithCompoundInfoType}
-    ${geneCompoundTargetType}
-    ${compoundsGeneTargetType}
 
     "Tissue Type with id and name of the tissues."
     ${tissueType}

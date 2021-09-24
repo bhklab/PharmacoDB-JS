@@ -62,6 +62,4 @@ module.exports = {
     compoundTargetType,
     targetWithGeneInfoType,
     targetWithCompoundInfoType,
-    geneCompoundTargetType,
-    compoundsGeneTargetType
 };
