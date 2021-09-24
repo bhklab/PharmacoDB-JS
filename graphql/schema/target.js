@@ -56,26 +56,6 @@ const compoundTargetType = `
 `;
 
 
-const geneCompoundTargetType = `
-    type GeneCompoundTarget {
-        """compound id in the database"""
-        compound_id: Int!
-        """compound name in the database"""
-        compound_name: String!
-        """target object"""
-        targets: [GeneTarget]
-    }
-`;
-
-const compoundsGeneTargetType = `
-    type CompoundsGeneTarget {
-        """gene id, name, annotation in the database"""
-        gene: Gene
-        """target object"""
-        compounds: [CompoundTarget]
-    }
-`;
-
 module.exports = {
     targetType,
     geneTargetType,
