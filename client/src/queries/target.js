@@ -43,8 +43,20 @@ const getSingleGeneTarget = gql`
     }  
 `;
 
+const getAllCompoundTargetsQuery = gql`
+    query getAllCompoundTargets {
+        all_compound_targets {
+            compound_id
+            targets {
+                target_id
+            }
+        }
+    }
+`;
+
 
 export {
     getSingleCompoundTarget,
     getSingleGeneTarget,
+    getAllCompoundTargetsQuery
 };
