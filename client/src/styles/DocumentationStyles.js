@@ -76,10 +76,31 @@ const StyledDocPage = styled.div`
           justify-content: center;
           align-items: center;
           width: 100%;
-          img {
+          resize-mode: 'contain';
+          margin-bottom: 10px;
+          .small {
+            width: 90%;
+            max-width: 750px;
             height: auto;
             margin-top: 0px;
             margin-bottom: 25px;
+            resize-mode: 'contain';
+          }
+          .smaller {
+            width: 40%;
+            max-width: 400px;
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 25px;
+            resize-mode: 'contain';
+          }
+          img {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 25px;
+            resize-mode: 'contain';
           }
         }
         h2 {
@@ -90,8 +111,8 @@ const StyledDocPage = styled.div`
         }
         h6 {
           text-align: left;
-          //margin-top: 15px;
-          //margin-bottom: 5px;
+          margin-top: 0px;
+          margin-bottom: 10px;
           color: ${colors.dark_teal_heading};
           font-size: clamp(12px, calc(1vw + 2px), 15px);;
         }

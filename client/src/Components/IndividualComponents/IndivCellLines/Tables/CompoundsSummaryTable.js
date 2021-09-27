@@ -47,7 +47,7 @@ const generateTableData = (data) => {
   return tableData;
 };
 /**
- * Section that display compounds(drug) summary plots for the individual cell Line page.
+ * Section that display compounds summary plots for the individual cell Line page.
  *
  * @component
  * @example
@@ -62,7 +62,7 @@ const CompoundsSummaryTable = (props) => {
   const [csv, setCSV] = useState([]);
   const [error, setError] = useState(false);
 
-  const DRUG_SUMMARY_COLUMNS = [
+  const COMPOUND_SUMMARY_COLUMNS = [
     {
       Header: 'Compounds',
       accessor: 'compound',
@@ -113,7 +113,7 @@ const CompoundsSummaryTable = (props) => {
         error && <p> Error! </p>
       }
       {
-        loading || !tableData.ready ? 
+        loading || !tableData.ready ?
         <Loading />
         :
         tableData.compound.length ?
@@ -137,7 +137,7 @@ const CompoundsSummaryTable = (props) => {
                   filename={`${cellLine.name} - compounds`}
                 />
               </div>
-              <Table columns={DRUG_SUMMARY_COLUMNS} data={tableData.compound} />
+              <Table columns={COMPOUND_SUMMARY_COLUMNS} data={tableData.compound} />
             </React.Fragment>
           }
         </React.Fragment>

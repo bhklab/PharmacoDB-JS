@@ -39,10 +39,10 @@ const SYNONYM_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-  {label: 'Cell Line Data', name: 'data'},
+  {label: 'Annotations', name: 'data'},
   {label: 'Bar Plot', name: 'barPlot'},
   {label: 'AAC (Compounds)', name: 'aacCompounds'},
-  {label: 'Compounds Summary', name: 'drugsSummary'},
+  {label: 'Compounds Summary', name: 'compoundsSummary'},
   {label: 'Molecular Profiling', name: 'molecularProfiling'}
 ];
 
@@ -228,7 +228,7 @@ const IndivCellLines = (props) => {
                         </Element>
                       }
                       {
-                        display === 'drugsSummary' &&
+                        display === 'compoundsSummary' &&
                         <Element className="section">
                           <CompoundsSummaryTable cellLine={({ id: data.id, name: data.name, display })} />
                         </Element>

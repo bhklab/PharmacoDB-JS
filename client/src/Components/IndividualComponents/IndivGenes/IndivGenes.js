@@ -39,10 +39,10 @@ const LINK_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-  { label: 'Synonyms and Links', name: 'synonyms' },
-  { label: 'Plots', name: 'plots' },
-  { label: 'Drug Summary', name: 'drugsSummary' },
-  { label: 'Top Drugs', name: 'topDrugs' }
+  { label: 'Annotations', name: 'synonyms' },
+  { label: 'Bar Plots', name: 'plots' },
+  { label: 'Compounds Summary', name: 'compoundsSummary' },
+  { label: 'Top Compounds', name: 'topCompounds' }
 ];
 
 /**
@@ -169,16 +169,16 @@ const IndivGenes = (props) => {
                           </Element>
                         }
                         {
-                          display === 'drugsSummary' &&
+                          display === 'compoundsSummary' &&
                           <Element className='section'>
                             <div className='section-title'>Drug Summary</div>
                             <CompoundsSummaryTable gene={gene.data} />
                           </Element>
                         }
                         {
-                          display === 'topDrugs' &&
+                          display === 'topCompounds' &&
                           <Element className='section'>
-                            <div className='section-title'>Top Drugs</div>
+                            <div className='section-title'>Top Compounds</div>
                             <TopDrugsTable gene={gene.data} />
                           </Element>
                         }

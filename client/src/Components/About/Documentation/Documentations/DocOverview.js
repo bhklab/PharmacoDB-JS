@@ -5,13 +5,13 @@ import logo from '../../../../images/DocumentationImages/pharmacodb-logo-capsule
 const OverviewStyles = styled.div`
     .documentation {
       width: 90%;
-      min-height: 600px;
+      min-height: 900px;
         background: linear-gradient(
             to right top,
             rgba(255, 255, 255, 0.5),
             rgba(255, 255, 255, 0.5)
             ),url(${logo});
-        background-size: initial;
+        background-size: auto;
         background-position: center;
         background-repeat: no-repeat;
     }
