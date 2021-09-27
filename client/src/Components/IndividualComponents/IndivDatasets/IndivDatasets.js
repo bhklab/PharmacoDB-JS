@@ -224,8 +224,8 @@ const IndivDatasets = (props) => {
                         <Element className="section" name="publications">
                           <div className='section-title'>Publications</div>
                           { dataset.publications.length > 0 ?
-                              (<div className="text">{dataset.publications}</div>): (<h6>N/A</h6>) }
-                          <div className="text">{dataset.publications}</div>
+                              (<div className="text">{dataset.publications}</div>): (<h6>N/A</h6>)
+                          }
                         </Element>
                         <Element className="section" name="pharmacogx">
                           <div className='section-title'>PharmacoGx</div>
