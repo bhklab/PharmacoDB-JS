@@ -11,7 +11,7 @@ import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 const CELL_LINE_SUMMARY_COLUMNS = [
     {
-      Header: 'Cell Line',
+      Header: <div align="center">Cell lines</div> ,
       accessor: 'cellLine',
       center: true,
       Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.uid}`}>{item.value}</a>
@@ -30,9 +30,9 @@ const CELL_LINE_SUMMARY_COLUMNS = [
             cellLines.push(data.experiments.find(item => item.cell_line.id === id));
         }
         cellLines = cellLines.map(item => ({
-            tissueId: tissue.id, 
-            tissueName: tissue.name, 
-            cellLine: item.cell_line.name, 
+            tissueId: tissue.id,
+            tissueName: tissue.name,
+            cellLine: item.cell_line.name,
             uid: item.cell_line.cell_uid,
             id: item.cell_line.id
         }));
@@ -44,7 +44,7 @@ const CellLineSummaryTable = (props) => {
     const { tissue } = props;
     const [cellLines, setCellLines] = useState([]);
     const [error, setError] = useState(false);
-    
+
     const { loading } = useQuery(getSingleTissueCellLinesQuery, {
         variables: { tissueId: tissue.id },
         fetchPolicy: "network-only",
