@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { getCompoundTargetsQuery } from '../../../queries/gene';
+import { getAllCompoundTargetsQuery } from '../../../queries/target';
 import Plot from 'react-plotly.js';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
@@ -15,13 +15,13 @@ const layout = {
     autosize: true,
     height: 530,
     margin: {
-      t: 50,
+        t: 50,
     },
     xaxis: {
         title: {
             text: 'Number of Targets'
         }
-        
+
     },
     yaxis: {
         title: {
@@ -29,7 +29,7 @@ const layout = {
         }
     }
 };
-  
+
 const config = {
     responsive: true,
     displayModeBar: false,
@@ -46,18 +46,18 @@ const GenesPlot = () => {
             numTargets: item.targets.length
         }));
         let targetNums = compoundTargets.map(item => item.numTargets);
-        targetNums = [...new Set(targetNums)];       
+        targetNums = [...new Set(targetNums)];
         let parsed = [];
-        for(let targetNum of targetNums){
+        for (let targetNum of targetNums) {
             let filtered = compoundTargets.filter(item => item.numTargets === targetNum);
             parsed.push({
                 compoundNum: filtered.length,
                 targetNum: targetNum
             });
         }
-        
+
         parsed.sort((a, b) => b.compoundNum - a.compoundNum);
-        return({
+        return ({
             x: parsed.map(item => item.targetNum),
             y: parsed.map(item => item.compoundNum),
             type: 'bar',
@@ -67,33 +67,33 @@ const GenesPlot = () => {
         });
     }
 
-    const { loading } = useQuery(getCompoundTargetsQuery, {
+    const { loading } = useQuery(getAllCompoundTargetsQuery, {
         variables: { compoundId: 0 },
         onCompleted: (data) => {
-            setPlotData([parsePlotData(data.compound_targets)]);
+            setPlotData([parsePlotData(data.all_compound_targets)]);
         },
         onError: (err) => {
-          console.log(err);
-          setError(true);
+            console.log(err);
+            setError(true);
         }
     });
 
-    return(
+    return (
         <StyledGenePlot>
             {
                 loading ? <Loading />
-                :
-                error ? <Error />
-                :
-                <React.Fragment>
-                    <h3>Frequency of Unique Targets per Drug</h3>
-                    <Plot 
-                        data={plotData} 
-                        layout={layout} 
-                        config={config} 
-                    />
-                </React.Fragment>
-                
+                    :
+                    error ? <Error />
+                        :
+                        <React.Fragment>
+                            <h3>Frequency of Unique Targets per Drug</h3>
+                            <Plot
+                                data={plotData}
+                                layout={layout}
+                                config={config}
+                            />
+                        </React.Fragment>
+
             }
         </StyledGenePlot>
     );
