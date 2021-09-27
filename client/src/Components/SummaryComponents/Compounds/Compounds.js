@@ -31,17 +31,21 @@ const table_columns = [
     accessor: 'pubchem',
     Cell: (item) => {
       let pubchem = item.cell.row.original.pubchem;
-      return(pubchem.map((id, i) => (
-        <span key={i}>
-          <a href={`${PUBCHEM_LINK}${id}`}>{id}</a>{ i + 1 < pubchem.length ? ', ' : ''}
-        </span>)
-      ));
+      if(pubchem){
+        return(pubchem.map((id, i) => (
+          <span key={i}>
+            <a href={`${PUBCHEM_LINK}${id}`} target='_blank' rel='noopener noreferrer'>{id}</a>{ i + 1 < pubchem.length ? ', ' : ''}
+          </span>)
+        ));
+      }else{
+        return '';
+      }
     }
   },
   {
     Header: 'ChEMBL',
     accessor: 'chembl',
-    Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+    Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank' rel='noopener noreferrer'>{row.value}</a>),
   },
   {
     Header: 'FDA Status',
