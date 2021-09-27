@@ -70,9 +70,9 @@ const Description = () => (
       </h1>
       <span>
         PharmacoDB allows scientists to search across publicly
-        available datasets to find instances where a drug or cell
+        available datasets to find instances where a compound or cell
         line of interest has been profiled, and to view and compare
-        the dose-response data for a specific cell line - drug pair
+        the dose-response data for a specific cell line - compound pair
         from any of the studies included in the database
       </span>
     </div>

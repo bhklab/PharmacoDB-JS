@@ -19,8 +19,8 @@ const SIDE_LINKS = [
   { label: 'Resources', name: 'resources' },
   { label: 'Data Types', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
-  { label: 'Summary Cell Lines', name: 'cellLines' },
-  { label: 'Summary Compounds', name: 'compounds' },
+  { label: 'Cell Lines Summary', name: 'cellLines' },
+  { label: 'Compounds Summary', name: 'compounds' },
 ];
 
 const DATATYPE_COLUMNS = [

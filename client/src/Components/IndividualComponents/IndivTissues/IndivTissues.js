@@ -42,8 +42,8 @@ const ANNOTATION_COLUMNS = [
 const SIDE_LINKS = [
     { label: 'Annotations', name: 'annotations' },
     { label: 'Bar Plots', name: 'barPlots' },
-    { label: 'Cell Line summary', name: 'cellLineSummary' },
-    { label: 'Drug Summary', name: 'drugSummary' }
+    { label: 'Cell Lines Summary', name: 'cellLineSummary' },
+    { label: 'Compounds Summary', name: 'compoundSummary' }
 ];
 
 /**
@@ -159,7 +159,7 @@ const IndivTissues = (props) => {
                                                 </Element>
                                             }
                                             {
-                                                display === 'drugSummary' &&
+                                                display === 'compoundSummary' &&
                                                 <Element className="section">
                                                     <DrugSummaryTable tissue={({ id: data.id, name: formatName(data.name) })} />
                                                 </Element>

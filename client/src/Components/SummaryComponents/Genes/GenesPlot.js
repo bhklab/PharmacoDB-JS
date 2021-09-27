@@ -96,7 +96,7 @@ const GenesPlot = () => {
                 error ? <Error />
                 :
                 <React.Fragment>
-                    <h3>Frequency of Unique Targets per Drug</h3>
+                    <h3>Frequency of Unique Targets per Compound</h3>
                     <Plot
                         data={plotData}
                         layout={layout}
