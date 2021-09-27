@@ -228,7 +228,7 @@ const single_gene_target = async (args) => {
 };
 
 
-const compound_targets = async () => {
+const all_compound_targets = async () => {
     try {
         const query = knex
             .select('c.compound_uid', 'c.name as compound_name', 'c.id as compound_id',
@@ -265,5 +265,5 @@ const compound_targets = async () => {
 module.exports = {
     single_compound_target,
     single_gene_target,
-    compound_targets,
+    all_compound_targets,
 };

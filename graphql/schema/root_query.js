@@ -113,7 +113,7 @@ const RootQuery = `type RootQuery {
     """
     single_compound_target(compoundId: Int, compoundName: String): CompoundTarget
     single_gene_target(geneId: Int, geneName: String): GeneTarget
-    compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
+    all_compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
     
     """
         Root Query for the stats for the different types.
