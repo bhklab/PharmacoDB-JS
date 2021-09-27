@@ -13,8 +13,7 @@ const parseTableData = (data) => {
         data: [],
         ready: false,
     };
-
-    if (typeof data !== 'undefined') {
+    if (typeof data !== 'undefined' && data.targets) {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
             target: item.target_name,
@@ -44,6 +43,13 @@ const AnnotatedTargetsTable = (props) => {
         {
             Header: 'Gene ID',
             accessor: 'gene_name',
+            Cell: (item) => {
+                return item.value.startsWith("ENSG") ?
+                    <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.value}`} target="_blank">
+                        {item.value}
+                    </a>
+                    : <span>{item.value}</span>
+            }
         }
     ];
 

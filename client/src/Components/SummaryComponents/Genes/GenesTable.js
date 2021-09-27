@@ -8,22 +8,19 @@ import Error from '../../UtilComponents/Error';
 
 const table_columns = [
   {
-    Header: 'Ensembl ID',
-    accessor: 'name',
+    Header: 'Name',
+    accessor: 'symbol',
     Cell: (row) => (<Link to={`/genes/${row.row.original.id}`}>{row.value}</Link>),
+    center: true,
   },
   {
-    Header: 'Symbol',
-    accessor: 'symbol',
+    Header: 'Ensembl ID',
+    accessor: 'name',
+    Cell: (row) => (
+        <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${row.row.original.name}`} target="_blank">
+          <div style={{ textAlign: 'center' }}> {row.row.original.name} </div>
+        </a>),
   },
-  // {
-  //   Header: 'Gene Seq Start',
-  //   accessor: 'gene_seq_start',
-  // },
-  // {
-  //   Header: 'Gene Seq End',
-  //   accessor: 'gene_seq_end',
-  // },
 ];
 
 /**
@@ -39,7 +36,6 @@ const getTableData = (data) => {
       const { symbol, ensg, gene_seq_end, gene_seq_start } = annotation;
       return {
         id,
-        // name: symbol ? symbol : name,
         name: name,
         symbol: symbol || "N/A",
         ensg,
@@ -71,7 +67,7 @@ const GenesTable = () => {
 
   return (
     <React.Fragment>
-      <h3>List of Genes</h3>
+      <h3>Gene names</h3>
       {
         loading ? <Loading />
           :

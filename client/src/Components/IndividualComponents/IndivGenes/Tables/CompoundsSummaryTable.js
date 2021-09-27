@@ -86,7 +86,7 @@ const CompoundsSummaryTable = (props) => {
                             <p align="center">
                                 {
                                     tableData.numCompounds
-                                        ? `${tableData.numCompounds} compounds have targeted ${gene.annotation.symbol}.`
+                                        ? `${tableData.numCompounds} compounds target gene products of ${gene.annotation.symbol}.`
                                         : `There are no drugs targeting ${gene.annotation.symbol} in the database`
                                 }
                             </p>

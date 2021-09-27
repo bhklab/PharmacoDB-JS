@@ -3,7 +3,7 @@ const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundTableType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
-const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType } = require('./dataset');
+const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
 const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
@@ -17,6 +17,7 @@ const { statType } = require('./stat');
 const {
     targetType, compoundTargetType, geneTargetType,
     targetWithGeneInfoType, targetWithCompoundInfoType,
+    geneTargetCompoundCountsType
 } = require('./target');
 const { tissueType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
@@ -44,6 +45,7 @@ const schema = `
     ${datasetDetailType}
     ${datasetStatsType}
     ${datasetsTypesType}
+    ${datasetsCompoundStatType}
 
     "compound Response Type with dose and response values"
     ${compoundResponseType}
@@ -77,6 +79,7 @@ const schema = `
     ${geneTargetType}
     ${targetWithGeneInfoType}
     ${targetWithCompoundInfoType}
+    ${geneTargetCompoundCountsType}
 
     "Tissue Type with id and name of the tissues."
     ${tissueType}

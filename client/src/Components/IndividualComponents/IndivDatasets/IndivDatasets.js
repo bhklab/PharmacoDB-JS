@@ -17,7 +17,7 @@ import StyledWrapper from '../../../styles/utils';
 const SIDE_LINKS = [
   { label: 'Dataset Information', name: 'info' },
   { label: 'Resources', name: 'resources' },
-  { label: 'Data types', name: 'datatype' },
+  { label: 'Data Types', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
   { label: 'Summary Cell Lines', name: 'cellLines' },
   { label: 'Summary Compounds', name: 'compounds' },
@@ -51,14 +51,21 @@ const DATATYPE_COLUMNS = [
  * Format data for the resources section
  * @param {Array} resource  from dataset json file
  */
-const formatResouceData = (resource) => resource.map((x, index) => ((
-  <a key={index} href={x.urlextern} target="_blank">
-    {x.name}
-    {' '}
-    <br />
-    <br />
-  </a>
-)));
+const formatResouceData = (resource) => {
+  if (resource.length > 0 )
+  {
+    return resource.map((x, index) => (
+        <a key={index} href={x.urlextern} target="_blank">
+          {x.name}
+          {' '}
+          <br />
+          <br />
+        </a>
+  ))} else {
+  return (<h6> No resource is available for this dataset.</h6>)
+}
+
+};
 
 /**
  * Format data for the resources section
@@ -89,10 +96,10 @@ const formatDataType = (data) => {
 };
 
 /**
- * Get a PSet data of the selected dataset and extract the link to 
+ * Get a PSet data of the selected dataset and extract the link to
  * its ORCESTRA page.
  * @param {String} selected
- * @param {Array} psets 
+ * @param {Array} psets
  */
 const getORCESTRALink = (selected, psets) => {
   let link = '';
@@ -142,7 +149,7 @@ const IndivDatasets = (props) => {
   // to set the state on the change of the data.
   useEffect(() => {
     /**
-     * Component mount operation wrapped in async function since 
+     * Component mount operation wrapped in async function since
      * We are accessing ORCESTRA's API to fetch data.
      */
     const getData = async () => {
@@ -173,8 +180,8 @@ const IndivDatasets = (props) => {
   }, []);
 
   /**
-   * 
-   * @param {String} link 
+   *
+   * @param {String} link
    */
   const createSideLink = (link, i) => (
     <li key={i} className={display === link.name ? 'selected' : undefined}>
@@ -211,10 +218,13 @@ const IndivDatasets = (props) => {
                         </Element>
                         <Element className="section" name="description">
                           <div className='section-title'>Description</div>
-                          <div className="text">{dataset.des}</div>
+                          { dataset.des ?
+                              (<div className="text">{dataset.des}</div>): (<h6>N/A</h6>) }
                         </Element>
                         <Element className="section" name="publications">
                           <div className='section-title'>Publications</div>
+                          { dataset.publications.length > 0 ?
+                              (<div className="text">{dataset.publications}</div>): (<h6>N/A</h6>) }
                           <div className="text">{dataset.publications}</div>
                         </Element>
                         <Element className="section" name="pharmacogx">
@@ -251,12 +261,17 @@ const IndivDatasets = (props) => {
                       display === 'datatype' &&
                       <Element className="section" name="data_type">
                         <div className='section-title'>Data Types</div>
-                        <Table
-                          pivotBy={['type']}
-                          columns={DATATYPE_COLUMNS}
-                          data={dataset.datatypes}
-                          disablePagination
-                        />
+                        {
+                          dataset.datatypes.length ? (
+                            <Table
+                                pivotBy={['type']}
+                                columns={DATATYPE_COLUMNS}
+                                data={dataset.datatypes}
+                                disablePagination
+                            />
+                          ):
+                          (<h6>No data type information is available for this dataset.</h6>)
+                        }
                       </Element>
                     }
                     {

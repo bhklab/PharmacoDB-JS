@@ -4,6 +4,7 @@ const StyledSelectContainer = styled.div`
     display:flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     .selector-container {
         font-size: 14px;

@@ -29,12 +29,23 @@ const table_columns = [
   {
     Header: 'PubChem',
     accessor: 'pubchem',
-    Cell: (row) => (<a href={`${PUBCHEM_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+    Cell: (item) => {
+      let pubchem = item.cell.row.original.pubchem;
+      if(pubchem){
+        return(pubchem.map((id, i) => (
+          <span key={i}>
+            <a href={`${PUBCHEM_LINK}${id}`} target='_blank' rel='noopener noreferrer'>{id}</a>{ i + 1 < pubchem.length ? ', ' : ''}
+          </span>)
+        ));
+      }else{
+        return '';
+      }
+    }
   },
   {
     Header: 'ChEMBL',
     accessor: 'chembl',
-    Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank'>{row.value}</a>),
+    Cell: (row) => (<a href={`${CHEMBL_LINK}${row.value}`} target='_blank' rel='noopener noreferrer'>{row.value}</a>),
   },
   {
     Header: 'FDA Status',
@@ -52,8 +63,9 @@ const getTableData = (data) => {
     table_data = data.compounds.map((value) => {
       const { name, annotation, id, uid } = value;
       const {
-        smiles, inchikey, pubchem, fda_status, chembl
+        smiles, inchikey, fda_status, chembl
       } = annotation;
+      const pubchem = annotation.pubchem ? annotation.pubchem.split("///") : null;
       return {
         id,
         name,

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Element } from 'react-scroll';
 import PropTypes from 'prop-types';
 import Layout from '../../UtilComponents/Layout';
-import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageStyles';
+import { StyledDocPage, StyledDocSidebarList } from '../../../styles/DocumentationStyles';
 import StyledWrapper from '../../../styles/utils';
 
 import DocOverview from './Documentations/DocOverview';
@@ -74,16 +74,15 @@ const DocDescription = () => {
     );
 
     return (
-        <StyledIndivPage className="documentation">
+        <StyledDocPage className="container">
             <div className='heading'>
                 <span className='title'>{SIDE_LINKS.filter(item=> item.name === display)[0].label}</span>
             </div>
             <div className='wrapper'>
-                <StyledSidebarList>
+                <StyledDocSidebarList>
                     {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                </StyledSidebarList>
+                </StyledDocSidebarList>
                 <div className="container">
-                    <div className="content">
                         {
                             display === 'overview' &&
                             <Element className="section" name="overview">
@@ -156,10 +155,9 @@ const DocDescription = () => {
                                 <DocBiomarker />
                             </Element>
                         }
-                    </div>
                 </div>
             </div>
-        </StyledIndivPage>
+        </StyledDocPage>
     );
 };
 

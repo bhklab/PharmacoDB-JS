@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getGeneCompoundDatasetQuery } from '../../../queries/gene_compound';
+// import { getGeneCompoundDatasetQuery } from '../../../queries/gene_compound';
+import { getGeneTargetCountCompoundsByDataset} from '../../../queries/target';
 import dataset_colors from '../../../styles/dataset_colors';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
@@ -19,20 +20,15 @@ import DatasetHorizontalPlot from '../../Plots/DatasetHorizontalPlot';
  * @example
  * [{name: "GDSC1000", count: 208, color: "#08589e"}, ... ]
  */
-const generateCountPlotData = (geneCompounds) => {
-  let uniqueDatasetIds = geneCompounds.map(item => item.dataset.id);
-  uniqueDatasetIds = [...new Set(uniqueDatasetIds)];
-  let plotData = [];
-  for (const [i, datasetId] of uniqueDatasetIds.entries()) {
-    let filtered = geneCompounds.filter(item => item.dataset.id === datasetId);
-    let uniqueCompounds = filtered.map(item => item.compound.id);
-    uniqueCompounds = [...new Set(uniqueCompounds)];
+const generateCountPlotData = (data) => {
+  const plotData = [];
+  data.targetsStat.forEach((stat,i) => {
     plotData.push({
-      name: filtered[0].dataset.name,
-      count: uniqueCompounds.length,
+      name: stat.dataset.name,
+      count: stat.compound_count,
       color: dataset_colors[i]
     });
-  }
+  })
   return plotData;
 };
 /**
@@ -51,10 +47,10 @@ const PlotSection = (props) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
 
-  const { loading } = useQuery(getGeneCompoundDatasetQuery, {
+  const { loading } = useQuery(getGeneTargetCountCompoundsByDataset, {
     variables: { geneId: gene.id },
     onCompleted: (data) => {
-      setData(generateCountPlotData(data.gene_compound_dataset));
+      setData(generateCountPlotData(data.single_gene_targets_group_by_dataset));
     },
     onError: (err) => {
       console.log(err);
@@ -69,14 +65,17 @@ const PlotSection = (props) => {
           :
           error ? <Error />
             :
-            <PlotsWrapper single={true}>
-              <DatasetHorizontalPlot
-                plotId='gene_compound_dataset_plot'
-                data={data}
-                xaxis="# of compounds"
-                title={`Number of compounds targeting ${gene.annotation.symbol} (per dataset)`}
-              />
-            </PlotsWrapper>
+              data.length > 0 ? (
+                <PlotsWrapper single={true}>
+                  <DatasetHorizontalPlot
+                      plotId='gene_compound_dataset_plot'
+                      data={data}
+                      xaxis="# of compounds"
+                      title={`Number of compounds targeting ${gene.annotation.symbol} (per dataset)`}
+                  />
+                </PlotsWrapper>
+              ) :
+                  <h6>No data is available to plot.</h6>
       }
     </React.Fragment>
   );
