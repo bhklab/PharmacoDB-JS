@@ -1,6 +1,6 @@
 const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { compound_target } = require('./target');
+const { single_compound_target } = require('./target');
 const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
@@ -129,18 +129,24 @@ const transformCompounds = data => {
  * @param {Array} compoundSynonyms
  * @param {Array} subtypes
  */
-const transformSingleCompound = async (compoundId, compoundName, compoundData, compoundSynonyms, subtypes) => {
+const transformSingleCompound = async (compoundId, compoundName, compoundUID, compoundData, compoundSynonyms, subtypes) => {
     try {
         const transformedCompound = transformCompounds(compoundData);
         const transformedSynonyms = compoundSynonyms ? transformSynonyms(compoundSynonyms) : '';
-        const targets = subtypes.includes('targets') ? await compound_target({
-            compoundId: compoundId,
-            compoundName: compoundName
+        const targets = subtypes.includes('targets') ? await single_compound_target({
+            compoundId,
+            compoundName,
+            compoundUID,
         }) : '';
         const output = {
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,
-            targets: targets['targets'],
+            targets: targets['targets'].map(el => (
+                {
+                    id: el.target_id,
+                    name: el.target_name,
+                }
+            )),
         };
         return output;
     } catch (err) {
@@ -276,7 +282,7 @@ const compound = async (args, parent, info) => {
         // query to get compound source synonyms.
         if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundUID, compoundId, compoundName);
         // return the compound object.
-        return transformSingleCompound(compoundId, compoundName, compoundData, compoundSynonyms, subtypes);
+        return transformSingleCompound(compoundId, compoundName, compoundUID, compoundData, compoundSynonyms, subtypes);
     } catch (err) {
         console.log(err);
         throw err;

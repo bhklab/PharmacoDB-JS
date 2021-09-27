@@ -6,36 +6,35 @@ import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
-import { getCompoundsGeneTarget } from '../../../../queries/target';
+import { getSingleGeneTarget } from '../../../../queries/target';
 
 const parseTableData = (data) => {
-    const {
-        gene,
-        compounds
-    } = data;
     let tableData = {
         data: [],
         numCompounds: 0,
     };
+
     if (data.compounds !== null) {
-        let compoundIds = [...new Set(data.compounds.map(item => item.compound_id))];
-        tableData.numCompounds = compoundIds.length;
-        compounds.forEach (compound =>
-        {
-            tableData.data.push({
-                gene_id: gene.id,
-                gene_name: gene.annotation.symbol,
-                compound_id: compound.compound_id,
-                compound_uid: compound.compound_uid,
-                compound: compound.compound_name,
-                target_id: compound.targets[0].id,
-                target: compound.targets[0].name,
-            });
+        data.targets.forEach(target => {
+            target.compounds.forEach(compound => {
+                tableData.numCompounds += 1;
+
+                tableData.data.push({
+                    gene_id: data.gene_id,
+                    gene_name: data.gene_annotation.symbol,
+                    compound_id: compound.id,
+                    compound_uid: compound.uid,
+                    compound: compound.name,
+                    target_id: target.target_id,
+                    target: target.target_name,
+                });
+            })
         })
         tableData.data.sort((a, b) => b.compound - a.compound);
     }
+
     return tableData;
-}
+};
 
 const CompoundsSummaryTable = (props) => {
     const { gene } = props;
@@ -60,10 +59,10 @@ const CompoundsSummaryTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getCompoundsGeneTarget, {
+    const { loading } = useQuery(getSingleGeneTarget, {
         variables: { geneId: gene.id },
         onCompleted: (data) => {
-            setTableData(parseTableData(data.compounds_gene_target));
+            setTableData(parseTableData(data.single_gene_target));
         },
         onError: (err) => {
             console.log(err);

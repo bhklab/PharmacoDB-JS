@@ -111,10 +111,9 @@ const RootQuery = `type RootQuery {
     """
         Root Queries for targets.
     """
-    compound_target(compoundId: Int, compoundName: String): CompoundTarget!
-    gene_compound_target(compoundId: Int, compoundName: String): GeneCompoundTarget!
-    compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
-    compounds_gene_target(geneId: Int, geneName: String): CompoundsGeneTarget!
+    single_compound_target(compoundId: Int, compoundName: String): CompoundTarget
+    single_gene_target(geneId: Int, geneName: String): GeneTarget
+    all_compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
     single_gene_targets_group_by_dataset(geneId: Int, geneName: String): GeneTargetCompoundCounts!
     
     """

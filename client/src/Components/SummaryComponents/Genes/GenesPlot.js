@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { getCompoundTargetsQuery } from '../../../queries/gene';
+import { getAllCompoundTargetsQuery } from '../../../queries/target';
 import Plot from 'react-plotly.js';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
@@ -15,7 +15,7 @@ const layout = {
     autosize: true,
     height: 530,
     margin: {
-      t: 50,
+        t: 50,
     },
     xaxis: {
         title: {
@@ -77,18 +77,18 @@ const GenesPlot = () => {
         });
     }
 
-    const { loading } = useQuery(getCompoundTargetsQuery, {
+    const { loading } = useQuery(getAllCompoundTargetsQuery, {
         variables: { compoundId: 0 },
         onCompleted: (data) => {
-            setPlotData([parsePlotData(data.compound_targets)]);
+            setPlotData([parsePlotData(data.all_compound_targets)]);
         },
         onError: (err) => {
-          console.log(err);
-          setError(true);
+            console.log(err);
+            setError(true);
         }
     });
 
-    return(
+    return (
         <StyledGenePlot>
             {
                 loading ? <Loading />
@@ -103,7 +103,6 @@ const GenesPlot = () => {
                         config={config}
                     />
                 </React.Fragment>
-
             }
         </StyledGenePlot>
     );
