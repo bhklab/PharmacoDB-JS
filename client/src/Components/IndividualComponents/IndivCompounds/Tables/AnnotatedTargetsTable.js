@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { getGeneCompoundDatasetQuery } from '../../../../queries/gene_compound';
-import { getGeneCompoundTarget } from '../../../../queries/target';
+import { getSingleCompoundTarget } from '../../../../queries/target';
 import Loading from '../../../UtilComponents/Loading';
 import Table from '../../../UtilComponents/Table/Table';
 import Error from '../../../UtilComponents/Error';
@@ -17,13 +16,14 @@ const parseTableData = (data) => {
     if (typeof data !== 'undefined' && data.targets) {
         tableData.data = data.targets.map(item => ({
             compound: data.compound_name,
-            target: item.name,
-            gene_id: item.gene.id,
-            gene_name: item.gene.name,
-            gene_symbol: item.gene.annotation.symbol
+            target: item.target_name,
+            gene_id: item.genes.map(el => el.id).join(', '),
+            gene_name: item.genes.map(el => el.name).join(', '),
+            gene_symbol: item.genes.map(el => el.annotation.symbol).join(', '),
         }));
         tableData.ready = true;
     }
+
     return tableData;
 }
 
@@ -59,10 +59,10 @@ const AnnotatedTargetsTable = (props) => {
     });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getGeneCompoundTarget, {
+    const { loading } = useQuery(getSingleCompoundTarget, {
         variables: { compoundId: compound.id },
         onCompleted: (data) => {
-            setTableData(parseTableData(data.gene_compound_target));
+            setTableData(parseTableData(data.single_compound_target));
         },
         onError: (err) => {
             console.log(err);
@@ -97,10 +97,10 @@ const AnnotatedTargetsTable = (props) => {
                                         </div>
                                         <Table columns={columns} data={tableData.data} />
                                     </React.Fragment>
-                                :
-                                <p align="center">
-                                    No targets found for {compound.name}
-                                </p>
+                                    :
+                                    <p align="center">
+                                        No targets found for {compound.name}
+                                    </p>
                             }
                         </React.Fragment>
             }

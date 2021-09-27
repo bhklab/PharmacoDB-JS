@@ -61,13 +61,13 @@ const ANNOTATION_COLUMNS = [
 ];
 
 const SIDE_LINKS = [
-    { label: 'Synonyms and IDs', name: 'synonyms' },
+    { label: 'Annotations', name: 'synonyms' },
     { label: 'Annotated Targets', name: 'targets' },
     { label: 'Bar Plots', name: 'barplots' },
     { label: 'AAC (Cell Lines)', name: 'aacCells' },
     { label: 'AAC (Tissues)', name: 'aacTissues' },
-    { label: 'Cell Line Summary', name: 'cellSummary' },
-    { label: 'Tissue Summary', name: 'tissueSummary' },
+    { label: 'Cell Lines Summary', name: 'cellSummary' },
+    { label: 'Tissues Summary', name: 'tissueSummary' },
     { label: 'Molecular Features', name: 'molFeature' },
 ];
 
@@ -76,6 +76,7 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the experiment API
  */
 const formatSynonymData = (data) => {
+    console.log(data);
     if (data.synonyms) {
         const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
         if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
@@ -106,13 +107,27 @@ const formatAnnotationData = (data) => {
         }
         if (annotation.pubchem && !(annotation.pubchem.match(/na|null/i))) {
             let pubchemIds = annotation.pubchem.split('///');
+            let pubchemLinks;
+            if(pubchemIds.length > 1){
+                pubchemLinks = <span>
+                    {
+                        pubchemIds.map((item, i) => (
+                            <span key={i}>
+                                <a href={`${PUBCHEM}${item}`} target="_blank" rel="noopener noreferrer">{`Pubchem(${item})`}</a>{i < pubchemIds.length - 1 ? ', ' : ''}
+                            </span>
+                        ))
+                    }
+                </span>
+            }else{
+                pubchemLinks = <a href={`${PUBCHEM}${pubchemIds[0]}`} target="_blank" rel="noopener noreferrer">PubChem</a>
+            }
             annotationData.externalLinks.push(
                 {
-                    db: 'PubChem',
+                    db: pubchemLinks,
                     identifier: <span>{
                         pubchemIds.map((item, i) => (
                             <span key={i}>
-                                <a href={`${PUBCHEM}${item}`} target="_blank" rel="noopener noreferrer">{item}</a>{i < pubchemIds.length - 1 ? ', ' : ''}
+                                {item}{i < pubchemIds.length - 1 ? ', ' : ''}
                             </span>
                         ))
                     }</span>,
@@ -122,22 +137,22 @@ const formatAnnotationData = (data) => {
         if (annotation.chembl && !(annotation.chembl.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
-                    db: 'ChEMBL',
-                    identifier: <a href={`${CHEMBL}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>,
+                    db: <a href={`${CHEMBL}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">ChEMBL</a>,
+                    identifier: annotation.chembl,
                 }
             )
             annotationData.externalLinks.push(
                 {
-                    db: 'Drug Target Commons',
-                    identifier: <a href={`${DTC}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">{annotation.chembl}</a>,
+                    db: <a href={`${DTC}${annotation.chembl}`} target="_blank" rel="noopener noreferrer">Drug Target Commons</a>,
+                    identifier: '',
                 }
             )
         }
         if (annotation.reactome && !(annotation.reactome.match(/na|null/i))) {
             annotationData.externalLinks.push(
                 {
-                    db: 'Reactome',
-                    identifier: <a href={`${REACTOME}${annotation.reactome}`} target="_blank" rel="noopener noreferrer">{annotation.reactome}</a>,
+                    db: <a href={`${REACTOME}${annotation.reactome}`} target="_blank" rel="noopener noreferrer">Reactome</a>,
+                    identifier: annotation.reactome,
                 }
             )
         }

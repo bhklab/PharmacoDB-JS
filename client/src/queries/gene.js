@@ -74,20 +74,9 @@ const getGeneQuery = gql`
     }
 `;
 
-const getCompoundTargetsQuery = gql`
-    query getCompoundTargets {
-        compound_targets {
-            compound_id
-            targets {
-                id
-            }
-        }
-    }
-`;
 
 export {
     getGenesQuery,
     getGeneQuery,
-    getCompoundTargetsQuery,
     getGenesIdSymbolQuery,
 };

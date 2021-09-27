@@ -28,7 +28,7 @@ const SIDE_LINKS = [
 // gene information columns.
 const GENE_INFO_COLUMNS = [
     {
-        Header: 'Gene Status as Drug Target',
+        Header: 'Gene Status as Compound Target',
         accessor: 'target',
         center: true
     },

@@ -10,8 +10,8 @@ import Table from '../../../UtilComponents/Table/Table';
 import DownloadButton from '../../../UtilComponents/DownloadButton';
 
 /**
- * Collect data for the drug summary table
- * @param {Array} data drug summary data from the experiment API
+ * Collect data for the compound summary table
+ * @param {Array} data compound summary data from the experiment API
  */
 const generateTableData = (data) => {
     let tableData = { ready: false, compound: [], numCompounds: 0, numDataset: 0 };

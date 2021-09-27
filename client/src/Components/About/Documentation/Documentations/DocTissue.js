@@ -29,18 +29,18 @@ const DocTissue = () => {
             <div className="center"><img src={pieChart}/></div>
             <p>The page also includes a table that lists the names of all the tissues included in PharmacoDB. Clicking on each tissue name takes you to the webpage associated with that tissue.</p>
             <div className="center"><img src={tissueList}/></div>
-            <p>Each tissue page has a sidebar including Annotations, Bar Plot, Cell Line Summary, and Drug Summary.</p>
+            <p>Each tissue page has a sidebar including Annotations, Bar Plot, Cell Line Summary, and Compound Summary.</p>
             <h7>Annotations</h7>
             <p>Annotations page displays information about the datasets which performed experiments on the query tissue type, with synonyms for that tissue within each dataset. For demonstration, the tissue “Bone” is selected here.</p>
             <div className="center"><img className="small" src={tissueAnnotation}/></div>
             <h7>Bar Plots</h7>
-            <p>Bar Plots page includes plots comparing the number of cell lines and drugs tested on cell lines of the tissue type in each PharmacoDB dataset.</p>
+            <p>Bar Plots page includes plots comparing the number of cell lines and compounds tested on cell lines of the tissue type in each PharmacoDB dataset.</p>
             <div className="center"><img className="small" src={tissueBar}/></div>
-            <h7>Cell Line Summary</h7>
-            <p>Cell Line Summary page includes a table of cell lines of the tissue type included in PharmacoDB. Clicking on each cell name takes you to a page corresponding to that cell line. You can also use the search bar above the table to search for the cell line for interest.</p>
+            <h7>Cell Lines Summary</h7>
+            <p>Cell Lines Summary page includes a table of cell lines of the tissue type included in PharmacoDB. Clicking on each cell name takes you to a page corresponding to that cell line. You can also use the search bar above the table to search for the cell line for interest.</p>
             <div className="center"><img className="small" src={tissueCellList}/></div>
-            <h7>Drug Summary</h7>
-            <p>Drug Summary page includes a table of drugs tested on the tissue type, with the studies in which the drug - tissue combination can be found and the total number of experiments across all datasets. Clicking on each drug name or dataset name will take you to the corresponding page to that instance.</p>
+            <h7>Compounds Summary</h7>
+            <p>Compounds Summary page includes a table of compounds tested on the tissue type, with the studies in which the compound - tissue combination can be found and the total number of experiments across all datasets. Clicking on each compound name or dataset name will take you to the corresponding page to that instance.</p>
             <div className="center"><img className="small" src={tissueDrugList}/><br/></div>
         </div>
     );

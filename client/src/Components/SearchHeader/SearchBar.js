@@ -22,9 +22,9 @@ const INPUT_LENGTH_FOR_MENU = 1;
 // placeholders for react-select
 const placeholders = [
   'Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
-  'Drug (eg. paclitaxel)', 'Dataset (eg. ccle)',
-  'Tissue vs Drug (eg. breast paclitaxel)',
-  'Cell line vs Drug (eg. 22rv1 paclitaxel)',
+  'Compound (eg. paclitaxel)', 'Dataset (eg. ccle)',
+  'Tissue vs Compound (eg. breast paclitaxel)',
+  'Cell line vs Compound (eg. 22rv1 paclitaxel)',
   'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
 

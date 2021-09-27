@@ -30,18 +30,18 @@ const DocCell = () => {
             <div className="center"><img src={pieChart}/></div>
             <p>The page also includes a table that lists the names of all the cell lines included in PharmacoDB. Clicking on each cell line name takes you to the webpage associated with that cell line. Cell lines can also be searched using the search bar above the table.</p>
             <div className="center"><img src={cellSummaryList}/></div>
-            <p>Each cell line page has a sidebar including Cell Line data, Bar Plot, AAC (Compounds), Drugs Summary, and Molecular Profiling.</p>
-            <h7>Cell Line Data</h7>
-            <p>Cell Line Data page displays information about the synonyms in each dataset that used the cell line of query, the diseases it was used to model, and its Cellosaurus name. Clicking on a dataset name, disease name or Cellosaurus link will direct you to the corresponding page for that instance.</p>
+            <p>Each cell line page has a sidebar including Cell Line data, Bar Plot, AAC (Compounds), Compounds Summary, and Molecular Profiling.</p>
+            <h7>Annotations</h7>
+            <p>Annotations page displays information about the synonyms in each dataset that used the cell line of query, the diseases it was used to model, and its Cellosaurus name. Clicking on a dataset name, disease name or Cellosaurus link will direct you to the corresponding page for that instance.</p>
             <div className="center"><img className="small" src={cellInd}/></div>
             <h7>Bar Plot</h7>
-            <p>Bar Plot page shows a plot comparing the total number of drugs tested on the cell line in each PharmacoDB dataset. Hovering over each bar shows the exact number of compounds.</p>
+            <p>Bar Plot page shows a plot comparing the total number of compounds tested on the cell line in each PharmacoDB dataset. Hovering over each bar shows the exact number of compounds.</p>
             <div className="center"><img className="small" src={cellIndBar}/></div>
             <h7>AAC (Compounds)</h7>
-            <p>AAC (Compounds) page shows a waterfall plot displaying the most and least sensitive drugs tested with the cell line. There is a profile selector to show the AAC or IC50 values, and a dataset selector to show only the experiments in the desired dataset. Hovering over each bar shows the name of the drug, and the AAC/IC50 of the experiment. Also, it is possible to zoom out (using the zoom switch) to view more compounds.</p>
+            <p>AAC (Compounds) page shows a waterfall plot displaying the most and least sensitive compounds tested with the cell line. There is a profile selector to show the AAC or IC50 values, and a dataset selector to show only the experiments in the desired dataset. Hovering over each bar shows the name of the compound, and the AAC/IC50 of the experiment. Also, it is possible to zoom out (using the zoom switch) to view more compounds.</p>
             <div className="center"><img className="small" src={cellAAC}/></div>
-            <h7>Drugs Summary</h7>
-            <p>Drugs Summary page has a table of all the drugs tested on the cell line in each dataset, with the list of datasets where this combination was tested and the total number of experiments across all studies. Clicking on a drug name or dataset name will take you to the corresponding page.</p>
+            <h7>Compounds Summary</h7>
+            <p>Compounds Summary page has a table of all the compounds tested on the cell line in each dataset, with the list of datasets where this combination was tested and the total number of experiments across all studies. Clicking on a compound name or dataset name will take you to the corresponding page.</p>
             <div className="center"><img className="small" src={cellSummaryList}/></div>
             <h7>Molecular Profiling</h7>
             <p>Molecular Profiling page shows a table summarizing the available molecular profiling in PharmacoGx for the cell line.</p>

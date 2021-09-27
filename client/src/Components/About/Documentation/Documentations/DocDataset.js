@@ -44,14 +44,14 @@ const DocDataset = () => {
             <p>Data types page includes a table of all the available pharmacological and molecular data in the dataset, with annotations about the assays used to collect them.</p>
             <div className="center"><img className="small" src={dataTypes}/></div>
             <h7>Bar Plots</h7>
-            <p>Bar Plots page includes plots comparing the number of cell lines, tissues, drugs and experiments in the chosen dataset to others in PharmacoDB. The dataset being displayed is highlighted in Red.</p>
+            <p>Bar Plots page includes plots comparing the number of cell lines, tissues, compounds and experiments in the chosen dataset to others in PharmacoDB. The dataset being displayed is highlighted in Red.</p>
             <div className="center"><img className="small" src={datasetBarPlotA}/></div>
             <div className="center"><img className="small" src={datasetBarPlotB}/></div>
-            <h7>Summary Cell Lines</h7>
-            <p>Summary Cell Lines page represents a table including a list of all the cell lines that were tested in this dataset. Each entry in the table links to the cell line page for that entry. They are also searchable using the search bar at the top of the table..</p>
+            <h7>Cell Lines Summary</h7>
+            <p>Cell Lines Summary page represents a table including a list of all the cell lines that were tested in this dataset. Each entry in the table links to the cell line page for that entry. They are also searchable using the search bar at the top of the table..</p>
             <div className="center"><img className="small" src={datasetCellList}/></div>
-            <h7>Summary Compounds</h7>
-            <p>Summary Compounds page represents a table including a list of all the drugs that were tested in this dataset. Clicking on each entry in the table directs you to the compound page for that entry. Similarly, the drugs are also searchable using the search bar at the top of the table.</p>
+            <h7>Compounds Summary</h7>
+            <p>Compounds Summary page represents a table including a list of all the compounds that were tested in this dataset. Clicking on each entry in the table directs you to the compound page for that entry. Similarly, the compounds are also searchable using the search bar at the top of the table.</p>
             <div className="center"><img className="small" src={datasetDrugList}/></div>
         </div>
     );

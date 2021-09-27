@@ -19,8 +19,8 @@ const CELL_LINE_SUMMARY_COLUMNS = [
 ];
 
 /**
- * Collect data for the drug summary table
- * @param {Array} data drug summary data from the experiment API
+ * Collect data for the cell line summary table
+ * @param {Array} data cell line summary data from the experiment API
  */
  const generateTableData = (tissue, data) => {
     let cellLines = [];
