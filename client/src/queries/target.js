@@ -75,8 +75,8 @@ const getGeneTargetCountCompoundsByDataset = gql`
 `;
 
 export {
-    getCompoundTarget,
-    getGeneCompoundTarget,
-    getCompoundsGeneTarget,
+    getSingleCompoundTarget,
+    getSingleGeneTarget,
+    getAllCompoundTargetsQuery,
     getGeneTargetCountCompoundsByDataset,
 };
