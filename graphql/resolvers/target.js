@@ -165,8 +165,6 @@ const single_gene_target = async (args) => {
         // targets.
         const targets = await query;
 
-        console.log(targets);
-
         // return object.
         const returnObject = {};
 
@@ -232,11 +230,15 @@ const single_gene_target = async (args) => {
 
 const compound_targets = async () => {
     try {
-        const query = knex.select('c.name as compound_name', 'ct.target_id', 'c.id as compound_id', 't.name as target_name')
+        const query = knex
+            .select('c.compound_uid', 'c.name as compound_name', 'c.id as compound_id',
+                'ct.target_id', 't.name as target_name')
             .from('compound_target as ct')
             .join('target as t', 't.id', 'ct.target_id')
             .join('compound as c', 'c.id', 'ct.compound_id');
+
         const compoundTargets = await query;
+
         let data = [];
         let compoundIds = compoundTargets.map(item => item.compound_id);
         compoundIds = [...new Set(compoundIds)];
@@ -245,9 +247,10 @@ const compound_targets = async () => {
             data.push({
                 compound_id: compoundId,
                 compound_name: filtered[0].compound_name,
+                compound_uid: filtered[0].compound_uid,
                 targets: filtered.map(item => ({
-                    id: item.target_id,
-                    name: item.target_name
+                    target_id: item.target_id,
+                    target_name: item.target_name
                 }))
             });
         }
