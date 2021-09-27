@@ -19,8 +19,8 @@ const SIDE_LINKS = [
   { label: 'Resources', name: 'resources' },
   { label: 'Data Types', name: 'datatype' },
   { label: 'Bar Plots', name: 'barPlots' },
-  { label: 'Summary Cell Lines', name: 'cellLines' },
-  { label: 'Summary Compounds', name: 'compounds' },
+  { label: 'Cell Lines Summary', name: 'cellLines' },
+  { label: 'Compounds Summary', name: 'compounds' },
 ];
 
 const DATATYPE_COLUMNS = [
@@ -224,8 +224,8 @@ const IndivDatasets = (props) => {
                         <Element className="section" name="publications">
                           <div className='section-title'>Publications</div>
                           { dataset.publications.length > 0 ?
-                              (<div className="text">{dataset.publications}</div>): (<h6>N/A</h6>) }
-                          <div className="text">{dataset.publications}</div>
+                              (<div className="text">{dataset.publications}</div>): (<h6>N/A</h6>)
+                          }
                         </Element>
                         <Element className="section" name="pharmacogx">
                           <div className='section-title'>PharmacoGx</div>
