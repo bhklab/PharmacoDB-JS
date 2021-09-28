@@ -76,7 +76,6 @@ const SIDE_LINKS = [
  * @param {Array} data synonym data from the experiment API
  */
 const formatSynonymData = (data) => {
-    console.log(data);
     if (data.synonyms) {
         const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
         if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
