@@ -116,9 +116,10 @@ const single_compound_target = async (args) => {
             }
         });
         // return object
+        // assign empty array for the target field if the compound does not have any targets (returnObject.targets is null).
         return {
             ...returnObject,
-            targets: Object.values(returnObject.targets),
+            targets: returnObject.targets ? Object.values(returnObject.targets) : [],
         };
     } catch (err) {
         console.log(err);

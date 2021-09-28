@@ -45,11 +45,11 @@ const geneTargetType = `
 const compoundTargetType = `
     type CompoundTarget {
         """compound id in the database"""
-        compound_id: Int!
+        compound_id: Int
         """compound name in the database"""
-        compound_name: String!
+        compound_name: String
         """compound unique id"""
-        compound_uid: String!
+        compound_uid: String
         """target object"""
         targets: [TargetWithGeneInfo]
     }
