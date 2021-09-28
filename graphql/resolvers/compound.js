@@ -137,7 +137,7 @@ const transformSingleCompound = async (compoundId, compoundName, compoundUID, co
             compoundId,
             compoundName,
             compoundUID,
-        }) : '';
+        }) : { targets: [] };
         const output = {
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,

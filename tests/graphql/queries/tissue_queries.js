@@ -4,7 +4,7 @@
 
 const multipleTissuesTestQuery = `
   {
-    tissues {
+    tissues(all: true) {
       id
       name
     }
