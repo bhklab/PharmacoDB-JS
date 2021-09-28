@@ -1,20 +1,44 @@
 const targetType = `
     type Target {
-        """tissue id in the database"""
+        """target id in the database"""
         id: Int!
-        """tissue name in the database"""
+        """target name in the database"""
         name: String!
+    }
+`;
+
+const targetWithGeneInfoType = `
+    type TargetWithGeneInfo {
+        """target id"""
+        target_id: Int!
+        """target name"""
+        target_name: String!
+        """gene object"""
+        genes: [Gene]
+    }
+`;
+
+const targetWithCompoundInfoType = `
+    type TargetWithCompoundInfo {
+        """target id"""
+        target_id: Int!
+        """target name"""
+        target_name: String!
+        """compound object"""
+        compounds: [CompoundTable]
     }
 `;
 
 const geneTargetType = `
     type GeneTarget {
-        """tissue id in the database"""
-        id: Int!
-        """tissue name in the database"""
-        name: String!
-        """gene object associated with the target"""
-        gene: Gene
+        """gene id in the database"""
+        gene_id: Int!
+        """gene name in the database"""
+        gene_name: String!
+        """gene annotation"""
+        gene_annotation: GeneAnnotation
+        """target object"""
+        targets: [TargetWithCompoundInfo]
     }
 `;
 
@@ -24,30 +48,10 @@ const compoundTargetType = `
         compound_id: Int!
         """compound name in the database"""
         compound_name: String!
-        """target object"""
+        """compound unique id"""
         compound_uid: String!
         """target object"""
-        targets: [Target]
-    }
-`;
-
-const geneCompoundTargetType = `
-    type GeneCompoundTarget {
-        """compound id in the database"""
-        compound_id: Int
-        """compound name in the database"""
-        compound_name: String
-        """target object"""
-        targets: [GeneTarget]
-    }
-`;
-
-const compoundsGeneTargetType = `
-    type CompoundsGeneTarget {
-        """gene id, name, annotation in the database"""
-        gene: Gene
-        """target object"""
-        compounds: [CompoundTarget]
+        targets: [TargetWithGeneInfo]
     }
 `;
 
@@ -66,7 +70,7 @@ module.exports = {
     targetType,
     geneTargetType,
     compoundTargetType,
-    geneCompoundTargetType,
-    compoundsGeneTargetType,
+    targetWithGeneInfoType,
+    targetWithCompoundInfoType,
     geneTargetCompoundCountsType
 };
