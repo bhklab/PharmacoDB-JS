@@ -67,8 +67,15 @@ const getCompoundQuery = gql`
         }
       }
       targets {
-        id
-        name
+        target_id
+        target_name
+        genes {
+          id
+          name
+          annotation {
+            symbol
+          }
+        }
       }
     }
   }
