@@ -143,8 +143,9 @@ const transformSingleCompound = async (compoundId, compoundName, compoundUID, co
             synonyms: transformedSynonyms,
             targets: targets['targets'].map(el => (
                 {
-                    id: el.target_id,
-                    name: el.target_name,
+                    target_id: el.target_id,
+                    target_name: el.target_name,
+                    genes: el.genes,
                 }
             )),
         };
