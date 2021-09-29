@@ -61,14 +61,38 @@ const COMPOUND_INFO_COLUMNS = [
         Header: 'FDA Approval Status',
         accessor: 'status',
     },
+    // {
+    //     Header: 'Active Trials',
+    //     accessor: 'trials',
+    // },
     {
-        Header: 'Active Trials',
-        accessor: 'trials',
+        Header: 'Compound Targets',
+        accessor: 'target',
     },
     {
-        Header: 'Annotated Targets',
-        accessor: 'targets',
-    },
+        Header: 'Genes',
+        accessor: 'genes',
+        Cell: (row) => {
+            const geneArray = row.row.original.genes;
+
+            const genes = geneArray.map((gene, i) => {
+                let returnData = ''
+                if (i + 1 === geneArray.length) {
+                    returnData = <a href={`genes/${gene.id}`} target='_blank' key={gene.symbol}>{gene.symbol}</a>
+                } else {
+                    returnData = (
+                        <>
+                            <a href={`genes/${gene.id}`} target='_blank' key={gene.symbol}>{gene.symbol}</a>
+                            <span>, </span>
+                        </>
+                    )
+                }
+                return returnData;
+            });
+
+            return genes;
+        }
+    }
 ];
 
 
@@ -78,20 +102,23 @@ const COMPOUND_INFO_COLUMNS = [
  * @returns {Array} - transformed data [{status: fdaStatus, targets: ['', '']}]
  */
 const transformCompoundTableData = (data) => {
+    console.log(data);
     // grabs the fda status and targets from the data.
     const name = data.compound.name;
     const uid = data.compound.uid;
     const fdaStatus = data.compound.annotation.fda_status;
     const targets = data.targets.map((el) => el.name).join(', ');
     // return an array of object(s).
-    return [
-        {
-            status: fdaStatus,
-            targets,
-            name,
-            uid,
-        },
-    ];
+    return data.targets.map((target) => ({
+        status: fdaStatus,
+        target: target.target_name,
+        genes: target.genes.map(gene => ({
+            id: gene.id,
+            symbol: gene.annotation.symbol,
+        })),
+        name,
+        uid,
+    }));
 };
 
 /**
@@ -287,7 +314,6 @@ const Biomarker = (props) => {
                                         <Table
                                             columns={compoundInfoColumns}
                                             data={transformedCompoundData}
-                                            disablePagination
                                         />
                                     </Element>
                                 }
