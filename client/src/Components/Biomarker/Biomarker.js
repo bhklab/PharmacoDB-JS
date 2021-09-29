@@ -102,12 +102,11 @@ const COMPOUND_INFO_COLUMNS = [
  * @returns {Array} - transformed data [{status: fdaStatus, targets: ['', '']}]
  */
 const transformCompoundTableData = (data) => {
-    console.log(data);
     // grabs the fda status and targets from the data.
     const name = data.compound.name;
     const uid = data.compound.uid;
     const fdaStatus = data.compound.annotation.fda_status;
-    const targets = data.targets.map((el) => el.name).join(', ');
+    // const targets = data.targets.map((el) => el.name).join(', ');
     // return an array of object(s).
     return data.targets.map((target) => ({
         status: fdaStatus,
@@ -125,19 +124,24 @@ const transformCompoundTableData = (data) => {
  *
  * @param {Object} geneData - gene information data.
  * @param {Object} compoundData - compound information data.
+ * @param {string} gene - input gene from the param.
  * @returns {Array} - data array.
  */
-const transformGeneTableData = (geneData, compoundData) => {
+const transformGeneTableData = (geneData, compoundData, gene) => {
     // grab the ensg and gene location.
     const ensg = geneData.name;
     const location = geneData.annotation.gene_seq_start;
     const symbol = geneData.annotation.symbol;
     const gene_id = geneData.id;
-    const target = [...compoundData.targets.map((el) => el.name)].includes(
-        'ERBB2'
-    )
-        ? 'Yes'
-        : 'No';
+    const genes = [];
+
+    // get the list of genes.
+    compoundData.targets.forEach(target => {
+        target.genes.forEach(gene => genes.push(gene.annotation.symbol));
+    });
+
+    const target = genes.includes(gene) ? 'Yes' : 'No';
+
     // return the transformed data.
     return [
         {
@@ -232,7 +236,8 @@ const Biomarker = (props) => {
             setTransformedGeneData(
                 transformGeneTableData(
                     geneQueryData.gene,
-                    compoundQueryData.singleCompound
+                    compoundQueryData.singleCompound,
+                    gene,
                 )
             );
         };
