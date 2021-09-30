@@ -1,6 +1,6 @@
 import React from 'react';
 import datasetSearch from '../../../../images/DocumentationImages/datasetSearch.png';
-import homeDataset from '../../../../images/DocumentationImages/homeDataset.PNG';
+import homeDataset from '../../../../images/DocumentationImages/homeDatasets.png';
 import upsetPlot from '../../../../images/DocumentationImages/datasetUpsetPlot.png';
 import datasetList from '../../../../images/DocumentationImages/datasetList.png';
 import individualDataset from '../../../../images/DocumentationImages/datasetInd.png';
@@ -25,14 +25,14 @@ const DocDataset = () => {
     return(
         <div className='documentation'>
             <p>Each study included in PharmacoDB has a dataset page associated with it. These pages can be accessed by searching for a study through the search bar, or from the datasets page accessible through clicking on the datasets link at the bottom of the homepage or from the Data drop down menu on the top right side of the homepage.</p>
-            <div className="center"><img src={datasetSearch}/></div>
+            <div className="center"><img className="bar" src={datasetSearch}/></div>
             <div className="center"><p>Or</p></div>
-            <div className="center"><img src={homeDataset}/></div>
+            <div className="center"><img className="bar" src={homeDataset}/></div>
             <p>Datasets link on the front page directs you to a page starting with a bar graph showing the number of cell lines per dataset as well as the number of common cell lines between any given datasets. Using the selector you can choose to view this information for tissues or compounds across datasets.</p>
             <div className="center"><img src={upsetPlot}/></div>
             <p>Datasets page concludes with a table listing all the available datasets in PharmacoDB. Clicking on each dataset name takes you to the webpage corresponding to that dataset.</p>
             <div className="center"><img src={datasetList}/></div>
-            <p>Each dataset page has a sidebar including Dataset Information, Resources, Data types, Bar Plots, Summary Cell Lines, and Summary Compounds.</p>
+            <p>Each dataset page has a sidebar including Dataset Information, Resources, Data types, Bar Plots, Cell Lines Summary, and Compounds Summary.</p>
             <h7>Dataset Information</h7>
             <p>Dataset Information page displays information about the study which collected the pharmacological data, the publications associated with the dataset, the name of the PharmacoSet object from the PharmacoGX R package associated with the data, and the link to the dataset on ORCESTRA.</p>
             <h6>Example: CCLE dataset</h6>

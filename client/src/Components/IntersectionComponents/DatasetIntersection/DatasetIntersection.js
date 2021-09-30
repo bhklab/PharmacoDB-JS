@@ -193,7 +193,7 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
     } else if (isVenn) {
         return (
             <>
-                <h2>{datasetString}</h2>
+                <h2>Overlaps among datasets</h2>
                 <VennDiagram data={createVennDiagramData(parsedCellData)} />
             </>
         )

@@ -30,8 +30,8 @@ const SIDE_LINKS = [
     { label: 'Genes', name: 'gene' },
     { label: 'Compounds', name: 'drug' },
     { label: 'Datasets Intersection', name: 'intersection' },
-    { label: 'Cell line vs. Drug', name: 'cell-drug' },
-    { label: 'Tissue vs. Drug', name: 'tissue-drug' },
+    { label: 'Cell line vs. Compound', name: 'cell-drug' },
+    { label: 'Tissue vs. Compound', name: 'tissue-drug' },
     { label: 'Biomarker', name: 'biomarker' },
 ];
 
