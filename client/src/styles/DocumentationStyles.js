@@ -94,6 +94,14 @@ const StyledDocPage = styled.div`
             margin-bottom: 25px;
             resize-mode: 'contain';
           }
+          .bar {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin-top: 0px;
+            margin-bottom: 25px;
+            resize-mode: 'contain';
+          }
           img {
             width: 100%;
             max-width: 900px;
