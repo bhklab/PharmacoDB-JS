@@ -4,6 +4,27 @@ import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 import createToolTip from '../../utils/toolTip';
+import CustomSwitch from '../UtilComponents/CustomSwitch';
+import styled from 'styled-components';
+
+const StyledForestPlot = styled.div`
+    width: 100%;
+    margin-left: 10px;
+    .title {
+        font-size: 14px;
+    }
+    .switch-wrapper {
+        margin: 0px 60px 40px 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        .disclaimer {
+            margin-left: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    }
+`;
 
 // data length and multiplier variables.
 const ADDITIONAL = 2;
@@ -594,7 +615,13 @@ const ForestPlot = ({ height, width, margin, data }) => {
     }, []);
 
     return (
-        <>
+        <StyledForestPlot>
+            <div className='switch-wrapper'>
+                <CustomSwitch
+                    labelLeft='Permuted'
+                    labelRight='Analytical'
+                />
+            </div>
             <div style={{ position: 'relative' }}>
                 <select
                     className='select'
@@ -615,8 +642,7 @@ const ForestPlot = ({ height, width, margin, data }) => {
             </div>
             <div id='forestplot' />
             <div id='forestplot-tooltip' />
-        </>
-
+        </StyledForestPlot>
     );
 };
 
