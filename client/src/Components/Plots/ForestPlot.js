@@ -14,10 +14,10 @@ const StyledForestPlot = styled.div`
         font-size: 14px;
     }
     .switch-wrapper {
-        margin: 0px 60px 40px 20px;
+        margin: 0px 60px 40px 40px;
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: flex-start;
         .disclaimer {
             margin-left: 10px;
             font-size: 14px;
