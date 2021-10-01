@@ -19,8 +19,28 @@ const table_columns = [
     Cell: (row) => (<Link to={`/compounds/${row.row.original.uid}`}>{row.value}</Link>),
   },
   {
+    Header: 'Datasets',
+    accessor: 'dataset',
+    Cell: (item) => {
+      let datasets = item.cell.row.original.dataset;
+      return (datasets.map((obj, i) => (
+        obj.id
+          ? (
+            <span key={i}>
+              <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+            </span>
+          )
+          : (
+            <span key={i}>{obj.name}</span>
+          )
+        )
+      ));
+    }
+  },
+  {
     Header: 'SMILES',
     accessor: 'smiles',
+    Cell: (item) => {return item.value || 'NA'} ,
   },
   {
     Header: 'InChIKeys',
@@ -61,11 +81,12 @@ const getTableData = (data) => {
   let table_data = [];
   if (data) {
     table_data = data.compounds.map((value) => {
-      const { name, annotation, id, uid } = value;
+      const { name, annotation, id, uid, dataset } = value;
       const {
         smiles, inchikey, fda_status, chembl
       } = annotation;
       const pubchem = annotation.pubchem ? annotation.pubchem.split("///") : null;
+      const datasetList = [];
       return {
         id,
         name,
@@ -74,7 +95,8 @@ const getTableData = (data) => {
         inchikey,
         pubchem,
         fda_status,
-        chembl
+        chembl,
+        dataset:datasetList
       };
     });
   }
@@ -123,7 +145,7 @@ const renderComponent = (loading, error, columns, data) => {
  * )
  */
 const Compounds = () => {
-  const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
+  const { loading, error, data: compound_data } = useQuery(getCompoundsQuery, {fetchPolicy: "cache-first"});
   const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data), [compound_data]);
   return (
