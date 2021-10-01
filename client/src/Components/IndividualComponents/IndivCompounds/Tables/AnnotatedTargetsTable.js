@@ -38,18 +38,13 @@ const AnnotatedTargetsTable = (props) => {
         {
             Header: 'Associated Gene',
             accessor: 'gene_symbol',
-            // Cell: (item) => {
-            //     console.log(item.row.original);
-            //     return <a href={`/genes/${item.row.original.gene_id}`}>{item.value}</a>
-            // }
             Cell: (item) => {
-                console.log(item.row.original);
                 if (item.value) {
                     let symbols = item.value.split(',');
                     let ids = item.row.original.gene_id.split(',');
                     return (ids.map((id, i) => (
                         <span key={i}>
-                            <Link to={`/genes/${id}`}>{symbols[i]}</Link>{ i + 1 < ids.length ? ', ' : ''}
+                            <a href={`/genes/${id}`} target='_blank' rel='noopener noreferrer'>{symbols[i]}</a>{ i + 1 < ids.length ? ', ' : ''}
                         </span>)));
                 } else {
                     return '';
