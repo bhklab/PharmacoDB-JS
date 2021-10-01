@@ -107,10 +107,10 @@ const getAllDataTypes = (data) => {
 };
 
 /**
- * 
  * @param {Array} data - input data.
+ * @param {boolean} isAnalytic
  */
-const calculateMinMax = (data) => {
+const calculateMinMax = (data, isAnalytic) => {
     // calculates the minimum and maximum estimate from the data.
     const minEstimate = Math.min(...data.map((val) => val.estimate));
     const maxEstimate = Math.max(...data.map((val) => val.estimate));
@@ -124,8 +124,8 @@ const calculateMinMax = (data) => {
     const maxPermutation = Math.max(...data.map((val) => val.upper_permutation));
 
     // assign min and max.
-    const min = minPermutation || minAnalytic;
-    const max = maxPermutation || maxAnalytic;
+    const min = isAnalytic ? minAnalytic : minPermutation;
+    const max = isAnalytic ? maxAnalytic : maxPermutation;
 
     return {
         min,
@@ -147,8 +147,9 @@ const calculateMinMaxN = (data) => {
  * mouseover event for horizontal line as well as the circle.
  * @param {Object} event 
  * @param {Object} element 
+ * @param {boolean} isAnalytic
  */
-const mouseOverEvent = (event, element) => {
+const mouseOverEvent = (event, element, isAnalytic) => {
     // make the visibility of the tool tip to visible.
     const toolTip = d3.select('#tooltip')
         .style('visibility', 'visible')
@@ -158,8 +159,8 @@ const mouseOverEvent = (event, element) => {
         .style('background-color', `${colors.white}`);
 
     // append text.
-    const fdr = element.fdr_permutation || element.fdr_analytic;
-    const pc = element.upper_permutation || element.upper_analytic;
+    const fdr = isAnalytic ? element.fdr_analytic : element.fdr_permutation;
+    const pc = isAnalytic ? element.upper_analytic : element.upper_permutation;
     const text = fdr < 0.05 && pc > 0.70 ? 'Strong Biomarker' : 'Weak Biomarker';
 
     toolTip.
@@ -202,7 +203,7 @@ const circleScaling = (min, max) => d3.scaleLinear().domain([min, max]).range([5
  */
 const createXScale = (min, max, width) => {
     // set min to zero if it's greater than zero else it's a min.
-    const updatedMin = min > 0 ? -0.1 : min;
+    const updatedMin = (min > 0 || min === 0) ? -0.1 : min;
 
     return d3.scaleLinear()
         .domain([updatedMin, max])
@@ -254,14 +255,15 @@ const createVerticalLine = (svg, scale, height) => {
  * Creates horizontal lines for the forest plot.
  * @param {Object} svg - svg selection for the global canvas.
  * @param {Object} scale - x axis scale.
+ * @param {boolean} isAnalytic
  */
-const createHorizontalLines = (svg, scale, data, height) => {
+const createHorizontalLines = (svg, scale, data, height, isAnalytic) => {
     const horizontal = svg.append('g')
         .attr('id', `horizontal-lines`)
 
     data.forEach((element, i) => {
-        const x1 = element.lower_permutation || element.lower_analytic;
-        const x2 = element.upper_permutation || element.upper_analytic;
+        const x1 = isAnalytic ? element.lower_analytic : element.lower_permutation;
+        const x2 = isAnalytic ? element.upper_analytic : element.upper_permutation;
         horizontal
             .append('line')
             .attr('id', `horizontal-line-${element.dataset.name}`)
@@ -272,7 +274,7 @@ const createHorizontalLines = (svg, scale, data, height) => {
             .attr('x2', scale(x2))
             .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
             .on('mouseover', (event) => {
-                mouseOverEvent(event, element);
+                mouseOverEvent(event, element, isAnalytic);
             })
             .on('mouseout', (event) => {
                 mouseOutEvent(event, element);
@@ -288,13 +290,13 @@ const createHorizontalLines = (svg, scale, data, height) => {
  * @param {Object} circleScale - scale to set the radius of the circle.
  * @param {Array} data - data array.
  */
-const createCircles = (svg, xScale, circleScale, data, height) => {
+const createCircles = (svg, xScale, circleScale, data, height, isAnalytic) => {
     const circles = svg.append('g')
         .attr('id', 'cirlces');
 
     data.forEach((element, i) => {
-        const fdr = element.fdr_permutation || element.fdr_analytic;
-        const pc = element.upper_permutation || element.upper_analytic;
+        const fdr = isAnalytic ? element.fdr_analytic : element.fdr_permutation;
+        const pc = isAnalytic ? element.upper_analytic : element.upper_permutation;
 
         circles
             .append('circle')
@@ -373,35 +375,41 @@ const appendDatasetName = (svg, data, height) => {
  * @param {Object} svg
  * @param {Array} data - data array.
  */
-const appendEstimateText = (svg, data, height, width, scale) => {
+const appendEstimateText = (svg, data, height, width, scale, isAnalytic) => {
     const estimate = svg.append('g')
         .attr('id', 'estimate');
 
     // append dataset name.
     data.forEach((element, i) => {
-        const xLower = element.lower_permutation || element.lower_analytic;
-        estimate
-            .append('text')
-            .attr('id', `estimate-${element.dataset.name}-x1`)
-            .attr('font-weight', 200)
-            .attr('x', scale(xLower) - 15)
-            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
-            .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(xLower).toFixed(2)}`)
-            .attr('visibility', 'hidden')
-            .attr('font-size', '14px');
 
-        const xUpper = element.upper_permutation || element.upper_analytic;
-        estimate
-            .append('text')
-            .attr('id', `estimate-${element.dataset.name}-x2`)
-            .attr('font-weight', 200)
-            .attr('x', scale(xUpper) - 15)
-            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
-            .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(xUpper).toFixed(2)}`)
-            .attr('visibility', 'hidden')
-            .attr('font-size', '14px');
+        const xLower = isAnalytic ? element.lower_analytic : element.lower_permutation;
+        if (xLower) {
+            estimate
+                .append('text')
+                .attr('id', `estimate-${element.dataset.name}-x1`)
+                .attr('font-weight', 200)
+                .attr('x', scale(xLower) - 15)
+                .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
+                .attr('fill', `${colors.dark_teal_heading}`)
+                .text(`${(xLower).toFixed(2)}`)
+                .attr('visibility', 'hidden')
+                .attr('font-size', '14px');
+        }
+
+
+        const xUpper = isAnalytic ? element.upper_analytic : element.upper_permutation;
+        if (xUpper) {
+            estimate
+                .append('text')
+                .attr('id', `estimate-${element.dataset.name}-x2`)
+                .attr('font-weight', 200)
+                .attr('x', scale(xUpper) - 15)
+                .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
+                .attr('fill', `${colors.dark_teal_heading}`)
+                .text(`${(xUpper).toFixed(2)}`)
+                .attr('visibility', 'hidden')
+                .attr('font-size', '14px');
+        }
     });
 };
 
@@ -410,7 +418,7 @@ const appendEstimateText = (svg, data, height, width, scale) => {
  * @param {Object} svg
  * @param {Array} data - data array.
  */
-const appendFdrText = (svg, data, height, width) => {
+const appendFdrText = (svg, data, height, width, isAnalytic) => {
     // append header (dataset)
     svg.append('g')
         .attr('id', 'estimate-header')
@@ -427,16 +435,18 @@ const appendFdrText = (svg, data, height, width) => {
 
     // append dataset name.
     data.forEach((element, i) => {
-        const fdr = element.fdr_permutation || element.fdr_analytic
-        estimate
-            .append('text')
-            .attr('id', `estimate-${element.dataset.name}`)
-            .attr('font-weight', 200)
-            .attr('x', (width * CHART_WIDTH) + 10)
-            .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(fdr).toFixed(3)}`)
-            .attr('font-size', '16px');
+        const fdr = isAnalytic ? element.fdr_analytic : element.fdr_permutation;
+        if (fdr) {
+            estimate
+                .append('text')
+                .attr('id', `estimate-${element.dataset.name}`)
+                .attr('font-weight', 200)
+                .attr('x', (width * CHART_WIDTH) + 10)
+                .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
+                .attr('fill', `${colors.dark_teal_heading}`)
+                .text(`${(fdr).toFixed(3)}`)
+                .attr('font-size', '16px');
+        }
     });
 };
 
@@ -535,8 +545,9 @@ const createExplanation = (svg, height, width) => {
  * @param {number} height - height of the svg canvas.
  * @param {number} width - width of the svg canvas.
  * @param {Array} data - array of data.
+ * @param {boolean} isAnalytic - if the data is analytic or permuted.
  */
-const createForestPlot = (margin, heightInput, width, data) => {
+const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
     // calculate the height based on the data size.
     const height = data.length * 50 - margin.top - margin.bottom > heightInput
         ? data.length * 50 - margin.top - margin.bottom
@@ -546,7 +557,7 @@ const createForestPlot = (margin, heightInput, width, data) => {
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin, canvasId: CANVAS_ID });
 
     // min and max.
-    const { min, max } = calculateMinMax(data);
+    const { min, max } = calculateMinMax(data, isAnalytic);
 
     // min and max n value.
     const { minN, maxN } = calculateMinMaxN(data);
@@ -564,22 +575,22 @@ const createForestPlot = (margin, heightInput, width, data) => {
     createVerticalLine(svg, xScale, height);
 
     // create horizontal lines for the plot.
-    createHorizontalLines(svg, xScale, data, height);
+    createHorizontalLines(svg, xScale, data, height, isAnalytic);
 
     // create the circles for the plot.
-    createCircles(svg, xScale, circleScale, data, height);
+    createCircles(svg, xScale, circleScale, data, height, isAnalytic);
 
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
 
     // append the estimate text along the horizontal lines.
-    appendEstimateText(svg, data, height, width, xScale);
+    appendEstimateText(svg, data, height, width, xScale, isAnalytic);
 
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data, height);
 
     // append estimate as text to the svg.
-    appendFdrText(svg, data, height, width);
+    appendFdrText(svg, data, height, width, isAnalytic);
 
     // create legend.
     createLegend(svg, height, width);
@@ -623,7 +634,7 @@ const ForestPlot = ({ height, width, margin, data }) => {
         createSelectionOptions(mDataTypes, updatedData);
 
         // create forest plot.
-        createForestPlot(margin, height, width, filteredData);
+        createForestPlot(margin, height, width, filteredData, isAnalytic);
     }, [isAnalytic]);
 
     return (
