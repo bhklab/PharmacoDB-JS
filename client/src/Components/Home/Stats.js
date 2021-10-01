@@ -84,7 +84,7 @@ const statsObject = {
     name: 'tissues', value: '0', image: tissuesImg, link: '/tissues',
   },
   cell: {
-    name: 'cell-lines', value: '0', image: cellsImg, link: '/cell_lines',
+    name: 'cell lines', value: '0', image: cellsImg, link: '/cell_lines',
   },
   experiment: {
     name: 'experiments',
@@ -102,7 +102,7 @@ const statsObject = {
 
 
 /**
- * 
+ *
  * @param {Array} data - input array.
  */
 const createStatsObject = (data) => {
@@ -116,8 +116,8 @@ const createStatsObject = (data) => {
 }
 
 /**
- * 
- * @param {Array} data 
+ *
+ * @param {Array} data
  */
 const updateStatsObject = (data) => {
   const stats = statsObject;

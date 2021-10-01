@@ -66,12 +66,13 @@ const PlotSection = (props) =>{
 
     return (
         <React.Fragment>
-            {compoundsData.length ? (
+            {compoundsData.length || experimentalData.length? (
                 <React.Fragment>
                     {
                         display === 'barPlot' ?
                             loading ? <Loading />
                                 :
+                                compoundsData.length?
                                 <PlotsWrapper single={true}>
                                     <DatasetHorizontalPlot
                                         plotId={`${name}Compounds`}
@@ -81,11 +82,13 @@ const PlotSection = (props) =>{
                                         logScale={true}
                                     />
                                 </PlotsWrapper>
+                                    : <h6 align="center">No data is available to plot this cell line.</h6>
                             :
                         display === 'aacCompounds' ?
                             loading ? <Loading />
                                 :
-                                <PlotsWrapper single={true}>
+                                experimentalData.length?
+                                    <PlotsWrapper single={true}>
                                     <ProfileCompound
                                         plotId={`${name}CompoundsAAC`}
                                         cellLine={name}
@@ -94,7 +97,8 @@ const PlotSection = (props) =>{
                                         datasetOptions={datasetOptions}
                                         title={`${name}: AAC`}
                                     />
-                                </PlotsWrapper>
+                                </PlotsWrapper> :
+                                    <h6 align="center">No data is available to plot this cell line.</h6>
                             :
                             ''
                     }

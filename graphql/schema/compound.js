@@ -34,7 +34,7 @@ const compoundType = `
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
         """dataset information object"""
-        dataset: Generic!
+        dataset: [Generic!]
     }
 `;
 
@@ -45,7 +45,7 @@ const compoundDetailType = `
         """synonyms (names) in different sources (datasets)"""
         synonyms: [SourceAnnotation!]
         """compound targets"""
-        targets: [Target!]
+        targets: [TargetWithGeneInfo]
         """dataset information object"""
         datasets: [Generic]!
     }

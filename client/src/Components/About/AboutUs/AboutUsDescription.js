@@ -95,8 +95,8 @@ const AboutUsDescription = () => {
           for the drug sensitivity measurements.</p>
           <p>To address these issues, we developed PharmacoDB, a web-application assembling the largest in vitro drug screens
           in a single database, and allowing users to easily query the union of studies released to date. PharmacoDB
-          allows scientists to search across publicly available datasets to find instances where a drug or cell line of
-          interest has been profiled, and to view and compare the dose-response data for a specific cell line - drug pair
+          allows scientists to search across publicly available datasets to find instances where a compound or cell line of
+          interest has been profiled, and to view and compare the dose-response data for a specific cell line - compound pair
           from any of the studies included in the database.</p>
           <p>If you use PharmacoDB in your research please cite the following publication:<br/>
           <ul>
@@ -131,23 +131,23 @@ const AboutUsDescription = () => {
                 : null
             }
           </div>
-          <div className="paragraph">Drugs? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
+          <div className="paragraph">Compounds? Try typing <a id="hide-d-overlay"href="javaScript:void(0);" onClick={() =>onClick("drug")}>Paclitaxel</a>
             {
               showDrug ?
                     <div className="caption" id=" overlay-caption">
                       <img  height="auto" width="520px" alt="Searching Paclitaxel" className="documentation" src={drugExmp} title="Query drug"/><br/>
-                      Example search for a drug.
+                      Example search for a compound.
                     </div>
                   : null
             }
           </div>
-          <div className="paragraph">Drug dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF-7 Paclitaxel</a>
+          <div className="paragraph">Compound dose-response curves? Try typing <a id="hide-ddrc-overlay" href="javaScript:void(0);" onClick={() =>onClick("ddrc")}>MCF-7 Paclitaxel</a>
             {
               showDDRC ?
 
                     <div className="caption" id=" overlay-caption">
                       <img  height="auto" width="550px" alt="Searching MCF-7 Paclitaxel" className="documentation" src={cellDrugExmp} title="Query dose-response curve"/><br/>
-                      Example search for a drug dose-response curve. </div>
+                      Example search for a compound dose-response curve. </div>
                   : null
             }
           </div>
@@ -161,7 +161,7 @@ const AboutUsDescription = () => {
           The <a href="https://www.pmgenomics.ca/bhklab/" target="_blank">BHKLAB </a>
           is composed of a multidisciplinary team of researchers analyzing high-dimensional molecular and imaging data to
           develop new predictive tools foranticancer therapies. We develop databases and analysis pipelines to leverage
-          large compendia of pharmacogenomic datasets for biomarker discovery and drug repurposing. The BHKLAB is part of
+          large compendia of pharmacogenomic datasets for biomarker discovery and compound repurposing. The BHKLAB is part of
           the Princess Margaret Cancer Centre – University Health Network, located in the heart of the Toronto Discovery
           District in Ontario, Canada. <br/>
           <iframe
