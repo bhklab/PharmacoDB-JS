@@ -38,17 +38,37 @@ const AnnotatedTargetsTable = (props) => {
         {
             Header: 'Associated Gene',
             accessor: 'gene_symbol',
-            Cell: (item) => <a href={`/genes/${item.row.original.gene_id}`}>{item.value}</a>
+            // Cell: (item) => {
+            //     console.log(item.row.original);
+            //     return <a href={`/genes/${item.row.original.gene_id}`}>{item.value}</a>
+            // }
+            Cell: (item) => {
+                console.log(item.row.original);
+                if (item.value) {
+                    let symbols = item.value.split(',');
+                    let ids = item.row.original.gene_id.split(',');
+                    return (ids.map((id, i) => (
+                        <span key={i}>
+                            <Link to={`/genes/${id}`}>{symbols[i]}</Link>{ i + 1 < ids.length ? ', ' : ''}
+                        </span>)));
+                } else {
+                    return '';
+                }
+            }
         },
         {
             Header: 'Gene ID',
             accessor: 'gene_name',
             Cell: (item) => {
-                return item.value.startsWith("ENSG") ?
-                    <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${item.value}`} target="_blank">
-                        {item.value}
-                    </a>
-                    : <span>{item.value}</span>
+                if (item.value) {
+                    let ids = item.value.split(',');
+                    return (ids.map((id, i) => (
+                        <span key={i}>
+                            <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${id}`} target='_blank' rel='noopener noreferrer'>{id}</a>{ i + 1 < ids.length ? ', ' : ''}
+                        </span>)));
+                } else {
+                    return '';
+                }
             }
         }
     ];
