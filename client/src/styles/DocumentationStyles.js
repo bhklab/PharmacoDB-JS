@@ -87,8 +87,8 @@ const StyledDocPage = styled.div`
             resize-mode: 'contain';
           }
           .smaller {
-            width: 40%;
-            max-width: 400px;
+            width: 60%;
+            max-width: 600px;
             height: auto;
             margin-top: 0px;
             margin-bottom: 25px;

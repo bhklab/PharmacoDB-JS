@@ -39,7 +39,7 @@ const DocDataset = () => {
             <div className="center"><img src={individualDataset}/></div>
             <h7>Resources</h7>
             <p>Resources page includes links to resources which provide access to the original data.</p>
-            <div className="center"><img className="smaller" src={datasetResource}/></div>
+            <div className="center"><img src={datasetResource}/></div>
             <h7>Data Types</h7>
             <p>Data types page includes a table of all the available pharmacological and molecular data in the dataset, with annotations about the assays used to collect them.</p>
             <div className="center"><img className="small" src={dataTypes}/></div>

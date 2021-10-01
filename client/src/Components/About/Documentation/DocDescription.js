@@ -29,7 +29,7 @@ const SIDE_LINKS = [
     { label: 'Experiments', name: 'experiment' },
     { label: 'Genes', name: 'gene' },
     { label: 'Compounds', name: 'drug' },
-    { label: 'Datasets Intersection', name: 'intersection' },
+    // { label: 'Datasets Intersection', name: 'intersection' },
     { label: 'Cell line vs. Compound', name: 'cell-drug' },
     { label: 'Tissue vs. Compound', name: 'tissue-drug' },
     { label: 'Biomarker', name: 'biomarker' },
@@ -131,12 +131,12 @@ const DocDescription = () => {
                                 <DocDrug />
                             </Element>
                         }
-                        {
-                            display === 'intersection' &&
-                            <Element className="section" name="intersection">
-                                <DocDatasetsIntersection />
-                            </Element>
-                        }
+                        {/*{*/}
+                        {/*    display === 'intersection' &&*/}
+                        {/*    <Element className="section" name="intersection">*/}
+                        {/*        <DocDatasetsIntersection />*/}
+                        {/*    </Element>*/}
+                        {/*}*/}
                         {
                             display === 'cell-drug' &&
                             <Element className="section" name="cell-drug">
