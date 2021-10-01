@@ -144,7 +144,7 @@ const renderComponent = (loading, error, columns, data) => {
  * )
  */
 const Compounds = () => {
-  const { loading, error, data: compound_data } = useQuery(getCompoundsQuery, {fetchPolicy: "cache-first"});
+  const { loading, error, data: compound_data } = useQuery(getCompoundsQuery);
   const columns = React.useMemo(() => table_columns, []);
   const data = React.useMemo(() => getTableData(compound_data), [compound_data]);
   return (
