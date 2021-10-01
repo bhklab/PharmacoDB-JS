@@ -143,7 +143,7 @@ const CompoundsSummaryTable = (props) => {
         </React.Fragment>
         :
         <h6 align="center">
-            No data is available of compounds tested with {cellLine.name} cell line.
+            No data is available for compounds tested with {cellLine.name} cell line.
         </h6>
       }
     </React.Fragment>
