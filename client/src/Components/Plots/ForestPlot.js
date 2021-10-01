@@ -610,6 +610,9 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
 
     useEffect(() => {
+        // remove the svg canvas.
+        d3.select('#forestplot-canvas').remove();
+
         // create tooltip.
         createToolTip(`${TOOLTIP_ID}`);
 
