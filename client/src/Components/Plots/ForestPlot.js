@@ -7,6 +7,7 @@ import createToolTip from '../../utils/toolTip';
 import CustomSwitch from '../UtilComponents/CustomSwitch';
 import styled from 'styled-components';
 
+// style for forest plot.
 const StyledForestPlot = styled.div`
     width: 100%;
     margin-left: 10px;
@@ -259,14 +260,16 @@ const createHorizontalLines = (svg, scale, data, height) => {
         .attr('id', `horizontal-lines`)
 
     data.forEach((element, i) => {
+        const x1 = element.lower_permutation || element.lower_analytic;
+        const x2 = element.upper_permutation || element.upper_analytic;
         horizontal
             .append('line')
             .attr('id', `horizontal-line-${element.dataset.name}`)
             .style('stroke', `${colors.dark_gray_text}`)
             .style('stroke-width', 1.25)
-            .attr('x1', scale(element.lower_permutation || element.lower_analytic))
+            .attr('x1', scale(x1))
             .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .attr('x2', scale(element.upper_permutation || element.upper_analytic))
+            .attr('x2', scale(x2))
             .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
             .on('mouseover', (event) => {
                 mouseOverEvent(event, element);
@@ -376,25 +379,27 @@ const appendEstimateText = (svg, data, height, width, scale) => {
 
     // append dataset name.
     data.forEach((element, i) => {
+        const xLower = element.lower_permutation || element.lower_analytic;
         estimate
             .append('text')
             .attr('id', `estimate-${element.dataset.name}-x1`)
             .attr('font-weight', 200)
-            .attr('x', scale(element.lower_permutation || element.lower_analytic) - 15)
+            .attr('x', scale(xLower) - 15)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(element.lower_permutation || element.lower_analytic).toFixed(2)}`)
+            .text(`${(xLower).toFixed(2)}`)
             .attr('visibility', 'hidden')
             .attr('font-size', '14px');
 
+        const xUpper = element.upper_permutation || element.upper_analytic;
         estimate
             .append('text')
             .attr('id', `estimate-${element.dataset.name}-x2`)
             .attr('font-weight', 200)
-            .attr('x', scale(element.upper_permutation || element.upper_analytic) - 15)
+            .attr('x', scale(xUpper) - 15)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(element.upper_permutation || element.upper_analytic).toFixed(2)}`)
+            .text(`${(xUpper).toFixed(2)}`)
             .attr('visibility', 'hidden')
             .attr('font-size', '14px');
     });
@@ -422,6 +427,7 @@ const appendFdrText = (svg, data, height, width) => {
 
     // append dataset name.
     data.forEach((element, i) => {
+        const fdr = element.fdr_permutation || element.fdr_analytic
         estimate
             .append('text')
             .attr('id', `estimate-${element.dataset.name}`)
@@ -429,7 +435,7 @@ const appendFdrText = (svg, data, height, width) => {
             .attr('x', (width * CHART_WIDTH) + 10)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${(element.fdr_permutation || element.fdr_analytic).toFixed(3)}`)
+            .text(`${(fdr).toFixed(3)}`)
             .attr('font-size', '16px');
     });
 };
@@ -604,7 +610,6 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
 
     useEffect(() => {
-        console.log('here!!!');
         // create tooltip.
         createToolTip(`${TOOLTIP_ID}`);
 
