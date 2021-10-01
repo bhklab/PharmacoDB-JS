@@ -86,7 +86,6 @@ const getTableData = (data) => {
         smiles, inchikey, fda_status, chembl
       } = annotation;
       const pubchem = annotation.pubchem ? annotation.pubchem.split("///") : null;
-      const datasetList = [];
       return {
         id,
         name,
@@ -96,7 +95,7 @@ const getTableData = (data) => {
         pubchem,
         fda_status,
         chembl,
-        dataset:datasetList
+        dataset
       };
     });
   }
