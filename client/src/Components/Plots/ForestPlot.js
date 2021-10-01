@@ -586,6 +586,9 @@ const createForestPlot = (margin, heightInput, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ height, width, margin, data }) => {
+    // set state for toggle.
+    const [isAnalytic, setAnalyticValue] = useState(false);
+
     // default mDataType.
     const defaulMolecularDataType = 'microarray';
 
@@ -601,6 +604,7 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
 
     useEffect(() => {
+        console.log('here!!!');
         // create tooltip.
         createToolTip(`${TOOLTIP_ID}`);
 
@@ -612,12 +616,14 @@ const ForestPlot = ({ height, width, margin, data }) => {
 
         // create forest plot.
         createForestPlot(margin, height, width, filteredData);
-    }, []);
+    }, [isAnalytic]);
 
     return (
         <StyledForestPlot>
             <div className='switch-wrapper'>
                 <CustomSwitch
+                    checked={isAnalytic}
+                    onChange={(isAnalytic) => setAnalyticValue(isAnalytic)}
                     labelLeft='Permuted'
                     labelRight='Analytical'
                 />
