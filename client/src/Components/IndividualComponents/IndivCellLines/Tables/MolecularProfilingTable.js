@@ -22,7 +22,7 @@ const generateTableData = (data) => {
             mDataType: convertMDataType(item.mDataType),
             num_prof: item.num_prof
         })).filter(item => Object.values(mDataTypeList).includes(item.mDataType));
-        
+
         // organize the entries by dataset
         let datasets = [...new Set(converted.map(item => item.dataset.name))].sort((a, b) => a.localeCompare(b));
         datasets.forEach(dataset => {
@@ -100,7 +100,7 @@ const MolecularProfilingTable = (props) => {
                 error && <p>An error occurred</p>
             }
             {
-                loading || !tableData.ready ? 
+                loading || !tableData.ready ?
                 <Loading />
                 :
                 tableData.molProf.length > 0 ?
@@ -120,7 +120,7 @@ const MolecularProfilingTable = (props) => {
                 </React.Fragment>
                 :
                 <h6 align="center">
-                    No molecular profiles with {cellLine.name} is available in PharmacoGx.
+                    No molecular profiling data with {cellLine.name} is available in PharmacoGx.
                 </h6>
             }
         </React.Fragment>
