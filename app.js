@@ -21,8 +21,17 @@ app.use(morgan('dev'));
 
 // body parser.
 app.use(bodyParser.json());
+
 // serves static build files
-app.use(express.static(path.join(__dirname, 'client/build')));
+// uses pug to serve maintenace page if the maintenance mode is turned on.
+if(process.env.MAINTENANCE === 'true'){
+    app.use('/style', express.static('maintenance/style'));
+    app.use('/image', express.static('maintenance/img'));
+    app.set('views', './maintenance/views');
+    app.set('view engine', 'pug');
+}else{
+    app.use(express.static(path.join(__dirname, 'client/build')));
+}
 
 // setting up the graphql end points.
 // passing in the graphql schema and resolver functions.
@@ -35,7 +44,12 @@ app.use('/graphql',
 
 // renders react files if request doesn't go to api
 app.get('/*', (req, res) => {
-    res.sendFile('index.html', { root: './client/build' });
+    // serves maintenance static page if the maintenance mode is turned on.
+    if(process.env.MAINTENANCE === 'true'){
+        res.render('maintenance', {start: process.env.MAINTENANCE_START, end: process.env.MAINTENANCE_END});
+    }else{
+        res.sendFile('index.html', { root: './client/build' });
+    }
 });
 
 // use port no. 5000 for server if environment variable is not present.

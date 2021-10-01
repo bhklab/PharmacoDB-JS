@@ -23,7 +23,7 @@ import {
     IntersectionMain,
     AboutUs,
     Documentation,
-    CiteUs,
+    CiteUs
 } from './Components/index';
 import GlobalStyles from './styles/GlobalStyles';
 
