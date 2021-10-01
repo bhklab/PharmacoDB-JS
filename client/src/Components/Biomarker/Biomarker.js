@@ -61,14 +61,38 @@ const COMPOUND_INFO_COLUMNS = [
         Header: 'FDA Approval Status',
         accessor: 'status',
     },
+    // {
+    //     Header: 'Active Trials',
+    //     accessor: 'trials',
+    // },
     {
-        Header: 'Active Trials',
-        accessor: 'trials',
+        Header: 'Compound Targets',
+        accessor: 'target',
     },
     {
-        Header: 'Annotated Targets',
-        accessor: 'targets',
-    },
+        Header: 'Genes',
+        accessor: 'genes',
+        Cell: (row) => {
+            const geneArray = row.row.original.genes;
+
+            const genes = geneArray.map((gene, i) => {
+                let returnData = ''
+                if (i + 1 === geneArray.length) {
+                    returnData = <a href={`genes/${gene.id}`} target='_blank' key={gene.symbol}>{gene.symbol}</a>
+                } else {
+                    returnData = (
+                        <>
+                            <a href={`genes/${gene.id}`} target='_blank' key={gene.symbol}>{gene.symbol}</a>
+                            <span>, </span>
+                        </>
+                    )
+                }
+                return returnData;
+            });
+
+            return genes;
+        }
+    }
 ];
 
 
@@ -82,35 +106,42 @@ const transformCompoundTableData = (data) => {
     const name = data.compound.name;
     const uid = data.compound.uid;
     const fdaStatus = data.compound.annotation.fda_status;
-    const targets = data.targets.map((el) => el.name).join(', ');
+    // const targets = data.targets.map((el) => el.name).join(', ');
     // return an array of object(s).
-    return [
-        {
-            status: fdaStatus,
-            targets,
-            name,
-            uid,
-        },
-    ];
+    return data.targets.map((target) => ({
+        status: fdaStatus,
+        target: target.target_name,
+        genes: target.genes.map(gene => ({
+            id: gene.id,
+            symbol: gene.annotation.symbol,
+        })),
+        name,
+        uid,
+    }));
 };
 
 /**
  *
  * @param {Object} geneData - gene information data.
  * @param {Object} compoundData - compound information data.
+ * @param {string} gene - input gene from the param.
  * @returns {Array} - data array.
  */
-const transformGeneTableData = (geneData, compoundData) => {
+const transformGeneTableData = (geneData, compoundData, gene) => {
     // grab the ensg and gene location.
     const ensg = geneData.name;
     const location = geneData.annotation.gene_seq_start;
     const symbol = geneData.annotation.symbol;
     const gene_id = geneData.id;
-    const target = [...compoundData.targets.map((el) => el.name)].includes(
-        'ERBB2'
-    )
-        ? 'Yes'
-        : 'No';
+    const genes = [];
+
+    // get the list of genes.
+    compoundData.targets.forEach(target => {
+        target.genes.forEach(gene => genes.push(gene.annotation.symbol));
+    });
+
+    const target = genes.includes(gene) ? 'Yes' : 'No';
+
     // return the transformed data.
     return [
         {
@@ -205,7 +236,8 @@ const Biomarker = (props) => {
             setTransformedGeneData(
                 transformGeneTableData(
                     geneQueryData.gene,
-                    compoundQueryData.singleCompound
+                    compoundQueryData.singleCompound,
+                    gene,
                 )
             );
         };
@@ -287,7 +319,6 @@ const Biomarker = (props) => {
                                         <Table
                                             columns={compoundInfoColumns}
                                             data={transformedCompoundData}
-                                            disablePagination
                                         />
                                     </Element>
                                 }
