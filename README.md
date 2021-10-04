@@ -30,8 +30,7 @@ cd PharmacoDB-JS
 
 ## Servers
 
--   Testing Server:
--   Production Server:
+-   Production Server: https://pharmacodb.ca/
 
 ## Migrations
 
