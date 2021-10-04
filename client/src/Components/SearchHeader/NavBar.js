@@ -119,15 +119,18 @@ const NavBar = (props) => {
           <a className="header-links link" href={`${OLD_PHARMACODB}`} target='_blank' style={{ color: `${colors.dark_pink_highlight}` }}>
             PharmacoDB-v1
           </a>
-          {page === 'home' ? null : (
-            <StyledSearchButton className="search-button" onClick={handleClick}>
-              {isOpen ? (
-                <img alt="close" src={closeSearchImg} />
-              ) : (
-                  <img alt="magnifying glass" src={magnifImg} />
-                )}
-            </StyledSearchButton>
-          )}
+          {
+            page === 'home' ? null : 
+            (
+              <StyledSearchButton className="search-button" onClick={handleClick}>
+                {isOpen ? (
+                  <img alt="close" src={closeSearchImg} />
+                ) : (
+                    <img alt="magnifying glass" src={magnifImg} />
+                  )}
+              </StyledSearchButton>
+            )
+          }
         </StyledLinkDropdowns>
       </div>
     </StyledNavBar>

@@ -5,7 +5,7 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
 
 /**
- * 
+ *
  * @param {string} compound - compound name
  * @returns {number} - compound id
  */
@@ -71,7 +71,8 @@ const transformSynonyms = data => {
  * @returns {Array} - Returns a transformed array of objects.
  */
 const transformCompounds = data => {
-    return data.map(compound => {
+    const returnList = [];
+    data.forEach((compound,i) => {
         const {
             id,
             name,
@@ -86,40 +87,45 @@ const transformCompounds = data => {
             reactome_id,
         } = compound;
 
-        const returnList = {
-            'smiles': [],
-            'inchikey': []
-        };
+        if (!i || !returnList.filter(item => item["uid"]===compound_uid).length> 0)
+        {
+            const returnData = {
+                'smiles': [],
+                'inchikey': []
+            };
 
-        if (smiles) {
-            smiles.split(', ').forEach((item) => {
-                if (!returnList['smiles'].includes(item)) returnList['smiles'].push(item);
-            });
-        }
-        if (inchikey) {
-            inchikey.split(', ').forEach((item) => {
-                if (!returnList['inchikey'].includes(item)) returnList['inchikey'].push(item);
-            });
-        }
-
-        return {
-            id,
-            name,
-            uid: compound_uid,
-            annotation: {
-                smiles: returnList['smiles'].join(', '),
-                inchikey: returnList['inchikey'].join(', '),
-                pubchem: pubchem,
-                fda_status: transformFdaStatus(fda_status),
-                chembl: chembl_id,
-                reactome: reactome_id || 'NA'
-            },
-            dataset: {
-                id: dataset_id,
-                name: dataset_name,
+            if (smiles) {
+                smiles.split(', ').forEach((item) => {
+                    if (!returnData['smiles'].includes(item)) returnData['smiles'].push(item);
+                });
             }
-        };
+            if (inchikey) {
+                inchikey.split(', ').forEach((item) => {
+                    if (!returnData['inchikey'].includes(item)) returnData['inchikey'].push(item);
+                });
+            }
+            returnList.push({
+                id,
+                name,
+                uid: compound_uid,
+                annotation: {
+                    smiles: returnData['smiles'].join(', '),
+                    inchikey: returnData['inchikey'].join(', '),
+                    pubchem: pubchem,
+                    fda_status: transformFdaStatus(fda_status),
+                    chembl: chembl_id,
+                    reactome: reactome_id || 'NA'
+                },
+                dataset: [{
+                    id: dataset_id,
+                    name: dataset_name,
+                }]
+            })
+        } else {
+            returnList[returnList.findIndex(item => item['uid']===compound_uid)]['dataset'].push({id: dataset_id, name: dataset_name})
+        }
     });
+    return returnList;
 };
 
 /**
@@ -137,7 +143,7 @@ const transformSingleCompound = async (compoundId, compoundName, compoundUID, co
             compoundId,
             compoundName,
             compoundUID,
-        }) : '';
+        }) : { targets: [] };
         const output = {
             compound: transformedCompound[0],
             synonyms: transformedSynonyms,

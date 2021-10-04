@@ -20,8 +20,8 @@ const DocBiomarker = () => {
     return(
         <div className='documentation'>
             <p>Biomarker query is feasible through searching for a combination of a compound, gene and tissue from the search bar. Through this query you can view the association of a marker (gene) of interest with the compound pan cancer as well as in a specific tissue. If the tissue is not specified the query will be pan-cancer.</p>
-            <div className="center"><img src={geneCompoundSearch}/></div>
-            <div className="center"><img src={geneCompounTissueSearch}/></div>
+            <div className="center"><img className="bar" src={geneCompoundSearch}/></div>
+            <div className="center"><img className="bar" src={geneCompounTissueSearch}/></div>
             <p>Biomarker query directs you to the corresponding page with a sidebar including Forest Plot, Manhattan Plot, Gene Information, and Compound Information.</p>
             <p>Forest plot page includes a forest plot indicating the association between the compound and gene of the query in the tissue type of interest in each PharmacoDB dataset that includes them.  There is a molecular profile selector allowing to review the association according to the chosen profile. The significant associations (FDR &lt; 0.05 and pearson correlation coefficient, r &gt; 0.7) are highlighted in pink. You can view the strength of the association as well as the correlation confidence intervals by hovering over the horizontal lines.</p>
             <div className="center"><img src={biomarkerForest}/></div>

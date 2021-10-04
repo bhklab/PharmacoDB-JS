@@ -1,5 +1,5 @@
 import React from 'react';
-import homeCompound from '../../../../images/DocumentationImages/homeCompound.PNG';
+import homeCompound from '../../../../images/DocumentationImages/homeCompounds.png';
 import drugSummaryBar from '../../../../images/DocumentationImages/drugSummaryBar.png';
 import drugIndBar from '../../../../images/DocumentationImages/drugIndivBar.png';
 import drugAACCell from '../../../../images/DocumentationImages/pacli_aac_celllines.png';
@@ -24,12 +24,12 @@ const DocDrug = () => {
     return(
         <div className='documentation'>
             <p>Each compound included in PharmacoDB has a webpage page associated with it. These pages can be accessed by searching for a compound through the search bar, or by clicking on the compounds link at the bottom of the homepage or from the Data drop down menu on the top right side of the homepage.</p>
-            <div className="center"><img src={drugSearch}/></div>
+            <div className="center"><img className="bar" src={drugSearch}/></div>
             <div className="center"><p>Or</p></div>
-            <div className="center"><img src={homeCompound}/></div>
+            <div className="center"><img className="bar" src={homeCompound}/></div>
             <p>Compounds link directs you to a page starting with a bar plot showing the number of compounds tested in each dataset included in PharmacoDB. Hovering over each bar shows the exact number of compounds.</p>
             <div className="center"><img src={drugSummaryBar}/></div>
-            <p>The page also contains a table showing the name, SMILES, InChIKeys, PubChem name, and ChEMBL and FDA status of all the compounds included in the PharmacoDB. Clicking on each compound name will take you to the corresponding compound page.</p>
+            <p>The page also contains a table showing the name, SMILES, InChIKeys, PubChem name, ChEMBL, and FDA status of all the compounds included in the PharmacoDB. Clicking on each compound name will take you to the corresponding compound page.</p>
             {/*<img width="600px" alt="compound summary page- list of compounds" src={doseImg} title="Compounds"/>*/}
             <p>Each compound page has a sidebar including Synonyms and IDS, Annotated Targets, Bar Plots, AAC (Cell Lines), AAC (Tissues), Cell Line Summary, Tissue Summary, and Molecular Features.</p>
             <h7>Annotations</h7>
