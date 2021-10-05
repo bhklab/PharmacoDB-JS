@@ -357,7 +357,6 @@ const appendDatasetName = (svg, data, height) => {
 
     // append dataset name.
     data.forEach((element, i) => {
-        const text = element.permutation_done === 1 ? ' † ' : ' * ';
         dataset
             .append('text')
             .attr('id', `dataset-${element.dataset.name}`)
@@ -365,7 +364,7 @@ const appendDatasetName = (svg, data, height) => {
             .attr('x', 10)
             .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
             .attr('fill', `${colors.dark_teal_heading}`)
-            .text(`${element.dataset.name}${text}`)
+            .text(`${element.dataset.name}`)
             .attr('font-size', '16px');
     });
 };
@@ -520,29 +519,6 @@ const createSelectionOptions = (mDataTypes, data, isAnalytic, molecularType, set
 };
 
 /**
- * add description to the bottom of the text.
- * @param {Object} svg 
- * @param {number} height 
- * @param {number} width 
- */
-const createExplanation = (svg, height, width) => {
-    // append legend text.
-    const explanationText = svg.append('g')
-        .attr('id', 'permutation-done-text');
-
-    permutationDoneText.forEach((el, i) => {
-        explanationText
-            .append('text')
-            .attr('id', `legend-${el}`)
-            .attr('x', width / 5)
-            .attr('y', height + 80 + (20 * i))
-            .text(`${el}`)
-            .attr('font-size', '12px')
-            .attr('fill', `${colors.dark_teal_heading}`);
-    });
-};
-
-/**
  * Main function to create the forest plot.
  * @param {Object} margin - margin for the svg canavas.
  * @param {number} height - height of the svg canvas.
@@ -597,9 +573,6 @@ const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
 
     // create legend.
     createLegend(svg, height, width);
-
-    // add descriptive text to the bottom.
-    createExplanation(svg, height, width);
 };
 
 /**
