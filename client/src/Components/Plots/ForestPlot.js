@@ -491,7 +491,7 @@ const createLegend = (svg, height, width) => {
  * 
  * @param {Array} mDataTypes - an array of mDataTypes.
  */
-const createSelectionOptions = (mDataTypes, data) => {
+const createSelectionOptions = (mDataTypes, data, isAnalytic, molecularType, setMolecularType) => {
     // options for the selection.
     d3.select('.select')
         .selectAll('option')
@@ -506,13 +506,16 @@ const createSelectionOptions = (mDataTypes, data) => {
         // selection.
         const selection = d3.select(this).property('value');
 
+        // update molecular type.
+        setMolecularType(selection);
+
         // create the filtered data based on the selection.
         const filteredData = createFilteredData(data, selection);
 
         // remove the already drawn forest plot with it's id.
         d3.select(`#${CANVAS_ID}`).remove();
 
-        createForestPlot(margin, 350, width, filteredData);
+        createForestPlot(margin, 350, width, filteredData, isAnalytic);
     });
 };
 
@@ -605,9 +608,7 @@ const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
 const ForestPlot = ({ height, width, margin, data }) => {
     // set state for toggle.
     const [isAnalytic, setAnalyticValue] = useState(false);
-
-    // default mDataType.
-    const defaulMolecularDataType = 'microarray';
+    const [molecularType, setMolecularType] = useState('microarray');
 
     // update the data to change the data type names using the mapping variable.
     const updatedData = data.map(el => {
@@ -618,7 +619,7 @@ const ForestPlot = ({ height, width, margin, data }) => {
     });
 
     // filtered data.
-    const filteredData = createFilteredData(updatedData, defaulMolecularDataType);
+    const filteredData = createFilteredData(updatedData, molecularType);
 
     useEffect(() => {
         // remove the svg canvas.
@@ -631,11 +632,11 @@ const ForestPlot = ({ height, width, margin, data }) => {
         const mDataTypes = getAllDataTypes(updatedData);
 
         // create selection options.
-        createSelectionOptions(mDataTypes, updatedData);
+        createSelectionOptions(mDataTypes, updatedData, isAnalytic, molecularType, setMolecularType);
 
         // create forest plot.
         createForestPlot(margin, height, width, filteredData, isAnalytic);
-    }, [isAnalytic]);
+    }, [isAnalytic, molecularType]);
 
     return (
         <StyledForestPlot>
