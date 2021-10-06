@@ -1,5 +1,5 @@
 export const convertMDataType = (mDataType) => {
-    switch(mDataType) {
+    switch (mDataType) {
         case 'rna':
             return 'rna microarray';
         case 'rnaseq':
@@ -11,7 +11,11 @@ export const convertMDataType = (mDataType) => {
 
 export const mDataTypeList = {
     rna_sequence: 'rna sequence',
+    rnaseq: 'rna sequence',
+    'Kallisto_0.46.1.rnaseq': 'rna sequence',
     rna_microarray: 'rna microarray',
+    rna: 'rna microarray',
+    microarray: 'rna microarray',
     cnv: 'cnv',
-    mutation: 'mutation'
+    mutation: 'mutation',
 };
