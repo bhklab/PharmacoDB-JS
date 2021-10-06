@@ -95,16 +95,16 @@ const updateData = (data, isAnalytic) => {
             permutation_done: el.permutation_done,
             sens_stat: el.sens_stat,
             significant_permutation: el.significant_permutation,
-            fdr: `${isAnalytic ? el.fdr_analytic : el.fdr_permutation}`,
-            pvalue: `${isAnalytic ? el.pvalue_analytic : el.pvalue_permutation}`,
-            upper: `${isAnalytic ? el.upper_analytic : el.upper_permutation}`,
-            lower: `${isAnalytic ? el.lower_analytic : el.lower_permutation}`,
+            fdr: Number.parseFloat(`${isAnalytic ? el.fdr_analytic : el.fdr_permutation}`).toExponential(2),
+            pvalue: Number.parseFloat(`${isAnalytic ? el.pvalue_analytic : el.pvalue_permutation}`).toExponential(2),
+            upper: Number.parseFloat(`${isAnalytic ? el.upper_analytic : el.upper_permutation}`).toExponential(2),
+            lower: Number.parseFloat(`${isAnalytic ? el.lower_analytic : el.lower_permutation}`).toExponential(2),
         };
-    })
+    });
 
     // filter data if lower and upper values are not available.
     return updatedData.filter(el => {
-        if (el.upper !== 'null' && el.lower !== 'null') {
+        if (el.upper !== 'NaN' && el.lower !== 'NaN') {
             return el;
         }
     });
@@ -417,7 +417,7 @@ const appendEstimateText = (svg, data, height, width, scale) => {
                 .attr('x', scale(element.lower) - 15)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(Number(element.lower)).toFixed(2)}`)
+                .text(`${(element.lower)}`)
                 .attr('visibility', 'hidden')
                 .attr('font-size', '14px');
         }
@@ -430,7 +430,7 @@ const appendEstimateText = (svg, data, height, width, scale) => {
                 .attr('x', scale(element.upper) - 15)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(Number(element.upper)).toFixed(2)}`)
+                .text(`${(element.upper)}`)
                 .attr('visibility', 'hidden')
                 .attr('font-size', '14px');
         }
@@ -467,7 +467,7 @@ const appendFdrText = (svg, data, height, width) => {
                 .attr('x', (width * CHART_WIDTH) + 10)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(Number(element.fdr)).toFixed(3)}`)
+                .text(`${element.fdr}`)
                 .attr('font-size', '16px');
         }
     });
