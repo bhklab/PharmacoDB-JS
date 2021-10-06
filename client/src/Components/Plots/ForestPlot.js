@@ -5,6 +5,7 @@ import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 import createToolTip from '../../utils/toolTip';
 import CustomSwitch from '../UtilComponents/CustomSwitch';
+import { mDataTypeList as mDataTypeMapping } from '../../utils/convertMDataType';
 import styled from 'styled-components';
 
 // style for forest plot.
@@ -42,23 +43,10 @@ const CANVAS_ID = 'forestplot-canvas';
 // tooltip ID.
 const TOOLTIP_ID = 'forestplot-tooltip';
 
-// data type mapping variable.
-const mDataTypeMaping = {
-    rna: 'microarray',
-    cnv: 'cnv',
-    'Kallisto_0.46.1.rnaseq': 'rnaseq',
-};
-
 // legend variable.
 const legend = [
     { text: 'FDR < 0.05 and r > 0.7', color: `${colors.dark_pink_highlight}` },
     { text: 'FDR > 0.05 and r < 0.7', color: `${colors.silver}` },
-];
-
-// permutation done text.
-const permutationDoneText = [
-    '* p values and confidence intervals computed using analytical formulas',
-    '† p value and confidence intervals computed using data resampling'
 ];
 
 // margin for the svg element.
@@ -73,20 +61,18 @@ const margin = {
 const width = 900 - margin.left - margin.right;
 const height = 550 - margin.top - margin.bottom;
 
-
 /**
- * data based on the default molecular type.
+ * update the data to change the data type names using the mapping variable.
  * @param {Array} data 
- * @param {string} mDataType 
+ * @param {Object} dataTypeMapping 
  */
-const createFilteredData = (data, mDataType) => {
-    const filteredData = data.filter(el => {
-        if (el.mDataType === mDataType) {
-            return el;
-        }
-    });
-
-    return filteredData;
+const updateDataBasedOnTypeMapping = (data, dataTypeMapping) => {
+    return data.map(el => {
+        return {
+            ...el,
+            mDataType: dataTypeMapping[el.mDataType],
+        };
+    })
 };
 
 /**
@@ -105,6 +91,21 @@ const getAllDataTypes = (data) => {
     });
     return dataTypes;
 };
+
+/**
+ * data based on the default molecular type.
+ * @param {Array} data 
+ * @param {string} mDataType 
+ */
+const createFilteredData = (data, mDataType) => {
+    const filteredData = data.filter(el => {
+        if (el.mDataType === mDataType) {
+            return el;
+        }
+    });
+    return filteredData;
+};
+
 
 /**
  * @param {Array} data - input data.
@@ -581,15 +582,13 @@ const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
 const ForestPlot = ({ height, width, margin, data }) => {
     // set state for toggle.
     const [isAnalytic, setAnalyticValue] = useState(false);
-    const [molecularType, setMolecularType] = useState('microarray');
+    const [molecularType, setMolecularType] = useState('rna microarray');
 
-    // update the data to change the data type names using the mapping variable.
-    const updatedData = data.map(el => {
-        return {
-            ...el,
-            mDataType: mDataTypeMaping[el.mDataType],
-        };
-    });
+    // create updated data, updating the molecular type using the mapping.
+    const updatedData = updateDataBasedOnTypeMapping(data, mDataTypeMapping);
+
+    // get all the data types available in the data.
+    const mDataTypes = getAllDataTypes(updatedData);
 
     // filtered data.
     const filteredData = createFilteredData(updatedData, molecularType);
@@ -600,9 +599,6 @@ const ForestPlot = ({ height, width, margin, data }) => {
 
         // create tooltip.
         createToolTip(`${TOOLTIP_ID}`);
-
-        // get all the data types available in the data.
-        const mDataTypes = getAllDataTypes(updatedData);
 
         // create selection options.
         createSelectionOptions(mDataTypes, updatedData, isAnalytic, molecularType, setMolecularType);
