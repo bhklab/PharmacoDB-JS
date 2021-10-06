@@ -76,6 +76,33 @@ const updateDataBasedOnTypeMapping = (data, dataTypeMapping) => {
 };
 
 /**
+ * updates the data based on if we want analytic or permuted values.
+ * @param {Array} data
+ * @param {boolean} isAnalytic
+ */
+const updateData = (data, isAnalytic) => {
+    return data.map(el => {
+        return {
+            compound: el.compound,
+            dataset: el.dataset,
+            gene: el.gene,
+            tissue: el.tissue,
+            estimate: el.estimate,
+            id: el.id,
+            mDataType: el.mDataType,
+            n: el.n,
+            permutation_done: el.permutation_done,
+            sens_stat: el.sens_stat,
+            significant_permutation: el.significant_permutation,
+            fdr: `${isAnalytic ? el.fdr_analytic : el.fdr_permutation}`,
+            pvalue: `${isAnalytic ? el.pvalue_analytic : el.pvalue_permutation}`,
+            upper: `${isAnalytic ? el.upper_analytic : el.upper_permutation}`,
+            lower: `${isAnalytic ? el.lower_analytic : el.lower_permutation}`,
+        };
+    })
+};
+
+/**
  * 
  * @param {Array} data
  * @returns {Array} - of different data types. 
@@ -109,28 +136,19 @@ const createFilteredData = (data, mDataType) => {
 
 /**
  * @param {Array} data - input data.
- * @param {boolean} isAnalytic
  */
-const calculateMinMax = (data, isAnalytic) => {
+const calculateMinMax = (data) => {
     // calculates the minimum and maximum estimate from the data.
     const minEstimate = Math.min(...data.map((val) => val.estimate));
     const maxEstimate = Math.max(...data.map((val) => val.estimate));
 
     // calculates the minimum and maximum analytic from the data.
-    const minAnalytic = Math.min(...data.map((val) => val.lower_analytic));
-    const maxAnalytic = Math.max(...data.map((val) => val.upper_analytic));
-
-    // calculates the minimum and maximum permutation from the data.
-    const minPermutation = Math.min(...data.map((val) => val.lower_permutation));
-    const maxPermutation = Math.max(...data.map((val) => val.upper_permutation));
-
-    // assign min and max.
-    const min = isAnalytic ? minAnalytic : minPermutation;
-    const max = isAnalytic ? maxAnalytic : maxPermutation;
+    const min = Math.min(...data.map((val) => val.lower));
+    const max = Math.max(...data.map((val) => val.upper));
 
     return {
         min,
-        max
+        max,
     }
 };
 
@@ -258,24 +276,22 @@ const createVerticalLine = (svg, scale, height) => {
  * @param {Object} scale - x axis scale.
  * @param {boolean} isAnalytic
  */
-const createHorizontalLines = (svg, scale, data, height, isAnalytic) => {
+const createHorizontalLines = (svg, scale, data, height) => {
     const horizontal = svg.append('g')
         .attr('id', `horizontal-lines`)
 
     data.forEach((element, i) => {
-        const x1 = isAnalytic ? element.lower_analytic : element.lower_permutation;
-        const x2 = isAnalytic ? element.upper_analytic : element.upper_permutation;
         horizontal
             .append('line')
             .attr('id', `horizontal-line-${element.dataset.name}`)
             .style('stroke', `${colors.dark_gray_text}`)
             .style('stroke-width', 1.25)
-            .attr('x1', scale(x1))
+            .attr('x1', scale(element.lower))
             .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .attr('x2', scale(x2))
+            .attr('x2', scale(element.upper))
             .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
             .on('mouseover', (event) => {
-                mouseOverEvent(event, element, isAnalytic);
+                mouseOverEvent(event, element);
             })
             .on('mouseout', (event) => {
                 mouseOutEvent(event, element);
@@ -291,13 +307,14 @@ const createHorizontalLines = (svg, scale, data, height, isAnalytic) => {
  * @param {Object} circleScale - scale to set the radius of the circle.
  * @param {Array} data - data array.
  */
-const createCircles = (svg, xScale, circleScale, data, height, isAnalytic) => {
+const createCircles = (svg, xScale, circleScale, data, height) => {
     const circles = svg.append('g')
         .attr('id', 'cirlces');
 
     data.forEach((element, i) => {
-        const fdr = isAnalytic ? element.fdr_analytic : element.fdr_permutation;
-        const pc = isAnalytic ? element.upper_analytic : element.upper_permutation;
+        // fdr and pearson cofficient.
+        const fdr = element.fdr;
+        const pc = element.upper;
 
         circles
             .append('circle')
@@ -375,38 +392,35 @@ const appendDatasetName = (svg, data, height) => {
  * @param {Object} svg
  * @param {Array} data - data array.
  */
-const appendEstimateText = (svg, data, height, width, scale, isAnalytic) => {
+const appendEstimateText = (svg, data, height, width, scale) => {
     const estimate = svg.append('g')
         .attr('id', 'estimate');
 
     // append dataset name.
     data.forEach((element, i) => {
 
-        const xLower = isAnalytic ? element.lower_analytic : element.lower_permutation;
-        if (xLower) {
+        if (element.lower) {
             estimate
                 .append('text')
                 .attr('id', `estimate-${element.dataset.name}-x1`)
                 .attr('font-weight', 200)
-                .attr('x', scale(xLower) - 15)
+                .attr('x', scale(element.lower) - 15)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(xLower).toFixed(2)}`)
+                .text(`${(Number(element.lower)).toFixed(2)}`)
                 .attr('visibility', 'hidden')
                 .attr('font-size', '14px');
         }
 
-
-        const xUpper = isAnalytic ? element.upper_analytic : element.upper_permutation;
-        if (xUpper) {
+        if (element.upper) {
             estimate
                 .append('text')
                 .attr('id', `estimate-${element.dataset.name}-x2`)
                 .attr('font-weight', 200)
-                .attr('x', scale(xUpper) - 15)
+                .attr('x', scale(element.upper) - 15)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL) - 10)
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(xUpper).toFixed(2)}`)
+                .text(`${(Number(element.upper)).toFixed(2)}`)
                 .attr('visibility', 'hidden')
                 .attr('font-size', '14px');
         }
@@ -418,7 +432,7 @@ const appendEstimateText = (svg, data, height, width, scale, isAnalytic) => {
  * @param {Object} svg
  * @param {Array} data - data array.
  */
-const appendFdrText = (svg, data, height, width, isAnalytic) => {
+const appendFdrText = (svg, data, height, width) => {
     // append header (dataset)
     svg.append('g')
         .attr('id', 'estimate-header')
@@ -435,8 +449,7 @@ const appendFdrText = (svg, data, height, width, isAnalytic) => {
 
     // append dataset name.
     data.forEach((element, i) => {
-        const fdr = isAnalytic ? element.fdr_analytic : element.fdr_permutation;
-        if (fdr) {
+        if (element.fdr) {
             estimate
                 .append('text')
                 .attr('id', `estimate-${element.dataset.name}`)
@@ -444,7 +457,7 @@ const appendFdrText = (svg, data, height, width, isAnalytic) => {
                 .attr('x', (width * CHART_WIDTH) + 10)
                 .attr('y', ((i + 1) * height) / (data.length + ADDITIONAL))
                 .attr('fill', `${colors.dark_teal_heading}`)
-                .text(`${(fdr).toFixed(3)}`)
+                .text(`${(Number(element.fdr)).toFixed(3)}`)
                 .attr('font-size', '16px');
         }
     });
@@ -491,7 +504,7 @@ const createLegend = (svg, height, width) => {
  * 
  * @param {Array} mDataTypes - an array of mDataTypes.
  */
-const createSelectionOptions = (mDataTypes, data, isAnalytic, molecularType, setMolecularType) => {
+const createSelectionOptions = (mDataTypes, data, molecularType, setMolecularType) => {
     // options for the selection.
     d3.select('.select')
         .selectAll('option')
@@ -515,7 +528,7 @@ const createSelectionOptions = (mDataTypes, data, isAnalytic, molecularType, set
         // remove the already drawn forest plot with it's id.
         d3.select(`#${CANVAS_ID}`).remove();
 
-        createForestPlot(margin, 350, width, filteredData, isAnalytic);
+        createForestPlot(margin, 350, width, filteredData);
     });
 };
 
@@ -525,9 +538,8 @@ const createSelectionOptions = (mDataTypes, data, isAnalytic, molecularType, set
  * @param {number} height - height of the svg canvas.
  * @param {number} width - width of the svg canvas.
  * @param {Array} data - array of data.
- * @param {boolean} isAnalytic - if the data is analytic or permuted.
  */
-const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
+const createForestPlot = (margin, heightInput, width, data) => {
     // calculate the height based on the data size.
     const height = data.length * 50 - margin.top - margin.bottom > heightInput
         ? data.length * 50 - margin.top - margin.bottom
@@ -537,7 +549,7 @@ const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
     const svg = createSvgCanvas({ id: 'forestplot', width, height, margin, canvasId: CANVAS_ID });
 
     // min and max.
-    const { min, max } = calculateMinMax(data, isAnalytic);
+    const { min, max } = calculateMinMax(data);
 
     // min and max n value.
     const { minN, maxN } = calculateMinMaxN(data);
@@ -555,22 +567,22 @@ const createForestPlot = (margin, heightInput, width, data, isAnalytic) => {
     createVerticalLine(svg, xScale, height);
 
     // create horizontal lines for the plot.
-    createHorizontalLines(svg, xScale, data, height, isAnalytic);
+    createHorizontalLines(svg, xScale, data, height);
 
     // create the circles for the plot.
-    createCircles(svg, xScale, circleScale, data, height, isAnalytic);
+    createCircles(svg, xScale, circleScale, data, height);
 
     // create polygon/rhombus.
     // createPolygon(svg, xScale);
 
     // append the estimate text along the horizontal lines.
-    appendEstimateText(svg, data, height, width, xScale, isAnalytic);
+    appendEstimateText(svg, data, height, width, xScale);
 
     // append the dataset names corresponding to each horizontal line.
     appendDatasetName(svg, data, height);
 
     // append estimate as text to the svg.
-    appendFdrText(svg, data, height, width, isAnalytic);
+    appendFdrText(svg, data, height, width);
 
     // create legend.
     createLegend(svg, height, width);
@@ -585,7 +597,10 @@ const ForestPlot = ({ height, width, margin, data }) => {
     const [molecularType, setMolecularType] = useState('rna microarray');
 
     // create updated data, updating the molecular type using the mapping.
-    const updatedData = updateDataBasedOnTypeMapping(data, mDataTypeMapping);
+    const molecularTypeUpdatedData = updateDataBasedOnTypeMapping(data, mDataTypeMapping);
+
+    // update the data based on the isAnalytic state.
+    const updatedData = updateData(molecularTypeUpdatedData, isAnalytic);
 
     // get all the data types available in the data.
     const mDataTypes = getAllDataTypes(updatedData);
@@ -601,10 +616,10 @@ const ForestPlot = ({ height, width, margin, data }) => {
         createToolTip(`${TOOLTIP_ID}`);
 
         // create selection options.
-        createSelectionOptions(mDataTypes, updatedData, isAnalytic, molecularType, setMolecularType);
+        createSelectionOptions(mDataTypes, updatedData, molecularType, setMolecularType);
 
         // create forest plot.
-        createForestPlot(margin, height, width, filteredData, isAnalytic);
+        createForestPlot(margin, height, width, filteredData);
     }, [isAnalytic, molecularType]);
 
     return (
