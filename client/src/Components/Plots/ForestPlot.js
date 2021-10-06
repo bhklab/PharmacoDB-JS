@@ -81,7 +81,8 @@ const updateDataBasedOnTypeMapping = (data, dataTypeMapping) => {
  * @param {boolean} isAnalytic
  */
 const updateData = (data, isAnalytic) => {
-    return data.map(el => {
+    // new data array to select analytic or permuted values.
+    const updatedData = data.map(el => {
         return {
             compound: el.compound,
             dataset: el.dataset,
@@ -100,6 +101,13 @@ const updateData = (data, isAnalytic) => {
             lower: `${isAnalytic ? el.lower_analytic : el.lower_permutation}`,
         };
     })
+
+    // filter data if lower and upper values are not available.
+    return updatedData.filter(el => {
+        if (el.upper !== 'null' && el.lower !== 'null') {
+            return el;
+        }
+    });
 };
 
 /**
@@ -281,21 +289,23 @@ const createHorizontalLines = (svg, scale, data, height) => {
         .attr('id', `horizontal-lines`)
 
     data.forEach((element, i) => {
-        horizontal
-            .append('line')
-            .attr('id', `horizontal-line-${element.dataset.name}`)
-            .style('stroke', `${colors.dark_gray_text}`)
-            .style('stroke-width', 1.25)
-            .attr('x1', scale(element.lower))
-            .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .attr('x2', scale(element.upper))
-            .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
-            .on('mouseover', (event) => {
-                mouseOverEvent(event, element);
-            })
-            .on('mouseout', (event) => {
-                mouseOutEvent(event, element);
-            });
+        if (element.lower && element.upper) {
+            horizontal
+                .append('line')
+                .attr('id', `horizontal-line-${element.dataset.name}`)
+                .style('stroke', `${colors.dark_gray_text}`)
+                .style('stroke-width', 1.25)
+                .attr('x1', scale(element.lower))
+                .attr('y1', ((i + 1) * height) / (data.length + ADDITIONAL))
+                .attr('x2', scale(element.upper))
+                .attr('y2', ((i + 1) * height) / (data.length + ADDITIONAL))
+                .on('mouseover', (event) => {
+                    mouseOverEvent(event, element);
+                })
+                .on('mouseout', (event) => {
+                    mouseOutEvent(event, element);
+                });
+        }
     })
 
 };
