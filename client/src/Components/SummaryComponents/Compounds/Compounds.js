@@ -21,12 +21,10 @@ const table_columns = [
   {
     Header: 'SMILES',
     accessor: 'smiles',
-    Cell: (item) => {return item.value || 'NA'} ,
   },
   {
     Header: 'InChIKeys',
     accessor: 'inchikey',
-    Cell: (item) => {return item.value || 'NA'} ,
   },
   {
     Header: 'PubChem',
