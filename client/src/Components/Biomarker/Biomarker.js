@@ -172,6 +172,8 @@ const Biomarker = (props) => {
     const [transformedCompoundData, setTransformedCompoundData] = useState([]);
     const [transformedGeneData, setTransformedGeneData] = useState([]);
     const [finalGeneCompoundTissueDatasetData, setGeneCompoundTissueDatasetData] = useState([]);
+    const [compoundUID, setCompoundUID] = useState('');
+    const [geneId, setGeneId] = useState('');
 
     // A section to display on the page
     const [display, setDisplay] = useState('forest_plot');
@@ -187,7 +189,7 @@ const Biomarker = (props) => {
         </li>
     );
 
-    // query to grab the gene and compound data based on the compound and gene id.
+    // query to grab the gene and compound data based on the compound and gene name.
     const {
         loading: compoundDataLoading,
         error: compoundDataError,
@@ -240,6 +242,8 @@ const Biomarker = (props) => {
                     gene,
                 )
             );
+            setCompoundUID(compoundQueryData.singleCompound.compound.uid);
+            setGeneId(geneQueryData.gene.id);
         };
 
         // calling right function based on the params.
@@ -253,80 +257,87 @@ const Biomarker = (props) => {
 
     return (
         <Layout>
-            <StyledWrapper>
-                <StyledIndivPage >
-                    <div className='heading'>
-                        <span className='title' style={{ fontSize: '2vw' }}>
-                            <span> Association of </span>
-                            <span className='link'> {`${TitleCase(compound)}`} </span>
-                            <span> and </span>
-                            <span className='link'> {`${gene.toUpperCase()}`} </span>
-                            {
-                                tissue ?
-                                    <React.Fragment>
-                                        <span> in </span>
-                                        <span className='link'> {`${TitleCase(tissue)}`} </span>
-                                        <span> tissue </span>
-                                    </React.Fragment>
-                                    :
-                                    ''
-                            }
-                        </span>
-                    </div>
-                    <div className='wrapper'>
-                        <StyledSidebarList>
-                            {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                        </StyledSidebarList>
-                        <div className='container'>
-                            <div className='content'>
-                                {
-                                    finalGeneCompoundTissueDatasetData.length > 0
-                                        ? (
-                                            display === 'forest_plot' &&
-                                            <Element className='section' name='forest_plot'>
-                                                <ForestPlot data={finalGeneCompoundTissueDatasetData} />
-                                            </Element>
-                                        )
-                                        : <Loading />
-                                }
-                                {
-                                    display === 'manhattan_plot' &&
-                                    <Element className="section" name="manhattan_plot">
-                                        <ManhattanPlotContainer biomarker={transformedGeneData[0]} compound={compound} tissue={tissue} />
-                                    </Element>
-                                }
-                                {
-                                    display === 'gene_info' &&
-                                    <Element
-                                        className='section'
-                                        name='gene_information'
-                                    >
-                                        <div className='section-title'>Gene Information</div>
-                                        <Table
-                                            columns={geneInfoColumns}
-                                            data={transformedGeneData}
-                                            disablePagination
-                                        />
-                                    </Element>
-                                }
-                                {
-                                    display === 'compound_info' &&
-                                    <Element
-                                        className='section'
-                                        name='compound_information'
-                                    >
-                                        <div className='section-title'>Compound Information</div>
-                                        <Table
-                                            columns={compoundInfoColumns}
-                                            data={transformedCompoundData}
-                                        />
-                                    </Element>
-                                }
+            {
+                compoundUID && geneId ?
+                    <StyledWrapper>
+                        <StyledIndivPage >
+                            <div className='heading'>
+                                <span className='title' style={{ fontSize: '2vw' }}>
+                                    <span> Association of </span>
+                                    <span>
+                                        <a href={`/compounds/${compoundUID}`} target='_blank'> {`${TitleCase(compound)}`} </a>
+                                    </span>
+                                    <span> and </span>
+                                    <span className='link'>
+                                        <a href={`/genes/${geneId}`} target='_blank'> {`${gene.toUpperCase()}`}  </a>
+                                    </span>
+                                    {
+                                        tissue
+                                            ? <React.Fragment>
+                                                <span> in </span>
+                                                <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                                <span> tissue </span>
+                                            </React.Fragment>
+                                            : ''
+                                    }
+                                </span>
                             </div>
-                        </div>
-                    </div>
-                </StyledIndivPage>
-            </StyledWrapper>
+                            <div className='wrapper'>
+                                <StyledSidebarList>
+                                    {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                                </StyledSidebarList>
+                                <div className='container'>
+                                    <div className='content'>
+                                        {
+                                            finalGeneCompoundTissueDatasetData.length > 0
+                                                ? (
+                                                    display === 'forest_plot' &&
+                                                    <Element className='section' name='forest_plot'>
+                                                        <ForestPlot data={finalGeneCompoundTissueDatasetData} />
+                                                    </Element>
+                                                )
+                                                : <Loading />
+                                        }
+                                        {
+                                            display === 'manhattan_plot' &&
+                                            <Element className="section" name="manhattan_plot">
+                                                <ManhattanPlotContainer biomarker={transformedGeneData[0]} compound={compound} tissue={tissue} />
+                                            </Element>
+                                        }
+                                        {
+                                            display === 'gene_info' &&
+                                            <Element
+                                                className='section'
+                                                name='gene_information'
+                                            >
+                                                <div className='section-title'>Gene Information</div>
+                                                <Table
+                                                    columns={geneInfoColumns}
+                                                    data={transformedGeneData}
+                                                    disablePagination
+                                                />
+                                            </Element>
+                                        }
+                                        {
+                                            display === 'compound_info' &&
+                                            <Element
+                                                className='section'
+                                                name='compound_information'
+                                            >
+                                                <div className='section-title'>Compound Information</div>
+                                                <Table
+                                                    columns={compoundInfoColumns}
+                                                    data={transformedCompoundData}
+                                                />
+                                            </Element>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </StyledIndivPage>
+                    </StyledWrapper>
+                    : <Loading />
+            }
         </Layout>
     );
 };
