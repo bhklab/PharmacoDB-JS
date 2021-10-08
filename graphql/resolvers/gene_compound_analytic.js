@@ -4,7 +4,7 @@ const { transformFdaStatus } = require('../../helpers/dataHelpers');
 const { retrieveFields } = require('../../helpers/queryHelpers');
 const { getIdBasedOnCompound } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
-const { getIdBasedOnTissue } = require('./tissue');
+const { getTissueIdBasedOnTissueName } = require('./tissue');
 
 
 /**
@@ -193,11 +193,11 @@ const gene_compound_dataset = async (args, context, info) => {
         const geneCompoundResults = await query;
         // return transformGeneCompounds(geneCompoundResults);
         let transformed = transformGeneCompounds(geneCompoundResults);
-        if(subtypes.includes('dataset')){
+        if (subtypes.includes('dataset')) {
             let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
             transformed = mapDatasetOrTissue(transformed, datasets, 'dataset');
         }
-        return transformed; 
+        return transformed;
     } catch (err) {
         console.log(err);
         throw err;
@@ -222,7 +222,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
+    tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) {
@@ -271,7 +271,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
                     break;
             }
         });
-        
+
         let query = knex.select(columns).from('gene_compound_tissue_dataset as GD');
         // chooses table to select from
         if (geneId) query = query.where({ 'GD.gene_id': geneId });
@@ -323,7 +323,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
         //         .where({'compound.id' : compoundId});
         //     transformed = mapCompound(transformed, compound[0]);
         // }
-        
+
         // if(subtypes.includes('dataset')){
         //     let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
         //     transformed = mapDatasetOrTissue(transformed, datasets, 'dataset'); 
@@ -344,7 +344,7 @@ const gene_compound_dataset_biomarker = async (args, context, info) => {
     let { compoundId, compoundName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    
+
     // check if the compound id is passed?
     if (!compoundId || !mDataType) {
         throw new Error('Invalid Input! Query must include data type IDs or Names!');
@@ -359,14 +359,14 @@ const gene_compound_dataset_biomarker = async (args, context, info) => {
             'fdr_analytic',
             'fdr_permutation',
             'mDataType',
-            'gene.id as gene_id', 
-            'gene.name as gene_name', 
-            'gene_seq_start', 
-            'gene_seq_end', 
-            'gene_annotation.symbol as symbol', 
+            'gene.id as gene_id',
+            'gene.name as gene_name',
+            'gene_seq_start',
+            'gene_seq_end',
+            'gene_annotation.symbol as symbol',
             'gene_annotation.chr as chr'
         ];
-        
+
         let query = knex.select(columns)
             .from('gene_compound_dataset as GD')
             .join('gene', 'gene.id', 'GD.gene_id')
@@ -392,7 +392,7 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
     let { compoundId, tissueId, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
+    tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!compoundId && !tissueId) {
@@ -408,14 +408,14 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
             'fdr_analytic',
             'fdr_permutation',
             'mDataType',
-            'gene.id as gene_id', 
-            'gene.name as gene_name', 
-            'gene_seq_start', 
-            'gene_seq_end', 
-            'gene_annotation.symbol as symbol', 
+            'gene.id as gene_id',
+            'gene.name as gene_name',
+            'gene_seq_start',
+            'gene_seq_end',
+            'gene_annotation.symbol as symbol',
             'gene_annotation.chr as chr'
         ];
-        
+
         let query = knex.select(columns)
             .from('gene_compound_tissue_dataset as GD')
             .join('gene', 'gene.id', 'GD.gene_id')
@@ -430,12 +430,12 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
         const geneCompoundResults = await query;
         let transformed = transformGeneCompounds(geneCompoundResults);
         let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
-        return mapDatasetOrTissue(transformed, datasets, 'dataset'); 
+        return mapDatasetOrTissue(transformed, datasets, 'dataset');
     } catch (err) {
         console.log(err);
         throw err;
     }
-}
+};
 
 module.exports = {
     gene_compound_dataset,

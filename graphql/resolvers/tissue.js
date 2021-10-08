@@ -9,7 +9,7 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  * @param {string} tissue - tissue name
  * @returns {number} - tissue id
  */
-const getIdBasedOnTissue = async (tissue) => {
+const getTissueIdBasedOnTissueName = async (tissue) => {
     let tissueId = '';
 
     // if tissue is passed, query the db else return an Error.
@@ -310,5 +310,5 @@ const tissue = async (args, parent, info) => {
 module.exports = {
     tissues,
     tissue,
-    getIdBasedOnTissue,
+    getTissueIdBasedOnTissueName,
 };
