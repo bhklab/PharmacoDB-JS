@@ -1,8 +1,8 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { single_compound_target } = require('./target');
-const { transformFdaStatus } = require('../../helpers/dataHelpers');
-const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
+const { transformFdaStatus } = require('../helpers/dataHelpers');
+const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
 /**
  *
@@ -72,7 +72,7 @@ const transformSynonyms = data => {
  */
 const transformCompounds = data => {
     const returnList = [];
-    data.forEach((compound,i) => {
+    data.forEach((compound, i) => {
         const {
             id,
             name,
@@ -87,8 +87,7 @@ const transformCompounds = data => {
             reactome_id,
         } = compound;
 
-        if (!i || !returnList.filter(item => item["uid"]===compound_uid).length> 0)
-        {
+        if (!i || !returnList.filter(item => item["uid"] === compound_uid).length > 0) {
             const returnData = {
                 'smiles': [],
                 'inchikey': []
@@ -122,7 +121,7 @@ const transformCompounds = data => {
                 }]
             })
         } else {
-            returnList[returnList.findIndex(item => item['uid']===compound_uid)]['dataset'].push({id: dataset_id, name: dataset_name})
+            returnList[returnList.findIndex(item => item['uid'] === compound_uid)]['dataset'].push({ id: dataset_id, name: dataset_name })
         }
     });
     return returnList;

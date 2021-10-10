@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { transformFdaStatus } = require('../../helpers/dataHelpers');
-const { retrieveFields } = require('../../helpers/queryHelpers');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { transformFdaStatus } = require('../helpers/dataHelpers');
+const { retrieveFields } = require('../helpers/queryHelpers');
 const { getIdBasedOnCompound } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
 const { getTissueIdBasedOnTissueName } = require('./tissue');

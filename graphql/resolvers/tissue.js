@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
+const { transformObject } = require('../helpers/transformObject');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
 
 /**
@@ -261,7 +261,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
 const tissues = async ({ page = 1, per_page = 20, all = false }) => {
     // setting limit and offset.
     const { limit, offset } = calcLimitOffset(page, per_page);
-    console.log(limit, offset);
+
     try {
         //comment: not taking care of the fields queried and limiting the query to the db as the tables are small.
         const query = knex
