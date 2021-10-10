@@ -14,15 +14,23 @@ const getTissueIdBasedOnTissueName = async (tissue) => {
 
     // if tissue is passed, query the db else return an Error.
     if (tissue) {
-        tissueId = await knex.select('tissue.id')
-            .from('tissue')
-            .where('name', tissue);
+        try {
+            tissueId = await knex.select('tissue.id')
+                .from('tissue')
+                .where('name', tissue);
+        } catch (error) {
+            throw new Error(`Error occured in getTissueIdBasedOnTissueName: ${error.message}`);
+        }
     } else {
-        return Error('Please provide a valid tissue name!!');
+        throw new Error('Please provide a valid tissue name!!');
     }
 
     // returns the tissue id.
-    return tissueId[0].id;
+    if (tissueId.length !== 0) {
+        return tissueId[0].id;
+    } else {
+        throw new Error('Please provide a valid tissue name!!');
+    }
 };
 
 /**
