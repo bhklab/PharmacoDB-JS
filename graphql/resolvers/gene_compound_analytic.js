@@ -219,14 +219,20 @@ const gene_compound_dataset = async (args, context, info) => {
 const gene_compound_tissue_dataset = async (args, context, info) => {
     // arguments
     let { geneId, compoundId, tissueId, geneName, compoundName, tissueName, mDataType, page = 1, per_page = 20, all = false } = args;
-    // grab the ids of each data type if data type is passed in the parameters
-    geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
+
+    // grab the tissueId, geneId, compoundId if the names of the data types are passed.
+    try {
+        tissueId = await tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
+        geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
+        compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) {
-        throw new Error('Invalid Input! Query must include data type IDs or Names!');
+        throw new Error('Invalid Input! Query must include Gene or Compound or tissue ID(s) or Name(s)!');
     }
 
     try {
@@ -316,23 +322,6 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
         // transform and return the data.
         const geneCompoundResults = await query;
         return transformGeneCompounds(geneCompoundResults);
-        // let transformed = transformGeneCompounds(geneCompoundResults);
-        // if(compoundId){
-        //     let compound = await knex.select(['compound.id as id', 'compound.compound_uid as uid', 'compound.name as name', 'smiles', 'inchikey', 'pubchem', 'fda_status'])
-        //         .from('compound').join('compound_annotation', 'compound_annotation.compound_id', 'compound.id')
-        //         .where({'compound.id' : compoundId});
-        //     transformed = mapCompound(transformed, compound[0]);
-        // }
-
-        // if(subtypes.includes('dataset')){
-        //     let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
-        //     transformed = mapDatasetOrTissue(transformed, datasets, 'dataset'); 
-        // }
-        // if(subtypes.includes('tissue')){
-        //     let tissues = await knex.select(['id', 'name']).from('tissue');
-        //     transformed = mapDatasetOrTissue(transformed, tissues, 'tissue');
-        // } 
-        // return transformed; 
     } catch (err) {
         console.log(err);
         throw err;
@@ -382,7 +371,7 @@ const gene_compound_dataset_biomarker = async (args, context, info) => {
         let datasets = await knex.select(['id', 'name']).from('dataset'); // query all the datasets
         return mapDatasetOrTissue(transformed, datasets, 'dataset');
     } catch (err) {
-        console.log(err);
+        console.log('ommamamamaoao', err);
         throw err;
     }
 };
