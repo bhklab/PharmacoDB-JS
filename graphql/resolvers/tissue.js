@@ -123,7 +123,6 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
     } else if (tissueName) {
         return await query.where('tissue.name', tissueName);
     }
-
 };
 
 /**
@@ -279,7 +278,7 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
         // return the transformed data.
         return transformTissues(tissues);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         throw err;
     }
 };
@@ -294,14 +293,13 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
 const tissue = async (args, parent, info) => {
     try {
         // grabbing the tissue line id from the args.
-        const {
-            tissueId,
-            tissueName
-        } = args;
+        const { tissueId, tissueName } = args;
+
         // throw error if neither of the arguments are passed.
         if (!tissueId && !tissueName) {
-            throw new Error('Please specify alteast one of the ID or the Name of the tissue you want to query!');
+            throw new Error('Please specify alteast ID or the Name of the tissue you want to query!');
         }
+
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
@@ -310,8 +308,12 @@ const tissue = async (args, parent, info) => {
         const cell_count = subtypes.includes('cell_count') ? await cellCountQuery(tissueId, tissueName) : [];
         const compound_tested = subtypes.includes('compounds_tested') ? await compoundTestedQuery(tissueId, tissueName) : [];
 
-        // return the transformed data.
-        return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
+        if (tissue.length === 0) {
+            throw new Error(`Tissue data not found for tissue id: ${tissueId}!`);
+        } else {
+            // return the transformed data.
+            return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
+        }
     } catch (err) {
         console.log(err);
         return err;
