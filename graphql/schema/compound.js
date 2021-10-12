@@ -34,7 +34,7 @@ const compoundType = `
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
         """dataset information object"""
-        dataset: [Generic!]
+        dataset: Generic!
     }
 `;
 
