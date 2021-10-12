@@ -33,10 +33,6 @@ const getCompoundsQuery = gql`
         fda_status
         reactome
       }
-      dataset {
-      id
-      name
-      }
     }
   }
 `;
