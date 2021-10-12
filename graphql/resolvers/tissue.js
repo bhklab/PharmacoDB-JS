@@ -310,6 +310,11 @@ const tissue = async (args, parent, info) => {
 
         if (tissue.length === 0) {
             throw new Error(`Tissue data not found for tissue id: ${tissueId}!`);
+        } else if (tissue.length === 1) {
+            return {
+                id: tissue[0].id,
+                name: tissue[0].name,
+            };
         } else {
             // return the transformed data.
             return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
