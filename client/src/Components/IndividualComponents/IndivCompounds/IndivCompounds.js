@@ -174,11 +174,17 @@ const renderComponent = (compound, error, display, createSideLink) => {
 
     // if data is still loading return loading component.
     if (!compound.loaded) {
-        return <Loading />
+        return (
+            <Layout>
+                <StyledWrapper>
+                    <Loading />
+                </StyledWrapper>
+            </Layout>
+        )
     }
 
     return (
-        <Layout page={compound.data.compound.name}>
+        <Layout>
             <StyledWrapper>
                 <StyledIndivPage className="indiv-compounds">
                     <div className='heading'>
@@ -298,7 +304,7 @@ const IndivCompounds = (props) => {
     } = props;
 
     // load data from query into state
-    const [compound, setCompound] = useState({
+    const [compoundData, setCompoundData] = useState({
         data: {},
         loaded: false,
     });
@@ -314,7 +320,7 @@ const IndivCompounds = (props) => {
         },
         fetchPolicy: "no-cache",
         onCompleted: (data) => {
-            setCompound({
+            setCompoundData({
                 data: data.singleCompound,
                 synonymData: formatSynonymData(data.singleCompound),
                 annotationData: formatAnnotationData(data.singleCompound.compound),
@@ -336,7 +342,7 @@ const IndivCompounds = (props) => {
     );
 
     // render the component.
-    return renderComponent(compound, error, display, createSideLink);
+    return renderComponent(compoundData, error, display, createSideLink);
 };
 
 IndivCompounds.propTypes = {
