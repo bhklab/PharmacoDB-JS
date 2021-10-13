@@ -4,6 +4,7 @@ import { Link, Element } from 'react-scroll';
 import queryString from 'query-string';
 import { getCompoundQuery } from '../../queries/compound';
 import { getGeneQuery } from '../../queries/gene';
+import { getTissueIdBasedOnTissueName } from '../../queries/tissue';
 import {
     getGeneCompoundTissueDatasetQuery,
     getGeneCompoundDatasetQuery,
@@ -204,6 +205,8 @@ const Biomarker = (props) => {
         data: geneQueryData,
     } = useQuery(getGeneQuery, { variables: { geneName: `${gene}` } });
 
+    const { data: tissueData } = useQuery(getTissueIdBasedOnTissueName, { variables: { tissueName: `${tissue}` } });
+
     // query based on gene, compound and tissue.
     const [getGeneCompoundTissueDatasetData] = useLazyQuery(getGeneCompoundTissueDatasetQuery, {
         onCompleted: (data) => {
@@ -275,7 +278,9 @@ const Biomarker = (props) => {
                                         tissue
                                             ? <React.Fragment>
                                                 <span> in </span>
-                                                <span className='link'> {`${TitleCase(tissue)}`} </span>
+                                                <span className='link'>
+                                                    <a href={`/tissues/${tissueData.tissue.id}`} target='_blank'> {`${tissue.toUpperCase()}`}  </a>
+                                                </span>
                                                 <span> tissue </span>
                                             </React.Fragment>
                                             : ''

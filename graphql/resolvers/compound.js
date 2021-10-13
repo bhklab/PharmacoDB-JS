@@ -1,8 +1,8 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { single_compound_target } = require('./target');
-const { transformFdaStatus } = require('../../helpers/dataHelpers');
-const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
+const { transformFdaStatus } = require('../helpers/dataHelpers');
+const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
 /**
  *
@@ -85,7 +85,7 @@ const transformCompounds = data => {
             dataset_name,
             reactome_id,
         } = compound;
-
+      
         const returnList = {
             'smiles': [],
             'inchikey': []

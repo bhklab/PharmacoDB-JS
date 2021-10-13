@@ -1,6 +1,6 @@
 const knex = require('../../db/knex');
-const { retrieveFields } = require('../../helpers/queryHelpers');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
+const { retrieveFields } = require('../helpers/queryHelpers');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 
 /**
  * Returns a transformed array of objects.

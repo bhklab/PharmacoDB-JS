@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
-const { transformObject } = require('../../helpers/transformObject');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
+const { transformObject } = require('../helpers/transformObject');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
 
 /**
@@ -9,20 +9,28 @@ const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers
  * @param {string} tissue - tissue name
  * @returns {number} - tissue id
  */
-const getIdBasedOnTissue = async (tissue) => {
+const getTissueIdBasedOnTissueName = async (tissue) => {
     let tissueId = '';
 
     // if tissue is passed, query the db else return an Error.
     if (tissue) {
-        tissueId = await knex.select('tissue.id')
-            .from('tissue')
-            .where('name', tissue);
+        try {
+            tissueId = await knex.select('tissue.id')
+                .from('tissue')
+                .where('name', tissue);
+        } catch (error) {
+            throw new Error(`Error occured in getTissueIdBasedOnTissueName: ${error.message}`);
+        }
     } else {
-        return Error('Please provide a valid tissue name!!');
+        throw new Error('Please provide a valid tissue name!!');
     }
 
     // returns the tissue id.
-    return tissueId[0].id;
+    if (tissueId.length !== 0) {
+        return tissueId[0].id;
+    } else {
+        throw new Error('Please provide a valid tissue name!!');
+    }
 };
 
 /**
@@ -115,7 +123,6 @@ const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
     } else if (tissueName) {
         return await query.where('tissue.name', tissueName);
     }
-
 };
 
 /**
@@ -167,7 +174,9 @@ const transformTissues = data => {
         }
     });
     // push/append to the end of the array and return the array.
-    dataValues.push(tissueWithNaValue[0]);
+    if (tissueWithNaValue) {
+        dataValues.push(tissueWithNaValue[0]);
+    }
 
     return Object.values(dataValues);
 };
@@ -251,6 +260,7 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
 const tissues = async ({ page = 1, per_page = 20, all = false }) => {
     // setting limit and offset.
     const { limit, offset } = calcLimitOffset(page, per_page);
+
     try {
         //comment: not taking care of the fields queried and limiting the query to the db as the tables are small.
         const query = knex
@@ -268,7 +278,7 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
         // return the transformed data.
         return transformTissues(tissues);
     } catch (err) {
-        console.log(err);
+        console.log(err.message);
         throw err;
     }
 };
@@ -283,14 +293,13 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
 const tissue = async (args, parent, info) => {
     try {
         // grabbing the tissue line id from the args.
-        const {
-            tissueId,
-            tissueName
-        } = args;
+        const { tissueId, tissueName } = args;
+
         // throw error if neither of the arguments are passed.
         if (!tissueId && !tissueName) {
-            throw new Error('Please specify alteast one of the ID or the Name of the tissue you want to query!');
+            throw new Error('Please specify alteast ID or the Name of the tissue you want to query!');
         }
+
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
@@ -299,8 +308,17 @@ const tissue = async (args, parent, info) => {
         const cell_count = subtypes.includes('cell_count') ? await cellCountQuery(tissueId, tissueName) : [];
         const compound_tested = subtypes.includes('compounds_tested') ? await compoundTestedQuery(tissueId, tissueName) : [];
 
-        // return the transformed data.
-        return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
+        if (tissue.length === 0) {
+            throw new Error(`Tissue data not found for tissue id: ${tissueId}!`);
+        } else if (tissue.length === 1) {
+            return {
+                id: tissue[0].id,
+                name: tissue[0].name,
+            };
+        } else {
+            // return the transformed data.
+            return transformTissueAnnotation(tissue, cell_count, compound_tested, subtypes);
+        }
     } catch (err) {
         console.log(err);
         return err;
@@ -310,5 +328,5 @@ const tissue = async (args, parent, info) => {
 module.exports = {
     tissues,
     tissue,
-    getIdBasedOnTissue,
+    getTissueIdBasedOnTissueName,
 };

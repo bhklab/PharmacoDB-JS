@@ -141,7 +141,6 @@ const createFilteredData = (data, mDataType) => {
     return filteredData;
 };
 
-
 /**
  * @param {Array} data - input data.
  */
