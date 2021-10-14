@@ -291,12 +291,13 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
 // this is not the annotation directly like compound and gene,
 // but more like names in different sources.
 const tissue = async (args, parent, info) => {
+    console.log(args);
     try {
         // grabbing the tissue line id from the args.
         const { tissueId, tissueName } = args;
 
         // throw error if neither of the arguments are passed.
-        if (!tissueId && !tissueName) {
+        if (!tissueId && (!tissueName || tissueName === 'undefined')) {
             throw new Error('Please specify alteast ID or the Name of the tissue you want to query!');
         }
 
