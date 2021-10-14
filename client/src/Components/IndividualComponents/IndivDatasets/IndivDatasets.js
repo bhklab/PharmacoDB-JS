@@ -142,8 +142,8 @@ const IndivDatasets = (props) => {
     datatypes: [],
     notFound: false
   });
-  const initialView = props.location.hash === '#compounds' ? 'compounds' : 'info';
   // A section to display on the page
+  const initialView = props.location.hash === '#compounds' ? 'compounds' : 'info';
   const [display, setDisplay] = useState(initialView);
 
   // to set the state on the change of the data.

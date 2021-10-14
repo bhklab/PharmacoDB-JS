@@ -14,18 +14,6 @@ const getTissuesQuery = gql`
 `;
 
 /**
- * @param {string} tissueName - name of the tissue.
- */
-const getTissueIdBasedOnTissueName = gql`
-  query getTissueIdBasedOnTissueName($tissueName: String!) {
-    tissue(tissueName: $tissueName) {
-      id
-      name
-    }
-  }
-`;
-
-/**
  * @param { number } tissueId - tissue id of the cell line to be queried.
  */
 const getTissueQuery = gql`
@@ -60,5 +48,4 @@ const getTissueQuery = gql`
 export {
   getTissuesQuery,
   getTissueQuery,
-  getTissueIdBasedOnTissueName,
 };
