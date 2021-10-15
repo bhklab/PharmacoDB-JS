@@ -45,6 +45,34 @@ const getTableData = (data) => {
 };
 
 /**
+ * Function to render the cell lines page component depending on 
+ * the API request outcome.
+ * @param {*} loading 
+ * @param {*} error 
+ * @param {*} pieData 
+ * @param {*} tableData 
+ * @returns a component to be rendered.
+ */
+const renderComponent = (loading, error, pieData, tableData) => {
+  if(error){
+    return(<Error />);
+  }
+
+  if(loading){
+    return(<Loading />)
+  }
+  
+  return (
+    <React.Fragment>
+      <h2>Relative Percentage of Cell lines per Tissue</h2>
+      <TissueCellsPieChart cells={pieData} />
+      <h2> List of Cell Lines </h2>
+      <Table columns={tableColumns} data={tableData} />
+    </React.Fragment>
+  );
+};
+
+/**
  * Parent component for the tissues page.
  *
  * @component
@@ -56,23 +84,13 @@ const CellLines = () => {
   // queries to get the cell line data.
   const { loading, error, data } = useQuery(getCellLinesQuery);
   // setting data for the table.
-  const columns = React.useMemo(() => tableColumns, []);
   const cell_data = React.useMemo(() => getTableData(data), [data]);
   
   return (
     <Layout page="cells">
       <StyledWrapper>
-        {
-          loading ? <Loading />
-          :
-          error ? <Error />
-          :
-          <React.Fragment>
-            <h2>Relative Percentage of Cell lines per Tissue</h2>
-            <TissueCellsPieChart cells={data} />
-            <h2> List of Cell Lines </h2>
-            <Table columns={columns} data={cell_data} />
-          </React.Fragment>
+        { 
+          renderComponent(loading, error, data, cell_data)
         }
       </StyledWrapper>
     </Layout>

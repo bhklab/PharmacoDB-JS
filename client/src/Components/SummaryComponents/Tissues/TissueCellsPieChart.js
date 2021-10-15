@@ -120,7 +120,6 @@ const TissueCellsPieChart = (props) => {
     
     return(
         <StyledTissueCellsPieChart>
-            <PieChart className='tissue-pie-chart' data={chartData.pie} onClick={onPieChartClick} />
             <div className='tissue-cells-list-container'>
                 <h4>
                 {
@@ -140,6 +139,7 @@ const TissueCellsPieChart = (props) => {
                 }
                 </div>
             </div>
+            <PieChart className='tissue-pie-chart' data={chartData.pie} onClick={onPieChartClick} />
         </StyledTissueCellsPieChart>
     );
 }
