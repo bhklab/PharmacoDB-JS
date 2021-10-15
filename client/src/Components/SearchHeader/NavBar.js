@@ -119,7 +119,7 @@ const NavBar = (props) => {
           <a className="header-links link" href={`${OLD_PHARMACODB}`} target='_blank' style={{ color: `${colors.dark_pink_highlight}` }}>
             PharmacoDB-v1
           </a>
-          {
+          {/* {
             page === 'home' ? null : 
             (
               <StyledSearchButton className="search-button" onClick={handleClick}>
@@ -130,7 +130,7 @@ const NavBar = (props) => {
                   )}
               </StyledSearchButton>
             )
-          }
+          } */}
         </StyledLinkDropdowns>
       </div>
     </StyledNavBar>
