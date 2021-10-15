@@ -70,10 +70,6 @@ const BarPlot = () => {
   const redirectToDataset = (e) => {
     history.push(`/datasets/${datasets[e.points[0].x]}#compounds`);
   }
-  const pointer = (e) => {
-    console.log(e,e.event.toElement.style.cursor)
-    e.event.toElement.style.cursor = "pointer";
-  }
   // query to get the data for the single gene.
   const { loading } = useQuery(getDatasetStatsQuery, {
     onCompleted: (data) => {
@@ -89,7 +85,6 @@ const BarPlot = () => {
   const layout = {
     autosize: true,
     height: 530,
-    hovermode:'closest',
     margin: {
       t: 50,
     },
@@ -97,7 +92,7 @@ const BarPlot = () => {
       type: 'log',
       tickvals : [0, 10, 100, 1000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000],
       ticktext : [0, 10, 100, 1000, '10k', '50k', '100k', '500k', '1M', '5M', '10M'],
-    }
+    },
   };
 
   return (
@@ -112,8 +107,7 @@ const BarPlot = () => {
                 layout={layout}
                 config={config}
                 onClick={redirectToDataset}
-                onHover={(e) => e.event.toElement.style.cursor = "pointer"}
-                onUnhover={(e) => e.event.toElement.style.cursor = ""}
+                onHover={(e) => {if(e.event.toElement.style) e.event.toElement.style.cursor = "pointer";}}
             />
       }
     </React.Fragment>
