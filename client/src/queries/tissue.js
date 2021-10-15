@@ -26,7 +26,7 @@ const getTissueIdBasedOnTissueName = gql`
 `;
 
 /**
- * @param { number } tissueId - tissue id of the cell line to be queried.
+ * @param { number } tissueId - tissue id of the tissue to be queried.
  */
 const getTissueQuery = gql`
   query getSingleTissue($tissueId: Int!) {

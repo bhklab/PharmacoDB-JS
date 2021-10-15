@@ -39,20 +39,26 @@ const SearchHeader = () => {
     <StyledSearchHeader page={page}>
       <div className="burger-bg" />
       <NavBar onClick={onClick} popupVisible={isOpen} />
-      {/* Ternaries determine the classes to put based on if the page is home or not, and if the popup
-      should be visible or not based on search button click. */}
-      <div className={`search-container${page === 'home' ? '' : ` popup ${isOpen ? 'visible' : 'hidden'}`}`}>
-        <h1>Try searching for a...</h1>
-        <SearchBar onClick={onClick} />
-        <span className="example">
-          <span> Example: </span>
-          <span> <a className={page === 'home' ? 'home-link' : ''} href='/compounds/PDBC00058'>paclitaxel</a> </span>
-          <span> • </span>
-          <span> <a className={page === 'home' ? 'home-link' : ''} href='/cell_lines/22RV1_12_2019'>22rv1</a> </span>
-          <span> • </span>
-          <span> <a className={page === 'home' ? 'home-link' : ''} href='/search?compound=paclitaxel&cell_line=mcf-7'>mcf7 paclitaxel</a> </span>
-        </span>
-      </div>
+      {/* 
+        The search bar is rendered for the home page only, to avoid other pages from stalling.
+        Ternaries determine the classes to put based on if the page is home or not, and if the popup
+        should be visible or not based on search button click. 
+      */}
+      {
+        page === 'home' &&
+        <div className={`search-container${page === 'home' ? '' : ` popup ${isOpen ? 'visible' : 'hidden'}`}`}>
+          <h1>Try searching for a...</h1>
+          <SearchBar onClick={onClick} />
+          <span className="example">
+            <span> Example: </span>
+            <span> <a className={page === 'home' ? 'home-link' : ''} href='/compounds/PDBC00058'>paclitaxel</a> </span>
+            <span> • </span>
+            <span> <a className={page === 'home' ? 'home-link' : ''} href='/cell_lines/22RV1_12_2019'>22rv1</a> </span>
+            <span> • </span>
+            <span> <a className={page === 'home' ? 'home-link' : ''} href='/search?compound=paclitaxel&cell_line=mcf-7'>mcf7 paclitaxel</a> </span>
+          </span>
+        </div>
+      }
     </StyledSearchHeader>
   );
 };

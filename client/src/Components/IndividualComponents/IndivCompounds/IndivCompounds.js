@@ -77,7 +77,7 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
     if (data.synonyms) {
-        const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
+        const returnObj = data.synonyms.filter(obj => { return obj.name !== "" });
         if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
             returnObj.push({ name: data.compound.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
         }
@@ -107,7 +107,7 @@ const formatAnnotationData = (data) => {
         if (annotation.pubchem && !(annotation.pubchem.match(/na|null/i))) {
             let pubchemIds = annotation.pubchem.split('///');
             let pubchemLinks;
-            if(pubchemIds.length > 1){
+            if (pubchemIds.length > 1) {
                 pubchemLinks = <span>
                     {
                         pubchemIds.map((item, i) => (
@@ -117,7 +117,7 @@ const formatAnnotationData = (data) => {
                         ))
                     }
                 </span>
-            }else{
+            } else {
                 pubchemLinks = <a href={`${PUBCHEM}${pubchemIds[0]}`} target="_blank" rel="noopener noreferrer">PubChem</a>
             }
             annotationData.externalLinks.push(
@@ -160,6 +160,134 @@ const formatAnnotationData = (data) => {
 };
 
 /**
+ * 
+ * @param {Object} compound 
+ * @param {Object} error 
+ * @param {string} display 
+ * @param {Object} createSideLink 
+ */
+const renderComponent = (compound, error, display, createSideLink) => {
+    // return NotFoundContent component
+    if (error) {
+        return <NotFoundContent />
+    }
+
+    // if data is still loading return loading component.
+    if (!compound.loaded) {
+        return (
+            <Layout>
+                <StyledWrapper>
+                    <Loading />
+                </StyledWrapper>
+            </Layout>
+        )
+    }
+
+    return (
+        <Layout>
+            <StyledWrapper>
+                <StyledIndivPage className="indiv-compounds">
+                    <div className='heading'>
+                        <StyledIndivPageTitle smalltxt={compound.data.compound.name.length > 30}>{compound.data.compound.name}</StyledIndivPageTitle>
+                        <span className='attributes'>
+                            <span>FDA Approval Status: </span>
+                            <span className='regular'>
+                                {compound.data.compound.annotation.fda_status}
+                            </span>
+                        </span>
+                    </div>
+                    <div className='wrapper'>
+                        <StyledSidebarList>
+                            {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
+                        </StyledSidebarList>
+                        <div className="container">
+                            <div className="content">
+                                {
+                                    display === 'synonyms' &&
+                                    <React.Fragment>
+                                        <Element className="section" name="synonyms">
+                                            <div className='section-title'>Synonyms</div>
+                                            <Table
+                                                columns={SYNONYM_COLUMNS}
+                                                data={compound.synonymData}
+                                                disablePagination
+                                            />
+                                        </Element>
+                                        {
+                                            compound.annotationData.identifiers.length > 0 ?
+                                                <Element className="section" name="external_ids">
+                                                    <div className='section-title'>Identifiers</div>
+                                                    <Table
+                                                        columns={ANNOTATION_COLUMNS}
+                                                        data={compound.annotationData.identifiers}
+                                                        disablePagination
+                                                        showHeader={false}
+                                                    />
+                                                </Element>
+                                                :
+                                                ''
+                                        }
+                                        {
+                                            compound.annotationData.externalLinks.length > 0 ?
+                                                <Element className="section" name="external_ids">
+                                                    <div className='section-title'>External Links</div>
+                                                    <Table
+                                                        columns={ANNOTATION_COLUMNS}
+                                                        data={compound.annotationData.externalLinks}
+                                                        disablePagination
+                                                        showHeader={false}
+                                                    />
+                                                </Element>
+                                                :
+                                                ''
+                                        }
+                                    </React.Fragment>
+                                }
+                                {
+                                    display === 'targets' &&
+                                    <Element className="section">
+                                        <AnnotatedTargetsTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
+                                    </Element>
+                                }
+                                <Element>
+                                    <PlotSection
+                                        display={display}
+                                        compound={{
+                                            id: compound.data.compound.id,
+                                            name: compound.data.compound.name,
+                                        }}
+                                    />
+                                </Element>
+                                {
+                                    display === 'cellSummary' &&
+                                    <Element className="section">
+                                        <div className='section-title'>Cell Line Summary</div>
+                                        <CellLinesSummaryTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
+                                    </Element>
+                                }
+                                {
+                                    display === 'tissueSummary' &&
+                                    <Element className="section">
+                                        <div className='section-title'>Tissue Summary</div>
+                                        <TissuesSummaryTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
+                                    </Element>
+                                }
+                                {
+                                    display === 'molFeature' &&
+                                    <Element className="section">
+                                        <MolecularFeaturesTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
+                                    </Element>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </StyledIndivPage>
+            </StyledWrapper>
+        </Layout>
+    );
+};
+
+/**
  * Parent component for the individual compound page.
  *
  * @component
@@ -176,7 +304,7 @@ const IndivCompounds = (props) => {
     } = props;
 
     // load data from query into state
-    const [compound, setCompound] = useState({
+    const [compoundData, setCompoundData] = useState({
         data: {},
         loaded: false,
     });
@@ -184,7 +312,7 @@ const IndivCompounds = (props) => {
     const [display, setDisplay] = useState('synonyms');
 
     // query to get the data for the single compound.
-    const { loading, error } = useQuery(getCompoundQuery, {
+    const { error } = useQuery(getCompoundQuery, {
         variables: {
             compoundUID: params.id,
             // compoundId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
@@ -192,7 +320,7 @@ const IndivCompounds = (props) => {
         },
         fetchPolicy: "no-cache",
         onCompleted: (data) => {
-            setCompound({
+            setCompoundData({
                 data: data.singleCompound,
                 synonymData: formatSynonymData(data.singleCompound),
                 annotationData: formatAnnotationData(data.singleCompound.compound),
@@ -212,114 +340,9 @@ const IndivCompounds = (props) => {
             </button>
         </li>
     );
-    return compound.loaded ? (
-        <Layout page={compound.data.compound.name}>
-            <StyledWrapper>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <NotFoundContent />
-                ) : (
-                            <StyledIndivPage className="indiv-compounds">
-                                <div className='heading'>
-                                    <StyledIndivPageTitle smalltxt={compound.data.compound.name.length > 30}>{compound.data.compound.name}</StyledIndivPageTitle>
-                                    <span className='attributes'>
-                                        <span>FDA Approval Status: </span>
-                                        <span className='regular'>
-                                            {compound.data.compound.annotation.fda_status}
-                                        </span>
-                                    </span>
-                                </div>
-                                <div className='wrapper'>
-                                    <StyledSidebarList>
-                                        {SIDE_LINKS.map((link, i) => createSideLink(link, i))}
-                                    </StyledSidebarList>
-                                    <div className="container">
-                                        <div className="content">
-                                            {
-                                                display === 'synonyms' &&
-                                                <React.Fragment>
-                                                    <Element className="section" name="synonyms">
-                                                        <div className='section-title'>Synonyms</div>
-                                                        <Table
-                                                            columns={SYNONYM_COLUMNS}
-                                                            data={compound.synonymData}
-                                                            disablePagination
-                                                        />
-                                                    </Element>
-                                                    {
-                                                        compound.annotationData.identifiers.length > 0 ?
-                                                            <Element className="section" name="external_ids">
-                                                                <div className='section-title'>Identifiers</div>
-                                                                <Table
-                                                                    columns={ANNOTATION_COLUMNS}
-                                                                    data={compound.annotationData.identifiers}
-                                                                    disablePagination
-                                                                    showHeader={false}
-                                                                />
-                                                            </Element>
-                                                            :
-                                                            ''
-                                                    }
-                                                    {
-                                                        compound.annotationData.externalLinks.length > 0 ?
-                                                            <Element className="section" name="external_ids">
-                                                                <div className='section-title'>External Links</div>
-                                                                <Table
-                                                                    columns={ANNOTATION_COLUMNS}
-                                                                    data={compound.annotationData.externalLinks}
-                                                                    disablePagination
-                                                                    showHeader={false}
-                                                                />
-                                                            </Element>
-                                                            :
-                                                            ''
-                                                    }
-                                                </React.Fragment>
-                                            }
-                                            {
-                                                display === 'targets' &&
-                                                <Element className="section">
-                                                    <AnnotatedTargetsTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
-                                                </Element>
-                                            }
-                                            <Element>
-                                                <PlotSection
-                                                    display={display}
-                                                    compound={{
-                                                        id: compound.data.compound.id,
-                                                        name: compound.data.compound.name,
-                                                    }}
-                                                />
-                                            </Element>
-                                            {
-                                                display === 'cellSummary' &&
-                                                <Element className="section">
-                                                    <div className='section-title'>Cell Line Summary</div>
-                                                    <CellLinesSummaryTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
-                                                </Element>
-                                            }
-                                            {
-                                                display === 'tissueSummary' &&
-                                                <Element className="section">
-                                                    <div className='section-title'>Tissue Summary</div>
-                                                    <TissuesSummaryTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
-                                                </Element>
-                                            }
-                                            {
-                                                display === 'molFeature' &&
-                                                <Element className="section">
-                                                    <MolecularFeaturesTable compound={({ id: compound.data.compound.id, name: compound.data.compound.name })} />
-                                                </Element>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </StyledIndivPage>
-                        )}
-            </StyledWrapper>
-        </Layout>
-    ) : <Loading />;
+
+    // render the component.
+    return renderComponent(compoundData, error, display, createSideLink);
 };
 
 IndivCompounds.propTypes = {
