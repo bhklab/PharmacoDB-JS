@@ -122,8 +122,10 @@ const StyledIndivPage = styled.div`
       width: 100% !important;
     }
   }
-
-  .plot {
+  .title {
+    min-height: 60px;
+  }
+  .plot , .title.plot{
     h4, h5 {
       text-align: center;
       margin-top: 15px;

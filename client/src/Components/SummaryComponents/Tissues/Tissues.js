@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import StyledWrapper from '../../../styles/utils';
 import Table from '../../UtilComponents/Table/Table';
 import Layout from '../../UtilComponents/Layout';
-// import plotColors from '../../../styles/plot_colors';
 import { getTissuesQuery } from '../../../queries/tissue';
 import { getCellLinesQuery } from '../../../queries/cell';
 import Loading from '../../UtilComponents/Loading';
@@ -41,6 +40,34 @@ const getTableData = (data) => {
 };
 
 /**
+ * Function to render the cell lines page component depending on 
+ * the API request outcome.
+ * @param {*} loading 
+ * @param {*} error 
+ * @param {*} pieData 
+ * @param {*} tableData 
+ * @returns a component to be rendered.
+ */
+const renderComponent = (loading, error, pieData, tableData) => {
+  if(error){
+    return(<Error />);
+  }
+
+  if(loading){
+    return(<Loading />)
+  }
+
+  return(
+    <React.Fragment>
+      <h2>Relative Percentage of Cell lines per Tissue</h2>
+      <TissueCellsPieChart cells={pieData} />
+      <h2> List of Tissues </h2>
+      <Table columns={tableColumns} data={tableData} center={true} />
+    </React.Fragment>
+  );
+};
+
+/**
  * Parent component for the tissues page.
  *
  * @component
@@ -53,23 +80,18 @@ const Tissues = () => {
   const { loading: tissueQueryLoading, error: tissuesQueryError, data: tissues } = useQuery(getTissuesQuery);
   const { loading: cellLineQueryLoading, error: cellLineQueryError, data: cells } = useQuery(getCellLinesQuery);
   // setting data for the table.
-  const columns = React.useMemo(() => tableColumns, []);
   const data = React.useMemo(() => getTableData(tissues), [tissues]);
 
   return (
     <Layout page="tissues">
       <StyledWrapper>
         {
-          tissueQueryLoading || cellLineQueryLoading ? <Loading />
-          :
-          cellLineQueryError || tissuesQueryError ? <Error />
-          :
-          <React.Fragment>
-            <h2 className="new-section">Relative Percentage of Cell lines per Tissue</h2>
-            <TissueCellsPieChart cells={cells} />
-            <h2 className="new-section"> List of Tissues </h2>
-            <Table columns={columns} data={data} center={true} />
-          </React.Fragment>
+          renderComponent(
+            (tissueQueryLoading || cellLineQueryLoading), 
+            (cellLineQueryError || tissuesQueryError), 
+            cells, 
+            data
+          )
         }
       </StyledWrapper>
     </Layout>
