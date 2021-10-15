@@ -296,7 +296,7 @@ const tissue = async (args, parent, info) => {
         const { tissueId, tissueName } = args;
 
         // throw error if neither of the arguments are passed.
-        if (!tissueId && !tissueName) {
+        if (!tissueId && (!tissueName || tissueName === 'undefined')) {
             throw new Error('Please specify alteast ID or the Name of the tissue you want to query!');
         }
 
