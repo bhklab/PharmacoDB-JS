@@ -10,6 +10,7 @@ import createAllSubsets from '../../../utils/createAllSubsets';
 import UpsetPlot from '../../Plots/UpsetPlot';
 import VennDiagram from '../../Plots/VennDiagram';
 import Loading from '../../UtilComponents/Loading';
+import Error from '../../UtilComponents/Error';
 import Select from 'react-select';
 import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 
@@ -185,12 +186,18 @@ const DrawUpsetPlot = (props) => {
  * @param {Object} parsedCellData
  * @param {Array} updatedDatasets
  */
-const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn = false) => {
+const renderComponent = (cellDataLoading, datasetDataLoading, cellDataError, datasetDataError, parsedCellData, updatedDatasets, isVenn = false) => {
     const datasetString = updatedDatasets.join(' + ');
 
     if (cellDataLoading || datasetDataLoading) {
         return <Loading />
-    } else if (isVenn) {
+    }
+
+    if (cellDataError || datasetDataError) {
+        return <Error />
+    }
+
+    if (isVenn) {
         return (
             <>
                 <h2>Overlaps among datasets</h2>
@@ -255,7 +262,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
                 <Layout page="dataset_intersection">
                     <StyledWrapper>
                         {
-                            renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn)
+                            renderComponent(cellDataLoading, datasetDataLoading, cellDataError, datasetDataError, parsedCellData, updatedDatasets, isVenn)
                         }
                     </StyledWrapper>
                 </Layout>
@@ -263,7 +270,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
             : (
                 <>
                     {
-                        renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+                        renderComponent(cellDataLoading, datasetDataLoading, cellDataError, datasetDataError, parsedCellData, updatedDatasets)
                     }
                 </>
             )
