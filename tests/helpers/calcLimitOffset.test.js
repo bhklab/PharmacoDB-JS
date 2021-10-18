@@ -8,16 +8,16 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Import the module to be tested.
-const calcLimitOffset = require('../../helpers/calcLimitOffset');
+const calcLimitOffset = require('../helpers/calcLimitOffset');
 
 describe('Tests: calcLimitOffset module', () => {
     // declare variables used in this test block.
-    before(function(){
+    before(function () {
         this.failures = [];
         this.successes = [];
     });
 
-    after(function() {
+    after(function () {
         if (this.failures.length) {
             console.log('\tHelper: The following ' + this.failures.length + ' test(s) failed:');
             this.failures.forEach(f => console.log('\t\t' + f));
@@ -28,7 +28,7 @@ describe('Tests: calcLimitOffset module', () => {
 
     describe('calcLimitOffset function', () => {
         // Log test result after each test.
-        afterEach(function() {
+        afterEach(function () {
             if (this.currentTest.state === 'passed') {
                 this.successes.push(this.currentTest.title);
             } else if (this.currentTest.state === 'failed') {
@@ -38,7 +38,7 @@ describe('Tests: calcLimitOffset module', () => {
 
         it('Returns a number of rows per page and an offset value.', done => {
             let result = calcLimitOffset.calcLimitOffset(5, 10);
-            expect(result).to.deep.equal({limit: 10, offset: 40});
+            expect(result).to.deep.equal({ limit: 10, offset: 40 });
             done();
         });
     });

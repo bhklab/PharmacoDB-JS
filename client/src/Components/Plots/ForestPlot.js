@@ -141,7 +141,6 @@ const createFilteredData = (data, mDataType) => {
     return filteredData;
 };
 
-
 /**
  * @param {Array} data - input data.
  */
@@ -602,8 +601,15 @@ const createForestPlot = (margin, heightInput, width, data) => {
  * @returns {component} - returns the forest plot component.
  */
 const ForestPlot = ({ height, width, margin, data }) => {
+    // check for analytic and permuted data.
+    const isPermutedAvailable = data.filter(el => el.lower_permutation && el.upper_permutation).length > 0;
+    const isAnalyticAvailable = data.filter(el => el.lower_analytic && el.upper_analytic).length > 0;
+
+    // initial analytic state value.
+    const initialAnalyticValueState = !isPermutedAvailable && isAnalyticAvailable;
+
     // set state for toggle.
-    const [isAnalytic, setAnalyticValue] = useState(false);
+    const [isAnalytic, setAnalyticValue] = useState(initialAnalyticValueState);
     const [molecularType, setMolecularType] = useState('rna microarray');
 
     // create updated data, updating the molecular type using the mapping.
@@ -634,15 +640,23 @@ const ForestPlot = ({ height, width, margin, data }) => {
 
     return (
         <StyledForestPlot>
-            <div className='switch-wrapper'>
-                <CustomSwitch
-                    checked={isAnalytic}
-                    onChange={(isAnalytic) => setAnalyticValue(isAnalytic)}
-                    labelLeft='Permuted'
-                    labelRight='Analytical'
-                />
-            </div>
-            <div style={{ position: 'relative' }}>
+            {
+                isPermutedAvailable && isAnalyticAvailable ?
+                    (
+                        <div className='switch-wrapper'>
+                            <CustomSwitch
+                                checked={isAnalytic}
+                                onChange={(isAnalytic) => setAnalyticValue(isAnalytic)}
+                                labelLeft='Permuted'
+                                labelRight='Analytical'
+                            />
+                        </div>
+                    ) : (
+                        // <h6> {isPermutedAvailable ? 'Permuted' : 'Analytical'} </h6>
+                        ''
+                    )
+            }
+            <div style={{ position: 'relative', marginTop: '20px' }}>
                 <select
                     className='select'
                     id='selection'

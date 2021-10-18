@@ -1,10 +1,10 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { transformFdaStatus } = require('../../helpers/dataHelpers');
-const { retrieveFields } = require('../../helpers/queryHelpers');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { transformFdaStatus } = require('../helpers/dataHelpers');
+const { retrieveFields } = require('../helpers/queryHelpers');
 const { getIdBasedOnCompound } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
-const { getIdBasedOnTissue } = require('./tissue');
+const { getTissueIdBasedOnTissueName } = require('./tissue');
 
 /**
  * @param {Array} data
@@ -16,7 +16,7 @@ const transformGeneCompounds = (data) => {
             gct_id, compound_id, estimate, lower, upper,
             n, tstat, fstat, pvalue, df,
             fdr, FWER_gene, FWER_compound, FWER_all, BF_p_all,
-            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name, compound_uid, 
+            sens_stat, mDataType, tested_in_human_trials, in_clinical_trials, compound_name, compound_uid,
             smiles, inchikey, pubchem, fda_status, tissue_id,
             tissue_name, gene_id, gene_name, gene_seq_start, gene_seq_end,
         } = compound_compound;
@@ -85,7 +85,7 @@ const gene_compound_tissue = async (args, context, info) => {
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
     compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
-    tissueId = tissueName ? await getIdBasedOnTissue(tissueName) : tissueId || null;
+    tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId && !tissueId) throw new Error('Invalid input! Query must include geneId and compoundId and tissueId');

@@ -1,9 +1,9 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable no-case-declarations */
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../../helpers/calcLimitOffset');
-const { retrieveFields, retrieveSubtypes } = require('../../helpers/queryHelpers');
-// const { transformObject } = require('../../helpers/transformObject');
+const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
+// const { transformObject } = require('../helpers/transformObject');
 
 /**
  * a helper function for experiments route that generates 2 arrays of columns names based on requested fields, used for query building

@@ -142,9 +142,9 @@ const IndivDatasets = (props) => {
     datatypes: [],
     notFound: false
   });
-
   // A section to display on the page
-  const [display, setDisplay] = useState('info');
+  const initialView = props.location.hash === '#compounds' ? 'compounds' : 'info';
+  const [display, setDisplay] = useState(initialView);
 
   // to set the state on the change of the data.
   useEffect(() => {
@@ -288,8 +288,11 @@ const IndivDatasets = (props) => {
                     }
                     {
                       display === 'compounds' &&
-                      <Element className="section" name="cellLines">
-                        <CompoundsSummaryTable dataset={({ id: dataset.id, name: dataset.name })} />
+                      <Element className="section" name="compounds">
+                        {
+                          dataset.id &&
+                          <CompoundsSummaryTable dataset={({id: dataset.id, name: dataset.name})}/>
+                        }
                       </Element>
                     }
                   </div>
