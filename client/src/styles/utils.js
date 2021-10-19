@@ -30,6 +30,7 @@ const StyledWrapper = styled.div`
 
     h2 {
         font-size: calc(1vw + 1.2em);
+        margin: 15px;
     }
 
     .new-section {
