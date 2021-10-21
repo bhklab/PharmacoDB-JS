@@ -7,7 +7,7 @@ const cellLineType = `
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
-        tissue: Tissue!
+        tissue: Generic!
         """dataset information of the cell line"""
         dataset: [Generic!]
     }
@@ -22,7 +22,7 @@ const cellLineDetailType = `
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
-        tissue: Tissue!
+        tissue: Generic!
         """synonyms (name) in different datasets"""
         synonyms: [SourceAnnotation]
         """list of datasets names and ids"""
