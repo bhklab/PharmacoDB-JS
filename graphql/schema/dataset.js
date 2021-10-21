@@ -1,18 +1,10 @@
-const datasetType = `
-    type Dataset {
-        """id of the dataset in the database"""
-        id: Int!
-        """name of the dataset"""
-        name: String!
-    }
-`;
-
 const datasetDetailType = `
     type DatasetDetail {
         """id of the dataset"""
         id: Int!
         """name of the dataset"""
         name: String!
+        dataset_stats : DatasetStats
         """number of cell-lines in the dataset"""
         cell_count: Int!
         """number of tissues in the dataset"""
@@ -25,7 +17,6 @@ const datasetDetailType = `
         cells_tested: [CellLine!]
         """compound names tested in the dataset"""
         compounds_tested: [Compound!]
-        
     }
 `;
 
@@ -68,7 +59,6 @@ const datasetsCompoundStatType = `
 `;
 
 module.exports = {
-    datasetType,
     datasetDetailType,
     datasetStatsType,
     datasetsTypesType,

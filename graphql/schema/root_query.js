@@ -38,7 +38,7 @@ const RootQuery = `type RootQuery {
     """
         Root Query for datasets
     """
-    datasets: [Dataset!]!
+    datasets: [Generic!]!
 
     """
         Root Query to get a single dataset detail.
