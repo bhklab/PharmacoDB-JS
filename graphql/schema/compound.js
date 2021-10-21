@@ -46,8 +46,6 @@ const compoundDetailType = `
         synonyms: [SourceAnnotation!]
         """compound targets"""
         targets: [TargetWithGeneInfo]
-        """dataset information object"""
-        datasets: [Generic]!
     }
 `;
 
