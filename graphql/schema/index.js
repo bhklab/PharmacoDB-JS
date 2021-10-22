@@ -7,7 +7,7 @@ const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, dat
 const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
-const { genericType } = require('./generic');
+// const { genericType } = require('./generic');
 const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
@@ -19,28 +19,28 @@ const {
     targetWithGeneInfoType, targetWithCompoundInfoType,
     geneTargetCompoundCountsType
 } = require('./target');
-const { tissueType, tissueDetailType } = require('./tissue');
+const { tissueType, tissueTypeWithDatasetInformation, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molType } = require('./mol');
 
 
 // schema definition.
 const schema = `
-    "Compound Type with id, name and annotations."
+    "Compound Type with id, name and annotations"
     ${compoundType}
     ${compoundTableType}
-    "Compound Annotation Type with compound id, smiles, inchikey and pubchem."
+    "Compound Annotation Type with compound id, smiles, inchikey and pubchem"
     ${compoundAnnotationType}
     ${compoundDetailType}
 
-    "Cell Line Type with id and name of the cell lines."
+    "Cell Line Type with id and name of the cell lines"
     ${cellLineType}
     ${cellLineDetailType}
 
     "Count Type"
     ${countType}
 
-    "Dataset Type with id and name of the datasets."
+    "Dataset Type with id and name of the datasets"
     ${datasetType}
     ${datasetDetailType}
     ${datasetStatsType}
@@ -52,16 +52,13 @@ const schema = `
 
     ${enumAllowedType}
 
-    "Experiment Type with experiment_id, cell line, tissue, compound and dataset types."
+    "Experiment Type with experiment_id, cell line, tissue, compound and dataset types"
     ${experimentType}
 
-    "Gene Type with id and name of the genes."
+    "Gene Type with id and name of the genes"
     ${geneType}
-    "Gene Annotation Type with gene id, ensg, start and end."
+    "Gene Annotation Type with gene id, ensg, start and end"
     ${geneAnnotationType}
-
-    "Generic Type"
-    ${genericType}
 
     """Source Annotation type with id, name, tissue information 
     and annotations including the name of source and datasets it's present in"""
@@ -81,8 +78,11 @@ const schema = `
     ${targetWithCompoundInfoType}
     ${geneTargetCompoundCountsType}
 
-    "Tissue Type with id and name of the tissues."
+    "Tissue Type with id and name of the tissues"
     ${tissueType}
+
+    "Tissue Type with id and name of the tissues as well as the dataset information"
+    ${tissueTypeWithDatasetInformation}
 
     """Tissue Annotation type with id, name, annotations object 
      including the name of source and datasets it's present in"""

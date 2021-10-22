@@ -4,14 +4,20 @@ const tissueType = `
         id: Int!
         """tissue name in the database"""
         name: String!
-        """dataset information object"""
-        dataset: [Generic!]
     }
 `;
 
-// we can also merge this to the tissue type itself and query based on it.
-// but for the simplicity sake I am not doing that with this type.
-// example: Compound Type.
+const tissueTypeWithDatasetInformation = `
+    type TissueWithDataset {
+        """tissue id in the database"""
+        id: Int!
+        """tissue name in the database"""
+        name: String!
+        """dataset information object"""
+        dataset: [Dataset!]
+    }
+`;
+
 const tissueDetailType = `
     type TissueDetail {
         id: Int!
@@ -28,5 +34,6 @@ const tissueDetailType = `
 
 module.exports = {
     tissueType,
+    tissueTypeWithDatasetInformation,
     tissueDetailType,
 };
