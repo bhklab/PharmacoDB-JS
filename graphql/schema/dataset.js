@@ -1,3 +1,12 @@
+const datasetType = `
+    type Dataset {
+        """id of the dataset in the database"""
+        id: Int!
+        """name of the dataset"""
+        name: String!
+    }
+`;
+
 const datasetDetailType = `
     type DatasetDetail {
         """id of the dataset"""
@@ -50,7 +59,7 @@ const datasetsTypesType = `
 `;
 
 const datasetsCompoundStatType = `
-    type DatasetCompoundStat{
+    type DatasetCompoundStat {
         """name and id of the dataset"""
         dataset: Generic!
         """compound ids and names tested in the dataset"""
@@ -59,6 +68,7 @@ const datasetsCompoundStatType = `
 `;
 
 module.exports = {
+    datasetType,
     datasetDetailType,
     datasetStatsType,
     datasetsTypesType,
