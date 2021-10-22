@@ -7,7 +7,7 @@ const tissueType = `
     }
 `;
 
-const tissueTypeWithDatasetInformation = `
+const tissueTypeWithDatasetType = `
     type TissueWithDataset {
         """tissue id in the database"""
         id: Int!
@@ -34,6 +34,6 @@ const tissueDetailType = `
 
 module.exports = {
     tissueType,
-    tissueTypeWithDatasetInformation,
+    tissueTypeWithDatasetType,
     tissueDetailType,
 };

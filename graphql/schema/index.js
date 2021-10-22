@@ -19,7 +19,7 @@ const {
     targetWithGeneInfoType, targetWithCompoundInfoType,
     geneTargetCompoundCountsType
 } = require('./target');
-const { tissueType, tissueTypeWithDatasetInformation, tissueDetailType } = require('./tissue');
+const { tissueType, tissueTypeWithDatasetType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molType } = require('./mol');
 
@@ -84,7 +84,7 @@ const schema = `
     ${tissueType}
 
     "Tissue Type with id and name of the tissues as well as the dataset information"
-    ${tissueTypeWithDatasetInformation}
+    ${tissueTypeWithDatasetType}
 
     """Tissue Annotation type with id, name, annotations object 
      including the name of source and datasets it's present in"""
