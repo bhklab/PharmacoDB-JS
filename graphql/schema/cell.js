@@ -7,9 +7,9 @@ const cellLineType = `
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
-        tissue: Generic!
+        tissue: Tissue!
         """dataset information of the cell line"""
-        dataset: [Generic!]
+        dataset: [Dataset!]
     }
 `;
 
@@ -22,11 +22,11 @@ const cellLineDetailType = `
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
-        tissue: Generic!
+        tissue: Tissue!
         """synonyms (name) in different datasets"""
         synonyms: [SourceAnnotation]
         """list of datasets names and ids"""
-        datasets: [Generic]!
+        datasets: [Dataset]!
         """diseases from cellosaurus"""
         diseases: [String]
         """accession id from cellosaurus"""
