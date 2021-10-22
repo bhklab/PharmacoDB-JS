@@ -1,13 +1,13 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
 const { cellLineType, cellLineDetailType } = require('./cell');
-const { compoundType, compoundAnnotationType, compoundDetailType, compoundTableType } = require('./compound');
+const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
 const { compoundResponseType } = require('./compound_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
-// const { genericType } = require('./generic');
+const { genericType } = require('./generic');
 const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
@@ -26,9 +26,11 @@ const { molType } = require('./mol');
 
 // schema definition.
 const schema = `
+    ${genericType}
+
     "Compound Type with id, name and annotations"
     ${compoundType}
-    ${compoundTableType}
+    ${compoundWithDatasetType}
     "Compound Annotation Type with compound id, smiles, inchikey and pubchem"
     ${compoundAnnotationType}
     ${compoundDetailType}

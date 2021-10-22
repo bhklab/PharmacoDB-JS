@@ -1,5 +1,5 @@
-const compoundTableType = `
-    type CompoundTable {
+const compoundType = `
+    type Compound {
         """compound id in the database"""
         id: Int!
         """compound name in the database"""
@@ -23,8 +23,8 @@ const compoundAnnotationType = `
     }
 `;
 
-const compoundType = ` 
-    type Compound {
+const compoundWithDatasetType = ` 
+    type CompoundWithDataset {
         """compound id in the database"""
         id: Int!
         """compound name in the database"""
@@ -34,14 +34,14 @@ const compoundType = `
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
         """dataset information object"""
-        dataset: Generic!
+        dataset: Dataset!
     }
 `;
 
 const compoundDetailType = `
     type CompoundDetail {
         """compound object with id, name and annotation"""
-        compound: Compound!
+        compound: CompoundWithDataset!
         """synonyms (names) in different sources (datasets)"""
         synonyms: [SourceAnnotation!]
         """compound targets"""
@@ -52,6 +52,6 @@ const compoundDetailType = `
 module.exports = {
     compoundType,
     compoundAnnotationType,
+    compoundWithDatasetType,
     compoundDetailType,
-    compoundTableType,
 };

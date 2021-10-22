@@ -7,7 +7,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
+    compounds(page: Int, per_page: Int, all: Boolean): [CompoundWithDataset!]!
 
     """
         Root Query to get a single compound detail.
@@ -127,7 +127,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    tissues(page: Int, per_page: Int, all: Boolean): [Tissue!]!
+    tissues(page: Int, per_page: Int, all: Boolean): [TissueWithDataset!]!
 
     """
         Root Query to get a single tissue detail.
