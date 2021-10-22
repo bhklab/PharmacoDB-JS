@@ -25,7 +25,7 @@ const targetWithCompoundInfoType = `
         """target name"""
         target_name: String!
         """compound object"""
-        compounds: [CompoundTable]
+        compounds: [Compound]
     }
 `;
 
