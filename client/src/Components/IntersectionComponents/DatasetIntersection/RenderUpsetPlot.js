@@ -48,7 +48,7 @@ const RenderUpsetPlot = ({ data, cellData, datasets }) => {
                     />
                 </div>
             </StyledSelectorContainer>
-            <UpsetPlot data={plotData || cellData} datasets={datasets} type={selectedType} />
+            <UpsetPlot data={plotData} datasets={datasets} type={selectedType} />
         </React.Fragment>
     );
 };
