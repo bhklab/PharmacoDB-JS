@@ -90,7 +90,7 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
         return (
             <>
                 <h2>Overlaps among datasets</h2>
-                <RenderUpsetPlot cellData={parsedCellData} datasets={updatedDatasets} />
+                <RenderUpsetPlot data={data} cellData={parsedCellData} datasets={updatedDatasets} />
             </>
         )
     }
@@ -101,9 +101,10 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
  * Parses data from the cell line query for the upset plot.
  * @component
  */
-const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = false }) => {
+const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = false }) => {
+
     // array of the datasets from the prop.
-    const datasetsPropArray = createDatasetArray(datasetsProp);
+    const datasetsPropArray = createDatasetArray(datasetProp);
 
     // cell line and dataset data from the APIs.
     const { loading, error, data } = useQuery(getDatasetsTypesQuery);
@@ -117,6 +118,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
 
     useEffect(() => {
         if (data && datasetData) {
+
             // array of the datasets from the database.
             const datasets = datasetData.datasets.map(dataset => dataset.name);
 
