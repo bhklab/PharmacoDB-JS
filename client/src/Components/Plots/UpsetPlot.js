@@ -71,8 +71,8 @@ const yAxis = (svg, scale, tickNum) => svg
     .attr('id', 'y-axis')
     .attr('transform', `translate(${margin.left * 1.5}, 0)`)
     .call(d3.axisLeft(scale)
-    .ticks(tickNum)
-    .tickFormat(d3.format("d")));
+        .ticks(tickNum)
+        .tickFormat(d3.format('d')));
 
 /**
  * Creates x axis.
@@ -95,8 +95,8 @@ const appendTextYAxis = (svg, height, type) => svg
     .attr('x', -200)
     .attr('y', -20)
     .attr('stroke', `${colors.dark_teal_heading}`)
-    .style("font-size", 13)
-    .style("position", "sticky")
+    .style('font-size', 13)
+    .style('position', 'sticky')
     .text(`Number of ${type}s`);
 
 /**
@@ -109,8 +109,7 @@ const appendTextYAxis = (svg, height, type) => svg
 const appendRectangles = (svg, data, scale, height) => {
     // get the data object keys.
     const keys = Object.keys(data);
-    // for each key append rectangle and text.
-    d3.select('.y-axis').remove();
+
     const rectangles = svg.append('g')
         .attr('class', 'bar-rectangles');
 
@@ -135,7 +134,7 @@ const appendRectangles = (svg, data, scale, height) => {
                 d3.select(`#rect-${key}`)
                     .attr('opacity', 0.7);
                 // change the cursor type.
-                d3.select(this).style("cursor", "pointer");
+                d3.select(this).style('cursor', 'pointer');
             })
             .on('mouseout', function () {
                 // remove the text from the bar graph.
@@ -144,7 +143,7 @@ const appendRectangles = (svg, data, scale, height) => {
                 d3.select(`#rect-${key}`)
                     .attr('opacity', 1.0);
                 // change the cursor to default.
-                d3.select(this).style("cursor", "default");
+                d3.select(this).style('cursor', 'default');
             })
             .on('click', function () {
                 makeTable(svg, data[key].values, 'upsetplot',);
@@ -197,50 +196,50 @@ function makeTable(svg, names, tableId) {
     //     .attr('fill', '#69a3b2')
     //     .style('position', 'fixed')
     //     .attr('opacity', 0.3);
-    // console.log("List:" ,names);
+    // console.log('List:' ,names);
     //
     // // prepare data: divide data into data.len / 3 rows table and each row has 3 columns
     // const tableData = [];
     // const addElems = names.length % 3;
     // const names_copy = names.slice(0);
     // for (let i = 0; i < 3-addElems; i++) {
-    //     names_copy.push(" ");
+    //     names_copy.push(' ');
     // }
     // //make multidimensional array of 3
     // for (let i = 0; i < names.length; i += 3) {
     //     const temp = []
     //     for (let j = 0; j < 3; j++) {
-    //         temp.push({"name": names_copy[i+j]})
+    //         temp.push({'name': names_copy[i+j]})
     //     }
     //     tableData.push(temp)
     // }
 
     //
-    // const table = d3.select("#"+tableId).append('table')
-    //     .attr("id", tableId)
-    //     .style("border", "1px solid silver")
-    //     .style("opacity", "0");
+    // const table = d3.select('#'+tableId).append('table')
+    //     .attr('id', tableId)
+    //     .style('border', '1px solid silver')
+    //     .style('opacity', '0');
     // //
-    // var tbody = table.append("tbody");
+    // var tbody = table.append('tbody');
     // //
     // //create table rows
-    // var tr = tbody.selectAll("tr")
+    // var tr = tbody.selectAll('tr')
     //     .data(tableData)
     //     .enter()
-    //     .append("tr")
-    //     .style("border", "1px solid silver");
+    //     .append('tr')
+    //     .style('border', '1px solid silver');
     //
     // // create table cells
-    // var td = tr.selectAll("td")
+    // var td = tr.selectAll('td')
     //     .data(function(d) {return d;})
     //     .enter()
-    //     .append("td")
-    //     .style("font-size", "15px")
-    //     .style("border", "1px solid silver")
-    //     .attr("width", 250)
-    //     .style("padding-top", "5px")
+    //     .append('td')
+    //     .style('font-size', '15px')
+    //     .style('border', '1px solid silver')
+    //     .attr('width', 250)
+    //     .style('padding-top', '5px')
     //     .html(function(d,i){
-    //         return "<a href=\"" + "/search?q=" + d.name + "\">" + d.name.replaceAll("_", " ") + "</a>"
+    //         return '<a href=\'' + '/search?q=' + d.name + '\'>' + d.name.replaceAll('_', ' ') + '</a>'
     //     });
 }
 
@@ -274,11 +273,11 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 .attr('class', `circle-set-${i}`)
                 .on('mouseover', function () {
                     // change the cursor type.
-                    d3.select(this).style("cursor", "pointer")
+                    d3.select(this).style('cursor', 'pointer')
                 })
                 .on('mouseout', function () {
                     // change the cursor to default.
-                    d3.select(this).style("cursor", "default");
+                    d3.select(this).style('cursor', 'default');
                 })
                 .on('click', function () {
                     makeTable(svg, data[dataKeys[i]].values, 'upsetplot',);
@@ -297,14 +296,14 @@ const upsetCircle = (svg, data, datasets, length, height) => {
             .attr('class', `line-set-${i}`)
             .on('mouseover', function () {
                 // change the cursor type.
-                d3.select(this).style("cursor", "pointer");
+                d3.select(this).style('cursor', 'pointer');
             })
             .on('mouseout', function () {
                 // change the cursor to default.
-                d3.select(this).style("cursor", "default");
+                d3.select(this).style('cursor', 'default');
             })
             .on('click', function () {
-                makeTable(svg, data[dataKeys[i]].values, "upsetplot");
+                makeTable(svg, data[dataKeys[i]].values, 'upsetplot');
             });
     }
 };
@@ -321,6 +320,7 @@ const createUpsetPlot = (data, datasets, type) => {
 
     const tableHeight = 400;
     const tableWidth = 800;
+
     // sort the data based on the count.
     const sortedEnteries = Object.entries(data).sort((a, b) => b[1].count - a[1].count);
     // sorted data.
@@ -331,6 +331,7 @@ const createUpsetPlot = (data, datasets, type) => {
 
     // get the max total value in the sortedData object.
     const maxCount = Math.max(...Object.keys(sortedData).map(el => sortedData[el].count));
+
     // get the length of the sortedData object.
     const sortedDataLength = Object.keys(sortedData).length;
 
@@ -339,12 +340,15 @@ const createUpsetPlot = (data, datasets, type) => {
 
     // create scale for x axis.
     const scaleXAxis = xScale(0, sortedDataLength, width);
+
     // create scale for y axis.
-    const scaleYAxis = type ==="Compound" ? yLogScale(1, maxCount, height) : yScale(0, maxCount, height);
+    const scaleYAxis = type === 'Compound' ? yLogScale(1, maxCount, height) : yScale(0, maxCount, height);
+
     // create x axis.
     xAxis(svg, scaleXAxis, height);
+
     // create y axis.
-    const tickNum = type ==="Compound" ? 5 : type === "Tissue" ? 20 : 10;
+    const tickNum = type === 'Compound' ? 5 : type === 'Tissue' ? 20 : 10;
     yAxis(svg, scaleYAxis, tickNum);
 
     // append text to the y axis.
@@ -355,6 +359,7 @@ const createUpsetPlot = (data, datasets, type) => {
 
     // upset circle.
     upsetCircle(svg, sortedData, datasets, sortedDataLength, height);
+
     // append text to the circles as axis.
     circleAxis(svg, datasets, height);
 };
@@ -365,9 +370,11 @@ const createUpsetPlot = (data, datasets, type) => {
  * )
  */
 const UpsetPlot = ({ data, datasets, type }) => {
+
     useEffect(() => {
         // remove the alrady existing upset plot.
         d3.select(`#${CANVAS_ID}`).remove();
+
         // create upset plot.
         createUpsetPlot(data, datasets, type);
     })
