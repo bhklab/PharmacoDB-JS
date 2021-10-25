@@ -87,7 +87,7 @@ const mapDatasetOrTissue = (data, mapData, mapDataType) => {
         item[mapDataType] = {
             id: found.id,
             name: found.name
-        }
+        };
         return item;
     });
 };
