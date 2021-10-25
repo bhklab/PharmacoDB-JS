@@ -25,7 +25,7 @@ const createSetsWithData = (data, subsets) => {
             }
 
             // append the object to final object variable.
-            if (result.length > 20) {
+            if (result.length > 5) {
                 finalObject[`set${i}`] = {
                     keys: subset,
                     values: [...new Set(result)],
