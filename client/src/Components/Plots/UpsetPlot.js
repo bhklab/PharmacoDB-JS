@@ -376,8 +376,10 @@ const UpsetPlot = ({ data, datasets, type }) => {
         d3.select(`#${CANVAS_ID}`).remove();
 
         // create upset plot.
-        createUpsetPlot(data, datasets, type);
-    })
+        if (!(data && Object.keys(data).length === 0 && Object.getPrototypeOf(data) === Object.prototype)) {
+            createUpsetPlot(data, datasets, type);
+        }
+    }, [data])
     return (
         <UpsetPlotStyle>
             {data && datasets ? <div id='upsetplot' /> : <Loading />}
