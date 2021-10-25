@@ -34,7 +34,7 @@ const transformCellLines = data => {
         } else {
             finalData[cell_id] = {
                 id: cell_id,
-                cell_uid: cell_uid,
+                uid: cell_uid,
                 name: cell_name,
                 tissue: {
                     id: tissue_id,
@@ -78,7 +78,7 @@ const transformSingleCellLine = (data) => {
         // if it's the first element.
         if (!i) {
             returnObject['id'] = cell_id;
-            returnObject['cell_uid'] = cell_uid;
+            returnObject['uid'] = cell_uid;
             returnObject['name'] = cell_name;
             returnObject['diseases'] = diseases ? diseases.split('|||') : diseases;
             returnObject['accessions'] = accessions;
