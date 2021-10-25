@@ -1,9 +1,8 @@
-const molType = `
-    type Mol {
+const molecularProfilingType = `
+    type MolecularProfiling {
+        cell_line: CellLine!
         """dataset id and name in the database"""
-        dataset: Generic!
-        """all molecular data types for the cell line in the database"""
-        dataTypes: [String]!
+        dataset: Dataset!
         """molecular data type in the database"""
         mDataType: String!
         """number of profiles in the database"""
@@ -13,5 +12,5 @@ const molType = `
 
 
 module.exports = {
-    molType,
+    molecularProfilingType,
 };

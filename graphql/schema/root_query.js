@@ -143,7 +143,7 @@ const RootQuery = `type RootQuery {
         'cellName' is the name of the cell in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the cell Name
     """
-    mol_cell(cellLineId: Int, cellLineName: String): [Mol]!
+    molecular_profiling(cellLineId: Int, cellLineName: String): [MolecularProfiling]!
 }`;
 
 module.exports = {
