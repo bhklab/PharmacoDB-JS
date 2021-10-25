@@ -16,34 +16,34 @@ import { StyledIndivPage, StyledSidebarList } from '../../../styles/IndivPageSty
 import StyledWrapper from '../../../styles/utils';
 
 const SYNONYM_COLUMNS = [
-    {
-        Header: 'Sources',
-        accessor: 'sources',
-        Cell: (item) => {
-            let datasets = item.cell.row.original.source;
-            return(datasets.map((obj, i) => (
-                obj.id? (
-                    <span key={i}>
-                        <a href={`/datasets/${obj.id}`}>{obj.name}</a>{ i + 1 < datasets.length ? ', ' : ''}
-                    </span>
-                    ) :
-                    (<span key={i}>{obj.name}</span>)
-                )
-            ));
-        }
-    },
-    {
-        Header: 'Names Used',
-        accessor: 'name',
-    },
+  {
+    Header: 'Sources',
+    accessor: 'sources',
+    Cell: (item) => {
+      let datasets = item.cell.row.original.source;
+      return (datasets.map((obj, i) => (
+        obj.id ? (
+          <span key={i}>
+            <a href={`/datasets/${obj.id}`}>{obj.name}</a>{i + 1 < datasets.length ? ', ' : ''}
+          </span>
+        ) :
+          (<span key={i}>{obj.name}</span>)
+      )
+      ));
+    }
+  },
+  {
+    Header: 'Names Used',
+    accessor: 'name',
+  },
 ];
 
 const SIDE_LINKS = [
-  {label: 'Annotations', name: 'data'},
-  {label: 'Bar Plot', name: 'barPlot'},
-  {label: 'AAC (Compounds)', name: 'aacCompounds'},
-  {label: 'Compounds Summary', name: 'compoundsSummary'},
-  {label: 'Molecular Profiling', name: 'molecularProfiling'}
+  { label: 'Annotations', name: 'data' },
+  { label: 'Bar Plot', name: 'barPlot' },
+  { label: 'AAC (Compounds)', name: 'aacCompounds' },
+  { label: 'Compounds Summary', name: 'compoundsSummary' },
+  { label: 'Molecular Profiling', name: 'molecularProfiling' }
 ];
 
 /**
@@ -52,11 +52,11 @@ const SIDE_LINKS = [
  */
 const formatSynonymData = (data) => {
   if (data.synonyms) {
-      const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
-      if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
-        returnObj.push({ name: data.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
+    const returnObj = data.synonyms.filter(obj => { return obj.name !== "" });
+    if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
+      returnObj.push({ name: data.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
     }
-      return returnObj;
+    return returnObj;
   }
   return null;
 };
@@ -66,27 +66,27 @@ const formatSynonymData = (data) => {
  * @param {Array} data diseases data from the cell line API
  */
 const formatDiseaseData = (data) => {
-    if (data) {
-        const ncit_path =
-            'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
-        const ordo_path = 'https://www.ebi.ac.uk/ols/ontologies/ordo/terms?iri=http://www.orpha.net/ORDO/';
-        return data.map((x) =>
-            x
-                ? {
-                      key: x.split('; ')[1],
-                      name: x.split('; ')[0] === 'NCIt' ?
-                            x.split('; ')[0] + ': '+ x.split('; ')[2] + ' (Code ' + x.split('; ')[1] + ')' :
-                            x.split('; ')[0] + ': '+ x.split('; ')[2] + ' (ORPHA:' + x.split('; ')[1].split('_')[1] + ')',
-                      source: x.split('; ')[0] === 'NCIt' ? ncit_path + x.split('; ')[1] : ordo_path + x.split('; ')[1],
-                  }
-                : {
-                      key: null,
-                      name: 'N/A',
-                      source: null,
-                  }
-        );
-    }
-    return null;
+  if (data) {
+    const ncit_path =
+      'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code=';
+    const ordo_path = 'https://www.ebi.ac.uk/ols/ontologies/ordo/terms?iri=http://www.orpha.net/ORDO/';
+    return data.map((x) =>
+      x
+        ? {
+          key: x.split('; ')[1],
+          name: x.split('; ')[0] === 'NCIt' ?
+            x.split('; ')[0] + ': ' + x.split('; ')[2] + ' (Code ' + x.split('; ')[1] + ')' :
+            x.split('; ')[0] + ': ' + x.split('; ')[2] + ' (ORPHA:' + x.split('; ')[1].split('_')[1] + ')',
+          source: x.split('; ')[0] === 'NCIt' ? ncit_path + x.split('; ')[1] : ordo_path + x.split('; ')[1],
+        }
+        : {
+          key: null,
+          name: 'N/A',
+          source: null,
+        }
+    );
+  }
+  return null;
 };
 
 /**
@@ -94,15 +94,15 @@ const formatDiseaseData = (data) => {
  * @param {Array} data link data from the cell line API
  */
 const formatLinkData = (data) => {
-    if (data) {
-        const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
-        return {
-            key: data,
-            path: cellosaurus_path + data,
-            source: 'Cellosaurus',
-        };
-    }
-    return null;
+  if (data) {
+    const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
+    return {
+      key: data,
+      path: cellosaurus_path + data,
+      source: 'Cellosaurus',
+    };
+  }
+  return null;
 };
 
 /**
@@ -116,48 +116,48 @@ const formatLinkData = (data) => {
  * )
  */
 const IndivCellLines = (props) => {
-    // parameter.
-    const {
-        match: { params },
-        location: { pathname }
-    } = props;
-    // query to get the data for the single cell line.
-    const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
-        variables: {
-          cellUID: pathname.split('/cell_lines/').pop(),
-          cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
-          cellName: typeof pathname.split('/cell_lines/').pop() === 'string' ? pathname.split('/cell_lines/').pop() : undefined
-        },
-    });
-    // load data from query into state
-    const [cellLine, setCellLine] = useState({
-        data: {},
-        loaded: false,
-    });
-    // A section to display on the page
-    const [display, setDisplay] = useState('data');
+  // parameter.
+  const {
+    match: { params },
+    location: { pathname }
+  } = props;
+  // query to get the data for the single cell line.
+  const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
+    variables: {
+      cellUID: pathname.split('/cell_lines/').pop(),
+      cellId: params.id.match(/^[0-9]+$/) ? parseInt(params.id) : undefined,
+      cellName: typeof pathname.split('/cell_lines/').pop() === 'string' ? pathname.split('/cell_lines/').pop() : undefined
+    },
+  });
+  // load data from query into state
+  const [cellLine, setCellLine] = useState({
+    data: {},
+    loaded: false,
+  });
+  // A section to display on the page
+  const [display, setDisplay] = useState('data');
 
-    // to set the state on the change of the data.
-    useEffect(() => {
-        if (queryData !== undefined) {
-            setCellLine({
-                data: queryData.cell_line,
-                loaded: true,
-            });
-        }
-    }, [queryData]);
+  // to set the state on the change of the data.
+  useEffect(() => {
+    if (queryData !== undefined) {
+      setCellLine({
+        data: queryData.cell_line,
+        loaded: true,
+      });
+    }
+  }, [queryData]);
 
-    // destructuring the cellLine object.
-    const { data } = cellLine;
+  // destructuring the cellLine object.
+  const { data } = cellLine;
   /**
    * @param {String} link
    */
   const createSideLink = (link, i) => (
-      <li key={i} className={display === link.name ? 'selected': undefined}>
-          <button type='button' onClick={() => setDisplay(link.name)}>
-              {link.label}
-          </button>
-      </li>
+    <li key={i} className={display === link.name ? 'selected' : undefined}>
+      <button type='button' onClick={() => setDisplay(link.name)}>
+        {link.label}
+      </button>
+    </li>
   );
 
   // formatted data of diseases and links
@@ -172,15 +172,15 @@ const IndivCellLines = (props) => {
             : (
               <StyledIndivPage className="indiv-cellLines">
                 <div className='heading'>
-                    <span className='title'>{data.name}</span>
-                    <span className='attributes'>
-                        Tissue Type:
+                  <span className='title'>{data.name}</span>
+                  <span className='attributes'>
+                    Tissue Type:
                         <span className='value highlight'>
-                          {
-                            data.tissue.name === 'NA' ? 'Not Available' : <a href={`/tissues/${data.tissue.id}`}>{data.tissue.name}</a>
-                          }
-                        </span>
+                      {
+                        data.tissue.name === 'NA' ? 'Not Available' : <a href={`/tissues/${data.tissue.id}`}>{data.tissue.name}</a>
+                      }
                     </span>
+                  </span>
                 </div>
                 <div className='wrapper'>
                   <StyledSidebarList>
@@ -195,19 +195,19 @@ const IndivCellLines = (props) => {
                             <div className='section-title'>Synonyms</div>
                             {
                               synonymData ?
-                              <Table columns={SYNONYM_COLUMNS} data={synonymData} disablePagination={true} />
-                              :
-                              <div className="text">N/A</div>
+                                <Table columns={SYNONYM_COLUMNS} data={synonymData} disablePagination={true} />
+                                :
+                                <div className="text">N/A</div>
                             }
                           </Element>
                           <Element className="section" name="disease(s)">
                             <div className='section-title'>Disease(s)</div>
                             <div className="text">
                               {diseaseData ? diseaseData.map((x, i) =>
-                                  <span key={i}>
-                                      <a key={x.key} target="_blank" href={x.source}>{x.name}</a>
-                                      { i + 1 < diseaseData.length ? <br/> : ''}
-                                  </span>
+                                <span key={i}>
+                                  <a key={x.key} target="_blank" href={x.source}>{x.name}</a>
+                                  {i + 1 < diseaseData.length ? <br /> : ''}
+                                </span>
                               ) : 'N/A'}
                             </div>
                           </Element>
@@ -221,10 +221,10 @@ const IndivCellLines = (props) => {
                       }
                       {
                         <Element>
-                            <PlotSection
-                                display={display}
-                                cellLine={({id: data.id, name: data.name})}
-                            />
+                          <PlotSection
+                            display={display}
+                            cellLine={({ id: data.id, name: data.name })}
+                          />
                         </Element>
                       }
                       {
@@ -236,7 +236,7 @@ const IndivCellLines = (props) => {
                       {
                         display === 'molecularProfiling' &&
                         <Element className="section">
-                            <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
+                          <MolecularProfilingTable cellLine={({ id: data.id, name: data.name })} />
                         </Element>
                       }
                     </div>
@@ -246,18 +246,18 @@ const IndivCellLines = (props) => {
             ))}
       </StyledWrapper>
     </Layout>
-  ) : <Loading/>);
+  ) : <Loading />);
 };
 
 IndivCellLines.propTypes = {
-    /**
-     * IndivCellLines' param id
-     */
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-        }).isRequired,
+  /**
+   * IndivCellLines' param id
+   */
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
 };
 
 export default IndivCellLines;

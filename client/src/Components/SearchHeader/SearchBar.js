@@ -323,7 +323,7 @@ const SearchBar = (props) => {
           } else if (x.__typename.match(/compound/i)) { // for compound
             modifiedOptions.push({ value: x.uid, label: x.name, type: d });
           } else if (x.__typename.match(/cellline/i)) { // for cell line
-            modifiedOptions.push({ value: x.cell_uid, label: x.name, type: d });
+            modifiedOptions.push({ value: x.uid, label: x.name, type: d });
           } else if (x.__typename.match(/tissue|dataset/i)) { // for tissue and dataset
             modifiedOptions.push({ value: x.id, label: x.name, type: d });
           }
