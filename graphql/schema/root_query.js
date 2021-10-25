@@ -24,7 +24,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    cell_lines(page: Int, per_page: Int, all: Boolean): [CellLine!]!
+    cell_lines(page: Int, per_page: Int, all: Boolean): [CellLineWithTissueDataset!]!
 
     """
         Root Query to get a single cell detail.

@@ -3,7 +3,18 @@ const cellLineType = `
         """cell line id in the database"""
         id: Int!
         """cell line uid in the database"""
-        cell_uid: String!
+        uid: String!
+        """cell line name in the database"""
+        name: String!
+    }
+`;
+
+const cellLineWithTissueDatasetType = `
+    type CellLineWithTissueDataset {
+        """cell line id in the database"""
+        id: Int!
+        """cell line uid in the database"""
+        uid: String!
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
@@ -18,7 +29,7 @@ const cellLineDetailType = `
         """cell line id in the database"""
         id: Int!
         """cell line uid in the database"""
-        cell_uid: String!
+        uid: String!
         """cell line name in the database"""
         name: String!
         """cell line's tissue type"""
@@ -36,5 +47,6 @@ const cellLineDetailType = `
 
 module.exports = {
     cellLineType,
+    cellLineWithTissueDatasetType,
     cellLineDetailType
 };
