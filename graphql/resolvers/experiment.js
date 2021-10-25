@@ -116,7 +116,7 @@ const transformExperiments = data => {
                 },
                 cell_line: {
                     id: cell_id,
-                    cell_uid: cell_uid,
+                    uid: cell_uid,
                     name: cell_name,
                     tissue: {
                         id: tissue_id,
@@ -259,6 +259,7 @@ const experiment = async args => {
                 'experiment.compound_id as compound_id',
                 'experiment.dataset_id as dataset_id',
                 'cell.name as cell_name',
+                'cell.cell_uid as cell_uid',
                 'tissue.name as tissue_name',
                 'compound.name as compound_name',
                 'dataset.name as dataset_name',
