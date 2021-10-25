@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 import UpsetPlot from '../../Plots/UpsetPlot';
-import createSetsWithData from './CreateSetsWithData';
-import createAllSubsets from '../../../utils/createAllSubsets';
 
 // datatype options 
 const dataTypeOptions = [
@@ -14,16 +12,15 @@ const dataTypeOptions = [
 ];
 
 const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets }) => {
-
-
+    // state to store the data and selected type.
     const [plotData, setPlotData] = useState({});
     const [selectedType, setSelectedType] = useState('Cell line');
 
-
+    // update data based on the selected type.
     useEffect(() => {
-        if (selectedType === "Tissue") {
+        if (selectedType === 'Tissue') {
             setPlotData(tissueData);
-        } else if (selectedType === "Compound") {
+        } else if (selectedType === 'Compound') {
             setPlotData(compoundData);
         }
         else {
@@ -34,7 +31,7 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets }) => {
     return (
         <React.Fragment>
             <StyledSelectorContainer>
-                <div className="single-selector-container">
+                <div className='single-selector-container'>
                     {/* <div className='label'>Type:</div> */}
                     <Select
                         className='selector'
