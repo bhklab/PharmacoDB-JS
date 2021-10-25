@@ -70,7 +70,8 @@ const createUpdatedDatasetArray = (datasets, keys) => {
  * @param {Object} parsedCellData
  * @param {Array} updatedDatasets
  */
-const renderComponent = (loading, datasetDataLoading, error, datasetDataError, parsedCellData, updatedDatasets, data, isVenn = false) => {
+const renderComponent = (loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, data, isVenn = false) => {
+
     if (loading || datasetDataLoading) {
         return <Loading />
     }
@@ -90,7 +91,12 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
         return (
             <>
                 <h2>Overlaps among datasets</h2>
-                <RenderUpsetPlot data={data} cellData={parsedCellData} datasets={updatedDatasets} />
+                <RenderUpsetPlot
+                    compoundData={parsedCompoundData}
+                    tissueData={parsedTissueData}
+                    cellData={parsedCellData}
+                    datasets={updatedDatasets}
+                />
             </>
         )
     }
@@ -113,6 +119,8 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
     // setting the state to grab the updated dataset array and cell line data.
     const [updatedDatasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
+    const [parsedCompoundData, setParsedCompoundData] = useState({});
+    const [parsedTissueData, setParsedTissueData] = useState({});
     const [isVenn, setIsVenn] = useState(false);
     const [plotData, setPlotData] = useState([]);
 
@@ -123,8 +131,10 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
             const datasets = datasetData.datasets.map(dataset => dataset.name);
 
             // cell data object.
-            const cells = {};
+            const cells = {}, tissues = {}, compounds = {};
             data.datasets_types.forEach(el => cells[el.dataset.name] = el.cells_tested.map(cell => cell.name));
+            data.datasets_types.forEach(el => tissues[el.dataset.name] = el.tissues_tested.map(tissue => tissue.name));
+            data.datasets_types.forEach(el => compounds[el.dataset.name] = el.compounds_tested.map(compound => compound.name));
 
             // update the dataset names according to the names in the database.
             const updatedDatasetArray = createUpdatedDatasetArray(datasetsPropArray, datasets);
@@ -132,12 +142,16 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
             // all the subsets of the dataset array and upset plot data for cell lines.
             const datasetSubSets = createAllSubsets(updatedDatasetArray);
 
-            // dataset subsets with cell data.
+            // dataset subsets with cell data, tissue data and compound data.
             const subSetCells = createSetsWithData(cells, datasetSubSets);
+            const subSetTissues = createSetsWithData(tissues, datasetSubSets);
+            const subSetCompounds = createSetsWithData(compounds, datasetSubSets);
 
             // update the state to include a dataset list and
             setDatasets(updatedDatasetArray);
             setParsedCellData(subSetCells);
+            setParsedCompoundData(subSetCompounds);
+            setParsedTissueData(subSetTissues);
             setPlotData(data.datasets_types);
 
             // set the state of isVenn to true if the dataset prop length is 3 or less than 3.
@@ -153,7 +167,7 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
                 <Layout page="dataset_intersection">
                     <StyledWrapper>
                         {
-                            renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, updatedDatasets, plotData, isVenn)
+                            renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, plotData, isVenn)
                         }
                     </StyledWrapper>
                 </Layout>
@@ -161,7 +175,7 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
             : (
                 <>
                     {
-                        renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, updatedDatasets, plotData)
+                        renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, plotData)
                     }
                 </>
             )
