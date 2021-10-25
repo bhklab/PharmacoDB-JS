@@ -4,7 +4,7 @@ const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType } = requ
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
 const { countType, enumAllowedType } = require('./count');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
-const { compoundResponseType } = require('./compound_response');
+const { doseResponseType } = require('./dose_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
 const { genericType } = require('./generic');
@@ -51,7 +51,7 @@ const schema = `
     ${datasetsCompoundStatType}
 
     "compound Response Type with dose and response values"
-    ${compoundResponseType}
+    ${doseResponseType}
 
     ${enumAllowedType}
 
