@@ -13,27 +13,23 @@ const dataTypeOptions = [
     { value: 'compound', label: 'Compound' },
 ];
 
-const RenderUpsetPlot = ({ data, cellData, datasets }) => {
+const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets }) => {
 
-    let datasetSubSets = {}, tissues_tested = {}, compounds_tested = {};
 
     const [plotData, setPlotData] = useState({});
     const [selectedType, setSelectedType] = useState('Cell line');
 
+
     useEffect(() => {
         if (selectedType === "Tissue") {
-            setPlotData(createSetsWithData(tissues_tested, datasetSubSets))
+            setPlotData(tissueData);
         } else if (selectedType === "Compound") {
-            setPlotData(createSetsWithData(compounds_tested, datasetSubSets))
+            setPlotData(compoundData);
         }
         else {
-            setPlotData(cellData)
+            setPlotData(cellData);
         }
-    }, [selectedType, cellData])
-
-    datasetSubSets = createAllSubsets(datasets);
-    data.map(item => tissues_tested[item.dataset.name] = item.tissues_tested.map(t => t.name));
-    data.map(item => compounds_tested[item.dataset.name] = item.compounds_tested.map(c => c.name));
+    })
 
     return (
         <React.Fragment>
@@ -55,6 +51,16 @@ const RenderUpsetPlot = ({ data, cellData, datasets }) => {
 
 RenderUpsetPlot.propTypes = {
     cellData: PropTypes.objectOf(PropTypes.shape({
+        keys: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.arrayOf(PropTypes.string),
+        count: PropTypes.number,
+    })),
+    compoundData: PropTypes.objectOf(PropTypes.shape({
+        keys: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.arrayOf(PropTypes.string),
+        count: PropTypes.number,
+    })),
+    tissueData: PropTypes.objectOf(PropTypes.shape({
         keys: PropTypes.arrayOf(PropTypes.string),
         values: PropTypes.arrayOf(PropTypes.string),
         count: PropTypes.number,
