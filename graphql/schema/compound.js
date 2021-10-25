@@ -6,6 +6,8 @@ const compoundType = `
         name: String!
         """compound uid"""
         uid: String!
+        """compound annotation object"""
+        annotation: CompoundAnnotation!
     }
 `;
 
