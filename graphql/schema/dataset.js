@@ -32,7 +32,7 @@ const datasetDetailType = `
 const datasetStatsType = `
     type DatasetStats {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """number of tested cell lines in the dataset"""
         cell_line_count: Int!
         """number of tested experiments in the dataset"""
