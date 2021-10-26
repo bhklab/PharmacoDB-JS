@@ -143,7 +143,7 @@ const getDatasetsTypesQuery = gql`
       }
       cells_tested {
         id
-        cell_uid
+        uid
         name
       }
       compounds_tested {
