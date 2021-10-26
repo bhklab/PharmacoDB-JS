@@ -13,7 +13,7 @@ const parseTableData = (datasetName, data, datasetId) => {
     let cellLines = []
     if (data && typeof data !== 'undefined') {
         let cells = data.cells_tested;
-        cellLines = cells.map(item => ({dataset: datasetName, id: item.id, cell_uid: item.cell_uid, cellLine: item.name}));
+        cellLines = cells.map(item => ({ dataset: datasetName, id: item.id, cell_uid: item.uid, cellLine: item.name }));
     }
     return cellLines;
 }
@@ -28,7 +28,7 @@ const CellLineSummaryTable = (props) => {
             Header: `All cell lines tested in ${dataset.name}`,
             accessor: 'cellLine',
             center: true,
-            Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.cell_uid}`}>{item.value}</a>
+            Cell: (item) => <a href={`/cell_lines/${item.cell.row.original.uid}`}>{item.value}</a>
         },
     ];
 
@@ -37,7 +37,7 @@ const CellLineSummaryTable = (props) => {
         fetchPolicy: "cache-first",
         onCompleted: (res) => {
             let data = res.dataset_type[0];
-            data = { id : data.dataset.id, name: data.dataset.name, cells_tested : data.cells_tested}
+            data = { id: data.dataset.id, name: data.dataset.name, cells_tested: data.cells_tested }
             setCellLines(parseTableData(data.name, data, data.id));
         },
         onError: () => { setError(true) }
