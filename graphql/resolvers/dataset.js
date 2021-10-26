@@ -159,10 +159,10 @@ const datasets_types = async () => {
             const data = {};
             data['dataset'] = { id: dataset.dataset_id, name: dataset.dataset_name };
             data['tissues_tested'] = tissues.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
-            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], cell_uid: value['cell_uid'], name: value['cell_name'] }));
+            data['cells_tested'] = cells.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['cell_id'], uid: value['cell_uid'], name: value['cell_name'] }));
             data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], uid: value['compound_uid'], name: value['compound_name'] }));
             returnData.push(data);
-        })
+        });
         return returnData;
     } catch (err) {
         console.log(err);
@@ -214,7 +214,7 @@ const dataset_type = async (args, parent, info) => {
         // data['name'] = dataset_name;
         data['dataset'] = { id: dataset_id, name: dataset_name };
         if (listOfFields.includes('tissues_tested')) data['tissues_tested'] = tissues.map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
-        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], cell_uid: value['cell_uid'], name: value['cell_name'] }));
+        if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], uid: value['cell_uid'], name: value['cell_name'] }));
         if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], uid: value['compound_uid'], name: value['compound_name'] }));;
         returnData.push(data);
         return returnData;
@@ -243,10 +243,7 @@ const datasets = async (parent, info) => {
         const datasets = await datasetQuery();
         // return the transformed data for this function.
         const data = datasets.map(dataset => {
-            const {
-                dataset_id,
-                dataset_name
-            } = dataset;
+            const { dataset_id, dataset_name } = dataset;
             const output = {
                 id: dataset_id,
                 name: dataset_name
@@ -319,7 +316,7 @@ const dataset = async (args, parent, info) => {
 
         if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({
             id: value['cell_id'],
-            cell_uid: value['cell_uid'],
+            uid: value['cell_uid'],
             name: value['cell_name']
         }));
         if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({
