@@ -5,9 +5,9 @@ import { gql } from 'apollo-boost';
  * @returns - Query returns info of datasets id and names, molecular data type, and number of profiles
  * for the given cellLine id or name
  */
-const getMolCellQuery = gql`
+const getMolecularProfilingQuery = gql`
   query getSingleMolCell($cellLineId: Int, $cellLineName: String) {
-    mol_cell(cellLineId: $cellLineId, cellLineName: $cellLineName) {
+    molecular_profiling(cellLineId: $cellLineId, cellLineName: $cellLineName) {
       dataset {
         id 
         name
@@ -20,5 +20,5 @@ const getMolCellQuery = gql`
 `;
 
 export {
-    getMolCellQuery,
+  getMolecularProfilingQuery,
 };
