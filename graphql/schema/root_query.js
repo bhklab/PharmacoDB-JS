@@ -138,7 +138,7 @@ const RootQuery = `type RootQuery {
     tissue(tissueId: Int, tissueName: String): TissueDetail!
     
         """
-        Root Query to get a mol cell detail.
+        Root Query to get a molecular profiling  based on cell line detail.
         'cellId' is the id of the cell in the database and is an optional field.
         'cellName' is the name of the cell in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the cell Name
