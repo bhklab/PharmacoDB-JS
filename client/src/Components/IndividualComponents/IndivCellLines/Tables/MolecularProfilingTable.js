@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getMolecularProfilingQuery } from '../../../../queries/mol';
+import { getMolecularProfilingQuery } from '../../../../queries/molecular_profiling';
 import Table from '../../../UtilComponents/Table/Table';
 import Loading from '../../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
