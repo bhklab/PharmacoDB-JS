@@ -48,7 +48,7 @@ const datasetStatsType = `
 const datasetsTypesType = `
     type DatasetsTypes {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """tissue ids and names tested in the dataset"""
         tissues_tested: [Tissue!]
         """cell line ids and names tested in the dataset"""
@@ -61,7 +61,7 @@ const datasetsTypesType = `
 const datasetsCompoundStatType = `
     type DatasetCompoundStat {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """compound ids and names tested in the dataset"""
         compound_count: Int!
     }
