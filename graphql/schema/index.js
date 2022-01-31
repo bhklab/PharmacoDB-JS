@@ -7,7 +7,6 @@ const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, dat
 const { doseResponseType } = require('./dose_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
-const { genericType } = require('./generic');
 const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
@@ -26,8 +25,6 @@ const { molecularProfilingType } = require('./molecular_profiling');
 
 // schema definition.
 const schema = `
-    ${genericType}
-
     "Compound Type with id, name and annotations"
     ${compoundType}
     ${compoundWithDatasetType}
