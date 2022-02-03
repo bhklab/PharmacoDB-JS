@@ -85,7 +85,7 @@ const transformCompounds = data => {
             dataset_name,
             reactome_id,
         } = compound;
-      
+
         const returnList = {
             'smiles': [],
             'inchikey': []
@@ -160,7 +160,6 @@ const transformSingleCompound = async (compoundId, compoundName, compoundUID, co
  *  @param {number} - compoundId.
  *  @param {string} - compoundName
  */
-// todo: change the query using `compound` based on the new database compound table.
 const compoundSourceSynonymQuery = async (compoundUID, compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
