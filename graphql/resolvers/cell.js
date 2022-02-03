@@ -161,11 +161,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
 const cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
-        const {
-            cellId,
-            cellName,
-            cellUID
-        } = args;
+        const { cellId, cellName, cellUID } = args;
         // throw error if neither of the arguments are passed.
         if (!cellUID && !cellId && !cellName) {
             throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
@@ -197,32 +193,6 @@ const cell_line = async args => {
         } else if (cellName) {
             cell_line = await query.where('cell.name', cellName);
         }
-
-        // If the full query does not return any results, query the minimum information that needs to be returned.
-        // if(cell_line.length === 0){
-        //     query = knex
-        //         .select('cell.id as cell_id',
-        //             'cell.cell_uid as cell_uid',
-        //             'cell.name as cell_name',
-        //             'tissue.id as tissue_id',
-        //             'tissue.name as tissue_name',
-        //             'dataset.id as dataset_id',
-        //             'dataset.name as dataset_name',
-        //             'cellosaurus.di as diseases',
-        //             'cellosaurus.accession as accessions')
-        //         .from('cell')
-        //         .join('tissue', 'tissue.id', 'cell.tissue_id')
-        //         .join('dataset_cell', 'dataset_cell.cell_id', 'cell.id')
-        //         .join('dataset', 'dataset.id', 'dataset_cell.dataset_id')
-        //         .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
-        // }
-        // if (cellUID) {
-        //     cell_line = await query.where('cell.cell_uid', cellUID);
-        // }else if (cellId) {
-        //     cell_line = await query.where('cell.id', cellId);
-        // } else if (cellName) {
-        //     cell_line = await query.where('cell.name', cellName);
-        // }
 
         // return the transformed data.
         return transformSingleCellLine(cell_line);
