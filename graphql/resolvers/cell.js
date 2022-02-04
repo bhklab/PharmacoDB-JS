@@ -2,26 +2,46 @@ const knex = require('../../db/knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 
+
+/**
+ * 
+ * @param {Object} cell - cell line object
+ * @returns {Object} - creates a transformed object for the cell line data
+ */
+const allCellLinesDataObject = function (cell) {
+    const {
+        cell_id, cell_uid, cell_name,
+        tissue_id, tissue_name, dataset_id, dataset_name,
+    } = cell;
+    // return the data object
+    return {
+        id: cell_id,
+        uid: cell_uid,
+        name: cell_name,
+        tissue: {
+            id: tissue_id,
+            name: tissue_name,
+        },
+        dataset: [{
+            id: dataset_id,
+            name: dataset_name,
+        }]
+    };
+};
+
+
 /**
  * Returns a transformed array of objects.
  * @param {Array} data
  * @returns {Array} - transformed array of objects.
  */
-const transformCellLines = data => {
+const transformAllCellLinesData = data => {
     // object to store the final result.
     const finalData = {};
 
     // preparing the transformed data.
     data.forEach(cell => {
-        const {
-            cell_id,
-            cell_uid,
-            cell_name,
-            tissue_id,
-            tissue_name,
-            dataset_id,
-            dataset_name,
-        } = cell;
+        const { cell_id, dataset_id, dataset_name } = cell;
 
         if (finalData[cell_id]) {
             const isPresent = finalData[cell_id]['dataset'].filter(el => el.name === dataset_name);
@@ -32,25 +52,14 @@ const transformCellLines = data => {
                 });
             }
         } else {
-            finalData[cell_id] = {
-                id: cell_id,
-                uid: cell_uid,
-                name: cell_name,
-                tissue: {
-                    id: tissue_id,
-                    name: tissue_name,
-                },
-                dataset: [{
-                    id: dataset_id,
-                    name: dataset_name,
-                }]
-            };
+            finalData[cell_id] = allCellLinesDataObject(cell);
         }
     });
 
     // return the final data.
     return Object.values(finalData);
 };
+
 
 /**
  * Returns a transformed array of objects.
@@ -121,7 +130,7 @@ const transformSingleCellLine = (data) => {
  * @param {Object} parent
  * @param {Object} info
  */
-const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
+exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
     // setting limit and offset.
     const { limit, offset } = calcLimitOffset(page, per_page);
     try {
@@ -148,7 +157,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
         // call to grab the cell lines.
         let cell_lines = await query;
         // return the transformed data.
-        return transformCellLines(cell_lines);
+        return transformAllCellLinesData(cell_lines);
     } catch (err) {
         console.log(err);
         throw err;
@@ -158,7 +167,7 @@ const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info
 /**
  * @param {Object} args - arguments passed to cell_line function.
  */
-const cell_line = async args => {
+exports.cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
         const { cellId, cellName, cellUID } = args;
@@ -202,7 +211,3 @@ const cell_line = async args => {
     }
 };
 
-module.exports = {
-    cell_lines,
-    cell_line
-};
