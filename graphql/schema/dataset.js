@@ -13,7 +13,6 @@ const datasetDetailType = `
         id: Int!
         """name of the dataset"""
         name: String!
-        dataset_stats : DatasetStats
         """number of cell-lines in the dataset"""
         cell_count: Int!
         """number of tissues in the dataset"""
@@ -44,7 +43,7 @@ const datasetStatsType = `
     }
 `;
 
-
+// TODO: what should be the name for this type??
 const datasetsTypesType = `
     type DatasetsTypes {
         """name and id of the dataset"""
@@ -58,6 +57,7 @@ const datasetsTypesType = `
     }
 `;
 
+// TODO: maybe we might not need this??
 const datasetsCompoundStatType = `
     type DatasetCompoundStat {
         """name and id of the dataset"""
