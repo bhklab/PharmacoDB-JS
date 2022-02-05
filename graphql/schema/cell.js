@@ -26,7 +26,7 @@ const cellLineWithTissueDatasetType = `
     }
 `;
 
-// cell line detail type
+// cell line detail type  
 const cellLineDetailType = `
     type CellLineDetail {
         ${cellType}

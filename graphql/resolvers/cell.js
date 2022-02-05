@@ -8,7 +8,7 @@ const { calcLimitOffset } = require('../helpers/calcLimitOffset');
  * @param {Object} cell - cell line object
  * @returns {Object} - creates a transformed object for the cell line data
  */
-const allCellLinesDataObject = function (cell) {
+const allCellLinesReturnDataObject = function (cell) {
     const {
         cell_id, cell_uid, cell_name,
         tissue_id, tissue_name, dataset_id, dataset_name,
@@ -52,7 +52,7 @@ const transformAllCellLinesData = data => {
                 });
             }
         } else {
-            finalData[cell_id] = allCellLinesDataObject(cell);
+            finalData[cell_id] = allCellLinesReturnDataObject(cell);
         }
     });
 
@@ -73,16 +73,9 @@ const transformSingleCellLine = (data) => {
     const source_cell_name_list = [];
     data.forEach((row, i) => {
         const {
-            cell_id,
-            cell_uid,
-            cell_name,
-            tissue_id,
-            tissue_name,
-            source_cell_name,
-            dataset_id,
-            dataset_name,
-            diseases,
-            accessions
+            cell_id, cell_uid, cell_name,
+            tissue_id, tissue_name, source_cell_name,
+            dataset_id, dataset_name, diseases, accessions
         } = row;
         // if it's the first element.
         if (!i) {
@@ -121,6 +114,12 @@ const transformSingleCellLine = (data) => {
     return returnObject;
 };
 
+
+/**
+ * ----------------------------------------------------------------
+ * All Cell Lines Resolver Function
+ * ----------------------------------------------------------------
+ */
 /**
  * Returns the transformed data for all the cell lines in the database.
  * @param {Object} data - Parameters for the data.
@@ -164,6 +163,12 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
     }
 };
 
+
+/**
+ * ----------------------------------------------------------------
+ * Single Cell Line Resolver Function
+ * ----------------------------------------------------------------
+ */
 /**
  * @param {Object} args - arguments passed to cell_line function.
  */
@@ -171,40 +176,48 @@ exports.cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
         const { cellId, cellName, cellUID } = args;
+
         // throw error if neither of the arguments are passed.
         if (!cellUID && !cellId && !cellName) {
-            throw new Error('Please specify either the ID or the Name of the cell line you want to query!');
-        }
-        // variable to store cell line data.
-        let cell_line;
-        // the base query
-        let query = knex
-            .select('cell.id as cell_id',
-                'cell.cell_uid as cell_uid',
-                'cell.name as cell_name',
-                'tissue.id as tissue_id',
-                'tissue.name as tissue_name',
-                'cell_synonym.cell_name as source_cell_name',
-                'dataset.id as dataset_id',
-                'dataset.name as dataset_name',
-                'cellosaurus.di as diseases',
-                'cellosaurus.accession as accessions')
-            .from('cell')
-            .join('tissue', 'tissue.id', 'cell.tissue_id')
-            .join('cell_synonym', 'cell.id', 'cell_synonym.cell_id')
-            .join('dataset', 'dataset.id', 'cell_synonym.dataset_id')
-            .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id');
-        // based on the arguments passed to the function.
-        if (cellUID) {
-            cell_line = await query.where('cell.cell_uid', cellUID);
-        } else if (cellId) {
-            cell_line = await query.where('cell.id', cellId);
-        } else if (cellName) {
-            cell_line = await query.where('cell.name', cellName);
+            throw new Error('Please specify either the ID or the Name of the cell line you want to query.');
         }
 
-        // return the transformed data.
-        return transformSingleCellLine(cell_line);
+        // check if the cell line is in the database?
+        let cellLineId;
+        if (cellUID) {
+            cellLineId = await knex.select('cell.id').from('cell').where('cell.cell_uid', cellUID);
+        } else if (cellId) {
+            cellLineId = await knex.select('cell.id').from('cell').where('cell.id', cellId);
+        } else if (cellName) {
+            cellLineId = await knex.select('cell.id').from('cell').where('cell.name', cellName);
+        }
+
+        // if the cell line is not present in the database return with the error
+        if (cellLineId.length === 0) {
+            return Error('Please provide a valid cell ID, Name or UID.');
+        } else {
+            // the base query
+            let queryData = await knex
+                .select('cell.id as cell_id',
+                    'cell.cell_uid as cell_uid',
+                    'cell.name as cell_name',
+                    'tissue.id as tissue_id',
+                    'tissue.name as tissue_name',
+                    'cell_synonym.cell_name as source_cell_name',
+                    'dataset.id as dataset_id',
+                    'dataset.name as dataset_name',
+                    'cellosaurus.di as diseases',
+                    'cellosaurus.accession as accessions')
+                .from('cell')
+                .join('tissue', 'tissue.id', 'cell.tissue_id')
+                .join('cell_synonym', 'cell.id', 'cell_synonym.cell_id')
+                .join('dataset', 'dataset.id', 'cell_synonym.dataset_id')
+                .join('cellosaurus', 'cellosaurus.cell_id', 'cell.id')
+                .where('cell.id', cellLineId[0].id);
+
+            // return the transformed data.
+            return transformSingleCellLine(queryData);
+        }
     } catch (err) {
         console.log(err);
         return err;
