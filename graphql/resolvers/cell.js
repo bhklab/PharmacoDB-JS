@@ -220,7 +220,7 @@ exports.cell_line = async args => {
         }
     } catch (err) {
         console.log(err);
-        return err;
+        throw Error(`An Error Occured with Error-Code: ${err.code}; Error-Message: ${err.sqlMessage}`);
     }
 };
 
