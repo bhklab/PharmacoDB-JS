@@ -48,66 +48,150 @@ cd PharmacoDB-JS
 erDiagram
     %% primary tables
     cell {
-        INT-128 id PK
-        TEXT-65535 name
-        INT-128 tissue_id FK "tissue.id"
-        TEXT-65535 cell_uid
+        INT id PK
+        TEXT name
+        INT tissue_id FK "tissue.id"
+        TEXT cell_uid
     }
     tissue {
-        INT-128 id PK
-        TEXT-65535 name
+        INT id PK
+        TEXT name
     }
     compound {
-        INT-128 id PK
-        TEXT-65535 name
-        TEXT-65535 compound_uid
+        INT id PK
+        TEXT name
+        TEXT compound_uid
     }
     dataset {
-        INT-128 id PK
-        TEXT-65535 name
+        INT id PK
+        TEXT name
     }
     gene {
-        INT-128 id PK
-        TEXT-65525 name
+        INT id PK
+        TEXT name
     }
     target {
-        INT-128 id PK
-        TEXT-65525 name
+        INT id PK
+        TEXT name
     }
     clinical_trial {
-        INT-128 clinical_trail_id PK
-        VARCHAR-255 nct
-        TEXT-65535 link
-        TEXT-65535 status
+        INT clinical_trail_id PK
+        VARCHAR nct
+        TEXT link
+        TEXT status
     }
-    %% secondary tables
     %% annotation tables
     cellosaurus {
-        INT-128 id PK
-        INT-128 cell_id FK "cell.id"
-        VARCHAR-255 identifier
-        VARCHAR-255 accession
-        TEXT-65535 as
-        TEXT-65535 sy
-        TEXT-65535 dr
-        TEXT-65535 rx
-        TEXT-65535 ww
-        TEXT-65535 cc
-        TEXT-65535 st
-        TEXT-65535 di
-        TEXT-65535 ox
-        TEXT-65535 hi
-        TEXT-65535 sx
-        TEXT-65535 ca
+        INT id PK
+        INT cell_id FK "cell.id"
+        VARCHAR identifier
+        VARCHAR accession
+        TEXT as
+        TEXT sy
+        TEXT dr
+        TEXT rx
+        TEXT ww
+        TEXT cc
+        TEXT st
+        TEXT di
+        TEXT ox
+        TEXT hi
+        TEXT sx
+        TEXT ca
     }
     cell_synonym {
-
+        INT id PK
+        INT cell_id FK "cell.id"
+        TEXT dataset_id "FIXME:: Reference dataset as FK?"
+        TEXT cell_name
+    }
+    compound_annotation {
+        INT compound_id PK "compound.id"
+        TEXT smiles
+        TEXT inchikey
+        TEXT pubchem
+        TEXT chembl_id
+        TINYINT fda_status
+        TEXT reactome_id
+    }
+    compound_synonym {
+        INT id PK
+        INT compound_id FK "compound.id"
+        TEXT dataset_id "FIXME:: Reference dataset as FK?"
+    }
+    tissue_synonym {
+        INT id PK
+        INT tissue_id FK "tissue.id"
+        INT dataset_id FK "dataset.id"
+        TEXT tissue_name
+    }
+    gene_annotation {
+        INT gene_id FK "gene.id"
+        TEXT symbol
+        BIGINT gene_seq_start
+        BIGINT gene_seq_end
+        VARCHAR chr
+        VARCHAR strand
+    }
+    %% secondary tables
+    mol_cell {
+        INT id PK
+        INT cell_id FK "cell.id"
+        INT dataset_id FK "dataset.id"
+        TEXT mDataType
+        INT num_prof
+    }
+    experiment {
+        INT id PK
+        INT cell_id FK "cell.id"
+        INT compoound_id FK "compound.id"
+        INT dataset_id FK "dataset.id"
+        INT tissue_id FK "tissue.id"
+    }
+    profile {
+        INT experimnd_id FK "experiment.id"
+        FLOAT HS
+        FLOAT Einf
+        FLOAT EC50
+        FLOAT AAC
+        FLOAT IC50
+        FLOAT DSS1
+        FLOAT DDS2
+        FLOAT DSS3
+    }
+    dose_response {
+        INT id PK
+        INT experimend_id FK "experiment.id"
+        FLOAT dose
+        FLOAT response
+    }
+    dataset_statistics {
+        INT id PK
+        INT dataset_id FK "dataset.id"
+        INT cell_lines
+        INT tissues
+        INT compounds
+        INT experiments
+        INT genes
     }
     %% join tables
 
     %% relations
     cell ||--o| cellosaurus : ""
     cell }|--|| tissue : ""
+    %% not implemented yet
+    oncotree {
+        INT oncotree_id PK
+        TEXT name
+        TEXT main_type
+        VARCHAR UMLS
+        VARCHAR NCI
+        TEXT tissue
+        TEXT parent
+        INT level
+        DATETIME created_at
+        DATETIME updated_at
+    }
 
 
 ```
