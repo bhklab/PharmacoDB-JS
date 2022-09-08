@@ -46,7 +46,7 @@ cd PharmacoDB-JS
 
 ```mermaid
 erDiagram
-    %% primary tables
+    %% primary tables: independent entities
     cell {
         INT id PK
         TEXT name
@@ -80,7 +80,7 @@ erDiagram
         TEXT link
         TEXT status
     }
-    %% annotation tables
+    %% annotation tables: metadata about primary tables
     cellosaurus {
         INT id PK
         INT cell_id FK "cell.id"
@@ -133,7 +133,7 @@ erDiagram
         VARCHAR chr
         VARCHAR strand
     }
-    %% secondary tables
+    %% secondary tables: secondary entities defined by primary tables which store additional data
     mol_cell {
         INT id PK
         INT cell_id FK "cell.id"
@@ -174,12 +174,100 @@ erDiagram
         INT experiments
         INT genes
     }
-    %% join tables
+    gene_compound_tissue_dataset {
+        INT id PK
+        INT gene_id FK "gene.id"
+        INT compound_id FK "compound.id"
+        INT dataset_id FK "dataset.id"
+        INT tissue_id FK "tissue.id"
+        DOUBLE estimate
+        DOUBLE lower_analytic
+        DOUBLE upper_analytic
+        DOUBLE lower_permutation
+        DOUBLE upper_permutation
+        INT n "Not null"
+        DOUBLE pvalue_analytic
+        DOUBLE pvalue_permutation
+        INT df "Not null"
+        DOUBLE fdr_analytic
+        DOUBLE fdr_permutation
+        INT significant_permutation
+        INT permutation_done
+        TEXT sens_stat
+        VARCHAR mDataType
+    }
+    gene_compound_dataset {
+        INT id PK
+        INT gene_id FK "gene.id"
+        INT compound_id FK "compound.id"
+        INT dataset_id FK "dataset.id"
+        DOUBLE estimate
+        DOUBLE lower_analytic
+        DOUBLE upper_analytic
+        DOUBLE lower_permutation
+        DOUBLE upper_permutation
+        INT n "Not null"
+        DOUBLE pvalue_analytic
+        DOUBLE pvalue_permutation
+        INT df "Not null"
+        DOUBLE fdr_analytic
+        DOUBLE fdr_permutation
+        INT significant_permutation
+        INT permutation_done
+        TEXT sens_stat
+        VARCHAR mDataType
+    }
+    gene_compound_tissue {
+        INT id PK
+        INT gene_id FK "gene.id"
+        INT compound_id FK "compound.id"
+        INT tissue_id FK "tissue.id"
+        DOUBLE estimate
+        DOUBLE lower
+        DOUBLE upper
+        INT n "Not null"
+        DOUBLE tstat "TODO:: implement!"
+        DOUBLE fstat "TODO:: implement!"
+        DOUBE pvalue
+        INT df "Not null"
+        DOUBLE fdr
+        DOUBLE FWER_gene "TODO:: implement!"
+        DOUBLE FWER_compound "TODO:: implement!"
+        DOUBLE FWER_all "TODO:: implement!"
+        DOUBLE BF_p_all "TODO:: implement!"
+        TEXT sens_stat
+        VARCHAR mDataType
+        INT tested_in_human_trials "TODO:: implement!"
+        INT in_clinical_trials "TODO:: implement!"
+    }
+    gene_compound {
+        INT id PK
+        INT gene_id FK "gene.id"
+        INT compound_id FK "compound.id"
+        DOUBLE estimate
+        DOUBLE lower
+        DOUBLE upper
+        INT n "Not null"
+        DOUBLE tstat "TODO:: implement!"
+        DOUBLE fstat "TODO:: implement!"
+        DOUBE pvalue
+        INT df "Not null"
+        DOUBLE fdr
+        DOUBLE FWER_gene "TODO:: implement!"
+        DOUBLE FWER_compound "TODO:: implement!"
+        DOUBLE FWER_all "TODO:: implement!"
+        DOUBLE BF_p_all "TODO:: implement!"
+        TEXT sens_stat
+        VARCHAR mDataType
+        INT tested_in_human_trials "TODO:: implement!"
+        INT in_clinical_trials "TODO:: implement!"
+    }
+    %% join tables: similar to secondary tables, but only store many-to-many relationships, not data
 
-    %% relations
+    %% relations: cardinality and type of relations between entity tables
     cell ||--o| cellosaurus : ""
     cell }|--|| tissue : ""
-    %% not implemented yet
+    %% not implemented yet: planned but not yet created
     oncotree {
         INT oncotree_id PK
         TEXT name
