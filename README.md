@@ -240,6 +240,62 @@ erDiagram
         INT tested_in_human_trials "TODO:: implement!"
         INT in_clinical_trials "TODO:: implement!"
     }
+    %% join tables: similar to secondary tables, but only store many-to-many relationships, not data
+    dataset_compound {
+        INT dataset_id FK "dataset.id"
+        INT compound_id FK "compound.id"
+    }
+    dataset_tissue {
+        INT dataset_id FK "dataset.id"
+        INT tissue_id FK "tissue.id"
+    }
+    dataset_cell {
+        INT dataset_id FK "dataset.id"
+        INT cell_id FK "cell.id"
+    }
+    compound_trial {
+        INT clinical_trial_id FK "clinical_trial.clinical_trail_id"
+        INT compound_if FK "compound.id"
+    }
+    compound_target {
+        INT compound_id FK "compound.id"
+        INT target_id FK "target.id"
+    }
+    gene_target {
+        INT gene_id FK "gene.id"
+        INT target_id FK "target.id"
+    }
+    %% relations: cardinality and type of relations between entity tables
+    cell ||--o| cellosaurus : ""
+    cell }|--|| tissue : ""
+    cell ||--|{ experiment : ""
+    dataset ||--|{ dataset_compound : ""
+    dataset ||--|{ gene_compound_tissue_dataset: ""
+    dataset ||--|{ gene_compound_tissue: ""
+    dataset ||--|{ gene_compound_dataset: ""
+    dataset ||--|{ experiment: ""
+    compound ||--|{ dataset_compound : ""
+    compound ||--|{ compound_target: ""
+    compound ||--|{ experiment : ""
+    gene ||--|{ gene_target: ""
+    tissue ||--|{ experiment : ""
+    target ||--|{ compound_target : ""
+    target ||--|{ gene_target : ""
+    experiment ||--|{ dose_response : ""
+    experiment ||--|{ profile : ""
+    %% not implemented yet: planned but not yet created
+    oncotree {
+        INT oncotree_id PK
+        TEXT name
+        TEXT main_type
+        VARCHAR UMLS
+        VARCHAR NCI
+        TEXT tissue
+        TEXT parent
+        INT level
+        DATETIME created_at
+        DATETIME updated_at
+    }
     gene_compound {
         INT id PK
         INT gene_id FK "gene.id"
@@ -262,24 +318,4 @@ erDiagram
         INT tested_in_human_trials "TODO:: implement!"
         INT in_clinical_trials "TODO:: implement!"
     }
-    %% join tables: similar to secondary tables, but only store many-to-many relationships, not data
-
-    %% relations: cardinality and type of relations between entity tables
-    cell ||--o| cellosaurus : ""
-    cell }|--|| tissue : ""
-    %% not implemented yet: planned but not yet created
-    oncotree {
-        INT oncotree_id PK
-        TEXT name
-        TEXT main_type
-        VARCHAR UMLS
-        VARCHAR NCI
-        TEXT tissue
-        TEXT parent
-        INT level
-        DATETIME created_at
-        DATETIME updated_at
-    }
-
-
 ```
