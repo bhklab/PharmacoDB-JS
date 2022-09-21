@@ -1,5 +1,5 @@
 // variable storing the basic cell type with id, uid and name
-const cellType = `
+const cellLine = `
         """cell line id in the database"""
         id: Int!
         """cell line uid in the database"""
@@ -11,17 +11,17 @@ const cellType = `
 // cell line type 
 const cellLineType = `
     type CellLine {
-        ${cellType}
+        ${cellLine}
     }
 `;
 
 // cell line type with tissue and dataset
 const cellLineWithTissueDatasetType = `
     type CellLineWithTissueDataset {
-        ${cellType}
+        ${cellLine}
         """cell line's tissue type"""
         tissue: Tissue!
-        """dataset information of the cell line"""
+        """dataset information of the cell line; can belong to multiple datasets"""
         dataset: [Dataset!]
     }
 `;
@@ -29,7 +29,7 @@ const cellLineWithTissueDatasetType = `
 // cell line detail type  
 const cellLineDetailType = `
     type CellLineDetail {
-        ${cellType}
+        ${cellLine}
         """cell line's tissue type"""
         tissue: Tissue!
         """synonyms (name) in different datasets"""
