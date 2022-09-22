@@ -45,7 +45,7 @@ const compoundDetailType = `
         """compound object with id, name and annotation"""
         compound: CompoundWithDataset!
         """synonyms (names) in different sources (datasets)"""
-        synonyms: [SourceAnnotation!]
+        synonyms: [Synonym!]
         """compound targets"""
         targets: [TargetWithGeneInfo]
     }

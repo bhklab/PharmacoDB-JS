@@ -9,7 +9,7 @@ const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
  * @param {string} compound - compound name
  * @returns {number} - compound id
  */
-const getIdBasedOnCompound = async (compound) => {
+const getCompoundIdBasedOnCompoundName = async (compound) => {
     // compound id.
     let compoundId = '';
 
@@ -32,13 +32,13 @@ const getIdBasedOnCompound = async (compound) => {
  *      [{
  *          compound_id: 526,
  *          compound_name: 'paclitaxel',
- *          source_compound_name: 'Paclitaxel',
+ *          compound_synonym_name: 'Paclitaxel',
  *          dataset_name: 'CCLE'
  *      }, ...]
- *  @returns {Object} - returns the object with name of the synonym belonging to the sources.
+ *  @returns {Object} - returns the object with name of the synonym belonging to the sources/datasets.
  *      {
  *        'name': 'paclitaxel',
- *          'source': [
+ *          'dataset': [
  *            'gCSI',
  *            'CTRPv2'
  *          ]
@@ -48,18 +48,18 @@ const transformSynonyms = data => {
     const returnList = {};
     data.map((value, i) => {
         const {
-            source_compound_name,
+            compound_synonym_name,
             dataset_id,
             dataset_name
         } = value;
-        if (!i || !Object.keys(returnList).includes(source_compound_name.trim())) {
-            returnList[source_compound_name] = {
-                name: source_compound_name,
-                source: [{ 'id': dataset_id, 'name': dataset_name }]
+        if (!i || !Object.keys(returnList).includes(compound_synonym_name.trim())) {
+            returnList[compound_synonym_name] = {
+                name: compound_synonym_name,
+                dataset: [{ 'id': dataset_id, 'name': dataset_name }]
             };
-        } else if (Object.keys(returnList).includes(source_compound_name.trim())) {
-            if (!returnList[source_compound_name.trim()]['source'].filter(source => source.id === dataset_id).length > 0)
-                returnList[source_compound_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
+        } else if (Object.keys(returnList).includes(compound_synonym_name.trim())) {
+            if (!returnList[compound_synonym_name.trim()]['dataset'].filter(source => source.id === dataset_id).length > 0)
+                returnList[compound_synonym_name.trim()]['dataset'].push({ 'id': dataset_id, 'name': dataset_name });
         }
     });
     return Object.values(returnList);
@@ -160,13 +160,13 @@ const transformSingleCompound = async (compoundId, compoundName, compoundUID, co
  *  @param {number} - compoundId.
  *  @param {string} - compoundName
  */
-const compoundSourceSynonymQuery = async (compoundUID, compoundId, compoundName) => {
+const compoundSynonymQuery = async (compoundUID, compoundId, compoundName) => {
     // main query to grab the required data.
     const query = knex
         .select('compound.id as compound_id',
             'compound.compound_uid as compound_uid',
             'compound.name as compound_name',
-            'compound_synonym.compound_name as source_compound_name',
+            'compound_synonym.compound_name as compound_synonym_name',
             'dataset.id as dataset_id',
             'dataset.name as dataset_name')
         .from('compound')
@@ -202,6 +202,12 @@ const compoundQuery = async (compoundUID, compoundId, compoundName, subtypes) =>
     }
 };
 
+
+/**
+ * ----------------------------------------------------------------
+ * All Compounds Resolver Function
+ * ----------------------------------------------------------------
+ */
 /**
  * Returns the transformed data for all the compounds in the database.
  * @param {Object} args - Parameters for the data.
@@ -254,6 +260,13 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
     }
 };
 
+
+
+/**
+ * ----------------------------------------------------------------
+ * Single Compound Resolver Function
+ * ----------------------------------------------------------------
+ */
 /**
  * @param {Object} args
  * @param {string} args.compoundName
@@ -268,19 +281,27 @@ const compound = async (args, parent, info) => {
             compoundName,
             compoundUID
         } = args;
+
         // throw error if neither of the arguments are passed.
         if (!compoundUID && !compoundId && !compoundName) {
             throw new Error('Please specify atleast one of the ID or the Name of the Compound you want to query!');
         }
+
         // declaring variables.
         let compoundSynonyms;
+
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
+
         // query to get the data based on the compound id.
         let compoundData = await compoundQuery(compoundUID, compoundId, compoundName, subtypes);
-        // query to get compound source synonyms.
-        if (subtypes.includes('synonyms')) compoundSynonyms = await compoundSourceSynonymQuery(compoundUID, compoundId, compoundName);
+
+        // query to get compound synonyms.
+        if (subtypes.includes('synonyms')) {
+            compoundSynonyms = await compoundSynonymQuery(compoundUID, compoundId, compoundName);
+        }
+
         // return the compound object.
         return transformSingleCompound(compoundId, compoundName, compoundUID, compoundData, compoundSynonyms, subtypes);
     } catch (err) {
@@ -292,5 +313,5 @@ const compound = async (args, parent, info) => {
 module.exports = {
     compounds,
     compound,
-    getIdBasedOnCompound,
+    getCompoundIdBasedOnCompoundName,
 };

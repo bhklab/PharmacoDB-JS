@@ -11,7 +11,7 @@ const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
-const { sourceAnnotationType } = require('./source');
+const { synonymType } = require('./synonym');
 const { statType } = require('./stat');
 const {
     targetType, compoundTargetType, geneTargetType,
@@ -60,9 +60,8 @@ const schema = `
     "Gene Annotation Type with gene id, ensg, start and end"
     ${geneAnnotationType}
 
-    """Source Annotation type with id, name, tissue information 
-    and annotations including the name of source and datasets it's present in"""
-    ${sourceAnnotationType}
+    """Synonym type with name of the synonym and the dataset it belongs to"""
+    ${synonymType}
 
     "Statistics Type"
     ${statType}

@@ -8,7 +8,7 @@ const { calcLimitOffset } = require('../helpers/calcLimitOffset');
  * @param {Object} cell - cell line object
  * @returns {Object} - creates a transformed object for the cell line data
  */
-const allCellLinesReturnDataObject = function (cell) {
+const allCellLinesObject = function (cell) {
     const {
         cell_id, cell_uid, cell_name,
         tissue_id, tissue_name, dataset_id, dataset_name,
@@ -44,15 +44,18 @@ const transformAllCellLinesData = data => {
         const { cell_id, dataset_id, dataset_name } = cell;
 
         if (finalData[cell_id]) {
-            const isPresent = finalData[cell_id]['dataset'].filter(el => el.name === dataset_name);
-            if (isPresent.length === 0) {
+            // checks if the dataset is already present or not.
+            const isDatasetPresent = finalData[cell_id]['dataset'].filter(el => el.name === dataset_name);
+
+            // add to the object if the dataset is not already present
+            if (isDatasetPresent.length === 0) {
                 finalData[cell_id]['dataset'].push({
                     id: dataset_id,
                     name: dataset_name,
                 });
             }
         } else {
-            finalData[cell_id] = allCellLinesReturnDataObject(cell);
+            finalData[cell_id] = allCellLinesObject(cell);
         }
     });
 
@@ -60,6 +63,19 @@ const transformAllCellLinesData = data => {
     return Object.values(finalData);
 };
 
+/**
+ * creates a synonym object
+ * @param {string} cell 
+ * @param {number} dataset_id 
+ * @param {string} dataset_name 
+ * @returns {object}
+ */
+const createSynonymObject = (cell, dataset_id, dataset_name) => (
+    {
+        name: cell,
+        dataset: [{ 'id': dataset_id, 'name': dataset_name }]
+    }
+);
 
 /**
  * Returns a transformed array of objects.
@@ -67,16 +83,18 @@ const transformAllCellLinesData = data => {
  * @returns {Object} - transformed object.
  */
 // this is not the annotation directly like compound and gene,
-// but more like names in different sources.
+// but more like names in different synonyms.
 const transformSingleCellLine = (data) => {
     let returnObject = {};
-    const source_cell_name_list = [];
+    const cell_synonyms = [];
+
     data.forEach((row, i) => {
         const {
             cell_id, cell_uid, cell_name,
-            tissue_id, tissue_name, source_cell_name,
+            tissue_id, tissue_name, synonym_cell_name,
             dataset_id, dataset_name, diseases, accessions
         } = row;
+        
         // if it's the first element.
         if (!i) {
             returnObject['id'] = cell_id;
@@ -88,24 +106,20 @@ const transformSingleCellLine = (data) => {
                 id: tissue_id,
                 name: tissue_name
             };
-            returnObject['synonyms'] = source_cell_name ? [{
-                name: source_cell_name,
-                source: [{ 'id': dataset_id, 'name': dataset_name }]
-            }] : [];
-            source_cell_name_list.push(source_cell_name);
+            returnObject['synonyms'] = synonym_cell_name 
+                ? [createSynonymObject(synonym_cell_name, dataset_id, dataset_name)] 
+                : [];
+            cell_synonyms.push(synonym_cell_name);
         } else {
             // for all other elements.
-            if (!source_cell_name_list.includes(source_cell_name)) {
-                returnObject['synonyms'].push({
-                    name: source_cell_name,
-                    source: [{ 'id': dataset_id, 'name': dataset_name }]
-                });
-                source_cell_name_list.push(source_cell_name);
-            } else if (source_cell_name_list.includes(source_cell_name)) {
+            if (!cell_synonyms.includes(synonym_cell_name)) {
+                returnObject['synonyms'].push(createSynonymObject(synonym_cell_name, dataset_id, dataset_name));
+                cell_synonyms.push(synonym_cell_name);
+            } else if (cell_synonyms.includes(synonym_cell_name)) {
                 returnObject['synonyms'].forEach((val, i) => {
-                    if (val['name'] === source_cell_name) {
-                        if (!returnObject['synonyms'][i]['source'].filter(source => source.id === dataset_id).length > 0)
-                            returnObject['synonyms'][i]['source'].push({ 'id': dataset_id, 'name': dataset_name });
+                    if (val['name'] === synonym_cell_name) {
+                        if (!returnObject['synonyms'][i]['dataset'].filter(synonym => synonym.id === dataset_id).length > 0)
+                            returnObject['synonyms'][i]['dataset'].push({ 'id': dataset_id, 'name': dataset_name });
                     }
                 });
             }
@@ -203,7 +217,7 @@ exports.cell_line = async args => {
                     'cell.name as cell_name',
                     'tissue.id as tissue_id',
                     'tissue.name as tissue_name',
-                    'cell_synonym.cell_name as source_cell_name',
+                    'cell_synonym.cell_name as synonym_cell_name',
                     'dataset.id as dataset_id',
                     'dataset.name as dataset_name',
                     'cellosaurus.di as diseases',

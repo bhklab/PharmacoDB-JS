@@ -33,7 +33,7 @@ const cellLineDetailType = `
         """cell line's tissue type"""
         tissue: Tissue!
         """synonyms (name) in different datasets"""
-        synonyms: [SourceAnnotation]
+        synonyms: [Synonym]
         """list of datasets names and ids"""
         datasets: [Dataset]!
         """diseases from cellosaurus"""
