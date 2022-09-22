@@ -140,25 +140,25 @@ const gene_compound_dataset = async (args, context, info) => {
 
         listOfFields.forEach(el => {
             switch (el.name) {
-                case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol', 'gene_seq_start', 'gene_seq_end']);
-                    subtypes.push(el.name);
-                    break;
-                case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    subtypes.push(el.name);
-                    break;
-                case 'dataset':
-                    columns.push(...['GD.dataset_id as dataset_id']);
-                    // columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'id':
-                    columns.push('GD.id as gct_id');
-                    break;
-                default:
-                    columns.push(el.name);
-                    break;
+            case 'gene':
+                columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol', 'gene_seq_start', 'gene_seq_end']);
+                subtypes.push(el.name);
+                break;
+            case 'compound':
+                columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                subtypes.push(el.name);
+                break;
+            case 'dataset':
+                columns.push(...['GD.dataset_id as dataset_id']);
+                // columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
+                subtypes.push(el.name);
+                break;
+            case 'id':
+                columns.push('GD.id as gct_id');
+                break;
+            default:
+                columns.push(el.name);
+                break;
             }
         });
 
@@ -175,14 +175,14 @@ const gene_compound_dataset = async (args, context, info) => {
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-                case 'gene':
-                    query = query.join('gene', 'gene.id', 'GD.gene_id')
-                        .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
-                    break;
-                case 'compound':
-                    query = query.join('compound', 'compound.id', 'GD.compound_id')
-                        .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    break;
+            case 'gene':
+                query = query.join('gene', 'gene.id', 'GD.gene_id')
+                    .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
+                break;
+            case 'compound':
+                query = query.join('compound', 'compound.id', 'GD.compound_id')
+                    .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                break;
                 // case 'dataset':
                 //     query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
                 //     break;
@@ -245,36 +245,36 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
 
         listOfFields.forEach(el => {
             switch (el.name) {
-                case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end', 'gene_annotation.symbol as symbol', 'gene_annotation.chr as chr']);
-                    subtypes.push(el.name);
-                    break;
-                case 'compound':
-                    // if(compoundId){
-                    //     columns.push(...['GD.compound_id as compound_id']);
-                    // }else{
-                    //     columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    //     subtypes.push(el.name);
-                    // }
-                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    subtypes.push(el.name);
-                    break;
-                case 'tissue':
-                    // columns.push(...['GD.tissue_id as tissue_id']);
-                    columns.push(...['tissue.id as tissue_id', 'tissue.name as tissue_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'dataset':
-                    // columns.push(...['GD.dataset_id as dataset_id']);
-                    columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'id':
-                    columns.push('GD.id as gct_id');
-                    break;
-                default:
-                    columns.push(el.name);
-                    break;
+            case 'gene':
+                columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end', 'gene_annotation.symbol as symbol', 'gene_annotation.chr as chr']);
+                subtypes.push(el.name);
+                break;
+            case 'compound':
+                // if(compoundId){
+                //     columns.push(...['GD.compound_id as compound_id']);
+                // }else{
+                //     columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                //     subtypes.push(el.name);
+                // }
+                columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                subtypes.push(el.name);
+                break;
+            case 'tissue':
+                // columns.push(...['GD.tissue_id as tissue_id']);
+                columns.push(...['tissue.id as tissue_id', 'tissue.name as tissue_name']);
+                subtypes.push(el.name);
+                break;
+            case 'dataset':
+                // columns.push(...['GD.dataset_id as dataset_id']);
+                columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
+                subtypes.push(el.name);
+                break;
+            case 'id':
+                columns.push('GD.id as gct_id');
+                break;
+            default:
+                columns.push(el.name);
+                break;
             }
         });
 
@@ -298,24 +298,24 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-                case 'gene':
-                    query = query.join('gene', 'gene.id', 'GD.gene_id')
-                        .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
-                    break;
-                case 'compound':
-                    // if(!compoundId){
-                    //     query = query.join('compound', 'compound.id', 'GD.compound_id')
-                    //         .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    // }
-                    query = query.join('compound', 'compound.id', 'GD.compound_id')
-                        .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    break;
-                case 'tissue':
-                    query = query.join('tissue', 'tissue.id', 'GD.tissue_id');
-                    break;
-                case 'dataset':
-                    query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
-                    break;
+            case 'gene':
+                query = query.join('gene', 'gene.id', 'GD.gene_id')
+                    .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
+                break;
+            case 'compound':
+                // if(!compoundId){
+                //     query = query.join('compound', 'compound.id', 'GD.compound_id')
+                //         .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                // }
+                query = query.join('compound', 'compound.id', 'GD.compound_id')
+                    .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                break;
+            case 'tissue':
+                query = query.join('tissue', 'tissue.id', 'GD.tissue_id');
+                break;
+            case 'dataset':
+                query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
+                break;
             }
         });
 

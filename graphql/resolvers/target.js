@@ -281,11 +281,11 @@ const single_gene_targets_group_by_dataset = async (args) => {
             .join('compound_target as ct', 't.id', 'ct.target_id')
             .join('dataset_compound as dc', 'dc.compound_id', 'ct.compound_id')
             .join('dataset as d', 'd.id', 'dc.dataset_id');
-            if (geneId) {
-                query = query.where('g.id', geneId).groupBy('d.id');
-            } else {
-                query = query.where('g.name', geneName).groupBy('d.id');
-            };
+        if (geneId) {
+            query = query.where('g.id', geneId).groupBy('d.id');
+        } else {
+            query = query.where('g.name', geneName).groupBy('d.id');
+        }
         const datasets = await query;
         const targetsStat = [];
         datasets.forEach((dataset, i) => {
@@ -301,7 +301,7 @@ const single_gene_targets_group_by_dataset = async (args) => {
             targetsStat.push({
                 dataset : { id : dataset_id , name: dataset_name},
                 compound_count: compound_count,
-            })
+            });
         });
         returnObject['targetsStat'] = targetsStat;
         return returnObject;
