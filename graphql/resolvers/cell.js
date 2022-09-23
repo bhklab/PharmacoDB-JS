@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
-
+const {validatePageAndPerPageParameters} = require('../helpers/validatePageAndPerPageParameters');
 
 /**
  * 
@@ -128,7 +128,6 @@ const transformSingleCellLine = (data) => {
     return returnObject;
 };
 
-
 /**
  * ----------------------------------------------------------------
  * All Cell Lines Resolver Function
@@ -144,8 +143,11 @@ const transformSingleCellLine = (data) => {
  * @param {Object} info
  */
 exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
+    const {pageNumber, perPageCount} = validatePageAndPerPageParameters(page, per_page);
+
     // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(page, per_page);
+    const { limit, offset } = calcLimitOffset(pageNumber, perPageCount);
+    
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -161,14 +163,18 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
         // if the query containes the tissue field, then we will make a join.
         if (listOfFields.includes('tissue')) query = query.join('tissue as t', 'c.tissue_id', 't.id');
         // if the query contains the dataset field, then make a join.
-        if (listOfFields.includes('dataset')) query = query.join('dataset_cell as dc', 'dc.cell_id', 'c.id')
-            .join('dataset as d', 'dc.dataset_id', 'd.id').orderBy('d.id');
+        if (listOfFields.includes('dataset')) {
+            query = query.join('dataset_cell as dc', 'dc.cell_id', 'c.id')
+                .join('dataset as d', 'dc.dataset_id', 'd.id');
+        }
 
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) query.limit(limit).offset(offset);
+
         // call to grab the cell lines.
         let cell_lines = await query;
+
         // return the transformed data.
         return transformAllCellLinesData(cell_lines);
     } catch (err) {
