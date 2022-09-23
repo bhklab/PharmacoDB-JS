@@ -10,7 +10,9 @@
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "ecmaVersion": 11
+        "ecmaVersion": 11,
+        "sourceType": "module",
+        "allowImportExportEverywhere": true
     },
     "rules": {
         "indent": ["error", 4],
