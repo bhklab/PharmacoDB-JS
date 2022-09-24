@@ -2,6 +2,7 @@ const knex = require('../../db/knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const {validatePageAndPerPageParameters} = require('../helpers/validatePageAndPerPageParameters');
+const {findElement} = require('../helpers/findElement');
 
 /**
  * 
@@ -45,10 +46,11 @@ const transformAllCellLinesData = data => {
 
         if (finalData[cell_id]) {
             // checks if the dataset is already present or not.
-            const isDatasetPresent = finalData[cell_id]['datasets'].filter(el => el.name === dataset_name);
+            // const isDatasetPresent = finalData[cell_id]['datasets'].find(el => el.name === dataset_name);
+            const isDatasetPresent = findElement(finalData[cell_id]['datasets'], dataset_name,'name');
 
             // add to the object if the dataset is not already present
-            if (isDatasetPresent.length === 0) {
+            if (!isDatasetPresent) {
                 finalData[cell_id]['datasets'].push({
                     id: dataset_id,
                     name: dataset_name,
@@ -151,7 +153,7 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
-        
+
         const selectFields = ['c.id as cell_id', 'c.cell_uid as cell_uid', 'c.name as cell_name', 'tissue_id'];
         // adds tissue name to the list of knex columns to select.
         if (listOfFields.includes('tissue')) selectFields.push('t.name as tissue_name');
