@@ -22,7 +22,7 @@ const cellLineWithTissueDatasetType = `
         """cell line's tissue type"""
         tissue: Tissue!
         """dataset information of the cell line; can belong to multiple datasets"""
-        dataset: [Dataset!]
+        datasets: [Dataset!]
     }
 `;
 
@@ -34,7 +34,7 @@ const cellLineDetailType = `
         tissue: Tissue!
         """synonyms (name) in different datasets"""
         synonyms: [Synonym]
-        """list of datasets names and ids"""
+        """list of datasets with their name and id"""
         datasets: [Dataset]!
         """diseases from cellosaurus"""
         diseases: [String]

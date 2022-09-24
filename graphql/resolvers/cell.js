@@ -22,7 +22,7 @@ const allCellLinesObject = function (cell) {
             id: tissue_id,
             name: tissue_name,
         },
-        dataset: [{
+        datasets: [{
             id: dataset_id,
             name: dataset_name,
         }]
@@ -45,11 +45,11 @@ const transformAllCellLinesData = data => {
 
         if (finalData[cell_id]) {
             // checks if the dataset is already present or not.
-            const isDatasetPresent = finalData[cell_id]['dataset'].filter(el => el.name === dataset_name);
+            const isDatasetPresent = finalData[cell_id]['datasets'].filter(el => el.name === dataset_name);
 
             // add to the object if the dataset is not already present
             if (isDatasetPresent.length === 0) {
-                finalData[cell_id]['dataset'].push({
+                finalData[cell_id]['datasets'].push({
                     id: dataset_id,
                     name: dataset_name,
                 });
@@ -151,19 +151,19 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
-
+        
         const selectFields = ['c.id as cell_id', 'c.cell_uid as cell_uid', 'c.name as cell_name', 'tissue_id'];
         // adds tissue name to the list of knex columns to select.
         if (listOfFields.includes('tissue')) selectFields.push('t.name as tissue_name');
         // add dataset detail to the list of knex columns to select.
-        if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
+        if (listOfFields.includes('datasets')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
 
         // query to grab the cell line data.
         let query = knex.select(...selectFields).from('cell as c');
         // if the query containes the tissue field, then we will make a join.
         if (listOfFields.includes('tissue')) query = query.join('tissue as t', 'c.tissue_id', 't.id');
         // if the query contains the dataset field, then make a join.
-        if (listOfFields.includes('dataset')) {
+        if (listOfFields.includes('datasets')) {
             query = query.join('dataset_cell as dc', 'dc.cell_id', 'c.id')
                 .join('dataset as d', 'dc.dataset_id', 'd.id');
         }
