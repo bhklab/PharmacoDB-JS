@@ -94,7 +94,7 @@ const transformSingleCellLine = (data) => {
         const {
             cell_id, cell_uid, cell_name,
             tissue_id, tissue_name, synonym_cell_name,
-            dataset_id, dataset_name, diseases, accessions
+            dataset_id, dataset_name, diseases, accession_id
         } = row;
         
         // if it's the first element.
@@ -103,7 +103,7 @@ const transformSingleCellLine = (data) => {
             returnObject['uid'] = cell_uid;
             returnObject['name'] = cell_name;
             returnObject['diseases'] = diseases ? diseases.split('|||') : diseases;
-            returnObject['accessions'] = accessions;
+            returnObject['accession_id'] = accession_id;
             returnObject['tissue'] = {
                 id: tissue_id,
                 name: tissue_name
@@ -229,7 +229,7 @@ exports.cell_line = async args => {
                     'dataset.id as dataset_id',
                     'dataset.name as dataset_name',
                     'cellosaurus.di as diseases',
-                    'cellosaurus.accession as accessions')
+                    'cellosaurus.accession as accession_id')
                 .from('cell')
                 .join('tissue', 'tissue.id', 'cell.tissue_id')
                 .join('cell_synonym', 'cell.id', 'cell_synonym.cell_id')

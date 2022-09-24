@@ -39,7 +39,7 @@ const cellLineDetailType = `
         """diseases from cellosaurus"""
         diseases: [String]
         """accession id from cellosaurus"""
-        accessions: String
+        accession_id: String
     }
 `;
 
