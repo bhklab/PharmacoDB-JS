@@ -14,7 +14,7 @@ const getCellLinesQuery = gql`
         id
         name
       }
-      dataset {
+      datasets {
         id
         name
       }
@@ -34,14 +34,14 @@ const getCellLineQuery = gql`
       uid
       name
       diseases
-      accessions
+      accession_id
       tissue {
         id
         name
       }
       synonyms {
         name
-        source {
+        dataset {
           id
           name
         }
