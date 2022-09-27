@@ -20,7 +20,7 @@ const SYNONYM_COLUMNS = [
     Header: 'Sources',
     accessor: 'sources',
     Cell: (item) => {
-      let datasets = item.cell.row.original.source;
+      let datasets = item.cell.row.original.dataset;
       return (datasets.map((obj, i) => (
         obj.id ? (
           <span key={i}>
@@ -53,9 +53,11 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
   if (data.synonyms) {
     const returnObj = data.synonyms.filter(obj => { return obj.name !== "" });
-    if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
-      returnObj.push({ name: data.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
+    
+    if (returnObj.filter(obj => { return obj.dataset[0].name === "Standardized name in PharmacoSet" }).length === 0) {
+      returnObj.push({ name: data.name, dataset: [{ name: "Standardized name in PharmacoSet", id: '' }] });
     }
+
     return returnObj;
   }
   return null;
@@ -121,6 +123,7 @@ const IndivCellLines = (props) => {
     match: { params },
     location: { pathname }
   } = props;
+
   // query to get the data for the single cell line.
   const { loading, error, data: queryData } = useQuery(getCellLineQuery, {
     variables: {
@@ -129,6 +132,7 @@ const IndivCellLines = (props) => {
       cellName: typeof pathname.split('/cell_lines/').pop() === 'string' ? pathname.split('/cell_lines/').pop() : undefined
     },
   });
+
   // load data from query into state
   const [cellLine, setCellLine] = useState({
     data: {},
@@ -149,6 +153,7 @@ const IndivCellLines = (props) => {
 
   // destructuring the cellLine object.
   const { data } = cellLine;
+
   /**
    * @param {String} link
    */
@@ -163,7 +168,7 @@ const IndivCellLines = (props) => {
   // formatted data of diseases and links
   const synonymData = React.useMemo(() => formatSynonymData(data), [data]);
   const diseaseData = React.useMemo(() => formatDiseaseData(data.diseases), [data.diseases]);
-  const linkData = React.useMemo(() => formatLinkData(data.accessions), [data.accessions]);
+  const linkData = React.useMemo(() => formatLinkData(data.accession_id), [data.accession_id]);
   return (cellLine.loaded ? (
     <Layout page={data.name}>
       <StyledWrapper>
@@ -177,7 +182,9 @@ const IndivCellLines = (props) => {
                     Tissue Type:
                         <span className='value highlight'>
                       {
-                        data.tissue.name === 'NA' ? 'Not Available' : <a href={`/tissues/${data.tissue.id}`}>{data.tissue.name}</a>
+                        data.tissue.name === 'NA' 
+                        ? 'Not Available' 
+                        : <a href={`/tissues/${data.tissue.id}`}>{data.tissue.name}</a>
                       }
                     </span>
                   </span>
