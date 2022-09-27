@@ -86,9 +86,7 @@ const MolecularProfilingTable = (props) => {
     const { loading } = useQuery(getMolecularProfilingQuery, {
         variables: { cellLineId: cellLine.id },
         onCompleted: (data) => {
-            console.log(data);
             let parsed = generateTableData(data.molecular_profiling);
-            console.log(parsed);
             setTableData(parsed);
         },
         onError: (err) => {
