@@ -12,7 +12,6 @@ const getMolecularProfilingQuery = gql`
         id 
         name
       }
-      dataTypes
       mDataType
       num_prof
     }
