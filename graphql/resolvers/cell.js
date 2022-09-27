@@ -1,8 +1,8 @@
 const knex = require('../../db/knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
-const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const {validatePageAndPerPageParameters} = require('../helpers/validatePageAndPerPageParameters');
 const {findElement} = require('../helpers/findElement');
+const {calculateRange} = require('../helpers/calculateRange');
 
 /**
  * 
@@ -148,7 +148,8 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
     const {pageNumber, perPageCount} = validatePageAndPerPageParameters(page, per_page);
 
     // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(pageNumber, perPageCount);
+    // const { limit, offset } = calcLimitOffset(pageNumber, perPageCount);
+    const {lowerBound, upperBound} = calculateRange(pageNumber, perPageCount);
     
     try {
         // extracts list of fields requested by the client
@@ -171,8 +172,12 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
         }
 
         // if the user has not queried to get all the compound,
-        // then limit and offset will be used to give back the queried limit.
-        if (!all) query.limit(limit).offset(offset);
+        // then upperbound and lowerbound variables are used to get the correct data.
+        if (!all) {
+            query
+                .whereBetween('cell_id', [lowerBound, upperBound])
+                .orderBy('cell_id');
+        }
 
         // call to grab the cell lines.
         let cell_lines = await query;
