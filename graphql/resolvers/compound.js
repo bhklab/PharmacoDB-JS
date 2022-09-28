@@ -1,5 +1,5 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const { calculateRange } = require('../helpers/calculateRange');
 const { single_compound_target } = require('./target');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
@@ -71,19 +71,13 @@ const transformSynonyms = data => {
  * @returns {Array} - Returns a transformed array of objects.
  */
 const transformCompounds = data => {
-    return data.map(compound => {
+    const transformedCompounds = {};
+
+    data.forEach(compound => {
         const {
-            id,
-            name,
-            compound_uid,
-            smiles,
-            inchikey,
-            pubchem,
-            fda_status,
-            chembl_id,
-            dataset_id,
-            dataset_name,
-            reactome_id,
+            compound_id, compound_name, compound_uid,
+            smiles, inchikey, pubchem, fda_status,
+            chembl_id, dataset_id, dataset_name, reactome_id,
         } = compound;
 
         const returnList = {
@@ -102,24 +96,37 @@ const transformCompounds = data => {
             });
         }
 
-        return {
-            id,
-            name,
-            uid: compound_uid,
-            annotation: {
-                smiles: returnList['smiles'].join(', '),
-                inchikey: returnList['inchikey'].join(', '),
-                pubchem: pubchem,
-                fda_status: transformFdaStatus(fda_status),
-                chembl: chembl_id,
-                reactome: reactome_id || 'NA'
-            },
-            dataset: {
-                id: dataset_id,
-                name: dataset_name,
+        if(transformedCompounds[compound_id]) {
+            const isDatasetAlreadyPresent = transformedCompounds[compound_id]['datasets'].find(el => el.name === dataset_id);
+        
+            if(!isDatasetAlreadyPresent) {
+                transformedCompounds[compound_id]['datasets'].push({
+                    id: dataset_id,
+                    name: dataset_name,
+                });
             }
-        };
+        } else {
+            transformedCompounds[compound_id] = { 
+                id: compound_id,
+                name: compound_name,
+                uid: compound_uid,
+                annotation: {
+                    smiles: returnList['smiles'].join(', '),
+                    inchikey: returnList['inchikey'].join(', '),
+                    pubchem: pubchem,
+                    fda_status: transformFdaStatus(fda_status),
+                    chembl: chembl_id,
+                    reactome: reactome_id || 'NA'
+                },
+                datasets: [{
+                    id: dataset_id,
+                    name: dataset_name,
+                }]
+            };
+        }
     });
+
+    return Object.values(transformedCompounds);
 };
 
 /**
@@ -216,17 +223,19 @@ const compoundQuery = async (compoundUID, compoundId, compoundName, subtypes) =>
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
  */
 const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
-    // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(page, per_page);
+    // setting limit and offset; lower/upper bound.
+    // const { limit, offset } = calcLimitOffset(page, per_page);
+    const { lowerBound, upperBound } = calculateRange(page, per_page);
+
     // try catch block and the query to get the data for all the compounds based on the arguments.
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
 
         // select fields.
-        const selectFields = ['c.id as id', 'c.name as name', 'c.compound_uid'];
+        const selectFields = ['c.id as compound_id', 'c.name as compound_name', 'c.compound_uid'];
         // add dataset detail to the list of knex columns to select.
-        if (listOfFields.includes('dataset')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
+        if (listOfFields.includes('datasets')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
         // add compound annotation to the list of knex columns to select.
         if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id', 'ca.reactome_id');
 
@@ -235,13 +244,13 @@ const compounds = async ({ page = 1, per_page = 20, all = false }, parent, info)
         // add a join to grab the compound annotations in case it's queried by the user.
         if (listOfFields.includes('annotation')) query = query.join('compound_annotation as ca', 'ca.compound_id', 'c.id');
         // add a join to grab the dataset information if it's been queried by the user.
-        if (listOfFields.includes('dataset')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
+        if (listOfFields.includes('datasets')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
             .join('dataset as d', 'dc.dataset_id', 'd.id');
 
         // if the user has not queried to get all the compound,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
-            query.limit(limit).offset(offset);
+            query.whereBetween('c.id', [lowerBound, upperBound]);
         }
 
         // order by fda status if list of fields includes annotation.

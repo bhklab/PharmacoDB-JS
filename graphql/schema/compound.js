@@ -36,7 +36,7 @@ const compoundWithDatasetType = `
         """compound annotation object"""
         annotation: CompoundAnnotation! # to-one
         """dataset information object"""
-        dataset: Dataset!
+        datasets: [Dataset!]
     }
 `;
 
