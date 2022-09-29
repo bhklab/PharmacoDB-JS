@@ -61,7 +61,7 @@ const getCompoundQuery = gql`
       }
       synonyms {
         name
-        source {
+        dataset {
           id
           name
         }
