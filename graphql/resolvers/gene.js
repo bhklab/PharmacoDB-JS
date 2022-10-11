@@ -1,8 +1,7 @@
 const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
-
+const {calculateRange} = require('../helpers/calculateRange');
 
 /**
  *
@@ -66,8 +65,9 @@ const transformGene = data => {
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
  */
 const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
-    // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(page, per_page);
+    // setting lower and upper bound.
+    const { lowerBound, upperBound } = calculateRange(page, per_page);
+
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -81,16 +81,16 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
         // if the user has not queried to get all the genes,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
-            query.limit(limit).offset(offset);
+            query.whereBetween('gene.id', [lowerBound, upperBound]);
         }
 
         // omitting the names that include 'AFFX' in them.
         query = query.whereNot('name', 'like', '%AFFX%');
 
         // if includes annotation then order by symbol.
-        if (listOfFields.includes('annotation')) {
-            query.orderBy('symbol', 'asc');
-        }
+        // if (listOfFields.includes('annotation')) {
+        //     query.orderBy('symbol', 'asc');
+        // }
 
         // execute the query.
         const genes = await query;
