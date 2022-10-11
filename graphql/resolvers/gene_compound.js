@@ -2,7 +2,7 @@ const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields } = require('../helpers/queryHelpers');
-const { getIdBasedOnCompound } = require('./compound');
+const { getCompoundIdBasedOnCompoundName } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
 const { getTissueIdBasedOnTissueName } = require('./tissue');
 
@@ -84,7 +84,7 @@ const gene_compound_tissue = async (args, context, info) => {
 
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
     tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?

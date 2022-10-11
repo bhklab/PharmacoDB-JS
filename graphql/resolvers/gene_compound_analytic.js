@@ -2,7 +2,7 @@ const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields } = require('../helpers/queryHelpers');
-const { getIdBasedOnCompound } = require('./compound');
+const { getCompoundIdBasedOnCompoundName } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
 const { getTissueIdBasedOnTissueName } = require('./tissue');
 
@@ -125,7 +125,7 @@ const gene_compound_dataset = async (args, context, info) => {
     let { geneId, geneName, compoundId, compoundName, page = 1, per_page = 20, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
@@ -224,7 +224,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     try {
         tissueId = await tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
         geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-        compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+        compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
     } catch (error) {
         console.log(error);
         throw error;
@@ -332,7 +332,7 @@ const gene_compound_dataset_biomarker = async (args, context, info) => {
     // arguments
     let { compoundId, compoundName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
 
     // check if the compound id is passed?
     if (!compoundId || !mDataType) {
@@ -380,7 +380,7 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
     // arguments
     let { compoundId, tissueId, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
     tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
