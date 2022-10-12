@@ -25,9 +25,9 @@ const tissueDetailType = `
         """this list the synonyms for the tissue in different datasets"""
         synonyms: [Synonym!]
         """number of cell lines of the tissue type per dataset"""
-        cell_count: [Count!]
+        cell_count: [TypeCountPerDataset!]
         """number of compounds tested with the particular tissue cell lines"""
-        compounds_tested: [Count!]
+        compounds_tested: [TypeCountPerDataset!]
     }
 `;
 

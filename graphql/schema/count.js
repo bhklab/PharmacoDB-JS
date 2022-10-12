@@ -1,5 +1,5 @@
 const countType = `
-    type Count {
+    type TypeCountPerDataset {
         dataset: Dataset!
         "Number of the elements in source/dataset"
         count: Int!
