@@ -12,7 +12,7 @@ const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./ge
 const { RootQuery } = require('./root_query');
 const { summaryType } = require('./summary');
 const { synonymType } = require('./synonym');
-const { statType } = require('./stat');
+const { datatypeStatType } = require('./datatype_statistics');
 const {
     targetType, compoundTargetType, geneTargetType,
     targetWithGeneInfoType, targetWithCompoundInfoType,
@@ -64,7 +64,7 @@ const schema = `
     ${synonymType}
 
     "Statistics Type"
-    ${statType}
+    ${datatypeStatType}
 
     "Summary Type"
     ${summaryType}
