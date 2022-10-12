@@ -1,4 +1,4 @@
-const countType = `
+const countPerDatasetType = `
     type CountPerDataset {
         dataset: Dataset!
         "Number of the elements in source/dataset"
@@ -16,6 +16,6 @@ const enumAllowedType = `
 
 
 module.exports = {
-    countType,
+    countPerDatasetType,
     enumAllowedType
 };
