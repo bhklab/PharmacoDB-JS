@@ -2,7 +2,7 @@
 const { buildSchema } = require('graphql');
 const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
-const { countType, enumAllowedType } = require('./count');
+const { countType, enumAllowedType } = require('./count_per_dataset');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
 const { doseResponseType } = require('./dose_response');
 const { experimentType } = require('./experiment');
