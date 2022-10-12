@@ -1,7 +1,7 @@
 const knex = require('../../db/knex');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
-const {calculateRange} = require('../helpers/calculateRange');
+const { calculateRange } = require('../helpers/calculateRange');
 
 /**
  *
