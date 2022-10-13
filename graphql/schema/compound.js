@@ -1,13 +1,17 @@
+const compound = `
+    """compound id in the database"""
+    id: Int!
+    """compound name in the database"""
+    name: String!
+    """compound uid"""
+    uid: String!
+    """compound annotation object"""
+    annotation: CompoundAnnotation!
+`;
+
 const compoundType = `
     type Compound {
-        """compound id in the database"""
-        id: Int!
-        """compound name in the database"""
-        name: String!
-        """compound uid"""
-        uid: String!
-        """compound annotation object"""
-        annotation: CompoundAnnotation!
+       ${compound}
     }
 `;
 
@@ -27,14 +31,7 @@ const compoundAnnotationType = `
 
 const compoundWithDatasetType = ` 
     type CompoundWithDataset {
-        """compound id in the database"""
-        id: Int!
-        """compound name in the database"""
-        name: String!
-        """compound uid"""
-        uid: String!
-        """compound annotation object"""
-        annotation: CompoundAnnotation! # to-one
+        ${compound}
         """dataset information object"""
         datasets: [Dataset!]
     }
