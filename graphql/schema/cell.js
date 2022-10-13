@@ -43,9 +43,19 @@ const cellLineDetailType = `
     }
 `;
 
+const cellLineSummaryType = `
+    type CellLineSummary {
+        dataset: Dataset!
+        count: Int!
+        type: String!
+        list: [CellLine!]!
+    }
+`;
+
 
 module.exports = {
     cellLineType,
     cellLineWithTissueDatasetType,
-    cellLineDetailType
+    cellLineDetailType,
+    cellLineSummaryType
 };

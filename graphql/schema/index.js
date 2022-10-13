@@ -1,6 +1,6 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType } = require('./cell');
+const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType, cellLineSummaryType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
 const { countPerDatasetType, enumAllowedType } = require('./count_per_dataset');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
@@ -10,7 +10,6 @@ const { geneType, geneAnnotationType } = require('./gene');
 const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
-const { summaryType } = require('./summary');
 const { synonymType } = require('./synonym');
 const { datatypeStatType } = require('./datatype_statistics');
 const {
@@ -36,6 +35,7 @@ const schema = `
     ${cellLineType}
     ${cellLineWithTissueDatasetType}
     ${cellLineDetailType}
+    ${cellLineSummaryType}
 
     "Count Type"
     ${countPerDatasetType}
@@ -65,9 +65,6 @@ const schema = `
 
     "Statistics Type"
     ${datatypeStatType}
-
-    "Summary Type"
-    ${summaryType}
 
     "Target Type"
     ${targetType}
