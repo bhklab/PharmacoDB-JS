@@ -3,7 +3,6 @@ const geneCompoundAnalytics = `
     id: Int!
     gene: Gene!
     compound: Compound!
-    dataset: Dataset!
     estimate: Float
     lower_analytic: Float
     upper_analytic: Float
@@ -26,12 +25,14 @@ const geneCompoundTissueDatasetType = `
     type GeneCompoundTissueDataset {
         ${geneCompoundAnalytics}
         tissue: Tissue!
+        dataset: Dataset!
     }
 `;
 
 const geneCompoundDatasetType = `
     type GeneCompoundDataset {
         ${geneCompoundAnalytics}
+        dataset: Dataset!
     }
 `;
 
