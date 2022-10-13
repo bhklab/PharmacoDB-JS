@@ -119,7 +119,7 @@ const RootQuery = `type RootQuery {
     """
         Root Query for the stats for the different types.
     """
-    data_type_stats: [Statistics!]!
+    data_type_stats: [DatatypeCount!]!
 
     """
         Root Query for tissues.

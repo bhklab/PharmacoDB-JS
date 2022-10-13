@@ -1,10 +1,10 @@
-const datatypeStatType = `
-    type Statistics {
+const datatypeCountType = `
+    type DatatypeCount {
         dataType: String!
         count: Int!
     }
 `;
 
 module.exports = {
-    datatypeStatType,
+    datatypeCountType
 };

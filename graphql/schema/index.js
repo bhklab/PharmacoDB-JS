@@ -11,7 +11,7 @@ const { geneCompoundTissueType, geneCompoundType } = require('./gene_compound');
 const { geneCompoundDatasetType, geneCompoundTissueDatasetType } = require('./gene_compound_analytic');
 const { RootQuery } = require('./root_query');
 const { synonymType } = require('./synonym');
-const { datatypeStatType } = require('./datatype_statistics');
+const { datatypeCountType } = require('./datatype_count');
 const {
     targetType, compoundTargetType, geneTargetType,
     targetWithGeneInfoType, targetWithCompoundInfoType,
@@ -63,8 +63,8 @@ const schema = `
     """Synonym type with name of the synonym and the dataset it belongs to"""
     ${synonymType}
 
-    "Statistics Type"
-    ${datatypeStatType}
+    "data type count Type"
+    ${datatypeCountType}
 
     "Target Type"
     ${targetType}
