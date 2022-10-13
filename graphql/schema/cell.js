@@ -43,8 +43,8 @@ const cellLineDetailType = `
     }
 `;
 
-const cellLineSummaryType = `
-    type CellLineSummary {
+const cellLinePerDatasetType = `
+    type CellLinePerDataset {
         dataset: Dataset!
         count: Int!
         type: String!
@@ -57,5 +57,5 @@ module.exports = {
     cellLineType,
     cellLineWithTissueDatasetType,
     cellLineDetailType,
-    cellLineSummaryType
+    cellLinePerDatasetType
 };

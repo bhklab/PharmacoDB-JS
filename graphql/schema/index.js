@@ -1,6 +1,6 @@
 // NOTE: Please use the alphabetical order.
 const { buildSchema } = require('graphql');
-const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType, cellLineSummaryType } = require('./cell');
+const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType, cellLinePerDatasetType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
 const { countPerDatasetType, enumAllowedType } = require('./count_per_dataset');
 const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
@@ -35,7 +35,7 @@ const schema = `
     ${cellLineType}
     ${cellLineWithTissueDatasetType}
     ${cellLineDetailType}
-    ${cellLineSummaryType}
+    ${cellLinePerDatasetType}
 
     "Count Type"
     ${countPerDatasetType}
