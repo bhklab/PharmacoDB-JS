@@ -5,7 +5,7 @@ const synonymType = `
             tissue, cell line that has different name (synonym) in different datasets
         """
         name: String!
-        """it's dataset name in our case"""
+        """list of datasets"""
         dataset: [Dataset!]
     }
 `;
