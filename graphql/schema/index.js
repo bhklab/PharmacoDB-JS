@@ -3,7 +3,7 @@ const { buildSchema } = require('graphql');
 const { cellLineType, cellLineWithTissueDatasetType, cellLineDetailType, cellLinePerDatasetType } = require('./cell');
 const { compoundType, compoundAnnotationType, compoundDetailType, compoundWithDatasetType } = require('./compound');
 const { countPerDatasetType, enumAllowedType } = require('./count_per_dataset');
-const { datasetType, datasetDetailType, datasetStatsType, datasetsTypesType, datasetsCompoundStatType } = require('./dataset');
+const { datasetType, datasetDetailType, datasetStatsType, dataTypesInformationPerDatasetType, datasetsCompoundStatType } = require('./dataset');
 const { doseResponseType } = require('./dose_response');
 const { experimentType } = require('./experiment');
 const { geneType, geneAnnotationType } = require('./gene');
@@ -44,7 +44,7 @@ const schema = `
     ${datasetType}
     ${datasetDetailType}
     ${datasetStatsType}
-    ${datasetsTypesType}
+    ${dataTypesInformationPerDatasetType}
     ${datasetsCompoundStatType}
 
     "compound Response Type with dose and response values"

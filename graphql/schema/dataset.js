@@ -45,8 +45,8 @@ const datasetStatsType = `
 
 // TODO: what should be the name for this type??
 // TODO: only tissues_tested field is extra when compared to dataset detail schema definition
-const datasetsTypesType = `
-    type DatasetsTypes {
+const dataTypesInformationPerDatasetType = `
+    type DataTypesInformationPerDataset {
         """name and id of the dataset"""
         dataset: Dataset!
         """tissue ids and names tested in the dataset"""
@@ -72,6 +72,6 @@ module.exports = {
     datasetType,
     datasetDetailType,
     datasetStatsType,
-    datasetsTypesType,
+    dataTypesInformationPerDatasetType,
     datasetsCompoundStatType,
 };

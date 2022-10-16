@@ -56,12 +56,12 @@ const RootQuery = `type RootQuery {
     """
         Root Query for returning tested Types for all datasets
     """
-    datasets_types: [DatasetsTypes!]!
+    datasets_types: [DataTypesInformationPerDataset!]!
     
     """
         Root Query for returning tested Types for a dataset
     """
-    dataset_type(datasetId: Int, datasetName: String): [DatasetsTypes!]!
+    dataset_type(datasetId: Int, datasetName: String): [DataTypesInformationPerDataset!]!
     
     """
         This is a query to get the cell lines that are grouped based on the dataset.
