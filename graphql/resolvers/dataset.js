@@ -194,6 +194,7 @@ const dataset_type = async (args, parent, info) => {
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
+
         // data returned from the graphql API.
         const returnData = [];
         let tissues, cells, compounds;
@@ -202,8 +203,8 @@ const dataset_type = async (args, parent, info) => {
         if (listOfFields.includes('tissues_tested')) tissues = await getTypeDataGroupedByDataset('tissue', datasetId, datasetName);
         if (listOfFields.includes('cells_tested')) cells = await getTypeDataGroupedByDataset('cell', datasetId, datasetName);
         if (listOfFields.includes('compounds_tested')) compounds = await getTypeDataGroupedByDataset('compound', datasetId, datasetName);
+
         const data = {};
-        // returnData object.
         const {
             dataset_id,
             dataset_name
@@ -211,12 +212,14 @@ const dataset_type = async (args, parent, info) => {
         // data['id'] = dataset_id;
         // data['name'] = dataset_name;
         data['dataset'] = { id: dataset_id, name: dataset_name };
+
         if (listOfFields.includes('tissues_tested')) data['tissues_tested'] = tissues.map(value => ({ id: value['tissue_id'], name: value['tissue_name'] }));
         if (listOfFields.includes('cells_tested')) data['cells_tested'] = cells.map(value => ({ id: value['cell_id'], uid: value['cell_uid'], name: value['cell_name'] }));
         if (listOfFields.includes('compounds_tested')) data['compounds_tested'] = compounds.map(value => ({ id: value['compound_id'], uid: value['compound_uid'], name: value['compound_name'] }));;
+        
         returnData.push(data);
-        return returnData;
 
+        return returnData;
     } catch (err) {
         console.log(err);
         throw err;
@@ -385,7 +388,6 @@ const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => 
  *
  * @returns {Object}
  */
-// TODO: Using dataset_id right now, might have to change in future.
 const datasetStatQuery = () => {
     return knex.select()
         .from('dataset_statistics as dt')
