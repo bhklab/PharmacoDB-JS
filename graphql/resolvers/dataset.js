@@ -22,7 +22,7 @@ const datasetQuery = async datasetId => {
  *      CCLE: { dataset: {id: 'dataset id', name: 'dataset name'}, count: 'number of cell lines in the dataset' }
  * }
  */
-const cellLinesGroupByDatasetQuery = async () => {
+const cellLinesGroupedByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const dataset = [];
@@ -103,7 +103,7 @@ const summaryQuery = async (type, datasetId, datasetName) => {
  * @param {string} datasetName - optional
  * @return {Array} - returns an array of cells or compounds or tissues tested on the dataset.
  */
-const typeDatasetQuery = async (type, datasetId, datasetName) => {
+const getTypeDataGroupedByDataset = async (type, datasetId, datasetName) => {
     let datasets;
 
     const columns = ['d.id as dataset_id', 'd.name as dataset_name', `t.id as ${type}_id`, `t.name as ${type}_name`];
@@ -146,9 +146,9 @@ const datasets_types = async () => {
         let tissues, cells, compounds;
 
         const datasets = await datasetQuery();
-        tissues = await typeDatasetQuery('tissue');
-        cells = await typeDatasetQuery('cell');
-        compounds = await typeDatasetQuery('compound');
+        tissues = await getTypeDataGroupedByDataset('tissue');
+        cells = await getTypeDataGroupedByDataset('cell');
+        compounds = await getTypeDataGroupedByDataset('compound');
 
         datasets.forEach(dataset => {
             const data = {};
@@ -199,9 +199,9 @@ const dataset_type = async (args, parent, info) => {
         let tissues, cells, compounds;
         const datasets = await datasetQuery();
         const dataset = datasets.filter(dataset => { return dataset.dataset_id === datasetId || dataset.dataset_name === datasetName })[0];
-        if (listOfFields.includes('tissues_tested')) tissues = await typeDatasetQuery('tissue', datasetId, datasetName);
-        if (listOfFields.includes('cells_tested')) cells = await typeDatasetQuery('cell', datasetId, datasetName);
-        if (listOfFields.includes('compounds_tested')) compounds = await typeDatasetQuery('compound', datasetId, datasetName);
+        if (listOfFields.includes('tissues_tested')) tissues = await getTypeDataGroupedByDataset('tissue', datasetId, datasetName);
+        if (listOfFields.includes('cells_tested')) cells = await getTypeDataGroupedByDataset('cell', datasetId, datasetName);
+        if (listOfFields.includes('compounds_tested')) compounds = await getTypeDataGroupedByDataset('compound', datasetId, datasetName);
         const data = {};
         // returnData object.
         const {
@@ -341,7 +341,7 @@ const dataset = async (args, parent, info) => {
  */
 // TODO: Probably later on this can be changed type_grouped_by_dataset.
 const cell_lines_grouped_by_dataset = async () => {
-    const cell_count = await cellLinesGroupByDatasetQuery();
+    const cell_count = await cellLinesGroupedByDatasetQuery();
     return Object.keys(cell_count).map(value => cell_count[value]);
 };
 
