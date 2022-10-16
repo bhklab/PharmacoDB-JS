@@ -12,6 +12,7 @@ const datasetQuery = async datasetId => {
         .select('id as dataset_id', 'name as dataset_name')
         .from('dataset')
         .where('id', 'like', datasetId ? `${datasetId}` : '%%');
+
     return transformObject(dataset);
 };
 
@@ -25,11 +26,13 @@ const cellLinesGroupByDatasetQuery = async () => {
     // return object.
     const returnObject = {};
     const dataset = [];
+
     const query = await knex
         .select('d.id as dataset_id', 'd.name as dataset_name', 'c.id as cell_id', 'c.name as cell_name', 'tissue_id')
         .from('dataset_cell as dc')
         .leftJoin('dataset as d', 'd.id', 'dc.dataset_id')
         .leftJoin('cell as c', 'c.id', 'dc.cell_id');
+
     // return object {dataset: {id: Number, name: String}, count: number of cells in the dataset}.
     query.forEach(value => {
         const {
@@ -60,6 +63,7 @@ const cellLinesGroupByDatasetQuery = async () => {
             });
         }
     });
+
     // return the transformed object.
     return returnObject;
 };
@@ -73,6 +77,7 @@ const cellLinesGroupByDatasetQuery = async () => {
  */
 const summaryQuery = async (type, datasetId, datasetName) => {
     let datasets;
+
     // query to get the id and name for the type.
     const query = knex
         .select('d.name as dataset_name', 'd.id as dataset_id')
@@ -80,12 +85,14 @@ const summaryQuery = async (type, datasetId, datasetName) => {
         .from('experiment as e')
         .join('dataset as d', 'd.id', 'e.dataset_id')
         .join(`${type} as t`, 't.id', `e.${type}_id`);
+
     // based on the param datasetId and datasetName.
     if (datasetId) {
         datasets = await query.where('e.dataset_id', datasetId);
     } else if (datasetName) {
         datasets = await query.where('d.name', datasetName);
     }
+
     return transformObject(datasets);
 };
 
@@ -99,18 +106,22 @@ const summaryQuery = async (type, datasetId, datasetName) => {
 const typeDatasetQuery = async (type, datasetId, datasetName) => {
     let datasets;
     const columns = ['d.id as dataset_id', 'd.name as dataset_name', `t.id as ${type}_id`, `t.name as ${type}_name`];
+
     if (type !== 'tissue') columns.push(`t.${type}_uid as ${type}_uid`);
+
     // query to get the ids and names for the type and datasets.
     const query = knex.select(columns)
         .from(`dataset_${type} as dt`)
         .join('dataset as d', 'd.id', 'dt.dataset_id')
         .join(`${type} as t`, 't.id', `dt.${type}_id`);
+
     // based on the param datasetId and datasetName.
     if (datasetId) {
         datasets = await query.where('dt.dataset_id', datasetId);
     } else if (datasetName) {
         datasets = await query.where('d.name', datasetName);
     }
+
     return transformObject(datasets);
 };
 
@@ -124,14 +135,18 @@ const typeDatasetQuery = async (type, datasetId, datasetName) => {
 const typeDatasetsQuery = async (type) => {
     let datasets;
     const columns = ['d.id as dataset_id', 'd.name as dataset_name', `t.id as ${type}_id`, `t.name as ${type}_name`];
-    if (type !== 'tissue') columns.push(`t.${type}_uid as ${type}_uid`)
+
+    if (type !== 'tissue') columns.push(`t.${type}_uid as ${type}_uid`);
+
     // query to get the ids and names for the type and datasets.
     const query = knex.select(columns)
         .from(`dataset_${type} as dt`)
         .join('dataset as d', 'd.id', 'dt.dataset_id')
         .join(`${type} as t`, 't.id', `dt.${type}_id`);
+
     // based on the param datasetId and datasetName.
     datasets = await query;
+
     return transformObject(datasets);
 };
 
@@ -151,10 +166,12 @@ const datasets_types = async () => {
     try {
         const returnData = [];
         let tissues, cells, compounds;
+
         const datasets = await datasetQuery();
         tissues = await typeDatasetsQuery('tissue');
         cells = await typeDatasetsQuery('cell');
         compounds = await typeDatasetsQuery('compound');
+
         datasets.forEach(dataset => {
             const data = {};
             data['dataset'] = { id: dataset.dataset_id, name: dataset.dataset_name };
@@ -163,6 +180,7 @@ const datasets_types = async () => {
             data['compounds_tested'] = compounds.filter(d => d.dataset_id === dataset.dataset_id).map(value => ({ id: value['compound_id'], uid: value['compound_uid'], name: value['compound_name'] }));
             returnData.push(data);
         });
+
         return returnData;
     } catch (err) {
         console.log(err);
@@ -189,10 +207,12 @@ const dataset_type = async (args, parent, info) => {
         datasetId,
         datasetName
     } = args;
+
     // throw error if neither of the arguments are passed.
     if (!datasetId && !datasetName) {
         throw new Error('Please at least specify either the ID or the Name of the dataset you want to query!');
     }
+
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -280,10 +300,12 @@ const dataset = async (args, parent, info) => {
         datasetId,
         datasetName
     } = args;
+
     // throw error if neither of the arguments are passed.
     if (!datasetId && !datasetName) {
         throw new Error('Please at least specify either the ID or the Name of the dataset you want to query!');
     }
+
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -360,6 +382,7 @@ const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => 
     const type_list = await summaryQuery(type, datasetId);
     const count = type_list.length;
     const returnObject = {};
+
     type_list.forEach((value, i) => {
         const { dataset_name, dataset_id } = value;
         if (!i) {
@@ -376,6 +399,7 @@ const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => 
             name: value[`${type}_name`]
         });
     });
+
     return returnObject;
 };
 
@@ -399,6 +423,7 @@ const typeCountGroupByDataset = async ({ type: type }) => {
     // return object.
     // const returnObject = {};
     const returnObject = [];
+
     /**
      * queries the database to get the data in the required format.
      * number of give type total across datasets
@@ -418,6 +443,7 @@ const typeCountGroupByDataset = async ({ type: type }) => {
             count
         });
     });
+
     // return the transformed object.
     return returnObject;
 };
@@ -428,6 +454,7 @@ const typeCountGroupByDataset = async ({ type: type }) => {
 // NOTE: This table stores the static data type count.
 const dataset_stats = async () => {
     const stats = await datasetStatQuery();
+    
     // return object.
     return stats.map(stat => {
         const { id, name, cell_lines, compounds, tissues, experiments } = stat;
