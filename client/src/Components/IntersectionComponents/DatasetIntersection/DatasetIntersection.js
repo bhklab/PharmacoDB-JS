@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { getDatasetsQuery } from '../../../queries/dataset';
-import { getDatasetsTypesQuery } from '../../../queries/dataset';
+import { getTypeInformationAllDatasetsQuery } from '../../../queries/dataset';
 import RenderUpsetPlot from './RenderUpsetPlot';
 import createSetsWithData from './CreateSetsWithData';
 import StyledWrapper from '../../../styles/utils';
@@ -113,7 +113,8 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
     const datasetsPropArray = createDatasetArray(datasetProp);
 
     // cell line and dataset data from the APIs.
-    const { loading, error, data } = useQuery(getDatasetsTypesQuery);
+    const { loading, error, data } = useQuery(getTypeInformationAllDatasetsQuery);
+    console.log(data);
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
 
     // setting the state to grab the updated dataset array and cell line data.
@@ -132,9 +133,9 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
 
             // cell data object.
             const cells = {}, tissues = {}, compounds = {};
-            data.datasets_types.forEach(el => cells[el.dataset.name] = el.cells_tested.map(cell => cell.name));
-            data.datasets_types.forEach(el => tissues[el.dataset.name] = el.tissues_tested.map(tissue => tissue.name));
-            data.datasets_types.forEach(el => compounds[el.dataset.name] = el.compounds_tested.map(compound => compound.name));
+            data.datatypes_information_all_datasets.forEach(el => cells[el.dataset.name] = el.cells_tested.map(cell => cell.name));
+            data.datatypes_information_all_datasets.forEach(el => tissues[el.dataset.name] = el.tissues_tested.map(tissue => tissue.name));
+            data.datatypes_information_all_datasets.forEach(el => compounds[el.dataset.name] = el.compounds_tested.map(compound => compound.name));
 
             // update the dataset names according to the names in the database.
             const updatedDatasetArray = createUpdatedDatasetArray(datasetsPropArray, datasets);
