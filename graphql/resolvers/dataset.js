@@ -149,7 +149,7 @@ const getTypeDataGroupedByDataset = async (type, datasetId, datasetName) => {
  *  }
  */
 //TODO: Update to return only fields asked on the query
-const datasets_types = async () => {
+const datatypes_information_all_datasets = async () => {
     try {
         const returnData = [];
         let tissues, cells, compounds;
@@ -187,7 +187,7 @@ const datasets_types = async () => {
  *      compounds_tested (data only for the datasetId): 'a list of all the compounds that have been tested in the dataset'
  *  }
  */
-const dataset_type = async (args, parent, info) => {
+const datatypes_information_per_dataset = async (args, parent, info) => {
     // dataset id ie 1 or 2 or...
     // dataset name ie 'FIMM' ...
     const {
@@ -452,7 +452,7 @@ module.exports = {
     cell_lines_grouped_by_dataset,
     type_tested_on_dataset_summary,
     typeCountGroupByDataset,
-    datasets_types,
-    dataset_type,
+    datatypes_information_all_datasets,
+    datatypes_information_per_dataset,
     dataset_stats
 };

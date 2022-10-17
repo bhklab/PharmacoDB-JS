@@ -43,7 +43,6 @@ const datasetStatsType = `
     }
 `;
 
-// TODO: what should be the name for this type??
 // TODO: only tissues_tested field is extra when compared to dataset detail schema definition
 const dataTypesInformationPerDatasetType = `
     type DataTypesInformationPerDataset {
