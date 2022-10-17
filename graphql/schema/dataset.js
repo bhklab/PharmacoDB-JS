@@ -44,6 +44,7 @@ const datasetStatsType = `
 `;
 
 // TODO: only tissues_tested field is extra when compared to dataset detail schema definition
+// TODO: is there a difference when we get data from experiments table and dataset + a particular type table??
 const dataTypesInformationPerDatasetType = `
     type DataTypesInformationPerDataset {
         """name and id of the dataset"""

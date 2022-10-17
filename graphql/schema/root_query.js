@@ -69,9 +69,9 @@ const RootQuery = `type RootQuery {
     cell_lines_grouped_by_dataset: [CellLinePerDataset!]!
 
     """
-        arguments that can be passed: 'cell', 'tissue', 'drug'
+        arguments that can be passed: 'cell', 'tissue', 'compound'
     """
-    type_tested_on_dataset_summary(type: AllowedValues!, datasetId: Int!): CellLinePerDataset!
+    type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): CellLinePerDataset!
 
 
     """

@@ -369,7 +369,7 @@ const cell_lines_grouped_by_dataset = async () => {
  *      list: {id: 'type id', name: 'type name' }
  * }
  */
-const type_tested_on_dataset_summary = async ({ type: dataType, datasetId }) => {
+const type_tested_on_dataset = async ({ type: dataType, datasetId }) => {
     const type = dataType.toLowerCase();
     const type_list = await summaryQuery(type, datasetId);
     const count = type_list.length;
@@ -450,7 +450,7 @@ module.exports = {
     datasets,
     dataset,
     cell_lines_grouped_by_dataset,
-    type_tested_on_dataset_summary,
+    type_tested_on_dataset,
     typeCountGroupByDataset,
     datatypes_information_all_datasets,
     datatypes_information_per_dataset,
