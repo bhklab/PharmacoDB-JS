@@ -16,6 +16,15 @@ const targetQuery = () => (
         .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
 );
 
+knex.countDistinct('ct.compound_id as compound_count')
+            .select('g.id as gene_id', 'g.name as gene_name', 'd.name as dataset_name','d.id as dataset_id')
+            .from('gene_target as gt')
+            .join('gene as g', 'g.id', 'gt.gene_id')
+            .join('target as t', 't.id', 'gt.target_id')
+            .join('compound_target as ct', 't.id', 'ct.target_id')
+            .join('dataset_compound as dc', 'dc.compound_id', 'ct.compound_id')
+            .join('dataset as d', 'd.id', 'dc.dataset_id');
+            
 /**
  *
  * @param {Object} args
@@ -266,7 +275,7 @@ const all_compound_targets = async () => {
  * @param args either geneId or geneName
  * @returns {Object} returns the list of datasets and the count of compounds in them that are targetting a given gene.
  */
-const single_gene_targets_group_by_dataset = async (args) => {
+const compound_targeting_gene_count_per_dataset = async (args) => {
     try {
         const {
             geneId,
@@ -288,7 +297,7 @@ const single_gene_targets_group_by_dataset = async (args) => {
         }
         const datasets = await query;
         const targetsStat = [];
-        datasets.forEach((dataset, i) => {
+        datasets.forEach((dataset) => {
             const {
                 dataset_id,
                 dataset_name,
@@ -316,5 +325,5 @@ module.exports = {
     single_compound_target,
     single_gene_target,
     all_compound_targets,
-    single_gene_targets_group_by_dataset,
+    compound_targeting_gene_count_per_dataset,
 };
