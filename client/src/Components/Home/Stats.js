@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import compoundsImg from '../../images/compounds.png';
-import cellsImg from '../../images/cells.png';
-import datasetsImg from '../../images/datasets.png';
-import experimentsImg from '../../images/experiments.png';
-import genesImg from '../../images/genes.png';
-import tissuesImg from '../../images/tissues.png';
+import cellsImg from '../../images/cell.png';
+import datasetsImg from '../../images/dataset.png';
+import experimentsImg from '../../images/experiment.png';
+import genesImg from '../../images/gene.png';
+import tissuesImg from '../../images/tissue.png';
 import colors from '../../styles/colors';
 import { getAllDataTypeStatsQuery } from '../../queries/stat';
 
