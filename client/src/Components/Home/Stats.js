@@ -75,20 +75,22 @@ const StyledStats = styled.div`
 
 /**
  * @returns {Object} - returns an Object of different types with name and value.
+ * TODO: Update the values in future if the stats gets updated; 
+ * TODO: though the API updates this object but the data is not updated in case API call gives an error.
  */
 const statsObject = {
   dataset: {
-    name: 'datasets', value: '0', image: datasetsImg, link: '/datasets',
+    name: 'datasets', value: '10', image: datasetsImg, link: '/datasets',
   },
   tissue: {
-    name: 'tissues', value: '0', image: tissuesImg, link: '/tissues',
+    name: 'tissues', value: '30', image: tissuesImg, link: '/tissues',
   },
   cell: {
-    name: 'cell lines', value: '0', image: cellsImg, link: '/cell_lines',
+    name: 'cell lines', value: '1,758', image: cellsImg, link: '/cell_lines',
   },
   experiment: {
     name: 'experiments',
-    value: '0',
+    value: '6,314,313',
     image: experimentsImg,
     link: '/experiments',
   },
@@ -96,7 +98,7 @@ const statsObject = {
     name: 'genes', value: '61,211', image: genesImg, link: '/genes',
   },
   compound: {
-    name: 'compounds', value: '0', image: compoundsImg, link: '/compounds',
+    name: 'compounds', value: '56,149', image: compoundsImg, link: '/compounds',
   },
 };
 
@@ -143,14 +145,14 @@ const updateStatsObject = (data) => {
  */
 const Stats = () => {
   const { loading, error, data } = useQuery(getAllDataTypeStatsQuery);
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState(statsObject);
 
   useEffect(() => {
     if (data) {
       const stats = createStatsObject(data.data_type_stats);
       const updatedStatsObject = updateStatsObject(stats);
 
-      setStats(updatedStatsObject);
+      setStats({...updatedStatsObject});
     }
   }, [data])
 
