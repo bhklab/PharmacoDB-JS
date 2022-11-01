@@ -1,22 +1,24 @@
-import Biomarker from './Biomarker/Biomarker';
-import Compounds from './SummaryComponents/Compounds/Compounds';
-import Genes from './SummaryComponents/Genes/Genes';
-import Tissues from './SummaryComponents/Tissues/Tissues';
-import Experiments from './SummaryComponents/Experiments/Experiments';
-import CellLines from './SummaryComponents/CellLines/CellLines';
-import IndivCompounds from './IndividualComponents/IndivCompounds/IndivCompounds';
-import IndivCellLines from './IndividualComponents/IndivCellLines/IndivCellLines';
-import IndivTissues from './IndividualComponents/IndivTissues/IndivTissues';
-import IndivGenes from './IndividualComponents/IndivGenes/IndivGenes';
-import IndivDatasets from './IndividualComponents/IndivDatasets/IndivDatasets';
-import PharmacoGx from './IndividualComponents/IndivDatasets/PharmacoGx/PharmacoGx';
-import Datasets from './SummaryComponents/Datasets/Datasets';
-import IntersectionMain from './IntersectionComponents/IntersectionMain';
-import Home from './Home/Home';
-import AboutUs from './About/AboutUs/AboutUs';
-import Documentation from './About/Documentation/Documentation';
-import CiteUs from './About/CiteUs/CiteUs'
-import NotFoundPage from './UtilComponents/NotFoundPage';
+import { lazy } from 'react';
+
+const Biomarker = lazy(() => import('./Biomarker/Biomarker'));
+const Compounds = lazy(() => import('./SummaryComponents/Compounds/Compounds'));
+const Genes = lazy(() => import('./SummaryComponents/Genes/Genes'));
+const Tissues = lazy(() => import('./SummaryComponents/Tissues/Tissues'));
+const Experiments = lazy(() => import('./SummaryComponents/Experiments/Experiments'));
+const CellLines = lazy(() => import('./SummaryComponents/CellLines/CellLines'));
+const IndivCompounds = lazy(() => import('./IndividualComponents/IndivCompounds/IndivCompounds'));
+const IndivCellLines = lazy(() => import('./IndividualComponents/IndivCellLines/IndivCellLines'));
+const IndivTissues = lazy(() => import('./IndividualComponents/IndivTissues/IndivTissues'));
+const IndivGenes = lazy(() => import('./IndividualComponents/IndivGenes/IndivGenes'));
+const IndivDatasets = lazy(() => import('./IndividualComponents/IndivDatasets/IndivDatasets'));
+const PharmacoGx = lazy(() => import('./IndividualComponents/IndivDatasets/PharmacoGx/PharmacoGx'));
+const Datasets = lazy(() => import('./SummaryComponents/Datasets/Datasets'));
+const IntersectionMain = lazy(() => import('./IntersectionComponents/IntersectionMain'));
+const Home = lazy(() => import('./Home/Home'));
+const AboutUs = lazy(() => import('./About/AboutUs/AboutUs'));
+const Documentation = lazy(() => import('./About/Documentation/Documentation'));
+const CiteUs = lazy(() => import('./About/CiteUs/CiteUs'));
+const NotFoundPage = lazy(() => import('./UtilComponents/NotFoundPage'));
 
 export {
     Compounds,
