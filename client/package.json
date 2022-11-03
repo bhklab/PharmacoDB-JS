@@ -9,7 +9,7 @@
         "better-docs": "^2.0.1",
         "d3": "^7.0.1",
         "file-saver": "^2.0.5",
-        "graphql": "^15.0.0",
+        "graphql": "^15.1.0",
         "jsdoc": "^3.6.7",
         "lodash": "^4.17.21",
         "plotly.js": "^1.54.7",

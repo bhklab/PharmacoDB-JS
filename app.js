@@ -6,6 +6,7 @@ const knexLogger = require('knex-logger');
 const morgan = require('morgan');
 const db = require('./db/knex');
 const cors = require('cors');
+const compression = require('compression');
 
 // importing the graphql schema and resolver functions.
 const graphQlSchema = require('./graphql/schema/index');
@@ -14,6 +15,9 @@ const graphQlResolvers = require('./graphql/resolvers/index');
 // express server.
 const app = express();
 app.use(cors());
+
+// Compress all HTTP responses
+app.use(compression());
 
 // logging.
 app.use(knexLogger(db));
