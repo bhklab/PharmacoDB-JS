@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import doseImg from '../../images/desc-dosecurves.png';
+import doseImg from '../../images/desc-dosecurves.webp';
 import colors from '../../styles/colors';
 
 const StyledDescription = styled.div`

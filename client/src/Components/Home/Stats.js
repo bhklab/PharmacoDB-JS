@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
-import compoundsImg from '../../images/compounds.png';
-import cellsImg from '../../images/cell.png';
-import datasetsImg from '../../images/dataset.png';
-import experimentsImg from '../../images/experiment.png';
-import genesImg from '../../images/gene.png';
-import tissuesImg from '../../images/tissue.png';
+import compoundsImg from '../../images/compound.webp';
+import cellsImg from '../../images/cell.webp';
+import datasetsImg from '../../images/dataset.webp';
+import experimentsImg from '../../images/experiment.webp';
+import genesImg from '../../images/gene.webp';
+import tissuesImg from '../../images/tissue.webp';
 import colors from '../../styles/colors';
 import { getAllDataTypeStatsQuery } from '../../queries/stat';
 

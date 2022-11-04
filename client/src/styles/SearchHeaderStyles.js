@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import bg from '../images/bg.jpg';
+import bg from '../images/bg.webp';
 import colors from './colors';
 
 /**
