@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { XCircle } from 'react-bootstrap-icons';
+import circle from '../../images/x-circle-fill.svg';
 import colors from '../../styles/colors';
 
 /**
@@ -21,7 +21,7 @@ const StyledError = styled.div`
         font-size: clamp(32px, calc(20vw + 10px), 250px);
         color: ${colors.dark_pink_highlight};
         opacity: 0.6;
-        margin-bottom: 30px;
+        margin: 50px 0;
     }
     h3 {
         color: ${colors.dark_pink_highlight};
@@ -39,7 +39,7 @@ const Error = (props) => {
     return(
         <StyledError>
             <div className='stop-icon'>
-                <XCircle />
+                <img src={circle} alt='cross' />
             </div>
             <h3>An Error Occurred.</h3>
             {
