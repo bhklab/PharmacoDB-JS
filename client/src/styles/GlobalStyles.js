@@ -113,10 +113,4 @@ const GlobalStyles = createGlobalStyle`
     }
 `;
 
-// font-family: 'Nunito', sans-serif; 400, 600
-// font-family: 'Open Sans', sans-serif; 400, 600
-// font-family: 'Overpass', sans-serif; 400, 600
-// font-family: 'Roboto Slab', serif; 600
-// font-family: 'Rubik', sans-serif; 400, 500
-
 export default GlobalStyles;
