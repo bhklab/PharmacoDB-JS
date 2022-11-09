@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import AsyncSelect from 'react-select/async';
 import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { getCompoundsIdNameQuery } from '../../queries/compound';
+import { getGenesIdSymbolQuery } from '../../queries/gene';
+import { getTissuesQuery } from '../../queries/tissue';
+import { getCellLinesQuery } from '../../queries/cell';
+import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 import defaultOptions from '../../utils/searchDefaultOptions';
-import { searchQuery } from '../../queries/search';
+import MenuList from './List';
+
+/** CONSTANTS */
+// input must be greater than this length to display option menu
+const INPUT_LENGTH_FOR_MENU = 1;
 
 // placeholders for react-select
 const placeholders = [
@@ -81,7 +89,15 @@ const SearchBar = (props) => {
   // all options available - sent to react-select
   const [options, setOptions] = useState(defaultOptions.options);
 
-  const [searchedValue, updateSearchedValue] = useState('');
+  // entirety of data
+  const [data, setData] = useState({
+    genes: [],
+    compounds: [],
+    tissues: [],
+    cell_lines: [],
+    datasets: [],
+    dataset_intersection: [],
+  });
 
   // is all data loaded?
   const [isDataLoaded, setDataLoadedValue] = useState(false);
@@ -93,6 +109,38 @@ const SearchBar = (props) => {
     selected: [],
   });
 
+  // for menu being open or closed
+  // IMPORTANT: don't merge into above state, because
+  // above state cannot have multiple properties changed
+  // at the same time
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /** HANDLERS */
+  /**
+   * Handles the option selected in the input.
+   *
+   * @param {Object} event the option selected
+   */
+  const handleChange = (event) => {
+    setSelectState({ ...selectState, selected: event });
+    // also revert open menu to false because option selected
+    setMenuOpen(false);
+  };
+
+  /**
+   * Handles keypresses or any other changes in the input.
+   *
+   * @param {Object} event the current value of the input
+   */
+  const handleInputChange = (event) => {
+    setSelectState({
+      ...selectState,
+      input: event,
+    });
+    // also make sure menu doesn't open on click until type
+    setMenuOpen(event.length >= INPUT_LENGTH_FOR_MENU);
+  };
+
   /**
    * Handles on enter button press to go to search results
    *
@@ -103,7 +151,7 @@ const SearchBar = (props) => {
     const { selected } = selectState;
     let queryParams = '/';
 
-    if (event.key === 'Enter' && selected.length !== 0) {
+    if (event.key === 'Enter' && !menuOpen && selected.length !== 0) {
       const { type, value, label } = selected[0];
       if (selected.length === 1 && type === 'dataset_intersection') {
         const datasets = label.split(' ').join(',');
@@ -175,6 +223,13 @@ const SearchBar = (props) => {
   };
 
   /**
+   * Handles menu close
+   */
+  const handleMenuClose = () => {
+    setMenuOpen(false);
+  };
+
+  /**
    * React-select filter option that filters based on
    * what the input starts with. Hopefully this will reduce the
    * amount of options returned
@@ -215,34 +270,87 @@ const SearchBar = (props) => {
     return finalSubsets;
   }
 
-  // const promiseOptions = (inputValue) => {
-  //   console.log(inputValue);
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       call();
-  //       resolve([{ value: 'ocean', label: 'Ocean'}]);
-  //     }, 2000);
-  //   });
-  // }
+  /** DATA LOADING */
+  const {
+    data: compoundsData, loading: compoundsDataLoading, error: compoundsDataError
+  } = useQuery(getCompoundsIdNameQuery);
+  const {
+    data: genesData, loading: genesDataLoading, error: genesDataError,
+  } = useQuery(getGenesIdSymbolQuery);
+  const {
+    data: tissuesData, loading: tissuesDataLoading, error: tissuesDataError,
+  } = useQuery(getTissuesQuery);
+  const {
+    data: cellsData, loading: cellsDataLoading, error: cellsDataError,
+  } = useQuery(getCellLinesQuery);
+  const {
+    data: datasetsData, loading: datasetsDataLoading, error: datasetsDataError,
+  } = useQuery(getDatasetsQuery);
 
-  const [data] = useLazyQuery(searchQuery, {
-    onCompleted: (data) => {
-        console.log(data);
-    },
-    onError: (error) => {
-        console.log(error);
+
+  /**
+   * Load data in
+   */
+  useEffect(() => {
+    if (!tissuesDataLoading && !cellsDataLoading && !datasetsDataLoading && !compoundsDataLoading && !genesDataLoading) {
+      setData({
+        compounds: compoundsData ? compoundsData.compounds : [],
+        genes: genesData ? genesData.genes : [],
+        tissues: tissuesData ? tissuesData.tissues : [],
+        cell_lines: cellsData ? cellsData.cell_lines : [],
+        datasets: datasetsData ? datasetsData.datasets : [],
+        dataset_intersection: datasetsData ? createDatasetIntersections(datasetsData.datasets) : [],
+      });
+
+      // update the isLoading state because all data has been loaded.
+      setDataLoadedValue(true);
     }
-});
+  }, [tissuesData, cellsData, datasetsData, genesData, compoundsData]);
 
-  const promiseOptions = (inputValue) => {
-    console.log(data);
-    const dataset = data({variables: {input: 'erb'}});
-    console.log(dataset);
-  }
+  useEffect(() => {
+    // if all the data is loaded.
+    if (isDataLoaded) {
+      // for every datatype, push the options into groups
+      const finalOptions = [];
+      Object.keys(data).forEach((d) => {
+        let modifiedOptions = [];
+        data[d].forEach((x) => {
+          if (x.annotation && x.annotation.symbol && x.__typename.match(/gene/i)) { // for gene
+            modifiedOptions.push({ value: x.id, label: x.annotation.symbol, type: d });
+          } else if (x.__typename.match(/compound/i)) { // for compound
+            modifiedOptions.push({ value: x.uid, label: x.name, type: d });
+          } else if (x.__typename.match(/cellline/i)) { // for cell line
+            modifiedOptions.push({ value: x.uid, label: x.name, type: d });
+          } else if (x.__typename.match(/tissue|dataset/i)) { // for tissue and dataset
+            modifiedOptions.push({ value: x.id, label: x.name, type: d });
+          }
+        });
+        // pushing the final options.
+        finalOptions.push({
+          label: d,
+          options: modifiedOptions
+        });
+      });
+      // make a list out of all the options for now.
+      const finalOptionsList = [];
+      finalOptions.forEach(el => {
+        finalOptionsList.push(...el.options);
+      })
+
+      setOptions([...options, finalOptionsList]);
+    }
+  }, [data]);
 
   return (
     <>
-      <AsyncSelect 
+      <Select
+        isMulti
+        filterOption={customFilterOption}
+        options={(options)}
+        components={{
+          MenuList: (props) => (<MenuList {...props} />),
+          // Option: CustomOption,
+        }}
         placeholder={(
           <ReactTypingEffect
             speed="100"
@@ -252,16 +360,14 @@ const SearchBar = (props) => {
             text={placeholders}
           />
         )}
-        defaultOptions={options}
-        isMulti
-        cacheOptions 
-        loadOptions={promiseOptions} 
-        styles={SearchBarStyles} 
-        // onChange={handleChange}
-        // onInputChange={handleInputChange}
-        // onKeyDown={handleKeyDown}
-        // onMenuClose={handleMenuClose}
-        // menuIsOpen={menuOpen}
+        value={selectState.selected}
+        formatGroupLabel={formatGroupLabel}
+        styles={SearchBarStyles}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onMenuClose={handleMenuClose}
+        menuIsOpen={menuOpen}
       />
     </>
   );
