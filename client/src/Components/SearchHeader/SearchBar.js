@@ -87,7 +87,7 @@ const SearchBar = (props) => {
 
   /** SETTING STATE */
   // all options available - sent to react-select
-  const [options, setOptions] = useState(defaultOptions);
+  const [options, setOptions] = useState(defaultOptions.options);
 
   // entirety of data
   const [data, setData] = useState({
@@ -308,9 +308,6 @@ const SearchBar = (props) => {
   }, [tissuesData, cellsData, datasetsData, genesData, compoundsData]);
 
   useEffect(() => {
-    // set options to default.
-    setOptions(defaultOptions);
-
     // if all the data is loaded.
     if (isDataLoaded) {
       // for every datatype, push the options into groups
@@ -339,7 +336,8 @@ const SearchBar = (props) => {
       finalOptions.forEach(el => {
         finalOptionsList.push(...el.options);
       })
-      setOptions(finalOptionsList);
+
+      setOptions([...options, finalOptionsList]);
     }
   }, [data]);
 
