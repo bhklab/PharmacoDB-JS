@@ -1,6 +1,5 @@
 // default options for the search.
-const defaultOptions = [
-    {
+const defaultOptions = {
         label: 'default_options',
         options: [
             { value: 'cell', label: 'cell', type: 'cells' },
@@ -18,7 +17,6 @@ const defaultOptions = [
             { value: 'dataset', label: 'dataset', type: 'datasets' },
             { value: 'datasets', label: 'datasets', type: 'datasets' },
         ],
-    }
-];
+};
 
 export default defaultOptions;
