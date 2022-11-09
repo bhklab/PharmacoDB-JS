@@ -20,6 +20,7 @@ const {
 const { tissueType, tissueTypeWithDatasetType, tissueDetailType } = require('./tissue');
 const { profileType } = require('./profile');
 const { molecularProfilingType } = require('./molecular_profiling');
+const { searchType } = require('./search');
 
 
 // schema definition.
@@ -96,9 +97,12 @@ const schema = `
     "Mol Type"
     ${molecularProfilingType}
 
+    "Search Type"
+    ${searchType}
+
     "Root Query"
     ${RootQuery}
-
+    
     schema {
         query: RootQuery
     }
