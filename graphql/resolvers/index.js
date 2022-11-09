@@ -9,6 +9,7 @@ const tissueResolver = require('./tissue');
 const geneCompoundResolver = require('./gene_compound');
 const geneCompoundAnalyticResolver = require('./gene_compound_analytic');
 const molecularProfilingResolver = require('./molecular_profiling');
+const searchResolver = require('./search');
 
 const rootResolver = {
     ...compoundResolver,
@@ -22,6 +23,7 @@ const rootResolver = {
     ...geneCompoundResolver,
     ...geneCompoundAnalyticResolver,
     ...molecularProfilingResolver,
+    ...searchResolver,
 };
 
 module.exports = rootResolver;
