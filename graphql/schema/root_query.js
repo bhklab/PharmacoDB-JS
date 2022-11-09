@@ -1,6 +1,10 @@
 // root query for the schema definition.
 const RootQuery = `type RootQuery {
 
+    """Root Query for search"""
+    search(input: String): [Search]
+
+
     """
         Root Query for compounds.
         'page' is the page number for output (default value is 1)'.
