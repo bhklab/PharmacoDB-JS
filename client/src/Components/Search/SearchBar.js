@@ -18,16 +18,48 @@ const placeholders = [
   'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
 
+// transform data to react-select input format
+const transformData = (data) => {
+  return data.map(el => ({
+    value: el.value,
+    label: el.value,
+  }))
+};
+
+// function gets the data from search API based on the user input 
+const getDataBasedOnInput = async (input) => {
+  let finalResponse;
+
+  // API request
+  const data = await fetch('http://localhost:5000/graphql ', {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: searchQuery,
+          variables: {input},
+        })
+  });
+
+  // prepare response
+  await data
+    .json()
+    .then(response => {
+      return response;
+    })
+    .then(response => {
+      finalResponse = transformData(response.data.search);
+    })
+    .catch(err => console.log('an error occurred while making an API request', err));
+
+    return finalResponse;
+};
+
+
 /**
  * Component for the search bar.
- *
- * @component
- * @example
- *
- * const onClick = (e) => {};
- * return (
- *   <SearchBar onClick={onClick} />
- * )
+ * @component - Search Bar component
  */
 const SearchBar = (props) => {
   const { onClick } = props;
@@ -145,22 +177,11 @@ const SearchBar = (props) => {
     return finalSubsets;
   }
 
-  const promiseOptions = (input) => {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-          const data = await fetch('http://localhost:5000/graphql ', {
-            method: 'post',
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              query: searchQuery,
-              variables: {input},
-            })
-          });
-          data.json().then(result => resolve([{value: result.data.search[0].value, label: result.data.search[0].value}]));
-        }, 1000);
-    });
+  // function creates a promise that resolves to the selection data
+  const selectionOptions = (input) => {
+    return new Promise((resolve) => setTimeout(() =>  
+      getDataBasedOnInput(input).then(response => resolve(response)), 1000)
+    );
   }
 
   return (
@@ -178,7 +199,7 @@ const SearchBar = (props) => {
         defaultOptions={options}
         isMulti
         cacheOptions 
-        loadOptions={promiseOptions} 
+        loadOptions={selectionOptions} 
         onKeyDown={handleKeyDown}
         styles={SearchBarStyles}
         noOptionsMessage={()=>"name not found"} 
