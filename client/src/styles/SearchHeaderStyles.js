@@ -290,7 +290,7 @@ const SearchBarStyles = {
     background: 'white',
     color: colors.dark_gray_text,
     cursor: 'pointer',
-    padding: '0',
+    padding: '10px',
     margin: '0',
     fontSize: '1em',
     '&:hover': {
