@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AsyncSelect from 'react-select/async';
-import Select, { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
-import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import createAllSubsets from '../../utils/createAllSubsets';
@@ -21,49 +19,6 @@ const placeholders = [
 ];
 
 /**
- * Styles for formatting the group header label
- */
-const groupStyles = {
-  fontSize: '1.5em',
-  padding: '5px',
-  textTransform: 'capitalize',
-  color: colors.dark_teal_heading,
-  fontWeight: 600,
-};
-
-/**
- * Custom options for scrolling with keyboard
- */
-const CustomOption = (innerProps) => (
-  <components.Option {...innerProps}>
-    <div
-      style={{
-        textAlign: 'left',
-        fontWeight: '400',
-        color: colors.dark_gray_text,
-        cursor: 'pointer',
-        padding: '15px 25px',
-        fontSize: '1em',
-        fontFamily: "'Open Sans', sans-serif",
-        backgroundColor: innerProps.isFocused ? colors.light_blue_bg : 'inherit',
-      }}
-    >
-      {innerProps.label}
-    </div>
-  </components.Option>
-);
-
-/**
- * JSX for formatting the group header label
- * @param {Object} data contains react-select group label
- */
-const formatGroupLabel = (data) => (
-  <div style={groupStyles}>
-    <span>{data.label.replace('_', ' ')}</span>
-  </div>
-);
-
-/**
  * Component for the search bar.
  *
  * @component
@@ -77,14 +32,7 @@ const formatGroupLabel = (data) => (
 const SearchBar = (props) => {
   const { onClick } = props;
 
-  /** SETTING STATE */
-  // all options available - sent to react-select
   const [options, setOptions] = useState(defaultOptions.options);
-
-  const [searchedValue, updateSearchedValue] = useState('');
-
-  // is all data loaded?
-  const [isDataLoaded, setDataLoadedValue] = useState(false);
 
   // various states for select:
   // keyboard input in search bar, selected in search bar
@@ -175,24 +123,6 @@ const SearchBar = (props) => {
   };
 
   /**
-   * React-select filter option that filters based on
-   * what the input starts with. Hopefully this will reduce the
-   * amount of options returned
-   *
-   * @param {Object} option react-select option
-   * @param {Str} rawInput input from the search bar
-   */
-  const customFilterOption = (option, rawInput) => {
-    let returnObject = {};
-
-    if (option.label && option.label !== 'null') {
-      returnObject = option.label.toLowerCase().startsWith(rawInput.toLowerCase());
-    }
-
-    return returnObject;
-  };
-
-  /**
    * Creates the dataset intersection array.
    * @param {Array} - dataset array.
    * @returns {Array} - a dataset intersection array with all the subsets.
@@ -215,29 +145,22 @@ const SearchBar = (props) => {
     return finalSubsets;
   }
 
-  // const promiseOptions = (inputValue) => {
-  //   console.log(inputValue);
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       call();
-  //       resolve([{ value: 'ocean', label: 'Ocean'}]);
-  //     }, 2000);
-  //   });
-  // }
-
-  const [data] = useLazyQuery(searchQuery, {
-    onCompleted: (data) => {
-        console.log(data);
-    },
-    onError: (error) => {
-        console.log(error);
-    }
-});
-
-  const promiseOptions = (inputValue) => {
-    console.log(data);
-    const dataset = data({variables: {input: 'erb'}});
-    console.log(dataset);
+  const promiseOptions = (input) => {
+    return new Promise((resolve) => {
+        setTimeout(async () => {
+          const data = await fetch('http://localhost:5000/graphql ', {
+            method: 'post',
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              query: searchQuery,
+              variables: {input},
+            })
+          });
+          data.json().then(result => resolve([{value: result.data.search[0].value, label: result.data.search[0].value}]));
+        }, 1000);
+    });
   }
 
   return (
@@ -256,12 +179,9 @@ const SearchBar = (props) => {
         isMulti
         cacheOptions 
         loadOptions={promiseOptions} 
-        styles={SearchBarStyles} 
-        // onChange={handleChange}
-        // onInputChange={handleInputChange}
-        // onKeyDown={handleKeyDown}
-        // onMenuClose={handleMenuClose}
-        // menuIsOpen={menuOpen}
+        onKeyDown={handleKeyDown}
+        styles={SearchBarStyles}
+        noOptionsMessage={()=>"name not found"} 
       />
     </>
   );
