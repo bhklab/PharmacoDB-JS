@@ -8,7 +8,7 @@ const { calculateRange } = require('../helpers/calculateRange');
  * @param {string} symbol - string matching the symbol or partial string
  * @returns {Object} - gene data that matches to input/arg symbol.
  */
-const getGenesBasedOnSymbol = (symbol) => knex.select('gene.id', 'symbol as value')
+const getGenesBasedOnSymbol = (symbol) => knex.select('gene.id', 'symbol')
     .from('gene')
     .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
     .where('symbol', 'like', `%${symbol}%`);
