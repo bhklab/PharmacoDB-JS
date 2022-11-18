@@ -4,17 +4,11 @@ const { retrieveFields } = require('../helpers/queryHelpers');
 
 
 /**
- * @param {number} - datasetId (Optional)
- * @returns {Object} - returns an array like this [{dataset_id: Number, dataset_name: String}]
+ * @returns {Object} - all datasets query
  */
-const datasetQuery = async datasetId => {
-    const dataset = await knex
-        .select('id as dataset_id', 'name as dataset_name')
-        .from('dataset')
-        .where('id', 'like', datasetId ? `${datasetId}` : '%%');
-
-    return transformObject(dataset);
-};
+const datasetQuery = () => knex
+    .select('id as dataset_id', 'name as dataset_name')
+    .from('dataset');
 
 /**
  *
@@ -23,7 +17,6 @@ const datasetQuery = async datasetId => {
 const datasetStatQuery = () => knex.select()
     .from('dataset_statistics as dt')
     .join('dataset as d', 'd.id', 'dt.dataset_id');
-
 
 /**
  *
@@ -106,6 +99,27 @@ const summaryQuery = async (type, datasetId, datasetName) => {
 };
 
 /**
+ * 
+ * @returns {Object} - returns an array like this [{dataset_id: Number, dataset_name: String}]
+ */
+const allDatasets = async () => {
+    // get the list of datasets
+    const datasets = await datasetQuery();
+
+    return transformObject(datasets);
+};
+
+/**
+ * 
+ * @param {string} name - a partial or full dataset name to query the result based on it 
+ * @returns {Object} - dataset data matching the name based on the query string
+ */
+const getDatasetsBasedOnName = async (name = '') => (
+    await datasetQuery().where('name', 'like', `%${name}%`)
+);
+
+
+/**
  *
  * @param {string} type - either 'cell' or 'compound' or 'tissue'
  * @param {number} datasetId - optional
@@ -154,7 +168,7 @@ const datatypes_information_all_datasets = async () => {
         const returnData = [];
         let tissues, cells, compounds;
 
-        const datasets = await datasetQuery();
+        const datasets = await allDatasets();
         tissues = await getTypeDataGroupedByDataset('tissue');
         cells = await getTypeDataGroupedByDataset('cell');
         compounds = await getTypeDataGroupedByDataset('compound');
@@ -207,7 +221,7 @@ const datatypes_information_per_dataset = async (args, parent, info) => {
         // data returned from the graphql API.
         const returnData = [];
         let tissues, cells, compounds;
-        const datasets = await datasetQuery();
+        const datasets = await allDatasets();
         const dataset = datasets.filter(dataset => { return dataset.dataset_id === datasetId || dataset.dataset_name === datasetName; })[0];
         if (listOfFields.includes('tissues_tested')) tissues = await getTypeDataGroupedByDataset('tissue', datasetId, datasetName);
         if (listOfFields.includes('cells_tested')) cells = await getTypeDataGroupedByDataset('cell', datasetId, datasetName);
@@ -249,7 +263,7 @@ const datatypes_information_per_dataset = async (args, parent, info) => {
 const datasets = async () => {
     try {
         // get the list of the datasets with their name and id
-        const datasets = await datasetQuery();
+        const datasets = await allDatasets();
         // return the transformed data for this function.
         return datasets.map(dataset => {
             const { dataset_id, dataset_name } = dataset;
@@ -302,7 +316,7 @@ const dataset = async (args, parent, info) => {
         const returnData = [];
         let cell_count, compound_count, tissue_count, experiment_count, cells, compounds;
 
-        const datasets = await datasetQuery();
+        const datasets = await allDatasets();
         const dataset = datasets.filter(dataset => { 
             return dataset.dataset_id === datasetId || dataset.dataset_name === datasetName;
         })[0];
@@ -449,10 +463,11 @@ const dataset_stats = async () => {
 module.exports = {
     datasets,
     dataset,
+    getDatasetsBasedOnName,
     cell_lines_grouped_by_dataset,
     type_tested_on_dataset,
     typeCountGroupByDataset,
     datatypes_information_all_datasets,
     datatypes_information_per_dataset,
-    dataset_stats
+    dataset_stats,
 };
