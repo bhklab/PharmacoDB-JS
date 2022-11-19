@@ -1,6 +1,6 @@
 const searchType = `
     type Search {
-        id: Int!
+        id: String!
         value: String!
         type: String!
     }
