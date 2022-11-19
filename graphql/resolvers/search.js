@@ -1,15 +1,40 @@
-const knex = require('../../db/knex');
 const { getGenesBasedOnSymbol } = require('./gene');
+const { getDatasetsBasedOnName } = require('./dataset');
+const { getCellLinesBasedOnName } = require('./cell');
 
+/**
+ * 
+ * @param {number} id 
+ * @param {string} value 
+ * @param {string} type 
+ * @returns {Object} -
+ */
+const transformData = (id, value, type) => ({
+    id,
+    value,
+    type,
+});
 
 /**
  * 
  * @param {Array} data 
- * @param {string} type 
- * @returns {Array} - array of object with updated object with addition of type.
+ * @returns {Array}
  */
-const addTypeField = (data, type) => data.map(el => ({...el, type}));
+const transformGenes = (data) => data.map((el) => transformData(el.id, el.symbol, 'gene'));
 
+/**
+ * 
+ * @param {Array} data 
+ * @returns {Array}
+ */
+const transformDatasets = (data) => data.map((el) => transformData(el.dataset_id, el.dataset_name, 'dataset'));
+
+/**
+ * 
+ * @param {Array} data 
+ * @returns {Array}
+ */
+const transformCellLines = (data) => data.map((el) => transformData(el.id, el.cell_uid, 'cell'));
 
 /**
  * Returns 
@@ -17,9 +42,17 @@ const addTypeField = (data, type) => data.map(el => ({...el, type}));
  * @returns {Object} - returns list of data for different data types matching the input string
  */
 const search = async ({ input }) => {
-    const genes = addTypeField(await getGenesBasedOnSymbol(input), 'gene');
+    const genes = transformGenes(await getGenesBasedOnSymbol(input));
+    const datasets = transformDatasets(await getDatasetsBasedOnName(input));
+    // const tissues = ;
+    const cellLines = transformCellLines(await getCellLinesBasedOnName(input));
+    // const compounds = ;
 
-    return (genes);
+    return ([
+        ...genes, 
+        ...datasets,
+        ...cellLines,
+    ]);
 };
 
 
