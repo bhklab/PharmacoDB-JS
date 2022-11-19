@@ -3,6 +3,14 @@ const { transformObject } = require('../helpers/transformObject');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
+/**
+ * 
+ * @param {string} name 
+ * @returns {Array} - array of tissues
+ */
+const getTissueBasedOnName = (name) => knex.select()
+    .from('tissue')
+    .where('name', 'like', `${name}`);
 
 /**
  * 
@@ -329,4 +337,5 @@ module.exports = {
     tissues,
     tissue,
     getTissueIdBasedOnTissueName,
+    getTissueBasedOnName,
 };
