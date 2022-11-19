@@ -6,6 +6,12 @@ const {calculateRange} = require('../helpers/calculateRange');
 
 /**
  * 
+ * @returns {Object} - all the cell lines
+ */
+const cellLineQuery = () => knex.select().from('cell');
+
+/**
+ * 
  * @param {Object} cell - cell line object
  * @returns {Object} - creates a transformed object for the cell line data
  */
@@ -131,6 +137,13 @@ const transformSingleCellLine = (data) => {
 };
 
 /**
+ * 
+ * @param {string} name - partial/complete cell name
+ * @returns {Array} - cell line data related to input cell name
+ */
+const getCellLinesBasedOnName = async (name) => await cellLineQuery().where('name', 'like', `%${name}%`);
+
+/**
  * ----------------------------------------------------------------
  * All Cell Lines Resolver Function
  * ----------------------------------------------------------------
@@ -144,7 +157,7 @@ const transformSingleCellLine = (data) => {
  * @param {Object} parent
  * @param {Object} info
  */
-exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
+const cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
     const {pageNumber, perPageCount} = validatePageAndPerPageParameters(page, per_page);
 
     // setting limit and offset.
@@ -199,7 +212,7 @@ exports.cell_lines = async ({ page = 1, per_page = 20, all = false }, parent, in
 /**
  * @param {Object} args - arguments passed to cell_line function.
  */
-exports.cell_line = async args => {
+const cell_line = async args => {
     try {
         // grabbing the cell line id from the args.
         const { cellId, cellName, cellUID } = args;
@@ -251,3 +264,8 @@ exports.cell_line = async args => {
     }
 };
 
+module.exports = {
+    cell_lines,
+    cell_line,
+    getCellLinesBasedOnName,
+};
