@@ -5,6 +5,19 @@ const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 
 /**
+ * 
+ * @param {string} compound 
+ * @returns {Array} - array of compounds
+ */
+const getCompoundBasedOnName = async (compound) => {
+    const compounds = await knex.select()
+        .from('compound')
+        .where('name', 'like', `%${compound}%`);
+
+    return compounds;
+};
+
+/**
  *
  * @param {string} compound - compound name
  * @returns {number} - compound id
@@ -17,7 +30,7 @@ const getCompoundIdBasedOnCompoundName = async (compound) => {
     if (compound) {
         compoundId = await knex.select('compound.id')
             .from('compound')
-            .where('name', compound);
+            .where('name', 'like', `%${compound}%`);
     } else {
         return Error('Please provide a valid compound name!!');
     }
@@ -325,4 +338,5 @@ module.exports = {
     compounds,
     compound,
     getCompoundIdBasedOnCompoundName,
+    getCompoundBasedOnName,
 };
