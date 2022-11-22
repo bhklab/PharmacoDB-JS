@@ -8,6 +8,7 @@ import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 import defaultOptions from '../../utils/searchDefaultOptions';
 import { searchQuery } from '../../queries/search';
+import containsAll from '../../utils/containsAll';
 
 // input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
@@ -97,7 +98,7 @@ const createURLForTwoSelections = (selection) => {
   const selectedTypes = selection.map(el => el.type);
   let url = '';
 
-  if (selectedTypes.includes('tissue') && selectedTypes.includes('compound')) {
+  if (containsAll(selectedTypes, ['tissue', 'compound'])) {
     let tissue, compound = '';
     selection.forEach(el => {
       if (el.type === 'compound') {
@@ -107,7 +108,7 @@ const createURLForTwoSelections = (selection) => {
       }
     })
     url = `/search?compound=${compound}&tissue=${tissue}`;
-  } else if (selectedTypes.includes('cell') && selectedTypes.includes('compound')) {
+  } else if (containsAll(selectedTypes, ['cell', 'compound'])) {
     let cell, compound = '';
     selection.forEach(el => {
       if (el.type === 'compound') {
@@ -117,7 +118,7 @@ const createURLForTwoSelections = (selection) => {
       }
     })
     url = `/search?compound=${compound}&cell_line=${cell}`;
-  } else if (selectedTypes.includes('gene') && selectedTypes.includes('compound')) {
+  } else if (containsAll(selectedTypes, ['gene', 'compound'])) {
     let gene, compound = '';
     selection.forEach(el => {
       if (el.type === 'compound') {
@@ -142,7 +143,7 @@ const createURLForThreeSelections = (selection) => {
   const selectedTypes = selection.map(el => el.type);
   let url = '';
   
-  if (selectedTypes.includes('tissue') && selectedTypes.includes('compound') && selectedTypes.includes('gene')) {
+  if (containsAll(selectedTypes, ['tissue', 'compound', 'gene'])) {
     let tissue, compound, gene = '';
     selection.forEach(el => {
       if (el.type === 'compound') {
