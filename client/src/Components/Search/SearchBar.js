@@ -9,6 +9,9 @@ import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 import defaultOptions from '../../utils/searchDefaultOptions';
 import { searchQuery } from '../../queries/search';
 
+// input must be greater than this length to display option menu
+const INPUT_LENGTH_FOR_MENU = 1;
+
 // placeholders for react-select
 const placeholders = [
   'Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
@@ -20,6 +23,7 @@ const placeholders = [
 
 // transform data to react-select input format
 const transformData = (data) => {
+  console.log(data);
   return data.map(el => ({
     value: el.value,
     label: el.value,
@@ -27,7 +31,7 @@ const transformData = (data) => {
 };
 
 // function gets the data from search API based on the user input 
-const getDataBasedOnInput = async (input) => {
+const getSelectionDataBasedOnInput = async (input) => {
   let finalResponse;
 
   // API request
@@ -62,28 +66,20 @@ const getDataBasedOnInput = async (input) => {
  * @component - Search Bar component
  */
 const SearchBar = (props) => {
-  const { onClick } = props;
-
-  const [options, setOptions] = useState(defaultOptions.options);
-
-  // various states for select:
-  // keyboard input in search bar, selected in search bar
-  const [selectState, setSelectState] = useState({
-    input: '',
-    selected: [],
-  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedElement, setSelectedElementState] = useState([]);
 
   /**
    * Handles on enter button press to go to search results
-   *
    * @param {Object} event key pressed
    */
   const handleKeyDown = (event) => {
     const { history } = props;
-    const { selected } = selectState;
+    const selected = selectedElement;
+    console.log(selected);
     let queryParams = '/';
 
-    if (event.key === 'Enter' && selected.length !== 0) {
+    if (event.key === 'Enter' && !isMenuOpen && selected.length !== 0) {
       const { type, value, label } = selected[0];
       if (selected.length === 1 && type === 'dataset_intersection') {
         const datasets = label.split(' ').join(',');
@@ -143,44 +139,46 @@ const SearchBar = (props) => {
         }
       }
 
-      // calls callback to hide popup in searchheader
-      onClick(false);
-
       // reset react-select
-      setSelectState({ ...selectState, selected: null });
+      setSelectedElementState({ ...selectedElement, selected: null });
 
       // go to endpoint
       history.push(queryParams);
     }
   };
 
+  // handles menu close
+  const handleMenuClose = () => {
+    console.log('MenuClose', isMenuOpen);
+    setIsMenuOpen(false);
+  };
+
   /**
-   * Creates the dataset intersection array.
-   * @param {Array} - dataset array.
-   * @returns {Array} - a dataset intersection array with all the subsets.
+   * Handles the option selected in the input.
+   *
+   * @param {Object} event the option selected
    */
-  const createDatasetIntersections = (data) => {
-    // datasets array.
-    const datasets = data.map(el => el.name);
-    // get all the subsets of the datasets array/set.
-    const subsets = createAllSubsets(datasets).map((el, i) => {
-      return {
-        id: i,
-        name: el.toString().replaceAll(',', ' '),
-        __typename: 'dataset_intersection',
-      }
-    });
+  const handleChange = (event) => {
+    setSelectedElementState(...selectedElement, event);
 
-    // remove the elements with the set of lenght 0 or 1 from the subsets being an empty string.
-    const finalSubsets = subsets.filter(el => el.name.split(' ').length > 1);
+    // also revert open menu to false because option selected
+    setIsMenuOpen(false);
+  };
 
-    return finalSubsets;
-  }
+  /**
+   * Handles keypresses or any other changes in the input.
+   *
+   * @param {Object} event the current value of the input
+   */
+  const handleInputChange = (event) => {
+    // also make sure menu doesn't open on click until type
+    setIsMenuOpen(event.length >= INPUT_LENGTH_FOR_MENU);
+  };
 
   // function creates a promise that resolves to the selection data
   const selectionOptions = (input) => {
     return new Promise((resolve) => setTimeout(() =>  
-      getDataBasedOnInput(input).then(response => resolve(response)), 1000)
+      getSelectionDataBasedOnInput(input).then(response => resolve(response)), 1000)
     );
   }
 
@@ -196,13 +194,17 @@ const SearchBar = (props) => {
             text={placeholders}
           />
         )}
-        defaultOptions={options}
+        // defaultOptions={defaultOptions.options}
         isMulti
         cacheOptions 
         loadOptions={selectionOptions} 
         onKeyDown={handleKeyDown}
         styles={SearchBarStyles}
         noOptionsMessage={()=>"name not found"} 
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        onMenuClose={handleMenuClose}
+        menuIsOpen={isMenuOpen}
       />
     </>
   );
@@ -215,10 +217,6 @@ SearchBar.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  /**
-   * onClick handler for closing and opening search
-   */
-  onClick: PropTypes.func.isRequired,
 };
 
 export default withRouter(SearchBar);
