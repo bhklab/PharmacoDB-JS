@@ -60,6 +60,135 @@ const getSelectionDataBasedOnInput = async (input) => {
     return finalResponse;
 };
 
+/**
+ * 
+ * @param {string} type 
+ * @param {string} value 
+ * @param {string} label 
+ * @returns {string} - redirect URL
+ */
+const createSingleSelectionURL = (type, value, label) => {
+  let url = '';
+
+  // this is for dataset intersection (example searching for : ccle and fimm together)
+  if (type === 'dataset_intersection') {
+    const datasets = label.split(' ').join(',');
+    url = `/search?${type}=${datasets}`;
+  }
+
+  // this is for cases like searching for cells, tissues, cell, compound etc as a string
+  if (label === value) {
+    url = `/${type}`;
+  }
+
+  // this is for single type search like genes/8228.
+  if (label !== value) {
+    url = `/${type}s/${value}`;
+  }
+
+  return url;
+};
+
+/**
+ * 
+ * @param {Array} selection - array of selections
+ * @return {string} - URL string
+ */
+const createURLForTwoSelections = (selection) => {
+  const selectedTypes = selection.map(el => el.type);
+  let url = '';
+
+  if (selectedTypes.includes('tissue') && selectedTypes.includes('compound')) {
+    let tissue, compound = '';
+    selection.forEach(el => {
+      if (el.type === 'compound') {
+        compound = el.label;
+      } else if (el.type === 'tissue') {
+        tissue = el.label;
+      }
+    })
+    url = `/search?compound=${compound}&tissue=${tissue}`;
+  } else if (selectedTypes.includes('cell') && selectedTypes.includes('compound')) {
+    let cell, compound = '';
+    selection.forEach(el => {
+      if (el.type === 'compound') {
+        compound = el.label;
+      } else if (el.type === 'cell') {
+        cell = el.label;
+      }
+    })
+    url = `/search?compound=${compound}&cell_line=${cell}`;
+  } else if (selectedTypes.includes('gene') && selectedTypes.includes('compound')) {
+    let gene, compound = '';
+    selection.forEach(el => {
+      if (el.type === 'compound') {
+        compound = el.label;
+      } else if (el.type === 'gene') {
+        gene = el.label;
+      }
+    })
+    url = `/biomarker?compound=${compound}&gene=${gene}`;
+  }
+  
+  return url;
+};
+
+/**
+ * 
+ * @param {Array} selection - array of selections
+ * @return {string} - URL string
+ */
+const createURLForThreeSelections = (selection) => {
+  // get the selected types list
+  const selectedTypes = selection.map(el => el.type);
+  let url = '';
+  
+  if (selectedTypes.includes('tissue') && selectedTypes.includes('compound') && selectedTypes.includes('gene')) {
+    let tissue, compound, gene = '';
+    selection.forEach(el => {
+      if (el.type === 'compound') {
+        compound = el.label;
+      } 
+      if (el.type === 'tissue') {
+        tissue = el.label;
+      } 
+      if (el.type === 'gene') {
+        gene = el.label;
+      }
+    })
+    url = `/biomarker?compound=${compound}&tissue=${tissue}&gene=${gene}`;
+  }
+
+  return url;
+};
+
+/**
+ * @param {Array} selection - an array of objects (selections from the select)
+ */
+const createRedirectURL = (selection) => {
+  // selection length
+  const selectionLength = selection.length; 
+  // final url
+  let url = ''; 
+
+  switch(selectionLength) {
+    case 1:
+      const {type, value, label} = selection[0];
+      url = createSingleSelectionURL(type, value, label);
+      break;
+
+    case 2:
+      url = createURLForTwoSelections(selection);
+      break;
+
+    case 3: 
+      url = createURLForThreeSelections(selection);
+      break;
+  }
+
+  return url;
+};
+
 
 /**
  * Component for the search bar.
@@ -75,73 +204,14 @@ const SearchBar = (props) => {
    */
   const handleKeyDown = (event) => {
     const { history } = props;
-    const selected = selectedElement;
-
     let queryParams = '/';
 
-    if (event.key === 'Enter' && !isMenuOpen && selected.length !== 0) {
-      const { type, value, label } = selected[0];
-
-      if (selected.length === 1 && type === 'dataset_intersection') {
-        const datasets = label.split(' ').join(',');
-        queryParams = `/search?${type}=${datasets}`;
-      } else if (selected.length === 1 && selected && label === value) {
-        queryParams = `/${type}`;
-      } else if (selected.length === 1 && selected && label !== value) {
-        queryParams = `/${type}s/${value}`;
-      } else if (selected.length === 2 && selected && label !== value) {
-        const selectedTypes = selected.map(el => el.type);
-        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
-          let tissue, compound = '';
-          selected.forEach(el => {
-            if (el.type === 'compounds') {
-              compound = el.label;
-            } else if (el.type === 'tissues') {
-              tissue = el.label;
-            }
-          })
-          queryParams = `/search?compound=${compound}&tissue=${tissue}`;
-        } else if (selectedTypes.includes('cell_lines') && selectedTypes.includes('compounds')) {
-          let cell, compound = '';
-          selected.forEach(el => {
-            if (el.type === 'compounds') {
-              compound = el.label;
-            } else if (el.type === 'cell_lines') {
-              cell = el.label;
-            }
-          })
-          queryParams = `/search?compound=${compound}&cell_line=${cell}`;
-        }
-        else if (selectedTypes.includes('genes') && selectedTypes.includes('compounds')) {
-          let gene, compound = '';
-          selected.forEach(el => {
-            if (el.type === 'compounds') {
-              compound = el.label;
-            } else if (el.type === 'genes') {
-              gene = el.label;
-            }
-          })
-          queryParams = `/biomarker?compound=${compound}&gene=${gene}`;
-        }
-      } else if (selected.length === 3 && selected && label !== value) {
-        const selectedTypes = selected.map(el => el.type);
-        if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds') && selectedTypes.includes('genes')) {
-          let tissue, compound, gene = '';
-          selected.forEach(el => {
-            if (el.type === 'compounds') {
-              compound = el.label;
-            } else if (el.type === 'tissues') {
-              tissue = el.label;
-            } else if (el.type === 'genes') {
-              gene = el.label;
-            }
-          })
-          queryParams = `/biomarker?compound=${compound}&tissue=${tissue}&gene=${gene}`;
-        }
-      }
-
+    if (event.key === 'Enter' && !isMenuOpen && selectedElement.length !== 0) {
+      // creating URL
+      queryParams = createRedirectURL(selectedElement);
+      
       // reset react-select
-      setSelectedElementState({ ...selectedElement, selected: null });
+      setSelectedElementState([]);
 
       // go to endpoint
       history.push(queryParams);
@@ -150,27 +220,18 @@ const SearchBar = (props) => {
 
   // handles menu close
   const handleMenuClose = () => {
-    console.log('MenuClose', isMenuOpen);
     setIsMenuOpen(false);
   };
 
-  /**
-   * Handles the option selected in the input.
-   *
-   * @param {Object} event the option selected
-   */
+  // Handles the option selected in the input.
   const handleChange = (event) => {
-    setSelectedElementState(...selectedElement, event);
-
+    // set the state
+    setSelectedElementState(event);
     // also revert open menu to false because option selected
     setIsMenuOpen(false);
   };
 
-  /**
-   * Handles keypresses or any other changes in the input.
-   *
-   * @param {Object} event the current value of the input
-   */
+  // Handles keypresses or any other changes in the input.
   const handleInputChange = (event) => {
     // also make sure menu doesn't open on click until type
     setIsMenuOpen(event.length >= INPUT_LENGTH_FOR_MENU);
