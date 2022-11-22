@@ -76,7 +76,7 @@ const createSingleSelectionURL = (selection) => {
     url = `/search?${type}=${datasets}`;
   }
 
-  // this is for cases like searching for cells, tissues, cell, compound etc as a string
+  // this is for cases like searching for cells, tissues, cell_line, compound etc as a string
   if (label === value) {
     url = `/${type}`;
   }
@@ -108,16 +108,16 @@ const createURLForTwoSelections = (selection) => {
       }
     })
     url = `/search?compound=${compound}&tissue=${tissue}`;
-  } else if (containsAll(selectedTypes, ['cell', 'compound'])) {
-    let cell, compound = '';
+  } else if (containsAll(selectedTypes, ['cell_line', 'compound'])) {
+    let cell_line, compound = '';
     selection.forEach(el => {
       if (el.type === 'compound') {
         compound = el.label;
-      } else if (el.type === 'cell') {
-        cell = el.label;
+      } else if (el.type === 'cell_line') {
+        cell_line = el.label;
       }
     })
-    url = `/search?compound=${compound}&cell_line=${cell}`;
+    url = `/search?compound=${compound}&cell_line=${cell_line}`;
   } else if (containsAll(selectedTypes, ['gene', 'compound'])) {
     let gene, compound = '';
     selection.forEach(el => {

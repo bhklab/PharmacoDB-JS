@@ -41,7 +41,7 @@ const transformDatasets = (data) => data.map((el) => (
  * @returns {Array}
  */
 const transformCellLines = (data) => data.map((el) => (
-    transformData(el.cell_uid, el.name, 'cell')
+    transformData(el.cell_uid, el.name, 'cell_line')
 ));
 
 /**
