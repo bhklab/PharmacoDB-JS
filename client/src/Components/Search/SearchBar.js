@@ -23,10 +23,10 @@ const placeholders = [
 
 // transform data to react-select input format
 const transformData = (data) => {
-  console.log(data);
   return data.map(el => ({
-    value: el.value,
+    value: el.id,
     label: el.value,
+    type: el.type,
   }))
 };
 
@@ -76,18 +76,19 @@ const SearchBar = (props) => {
   const handleKeyDown = (event) => {
     const { history } = props;
     const selected = selectedElement;
-    console.log(selected);
+
     let queryParams = '/';
 
     if (event.key === 'Enter' && !isMenuOpen && selected.length !== 0) {
       const { type, value, label } = selected[0];
+
       if (selected.length === 1 && type === 'dataset_intersection') {
         const datasets = label.split(' ').join(',');
         queryParams = `/search?${type}=${datasets}`;
       } else if (selected.length === 1 && selected && label === value) {
         queryParams = `/${type}`;
       } else if (selected.length === 1 && selected && label !== value) {
-        queryParams = `/${type}/${value}`;
+        queryParams = `/${type}s/${value}`;
       } else if (selected.length === 2 && selected && label !== value) {
         const selectedTypes = selected.map(el => el.type);
         if (selectedTypes.includes('tissues') && selectedTypes.includes('compounds')) {
