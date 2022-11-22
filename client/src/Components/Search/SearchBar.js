@@ -62,12 +62,11 @@ const getSelectionDataBasedOnInput = async (input) => {
 
 /**
  * 
- * @param {string} type 
- * @param {string} value 
- * @param {string} label 
+ * @param {Array} selection - array of selections
  * @returns {string} - redirect URL
  */
-const createSingleSelectionURL = (type, value, label) => {
+const createSingleSelectionURL = (selection) => {
+  const {type, value, label} = selection[0];
   let url = '';
 
   // this is for dataset intersection (example searching for : ccle and fimm together)
@@ -173,8 +172,7 @@ const createRedirectURL = (selection) => {
 
   switch(selectionLength) {
     case 1:
-      const {type, value, label} = selection[0];
-      url = createSingleSelectionURL(type, value, label);
+      url = createSingleSelectionURL(selection);
       break;
 
     case 2:
