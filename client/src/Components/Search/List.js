@@ -6,15 +6,13 @@ const MenuList = (props) => {
     const { options, children, maxHeight, getValue } = props;
     const [value] = getValue();
     const initialOffset = options.indexOf(value) * 35;
-
-    console.log(children, children.length);
-
+    
     return (
         <List
             className="List"
             height={maxHeight}
-            itemCount={1000}
-            itemSize={70}
+            itemCount={children.length || 1000}
+            itemSize={60}
             initialScrollOffset={initialOffset}
         >
             {
