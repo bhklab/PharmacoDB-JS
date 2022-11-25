@@ -10,6 +10,7 @@ import defaultOptions from '../../utils/searchDefaultOptions';
 import { searchQuery } from '../../queries/search';
 import containsAll from '../../utils/containsAll';
 import debounce from 'lodash.debounce';
+import MenuList from './List';
 
 // input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
@@ -239,6 +240,7 @@ const SearchBar = (props) => {
 
   // to get the options from the API
   const selectionOptions = debounce((query, callback) => {
+    console.log(query);
     getSelectionDataBasedOnInput(query)
       .then(response => callback(response));
   }, 1000);
@@ -247,6 +249,7 @@ const SearchBar = (props) => {
   return (
     <>
       <AsyncSelect 
+        components={{MenuList}}
         placeholder={(
           <ReactTypingEffect
             speed="100"
