@@ -11,7 +11,7 @@ const MenuList = (props) => {
         <List
             className="List"
             height={maxHeight}
-            itemCount={children.length || 1000}
+            itemCount={children.length || 10}
             itemSize={60}
             initialScrollOffset={initialOffset}
         >

@@ -13,57 +13,29 @@ import containsAll from '../../utils/containsAll';
 import debounce from 'lodash.debounce';
 import MenuList from './List';
 
-const groupStyles = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between"
-};
-
-const groupBadgeStyles = {
-  backgroundColor: "#EBECF0",
-  borderRadius: "2em",
-  color: "#172B4D",
-  display: "inline-block",
-  fontSize: 12,
-  fontWeight: "normal",
-  lineHeight: "1",
-  minWidth: 1,
-  padding: "0.16666666666667em 0.5em",
-  textAlign: "center"
-};
-
 /**
  * Custom options for scrolling with keyboard
  */
-const CustomOption = (innerProps) => (
-  <components.Option {...innerProps}>
+const CustomOption = (innerProps) => {
+  return (
+    <components.Option {...innerProps}>
     <div
       style={{
         textAlign: 'left',
-        fontWeight: '400',
-        color: colors.dark_gray_text,
-        cursor: 'pointer',
-        padding: '15px 25px',
-        margin: '20px',
-        fontSize: '1em',
-        fontFamily: "'Open Sans', sans-serif",
-        backgroundColor: innerProps.isFocused ? colors.light_blue_bg : 'inherit',
+        fontWeight: innerProps.isDisabled ? '700' : '400',
+        padding: '5px',
+        color: innerProps.isDisabled ? colors.dark_blue : colors.dark_gray_text,
+        cursor: innerProps.isDisabled ? 'not-allowed' : 'pointer',
+        fontSize: innerProps.isDisabled ? '1.15em' : '1em',
+        // background: innerProps.isDisabled ? colors.light_blue_bg : '',
       }}
     >
       {innerProps.label}
     </div>
   </components.Option>
-);
+  )
+}
 
-/**
- * JSX for formatting the group header label
- * @param {Object} data contains react-select group label
- */
-const formatGroupLabel = (data) => (
-  <div style={groupStyles}>
-    <span>{data.label.replace('_', ' ')}</span>
-  </div>
-);
 
 // input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
@@ -77,51 +49,29 @@ const placeholders = [
   'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
 ];
 
-// transform data to react-select input format
-// const transformData = (data) => {
-//   const transformedData = {};
-
-//   data.forEach(el => {
-//     if(transformedData[el.type]) {
-//       transformedData[el.type].options.push({value: el.id, label: el.value});
-//     } else {
-//       transformedData[el.type] = {
-//         label: el.type,
-//         options: [{value: el.id, label: el.value}]
-//       }
-//     }
-//   })
-
-//   console.log(transformedData);
-
-//   return Object.values(transformedData);
-// };
-
-// const transformData = (data) => {
-//   const transformedData = data.map(el => ({
-//     value: el.id,
-//     label: el.value,
-//     type: el.type,
-//   })) 
-
-//   console.log(transformedData)
-
-//   return transformedData;
-// };
-
+/**
+ * 
+ * @param {Array} data - input data
+ * @returns {Array} - transformed data
+ */
 const transformData = (data) => {
   const transformedData = [];
   const typesVisited = [];
 
   data.forEach(el => {
-
     if(!typesVisited.includes(el.type)) {
       typesVisited.push(el.type);
-      transformedData.push({value: el.type, label: el.type, type: 'data_type', isDisabled: true});
+
+      transformedData.push({
+        value: `${el.type.toUpperCase().replace('_', ' ')}S`,
+        label: `${el.type.toUpperCase().replace('_', ' ')}S`,
+        type: 'data_type', 
+        isDisabled: true
+      });
     }
 
     transformedData.push({value: el.id, label: el.value, type: el.type});
-  })
+  });
 
   return transformedData;
 };
@@ -343,7 +293,7 @@ const SearchBar = (props) => {
       <AsyncSelect 
         components={{
           MenuList: (props) => (<MenuList {...props} />),
-          // Option: CustomOption,
+          Option: CustomOption,
         }}
         placeholder={(
           <ReactTypingEffect
@@ -354,10 +304,8 @@ const SearchBar = (props) => {
             text={placeholders}
           />
         )}
-        // defaultOptions={defaultOptions.options}
         isMulti
-        cacheOptions 
-        // formatGroupLabel={formatGroupLabel}
+        cacheOptions
         loadOptions={selectionOptions} 
         onKeyDown={handleKeyDown}
         styles={SearchBarStyles}
@@ -365,7 +313,7 @@ const SearchBar = (props) => {
         onChange={handleChange}
         onInputChange={handleInputChange}
         onMenuClose={handleMenuClose}
-        menuIsOpen={true}
+        menuIsOpen={isMenuOpen}
       />
     </>
   );
