@@ -241,7 +241,7 @@ const SearchBarStyles = {
   }),
   input: (provided) => ({
     ...provided,
-    padding: '0 0px',
+    padding: '0',
     color: colors.dark_gray_text,
   }),
   clearIndicator: (provided) => ({
