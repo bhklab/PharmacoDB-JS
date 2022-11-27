@@ -80,7 +80,7 @@ const getSelectionDataBasedOnInput = async (input) => {
   let finalResponse;
 
   // API request
-  const data = await fetch('http://localhost:5000/graphql ', {
+  const data = await fetch('/graphql ', {
         method: 'post',
         headers: {
           "Content-Type": "application/json"
