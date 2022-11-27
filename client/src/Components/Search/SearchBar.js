@@ -13,6 +13,18 @@ import containsAll from '../../utils/containsAll';
 import debounce from 'lodash.debounce';
 import MenuList from './List';
 
+// input must be greater than this length to display option menu
+const INPUT_LENGTH_FOR_MENU = 1;
+
+// placeholders for react-select
+const placeholders = [
+  'Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
+  'Compound (eg. paclitaxel)', 'Dataset (eg. ccle)',
+  'Tissue vs Compound (eg. breast paclitaxel)',
+  'Cell line vs Compound (eg. 22rv1 paclitaxel)',
+  'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
+];
+
 /**
  * Custom options for scrolling with keyboard
  */
@@ -35,19 +47,6 @@ const CustomOption = (innerProps) => {
   </components.Option>
   )
 }
-
-
-// input must be greater than this length to display option menu
-const INPUT_LENGTH_FOR_MENU = 1;
-
-// placeholders for react-select
-const placeholders = [
-  'Cell line (eg. 22rv1)', 'Tissue (eg. endometrium)',
-  'Compound (eg. paclitaxel)', 'Dataset (eg. ccle)',
-  'Tissue vs Compound (eg. breast paclitaxel)',
-  'Cell line vs Compound (eg. 22rv1 paclitaxel)',
-  'Multiple datasets (eg. ccle, ctrpv2, gcsi)',
-];
 
 /**
  * 
