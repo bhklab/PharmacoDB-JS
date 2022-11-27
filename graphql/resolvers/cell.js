@@ -141,7 +141,9 @@ const transformSingleCellLine = (data) => {
  * @param {string} name - partial/complete cell name
  * @returns {Array} - cell line data related to input cell name
  */
-const getCellLinesBasedOnName = async (name) => await cellLineQuery().where('name', 'like', `%${name}%`);
+const getCellLinesBasedOnName = async (name) => (
+    await cellLineQuery().where('name', 'like', `%${name}%`)
+);
 
 /**
  * ----------------------------------------------------------------

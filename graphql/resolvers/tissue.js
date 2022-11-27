@@ -10,7 +10,7 @@ const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
  */
 const getTissueBasedOnName = (name) => knex.select()
     .from('tissue')
-    .where('name', 'like', `${name}`);
+    .where('name', 'like', `%${name}%`);
 
 /**
  * 
