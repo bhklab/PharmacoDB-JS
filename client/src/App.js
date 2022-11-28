@@ -1,4 +1,4 @@
-import React, { Suspense, useContext } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -39,44 +39,41 @@ const App = () => {
             <ApolloProvider client={client}>
                 <GlobalStyles />
                 <Router>
-                <Suspense fallback={<div/>}>
                     <Switch>
-                        
-                            <Route path="/" exact component={Home} />
-                            <Route path="/biomarker" component={Biomarker} />
-                            <Route path="/compounds" exact component={Compounds} />
-                            <Route path="/tissues" exact component={Tissues} />
-                            <Route path="/genes" exact component={Genes} />
-                            <Route
-                                path="/experiments"
-                                exact
-                                component={Experiments}
-                            />
-                            <Route path="/cell_lines" exact component={CellLines} />
-                            <Route path="/datasets" exact component={Datasets} />
-                            <Route path="/pharmacogx/:id" exact component={PharmacoGx} />
-                            <Route
-                                path="/compounds/:id"
-                                exact component={IndivCompounds}
-                            />
-                            <Route
-                                path="/cell_lines/:id"
-                                exact component={IndivCellLines}
-                            />
-                            <Route path="/tissues/:id" exact component={IndivTissues} />
-                            <Route path="/genes/:id" exact component={IndivGenes} />
-                            <Route
-                                path="/datasets/:id"
-                                exact
-                                component={IndivDatasets}
-                            />
-                            <Route path="/search" exact component={IntersectionMain} />
-                            <Route path="/about" cexact omponent={AboutUs} />
-                            <Route path="/documentation" exact component={Documentation} />
-                            <Route path="/cite" exact component={CiteUs} />
-                            <Route path="*" exact component={NotFoundPage} /> 
-                        </Switch>
-                    </Suspense>
+                        <Route path="/" exact component={Home} />
+                        <Route path="/biomarker" component={Biomarker} />
+                        <Route path="/compounds" exact component={Compounds} />
+                        <Route path="/tissues" exact component={Tissues} />
+                        <Route path="/genes" exact component={Genes} />
+                        <Route
+                            path="/experiments"
+                            exact
+                            component={Experiments}
+                        />
+                        <Route path="/cell_lines" exact component={CellLines} />
+                        <Route path="/datasets" exact component={Datasets} />
+                        <Route path="/pharmacogx/:id" exact component={PharmacoGx} />
+                        <Route
+                            path="/compounds/:id"
+                            exact component={IndivCompounds}
+                        />
+                        <Route
+                            path="/cell_lines/:id"
+                            exact component={IndivCellLines}
+                        />
+                        <Route path="/tissues/:id" exact component={IndivTissues} />
+                        <Route path="/genes/:id" exact component={IndivGenes} />
+                        <Route
+                            path="/datasets/:id"
+                            exact
+                            component={IndivDatasets}
+                        />
+                        <Route path="/search" exact component={IntersectionMain} />
+                        <Route path="/about" cexact omponent={AboutUs} />
+                        <Route path="/documentation" exact component={Documentation} />
+                        <Route path="/cite" exact component={CiteUs} />
+                        <Route path="*" exact component={NotFoundPage} /> 
+                    </Switch>
                 </Router>
             </ApolloProvider>
         </div>
