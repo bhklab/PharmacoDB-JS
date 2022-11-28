@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 import FileSaver from 'file-saver';
-import Plotly from 'plotly.js-dist';
+import Plotly from 'plotly.js';
 import PropTypes from 'prop-types';
 import downloadImg from '../../images/download.webp';
 
