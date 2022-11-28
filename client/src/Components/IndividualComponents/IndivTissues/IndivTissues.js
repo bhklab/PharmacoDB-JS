@@ -21,7 +21,7 @@ const ANNOTATION_COLUMNS = [
         Header: 'Sources',
         accessor: 'sources',
         Cell: (item) => {
-            let datasets = item.cell.row.original.source;
+            let datasets = item.cell.row.original.dataset;
             return (datasets.map((obj, i) => (
                 obj.id? (
                 <span key={i}>
@@ -59,8 +59,8 @@ const formatName = (string) =>
 const formatAnnotationData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms.filter(obj => {return obj.name !== ""});
-        if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
-            returnObj.push({ name: data.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
+        if (returnObj.filter(obj => { return obj.dataset[0].name === "Standardized name in PharmacoSet" }).length === 0) {
+            returnObj.push({ name: data.name, dataset: [{ name: "Standardized name in PharmacoSet", id: '' }] });
         }
         return returnObj;
     }
