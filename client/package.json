@@ -36,10 +36,12 @@
         "react-window": "^1.8.6",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^0.88.2",
+        "source-map-explorer": "^2.5.3",
         "styled-components": "^5.1.1",
         "venn.js": "^0.2.20"
     },
     "scripts": {
+        "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts --max_old_space_size=4096 start",
         "build": "react-scripts --max_old_space_size=4096 build",
         "test": "jest",
