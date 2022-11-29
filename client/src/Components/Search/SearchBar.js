@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/react-hooks';
 import AsyncSelect from 'react-select/async';
 import { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
+import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
 import defaultOptions from '../../utils/searchDefaultOptions';
 import { searchQuery } from '../../queries/search';
 import containsAll from '../../utils/containsAll';
-import debounce from 'lodash.debounce';
 import MenuList from './List';
 
 // input must be greater than this length to display option menu
@@ -46,6 +48,27 @@ const CustomOption = (innerProps) => {
     </div>
   </components.Option>
   )
+}
+
+/**
+ * Creates the dataset intersection array.
+ * @param {Array} - dataset array.
+ * @returns {Array} - a dataset intersection array with all the subsets.
+ */
+const createDatasetIntersections = (data) => {
+  // get all the subsets of the datasets array/set.
+  const subsets = createAllSubsets(data).map((el) => {
+    return {
+      value: el.toString().replaceAll(',', ' '),
+      label: el.toString().replaceAll(',', ' '),
+      type: 'dataset_intersection',
+    }
+  });
+
+  // remove the elements with the set of lenght 0 or 1 from the subsets being an empty string.
+  const finalSubsets = subsets.filter(el => el.value.split(' ').length > 1);
+
+  return finalSubsets;
 }
 
 /**
@@ -240,6 +263,16 @@ const createRedirectURL = (selection) => {
 const SearchBar = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedElement, setSelectedElementState] = useState([]);
+  const { data: datasetsData, loading, error } = useQuery(getDatasetsQuery);
+  const datasets = datasetsData?.datasets.map(el => el.name);
+  const datasetIntersections = datasets && createDatasetIntersections(datasets);
+
+  console.log(datasetIntersections);
+
+  // console error in case of an error.
+  if(error) {
+    console.error(error);
+  };
 
   /**
    * Handles on enter button press to go to search results
