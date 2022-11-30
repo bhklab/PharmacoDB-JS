@@ -1,18 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
 
+// dimensions for the venn plot
 const dimensions = {
     width: 600,
     height: 600,
-}
-
-
-// Inline style for the venn to align it in the center.
-const vennStyle = {
-    textAlign: 'center'
 }
 
 /**
@@ -124,6 +120,9 @@ const appendText = (data) => {
 
 
 const createVennDiagram = (data) => {
+    // remove the existing svg element.
+    d3.select('#venn svg').remove();
+    
     // get the set and concat it in case the set size is three (3).
     let innerInstersection = '';
 
@@ -158,19 +157,42 @@ const createVennDiagram = (data) => {
 };
 
 
-const VennDiagram = ({ data }) => {
+const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
+    // select data type; by default cell line
+    const [selectedType, setSelectedType] = useState('Cell Line');
+
     useEffect(() => {
-        createVennDiagram(data)
-    }, [data])
+        if(selectedType === 'Cell Line') {
+            createVennDiagram(cellData);
+        }
+
+        if(selectedType === 'Tissue') {
+            createVennDiagram(tissueData);
+        }
+
+        if(selectedType === 'Compound') {
+            createVennDiagram(compoundData);
+        }
+    }, [selectedType])
 
     return (
-        <div id='venn' style={vennStyle} />
+       <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{width: '250px', alignSelf: 'flex-end'}}>
+                <Select 
+                    class='venn-select'
+                    defaultValue={{ value: selectedType, label: selectedType }}
+                    options={selectOptions} 
+                    onChange={(e) => setSelectedType(e.label)}
+                />
+            </div>
+            <div id='venn' style={{alignSelf: 'center'}}/>
+        </div>
     )
 };
 
 
 VennDiagram.propTypes = {
-    datasets: PropTypes.arrayOf(
+    tissueData: PropTypes.arrayOf(
         PropTypes.shape({
             sets: PropTypes.arrayOf(PropTypes.string).isRequired,
             size: PropTypes.number.isRequired,
@@ -178,6 +200,26 @@ VennDiagram.propTypes = {
             values: PropTypes.arrayOf(PropTypes.string),
         }).isRequired,
     ),
+    compoundData: PropTypes.arrayOf(
+        PropTypes.shape({
+            sets: PropTypes.arrayOf(PropTypes.string).isRequired,
+            size: PropTypes.number.isRequired,
+            label: PropTypes.string.isRequired,
+            values: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
+    ),
+    cellData: PropTypes.arrayOf(
+        PropTypes.shape({
+            sets: PropTypes.arrayOf(PropTypes.string).isRequired,
+            size: PropTypes.number.isRequired,
+            label: PropTypes.string.isRequired,
+            values: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
+    ),
+    selectOptions: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+    })).isRequired,
 };
 
 export default VennDiagram;
