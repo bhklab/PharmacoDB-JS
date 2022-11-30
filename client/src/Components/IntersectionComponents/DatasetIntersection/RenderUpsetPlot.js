@@ -7,17 +7,18 @@ import UpsetPlot from '../../Plots/UpsetPlot';
 const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectOptions }) => {
     // state to store the data and selected type.
     const [plotData, setPlotData] = useState({});
-    const [selectedType, setSelectedType] = useState('Cell line');
+    const [selectedType, setSelectedType] = useState('Cell Line');
 
     // update data based on the selected type.
     useEffect(() => {
         if (selectedType === 'Tissue') {
-            setPlotData(tissueData);
-        } else if (selectedType === 'Compound') {
-            setPlotData(compoundData);
-        }
-        else {
-            setPlotData(cellData);
+            return setPlotData(tissueData);
+        } 
+        if (selectedType === 'Compound') {
+            return setPlotData(compoundData);
+        } 
+        if (selectedType === 'Cell Line') {
+            return setPlotData(cellData);
         }
     })
 
@@ -25,7 +26,6 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
         <React.Fragment>
             <StyledSelectorContainer>
                 <div className='single-selector-container'>
-                    {/* <div className='label'>Type:</div> */}
                     <Select
                         className='selector'
                         defaultValue={{ value: selectedType, label: selectedType }}
