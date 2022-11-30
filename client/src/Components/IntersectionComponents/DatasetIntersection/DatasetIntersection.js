@@ -12,6 +12,12 @@ import VennDiagram from '../../Plots/VennDiagram';
 import Loading from '../../UtilComponents/Loading';
 import Error from '../../UtilComponents/Error';
 
+// datatype options 
+const dataTypeOptions = [
+    { value: 'cell', label: 'Cell Line' },
+    { value: 'tissue', label: 'Tissue' },
+    { value: 'compound', label: 'Compound' },
+];
 
 /**
  *
@@ -71,7 +77,6 @@ const createUpdatedDatasetArray = (datasets, keys) => {
  * @param {Array} updatedDatasets
  */
 const renderComponent = (loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, data, isVenn = false) => {
-
     if (loading || datasetDataLoading) {
         return <Loading />
     }
@@ -84,7 +89,12 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
         return (
             <>
                 <h2>Overlaps among datasets</h2>
-                <VennDiagram data={createVennDiagramData(parsedCellData)} />
+                <VennDiagram 
+                    tissueData={createVennDiagramData(parsedTissueData)} 
+                    compoundData={createVennDiagramData(parsedCompoundData)}
+                    cellData={createVennDiagramData(parsedCellData)}
+                    selectOptions={dataTypeOptions}
+                />
             </>
         )
     } else {
@@ -96,6 +106,7 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
                     tissueData={parsedTissueData}
                     cellData={parsedCellData}
                     datasets={updatedDatasets}
+                    selectOptions={dataTypeOptions}
                 />
             </>
         )
@@ -114,6 +125,7 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
 
     // cell line and dataset data from the APIs.
     const { loading, error, data } = useQuery(getTypeInformationAllDatasetsQuery);
+
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
 
     // setting the state to grab the updated dataset array and cell line data.

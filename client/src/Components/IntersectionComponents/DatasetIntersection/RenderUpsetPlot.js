@@ -4,14 +4,7 @@ import Select from 'react-select';
 import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 import UpsetPlot from '../../Plots/UpsetPlot';
 
-// datatype options 
-const dataTypeOptions = [
-    { value: 'cell', label: 'Cell Line' },
-    { value: 'tissue', label: 'Tissue' },
-    { value: 'compound', label: 'Compound' },
-];
-
-const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets }) => {
+const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectOptions }) => {
     // state to store the data and selected type.
     const [plotData, setPlotData] = useState({});
     const [selectedType, setSelectedType] = useState('Cell line');
@@ -36,7 +29,7 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets }) => {
                     <Select
                         className='selector'
                         defaultValue={{ value: selectedType, label: selectedType }}
-                        options={dataTypeOptions}
+                        options={selectOptions}
                         onChange={(e) => setSelectedType(e.label)}
                     />
                 </div>
@@ -51,18 +44,22 @@ RenderUpsetPlot.propTypes = {
         keys: PropTypes.arrayOf(PropTypes.string),
         values: PropTypes.arrayOf(PropTypes.string),
         count: PropTypes.number,
-    })),
+    })).isRequired,
     compoundData: PropTypes.objectOf(PropTypes.shape({
         keys: PropTypes.arrayOf(PropTypes.string),
         values: PropTypes.arrayOf(PropTypes.string),
         count: PropTypes.number,
-    })),
+    })).isRequired,
     tissueData: PropTypes.objectOf(PropTypes.shape({
         keys: PropTypes.arrayOf(PropTypes.string),
         values: PropTypes.arrayOf(PropTypes.string),
         count: PropTypes.number,
-    })),
+    })).isRequired,
     datasets: PropTypes.arrayOf(PropTypes.string),
+    selectOptions: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+    })).isRequired,
 };
 
 export default RenderUpsetPlot;
