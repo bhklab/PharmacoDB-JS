@@ -48,7 +48,7 @@ const CustomOption = (innerProps) => {
     </div>
   </components.Option>
   )
-}
+};
 
 /**
  * Creates the dataset intersection array.
@@ -69,7 +69,17 @@ const createDatasetIntersections = (data) => {
   const finalSubsets = subsets.filter(el => el.value.split(' ').length > 1);
 
   return finalSubsets;
-}
+};
+
+/**
+ * 
+ * @param {Array} datasetIntersections - an array of all the 
+ * @param {Array} search 
+ */
+const searchIntersectionOfDatasets = (datasetIntersections, search) => {
+  const regex = new RegExp(search, 'ig');
+  return datasetIntersections.filter(el => el.value.match(regex));
+};
 
 /**
  * 
@@ -267,8 +277,6 @@ const SearchBar = (props) => {
   const datasets = datasetsData?.datasets.map(el => el.name);
   const datasetIntersections = datasets && createDatasetIntersections(datasets);
 
-  console.log(datasetIntersections);
-
   // console error in case of an error.
   if(error) {
     console.error(error);
@@ -315,8 +323,12 @@ const SearchBar = (props) => {
 
   // to get the options from the API
   const selectionOptions = debounce((query, callback) => {
+    // dataset intersection data based on the query.
+    const matchedDatasetIntersections = searchIntersectionOfDatasets(datasetIntersections, query);
+    
+    // selection data.
     getSelectionDataBasedOnInput(query)
-      .then(response => callback(response));
+      .then(response => callback([...response, ...matchedDatasetIntersections]));
   }, 1000);
   
 
