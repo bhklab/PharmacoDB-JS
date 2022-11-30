@@ -4,6 +4,22 @@ import * as d3 from 'd3';
 import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
+import styled from 'styled-components';
+
+// venn component styles
+const VennContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    .venn-select-container {
+        width: 250px;
+        align-self: flex-end;
+    }
+
+    #venn {
+        align-self: center;
+    }
+`;
 
 // dimensions for the venn plot
 const dimensions = {
@@ -176,17 +192,17 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
     }, [selectedType])
 
     return (
-       <div style={{display: 'flex', flexDirection: 'column'}}>
-            <div style={{width: '250px', alignSelf: 'flex-end'}}>
+       <VennContainer>
+            <div className='venn-select-container'>
                 <Select 
-                    class='venn-select'
+                    className='venn-select'
                     defaultValue={{ value: selectedType, label: selectedType }}
                     options={selectOptions} 
                     onChange={(e) => setSelectedType(e.label)}
                 />
             </div>
-            <div id='venn' style={{alignSelf: 'center'}}/>
-        </div>
+            <div id='venn'/>
+        </VennContainer>
     )
 };
 
