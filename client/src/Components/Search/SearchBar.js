@@ -10,10 +10,11 @@ import { getDatasetsQuery } from '../../queries/dataset';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import defaultOptions from '../../utils/searchDefaultOptions';
 import { searchQuery } from '../../queries/search';
 import containsAll from '../../utils/containsAll';
 import MenuList from './List';
+// import defaultOptions from '../../utils/searchDefaultOptions';
+
 
 // input must be greater than this length to display option menu
 const INPUT_LENGTH_FOR_MENU = 1;
@@ -78,7 +79,18 @@ const createDatasetIntersections = (data) => {
  */
 const searchIntersectionOfDatasets = (datasetIntersections, search) => {
   const regex = new RegExp(search, 'ig');
-  return datasetIntersections.filter(el => el.value.match(regex));
+  let matchedDatasetIntersections = datasetIntersections.filter(el => el.value.match(regex));
+  
+  if(matchedDatasetIntersections.length) {
+    matchedDatasetIntersections = [{
+      value: 'dataset intersections'.toUpperCase(), 
+      label: 'dataset intersections'.toUpperCase(),
+      type: 'data_type', 
+      isDisabled: true
+    }, ...matchedDatasetIntersections];
+  }
+
+  return matchedDatasetIntersections;
 };
 
 /**
