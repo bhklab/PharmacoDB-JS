@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import AsyncSelect from 'react-select/async';
 import { components } from 'react-select';
 import ReactTypingEffect from 'react-typing-effect';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
+import MenuList from './List';
 import { getDatasetsQuery } from '../../queries/dataset';
+import { searchQuery } from '../../queries/search';
 import createAllSubsets from '../../utils/createAllSubsets';
 import colors from '../../styles/colors';
 import { SearchBarStyles } from '../../styles/SearchHeaderStyles';
-import { searchQuery } from '../../queries/search';
 import containsAll from '../../utils/containsAll';
-import MenuList from './List';
+import dataTypesList from '../../utils/dataTypesList';
 // import defaultOptions from '../../utils/searchDefaultOptions';
 
 
@@ -158,15 +159,15 @@ const getSelectionDataBasedOnInput = async (input) => {
 const createSingleSelectionURL = (selection) => {
   const {type, value, label} = selection[0];
   let url = '';
-
+  
   // this is for dataset intersection (example searching for : ccle and fimm together)
-  if (type === 'dataset_intersection') {
+  if (label === value && type === 'dataset_intersection') {
     const datasets = label.split(' ').join(',');
     url = `/search?${type}=${datasets}`;
   }
 
   // this is for cases like searching for cells, tissues, cell_line, compound etc as a string
-  if (label === value) {
+  if (label === value && dataTypesList.includes(type)) {
     url = `/${type}`;
   }
 

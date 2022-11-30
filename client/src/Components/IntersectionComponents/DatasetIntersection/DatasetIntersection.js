@@ -114,7 +114,6 @@ const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = fals
 
     // cell line and dataset data from the APIs.
     const { loading, error, data } = useQuery(getTypeInformationAllDatasetsQuery);
-    console.log(data);
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
 
     // setting the state to grab the updated dataset array and cell line data.
