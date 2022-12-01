@@ -97,7 +97,7 @@ const formatDiseaseData = (data) => {
  */
 const formatLinkData = (data) => {
   if (data) {
-    const cellosaurus_path = 'http://web.expasy.org/cellosaurus/';
+    const cellosaurus_path = 'https://www.cellosaurus.org/';
     return {
       key: data,
       path: cellosaurus_path + data,
