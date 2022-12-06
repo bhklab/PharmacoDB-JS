@@ -19,6 +19,10 @@ const VennContainer = styled.div`
     #venn {
         align-self: center;
     }
+
+    .venn-description {
+        
+    }
 `;
 
 // dimensions for the venn plot
@@ -202,6 +206,11 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
                 />
             </div>
             <div id='venn'/>
+            <div className='venn-description'>
+                Numbers represent total members of intersection, 
+                not excluding those in other intersections, 
+                unlike a usual Venn Diagram
+            </div>
         </VennContainer>
     )
 };
