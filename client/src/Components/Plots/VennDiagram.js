@@ -21,14 +21,17 @@ const VennContainer = styled.div`
     }
 
     .venn-description {
-        
+        color: ${colors.dark_pink_highlight};
+        margin-bottom: 200px;
+        text-align: center;
+        font-style: italic;
     }
 `;
 
 // dimensions for the venn plot
 const dimensions = {
     width: 600,
-    height: 600,
+    height: 500,
 }
 
 /**
@@ -111,13 +114,13 @@ const appendText = (data) => {
     // position of the text based on data length (2^2-1 or 2^3-1).
     const location = data.length === 7 || data.length === 8
         ? {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 40 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 40 },
+            0: { x: (dimensions.width) / 4, y: dimensions.height - 30 },
+            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 30 },
             2: { x: 100, y: 80 },
         }
         : {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 120 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 120 },
+            0: { x: (dimensions.width) / 4, y: dimensions.height - 70 },
+            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 70 },
         };
 
     // appends the text.
@@ -207,9 +210,9 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
             </div>
             <div id='venn'/>
             <div className='venn-description'>
-                Numbers represent total members of intersection, 
+                Note: Numbers represent total members of intersection, 
                 not excluding those in other intersections, 
-                unlike a usual Venn Diagram
+                unlike a usual Venn Diagram.
             </div>
         </VennContainer>
     )
