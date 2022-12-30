@@ -180,7 +180,7 @@ const circleAxis = (svg, datasets, height) => {
  * @param {number} length - length of the data.
  * @param {number} height - height of svg canvas.
  */
-const upsetCircle = (svg, data, datasets, length, height) => {
+const upsetCircle = (svg, data, datasets, length, height, updateSelectedData) => {
     // data keys.
     const dataKeys = Object.keys(data);
 
@@ -209,7 +209,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style('cursor', 'default');
                 })
                 .on('click', function () {
-                    makeTable(data[dataKeys[i]].values);
+                    updateSelectedData(data[dataKeys[i]].values);
                 });
         }
 
@@ -232,7 +232,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 d3.select(this).style('cursor', 'default');
             })
             .on('click', function () {
-                makeTable(data[dataKeys[i]].values);
+                updateSelectedData(data[dataKeys[i]].values);
             });
     }
 };
@@ -306,7 +306,7 @@ const createUpsetPlot = (data, datasets, type, updateSelectedData) => {
     appendRectangles(svg, sortedData, scaleYAxis, height, updateSelectedData);
 
     // upset circle.
-    upsetCircle(svg, sortedData, datasets, sortedDataLength, height);
+    upsetCircle(svg, sortedData, datasets, sortedDataLength, height, updateSelectedData);
 
     // append text to the circles as axis.
     circleAxis(svg, datasets, height);
