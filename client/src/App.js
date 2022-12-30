@@ -69,7 +69,7 @@ const App = () => {
                             component={IndivDatasets}
                         />
                         <Route path="/search" exact component={IntersectionMain} />
-                        <Route path="/about" cexact omponent={AboutUs} />
+                        <Route path="/about" exact component={AboutUs} />
                         <Route path="/documentation" exact component={Documentation} />
                         <Route path="/cite" exact component={CiteUs} />
                         <Route path="*" exact component={NotFoundPage} /> 
