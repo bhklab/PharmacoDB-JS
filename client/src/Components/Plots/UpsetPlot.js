@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import createSvgCanvas from '../../utils/createSvgCanvas';
@@ -8,10 +8,9 @@ import Loading from '../UtilComponents/Loading';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
-
 // canvas id.
 const CANVAS_ID = 'upsetplot-canvas';
-const TABLE_CANVAS_ID = 'table-canvas';
+
 // styling the upset plot.
 const UpsetPlotStyle = styled.div`
     width: 800px;
@@ -106,7 +105,7 @@ const appendTextYAxis = (svg, height, type) => svg
  * @param {scale} Object - y axis scale.
  * @param {number} height - height of svg canvas.
  */
-const appendRectangles = (svg, data, scale, height) => {
+const appendRectangles = (svg, data, scale, height, updateSelectedData) => {
     // get the data object keys.
     const keys = Object.keys(data);
 
@@ -114,6 +113,7 @@ const appendRectangles = (svg, data, scale, height) => {
         .attr('class', 'bar-rectangles');
 
     keys.forEach((key, i) => {
+        console.log(key, i);
         rectangles.append('rect')
             .attr('height', height / 1.5 - scale(data[key].count))
             .attr('width', CIRCLE_RADIUS * 2)
@@ -146,7 +146,8 @@ const appendRectangles = (svg, data, scale, height) => {
                 d3.select(this).style('cursor', 'default');
             })
             .on('click', function () {
-                makeTable(svg, data[key].values, 'upsetplot',);
+                // makeTable(data[key].values);
+                updateSelectedData(data[key].values);
             });
     })
 };
@@ -170,78 +171,6 @@ const circleAxis = (svg, datasets, height) => {
             .text(`${datasets[i]}`);
     }
 };
-
-/**
- * create table for list of types
- */
-function makeTable(svg, names, tableId) {
-    // width and height of the SVG canvas.
-    // const tableWidth = 400;
-    // const tableHeight = 100;
-    // d3.selectAll(`#${TABLE_CANVAS_ID}`).remove();
-    // const tableSvg = createSvgCanvas({ tableHeight, tableWidth, margin, id: 'upsetplot', canvasId: TABLE_CANVAS_ID });
-    //
-    // const keys = Object.keys(names);
-    // names.forEach((x,i) => {
-    //     tableSvg.append('rect')
-    //         .attr('x', i * 15)
-    //         .attr('y', tableHeight/2)
-    //         .text(x.name)
-    // })
-    // tableSvg.append('circle')
-    //     .attr('cx', 200)
-    //     .attr('cy', tableHeight/2)
-    //     .attr('r', 50)
-    //     .attr('stroke', 'black')
-    //     .attr('fill', '#69a3b2')
-    //     .style('position', 'fixed')
-    //     .attr('opacity', 0.3);
-    // console.log('List:' ,names);
-    //
-    // // prepare data: divide data into data.len / 3 rows table and each row has 3 columns
-    // const tableData = [];
-    // const addElems = names.length % 3;
-    // const names_copy = names.slice(0);
-    // for (let i = 0; i < 3-addElems; i++) {
-    //     names_copy.push(' ');
-    // }
-    // //make multidimensional array of 3
-    // for (let i = 0; i < names.length; i += 3) {
-    //     const temp = []
-    //     for (let j = 0; j < 3; j++) {
-    //         temp.push({'name': names_copy[i+j]})
-    //     }
-    //     tableData.push(temp)
-    // }
-
-    //
-    // const table = d3.select('#'+tableId).append('table')
-    //     .attr('id', tableId)
-    //     .style('border', '1px solid silver')
-    //     .style('opacity', '0');
-    // //
-    // var tbody = table.append('tbody');
-    // //
-    // //create table rows
-    // var tr = tbody.selectAll('tr')
-    //     .data(tableData)
-    //     .enter()
-    //     .append('tr')
-    //     .style('border', '1px solid silver');
-    //
-    // // create table cells
-    // var td = tr.selectAll('td')
-    //     .data(function(d) {return d;})
-    //     .enter()
-    //     .append('td')
-    //     .style('font-size', '15px')
-    //     .style('border', '1px solid silver')
-    //     .attr('width', 250)
-    //     .style('padding-top', '5px')
-    //     .html(function(d,i){
-    //         return '<a href=\'' + '/search?q=' + d.name + '\'>' + d.name.replaceAll('_', ' ') + '</a>'
-    //     });
-}
 
 /**
  * creates the heatmap circles for the upset plot.
@@ -280,7 +209,7 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                     d3.select(this).style('cursor', 'default');
                 })
                 .on('click', function () {
-                    makeTable(svg, data[dataKeys[i]].values, 'upsetplot',);
+                    makeTable(data[dataKeys[i]].values);
                 });
         }
 
@@ -303,17 +232,25 @@ const upsetCircle = (svg, data, datasets, length, height) => {
                 d3.select(this).style('cursor', 'default');
             })
             .on('click', function () {
-                makeTable(svg, data[dataKeys[i]].values, 'upsetplot');
+                makeTable(data[dataKeys[i]].values);
             });
     }
 };
+
+
+/**
+ * create table for list of types
+ */
+ function makeTable(data) {
+    console.log(data);
+}
 
 /**
  * Main function to create upset plot.
  * @param {Object} data - input data object.
  * @param {Array} datasets - array of datasets.
  */
-const createUpsetPlot = (data, datasets, type) => {
+const createUpsetPlot = (data, datasets, type, updateSelectedData) => {
     // width and height of the SVG canvas.
     const width = CIRCLE_RADIUS * 3.1 * (Object.keys(data).length + 1);
     const height = 700 - margin.top - margin.bottom;
@@ -355,7 +292,7 @@ const createUpsetPlot = (data, datasets, type) => {
     appendTextYAxis(svg, height, type);
 
     // append rectangle for the bar chart.
-    appendRectangles(svg, sortedData, scaleYAxis, height);
+    appendRectangles(svg, sortedData, scaleYAxis, height, updateSelectedData);
 
     // upset circle.
     upsetCircle(svg, sortedData, datasets, sortedDataLength, height);
@@ -370,6 +307,7 @@ const createUpsetPlot = (data, datasets, type) => {
  * )
  */
 const UpsetPlot = ({ data, datasets, type }) => {
+    const [selectedData, updateSelectedData] = useState();
 
     useEffect(() => {
         // remove the alrady existing upset plot.
@@ -377,12 +315,14 @@ const UpsetPlot = ({ data, datasets, type }) => {
 
         // create upset plot.
         if (!(data && Object.keys(data).length === 0 && Object.getPrototypeOf(data) === Object.prototype)) {
-            createUpsetPlot(data, datasets, type);
+            createUpsetPlot(data, datasets, type, updateSelectedData);
         }
-    }, [data])
+    }, [data]);
+
     return (
         <UpsetPlotStyle>
             {data && datasets ? <div id='upsetplot' /> : <Loading />}
+            {selectedData ? <div>{makeTable(selectedData)}</div> : <div>jk</div>}
         </UpsetPlotStyle>
     )
 };
