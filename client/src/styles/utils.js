@@ -8,6 +8,7 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: center;
     width: 85%;
+    margin-bottom: 100px;
 
     & > * {
         width: 85%;
@@ -29,7 +30,7 @@ const StyledWrapper = styled.div`
     }
 
     h2 {
-        font-size: calc(1vw + 1.2em);
+        font-size: calc(0.80vw + 1em);
         margin: 15px;
     }
 
