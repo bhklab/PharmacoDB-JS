@@ -5,6 +5,7 @@ import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
 import Loading from '../UtilComponents/Loading';
+import Table from '../UtilComponents/Table/Table';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
@@ -242,8 +243,19 @@ const upsetCircle = (svg, data, datasets, length, height) => {
  * create table for list of types
  */
  function makeTable(data) {
-    console.log(data);
-}
+    // an array with the columns of dataset table.
+    const tableColumns = [
+        {
+            Header: 'Name',
+            accessor: 'name',
+            center: true,
+            rowSpan: 2,
+        },
+    ];
+
+    const tableData = data.map(el => ({id: el, name: el}));
+    return <Table columns={tableColumns} data={tableData}/>
+};
 
 /**
  * Main function to create upset plot.
@@ -321,8 +333,12 @@ const UpsetPlot = ({ data, datasets, type }) => {
 
     return (
         <UpsetPlotStyle>
-            {data && datasets ? <div id='upsetplot' /> : <Loading />}
-            {selectedData ? <div>{makeTable(selectedData)}</div> : <div>jk</div>}
+            {
+                data && datasets ? <div id='upsetplot' /> : <Loading />
+            }
+            {
+                selectedData ? <div> {makeTable(selectedData)} </div> : <div/>
+            }
         </UpsetPlotStyle>
     )
 };
