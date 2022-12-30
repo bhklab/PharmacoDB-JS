@@ -114,7 +114,6 @@ const appendRectangles = (svg, data, scale, height, updateSelectedData) => {
         .attr('class', 'bar-rectangles');
 
     keys.forEach((key, i) => {
-        console.log(key, i);
         rectangles.append('rect')
             .attr('height', height / 1.5 - scale(data[key].count))
             .attr('width', CIRCLE_RADIUS * 2)

@@ -84,7 +84,6 @@ const Description = (props) => {
                 .then(
                     (result) => {
                         setLoaded(true);
-                        console.log(result)
                         setGeneSyn( result[0]? result.filter(ref => ref.synonyms.length).map(ref => ref.synonyms):[]);
                     },
                     (error) => {
