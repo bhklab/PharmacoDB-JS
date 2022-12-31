@@ -3,11 +3,31 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 import UpsetPlot from '../../Plots/UpsetPlot';
+import Table from '../../UtilComponents/Table/Table';
+
+/**
+ * create table for list of types
+ */
+ function makeTable(data) {
+    // an array with the columns of dataset table.
+    const tableColumns = [
+        {
+            Header: 'Name',
+            accessor: 'name',
+            center: true,
+            rowSpan: 2,
+        },
+    ];
+
+    const tableData = data.map(el => ({id: el, name: el}));
+    return <Table columns={tableColumns} data={tableData}/>
+};
 
 const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectOptions }) => {
     // state to store the data and selected type.
     const [plotData, setPlotData] = useState({});
     const [selectedType, setSelectedType] = useState('Cell Line');
+    const [selectedPlotData, updateSelectedPlotData] = useState();
 
     // update data based on the selected type.
     useEffect(() => {
@@ -34,7 +54,15 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
                     />
                 </div>
             </StyledSelectorContainer>
-            <UpsetPlot data={plotData} datasets={datasets} type={selectedType} />
+            <UpsetPlot 
+                data={plotData}    
+                datasets={datasets} 
+                type={selectedType} 
+                updateSelectedPlotData={updateSelectedPlotData}
+            />
+            {
+                selectedPlotData ? <div> {makeTable(selectedPlotData)} </div> : <div/>
+            }
         </React.Fragment>
     );
 };
