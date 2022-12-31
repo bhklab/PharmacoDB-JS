@@ -88,7 +88,7 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
     if (isVenn) {
         return (
             <>
-                <h2>Overlaps among datasets</h2>
+                <h2>Overlap among datasets</h2>
                 <VennDiagram 
                     tissueData={createVennDiagramData(parsedTissueData)} 
                     compoundData={createVennDiagramData(parsedCompoundData)}
@@ -100,7 +100,7 @@ const renderComponent = (loading, datasetDataLoading, error, datasetDataError, p
     } else {
         return (
             <>
-                <h2>Overlaps among datasets</h2>
+                <h2>Overlap among datasets</h2>
                 <RenderUpsetPlot
                     compoundData={parsedCompoundData}
                     tissueData={parsedTissueData}
