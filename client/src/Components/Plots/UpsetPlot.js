@@ -318,6 +318,7 @@ const createUpsetPlot = (data, datasets, type, updateSelectedData) => {
  * )
  */
 const UpsetPlot = ({ data, datasets, type }) => {
+    // state to hold the data selected data on click of rectangle or circle in upset plot
     const [selectedData, updateSelectedData] = useState();
 
     useEffect(() => {
