@@ -23,7 +23,6 @@ const VennContainer = styled.div`
 
     .venn-description {
         color: ${colors.dark_pink_highlight};
-        margin-top: 0px;
         margin-bottom: 20px;
         text-align: center;
         font-style: italic;
@@ -36,8 +35,8 @@ const VennContainer = styled.div`
 
 // dimensions for the venn plot
 const dimensions = {
-    width: 600,
-    height: 400,
+    width: 650,
+    height: 450,
 }
 
 /**
@@ -133,13 +132,13 @@ const appendText = (data) => {
     // position of the text based on data length (2^2-1 or 2^3-1).
     const location = data.length === 7 || data.length === 8
         ? {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 30 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 30 },
-            2: { x: 100, y: 80 },
+            0: { x: (dimensions.width) / 8, y: dimensions.height - 30 },
+            1: { x: (dimensions.width * 2) / 2.65, y: dimensions.height - 30 },
+            2: { x: 140, y: 80 },
         }
         : {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 70 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 70 },
+            0: { x: (dimensions.width) / 4, y: dimensions.height - 20 },
+            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 20 },
         };
 
     // appends the text.
@@ -151,7 +150,7 @@ const appendText = (data) => {
                 .attr('x', location[count]['x'])
                 .attr('y', location[count]['y'])
                 .attr('stroke', `${colors.dark_teal_heading}`)
-                .style('font-size', 14)
+                .style('font-size', 13)
                 .style('font-weight', 500)
                 .text(`${el.sets.join('+')} (${el.label})`);
             count += 1;
