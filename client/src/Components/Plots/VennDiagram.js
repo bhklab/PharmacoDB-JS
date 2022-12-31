@@ -5,6 +5,7 @@ import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
+import Table from '../UtilComponents/Table/Table';
 
 // venn component styles
 const VennContainer = styled.div`
@@ -22,16 +23,21 @@ const VennContainer = styled.div`
 
     .venn-description {
         color: ${colors.dark_pink_highlight};
-        margin-bottom: 200px;
+        margin-top: 0px;
+        margin-bottom: 20px;
         text-align: center;
         font-style: italic;
+
+        span {
+            font-weight: 700;
+        }
     }
 `;
 
 // dimensions for the venn plot
 const dimensions = {
     width: 600,
-    height: 500,
+    height: 400,
 }
 
 /**
@@ -45,7 +51,7 @@ const createVennDiagramStructure = (width = dimensions.width, height = dimension
         .width(width)
         .height(height)
         .fontSize(fontSize)
-        .padding(50);
+        .padding(20);
 };
 
 /**
@@ -54,7 +60,20 @@ const createVennDiagramStructure = (width = dimensions.width, height = dimension
  * @param {Array} data - data array.
  * @param {string} id - div id to append the venn diagram to.
  */
-const enterData = (chart, data, id = 'venn') => d3.select(`#${id}`).datum(data).call(chart);
+const enterData = (chart, data, id = 'venn', updateSelectedData) => d3.select(`#${id}`)
+    .datum(data)
+    .call(chart)
+    .on('mouseover', function () {
+        // change the cursor type.
+        d3.select(this).style('cursor', 'pointer')
+    })
+    .on('mouseout', function () {
+        // change the cursor to default.
+        d3.select(this).style('cursor', 'default');
+    })
+    .on('click', function (d) { 
+        updateSelectedData(d.target.__data__.values);
+    });
 
 /**
  * Changes the text color.
@@ -142,7 +161,7 @@ const appendText = (data) => {
 
 
 
-const createVennDiagram = (data) => {
+const createVennDiagram = (data, updateSelectedData) => {
     // remove the existing svg element.
     d3.select('#venn svg').remove();
     
@@ -159,7 +178,7 @@ const createVennDiagram = (data) => {
     const chart = createVennDiagramStructure();
 
     // add the data to the venn diagram.
-    enterData(chart, data, 'venn');
+    enterData(chart, data, 'venn', updateSelectedData);
 
     // change the text color.
     changeText('venn', 'white');
@@ -179,22 +198,41 @@ const createVennDiagram = (data) => {
     appendText(data);
 };
 
+/**
+ * create table for list of types
+ */
+ function makeTable(data) {
+    // an array with the columns of dataset table.
+    const tableColumns = [
+        {
+            Header: 'Name',
+            accessor: 'name',
+            center: true,
+            rowSpan: 2,
+        },
+    ];
+
+    const tableData = data.map(el => ({id: el, name: el}));
+    return <Table columns={tableColumns} data={tableData}/>
+};
+
 
 const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
     // select data type; by default cell line
     const [selectedType, setSelectedType] = useState('Cell Line');
+    const [selectedData, updateSelectedData] = useState();
 
     useEffect(() => {
         if(selectedType === 'Cell Line') {
-            createVennDiagram(cellData);
+            createVennDiagram(cellData, updateSelectedData);
         }
 
         if(selectedType === 'Tissue') {
-            createVennDiagram(tissueData);
+            createVennDiagram(tissueData, updateSelectedData);
         }
 
         if(selectedType === 'Compound') {
-            createVennDiagram(compoundData);
+            createVennDiagram(compoundData, updateSelectedData);
         }
     }, [selectedType])
 
@@ -210,10 +248,14 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
             </div>
             <div id='venn'/>
             <div className='venn-description'>
-                Note: Numbers represent total members of intersection, 
+                <span> Note: </span>
+                Numbers represent total members of intersection, 
                 not excluding those in other intersections, 
                 unlike a usual Venn Diagram.
             </div>
+            {
+                selectedData ? <div> {makeTable(selectedData)} </div> : <div/>
+            }
         </VennContainer>
     )
 };
