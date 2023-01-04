@@ -4,11 +4,31 @@ import Select from 'react-select';
 import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
 import UpsetPlot from '../../Plots/UpsetPlot';
 import Table from '../../UtilComponents/Table/Table';
+import DownloadButton from '../../UtilComponents/DownloadButton';
+import styled from 'styled-components';
+
+// styles for the plot data table
+const StyledPlotDataTable = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .download-button {
+        align-self: flex-end;
+    }
+`;
+
+/**
+ * 
+ * @param {Array} data 
+ * @returns {Array} - returns an array of objects
+ */
+const transformData = (data) =>  data.map(el => ({id: el, name: el}));
 
 /**
  * create table for list of types
  */
- function makeTable(data) {
+const makeTable = (data) => {
     // an array with the columns of dataset table.
     const tableColumns = [
         {
@@ -18,11 +38,15 @@ import Table from '../../UtilComponents/Table/Table';
             rowSpan: 2,
         },
     ];
-
-    const tableData = data.map(el => ({id: el, name: el}));
+    // table data
+    const tableData = transformData(data);
+    
     return <Table columns={tableColumns} data={tableData}/>
 };
 
+/**
+ * main component
+ */
 const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectOptions }) => {
     // state to store the data and selected type.
     const [plotData, setPlotData] = useState({});
@@ -61,7 +85,19 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
                 updateSelectedPlotData={updateSelectedPlotData}
             />
             {
-                selectedPlotData ? <div> {makeTable(selectedPlotData)} </div> : <div/>
+                selectedPlotData ? (
+                    <StyledPlotDataTable>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={transformData(selectedPlotData)}
+                                mode='csv'
+                                filename={`data`}
+                            />
+                        </div>
+                        <div> {makeTable(selectedPlotData)} </div>
+                    </StyledPlotDataTable>
+                ) : <div/>
             }
         </React.Fragment>
     );
