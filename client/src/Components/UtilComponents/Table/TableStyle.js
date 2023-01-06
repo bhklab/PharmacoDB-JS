@@ -3,8 +3,6 @@ import styled from 'styled-components';
 
 
 const TableStyles = styled.div`
-  // margin-bottom: 2rem;
-  // margin-top: 2rem;
   overflow-x: auto;
 
   table {

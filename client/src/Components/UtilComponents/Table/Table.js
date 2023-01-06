@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  useTable, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce,
-} from 'react-table';
+import { useTable, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from 'react-table';
 import TableStyles from './TableStyle';
 import PropTypes from 'prop-types';
 import searchIcon from '../../../images/magnif-glass.png';
@@ -34,6 +32,15 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 };
 
 /**
+ * 
+ * @param {number} windowInnerWidth - window width
+ * @returns {string}
+ */
+const getTableMaxWidth = (windowInnerWidth) => {
+    return windowInnerWidth > 1500 ? '55vw' : '65vw';
+};
+
+/**
  *
  * @param {Array} columns - an array of table columns.
  * @param {Array} data - an array of data for the table.
@@ -42,7 +49,16 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
  * @param {Array} defaultSort - specifies which column to be soted by default.
  * @param {function} highlightRows - If present, row rendering will use this function to highlight rows in specified color. (Usage example in MolecularFeaturesTable.js)
  */
-const Table = ({ columns, data, disablePagination = false, defaultSort, highlightRows=undefined, showPageNumSelect = true, showHeader= true }) => {
+const Table = ({ 
+  columns, 
+  data, 
+  disablePagination = false, 
+  defaultSort, 
+  highlightRows = undefined, 
+  showPageNumSelect = true, 
+  showHeader = true,
+  tableDefaultMaxWidth = '100vw'
+}) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -134,7 +150,7 @@ const Table = ({ columns, data, disablePagination = false, defaultSort, highligh
 
   // Render the UI for your table
   return (
-    <TableStyles showPageNumSelect={showPageNumSelect}>
+    <TableStyles showPageNumSelect={showPageNumSelect} style={{maxWidth: getTableMaxWidth(window.innerWidth)}}>
       {!disablePagination ? (
         <div className="top-settings">
           <GlobalFilter
