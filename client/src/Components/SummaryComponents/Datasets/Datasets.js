@@ -38,7 +38,7 @@ const renderComponent = (loading, error, columns, data) => {
     <>
       <DatasetIntersection />
       <h2 style={{marginTop: '50px'}}> List of Datasets </h2>
-      <Table columns={columns} data={data} />
+      <Table columns={columns} data={data} center={true} />
     </>
   );
 };
