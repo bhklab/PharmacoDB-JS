@@ -57,7 +57,6 @@ const Table = ({
   highlightRows = undefined, 
   showPageNumSelect = true, 
   showHeader = true,
-  tableDefaultMaxWidth = '100vw'
 }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
