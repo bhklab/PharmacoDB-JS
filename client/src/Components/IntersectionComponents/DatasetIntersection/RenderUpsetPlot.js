@@ -67,7 +67,7 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
     })
 
     return (
-        <React.Fragment>
+        <>
             <StyledSelectorContainer>
                 <div className='single-selector-container'>
                     <Select
@@ -99,7 +99,7 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
                     </StyledPlotDataTable>
                 ) : <div/>
             }
-        </React.Fragment>
+        </>
     );
 };
 

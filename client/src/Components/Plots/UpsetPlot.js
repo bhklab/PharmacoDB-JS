@@ -5,6 +5,7 @@ import createSvgCanvas from '../../utils/createSvgCanvas';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
 import Loading from '../UtilComponents/Loading';
+import getMaxWidth from '../../utils/maxWidthOfAnElement';
 
 // circle radius.
 const CIRCLE_RADIUS = 8;
@@ -13,10 +14,11 @@ const CANVAS_ID = 'upsetplot-canvas';
 
 // styling the upset plot.
 const UpsetPlotStyle = styled.div`
-    width: 800px;
+    width: ${props => props.width};
     overflow: auto;
     margin-bottom: 50px;
     text-align: center;
+    border: 1px solid black;
 `;
 
 // margin for the svg element.
@@ -310,7 +312,7 @@ const UpsetPlot = ({ data, datasets, type, updateSelectedPlotData }) => {
     }, [data]);
 
     return (
-        <UpsetPlotStyle>
+        <UpsetPlotStyle width={getMaxWidth(window.innerWidth)}>
             {
                 data && datasets ? <div id='upsetplot' /> : <Loading />
             }

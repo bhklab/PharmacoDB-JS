@@ -3,6 +3,7 @@ import { useTable, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce }
 import TableStyles from './TableStyle';
 import PropTypes from 'prop-types';
 import searchIcon from '../../../images/magnif-glass.png';
+import getMaxWidth from '../../../utils/maxWidthOfAnElement';
 
 /**
  * Filter for global search of table
@@ -29,15 +30,6 @@ const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
       />
     </div>
   );
-};
-
-/**
- * 
- * @param {number} windowInnerWidth - window width
- * @returns {string}
- */
-const getTableMaxWidth = (windowInnerWidth) => {
-    return windowInnerWidth > 1500 ? '55vw' : '65vw';
 };
 
 /**
@@ -149,7 +141,7 @@ const Table = ({
 
   // Render the UI for your table
   return (
-    <TableStyles showPageNumSelect={showPageNumSelect} style={{maxWidth: getTableMaxWidth(window.innerWidth)}}>
+    <TableStyles showPageNumSelect={showPageNumSelect} style={{maxWidth: getMaxWidth(window.innerWidth)}}>
       {!disablePagination ? (
         <div className="top-settings">
           <GlobalFilter
