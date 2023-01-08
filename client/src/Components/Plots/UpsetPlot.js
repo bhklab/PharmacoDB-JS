@@ -18,7 +18,6 @@ const UpsetPlotStyle = styled.div`
     overflow: auto;
     margin-bottom: 50px;
     text-align: center;
-    border: 1px solid black;
 `;
 
 // margin for the svg element.
