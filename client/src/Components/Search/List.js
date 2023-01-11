@@ -30,7 +30,7 @@ const renderData = (props) => {
     if(!isLoading && !children.length) {
         return (() => 
             <div style={styles}> 
-                no item found
+                No item found
             </div>
         )
     }
