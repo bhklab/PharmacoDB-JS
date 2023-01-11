@@ -6,9 +6,11 @@ import UpsetPlot from '../../Plots/UpsetPlot';
 import Table from '../../UtilComponents/Table/Table';
 import DownloadButton from '../../UtilComponents/DownloadButton';
 import styled from 'styled-components';
+import getMaxWidth from '../../../utils/maxWidthOfAnElement';
 
 // styles for the plot data table
 const StyledPlotDataTable = styled.div`
+    width: ${props => props.width};
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -16,7 +18,7 @@ const StyledPlotDataTable = styled.div`
     .download-button {
         align-self: flex-end;
     }
-`;
+`; 
 
 /**
  * 
@@ -86,7 +88,7 @@ const RenderUpsetPlot = ({ compoundData, cellData, tissueData, datasets, selectO
             />
             {
                 selectedPlotData ? (
-                    <StyledPlotDataTable>
+                    <StyledPlotDataTable width={getMaxWidth(window.innerWidth)}>
                         <div className='download-button'>
                             <DownloadButton
                                 label='CSV'
