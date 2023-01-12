@@ -5,9 +5,11 @@ import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
+import DownloadButton from '../UtilComponents/DownloadButton';
 import Table from '../UtilComponents/Table/Table';
+import getMaxWidth from '../../utils/maxWidthOfAnElement';
 
-// venn component styles
+// venn component styles and selection data table styles
 const VennContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -31,7 +33,24 @@ const VennContainer = styled.div`
             font-weight: 700;
         }
     }
+
+    .table-container {
+        align-self: center;
+    }
 `;
+
+const SelectionTableStyle = styled.div`
+    margin-top: 30px;
+    width: ${props => props.width};
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .download-button {
+        align-self: flex-end;
+    }
+`;
+
 
 // dimensions for the venn plot
 const dimensions = {
@@ -198,9 +217,16 @@ const createVennDiagram = (data, updateSelectedData) => {
 };
 
 /**
+ * 
+ * @param {Array} data 
+ * @returns {Array} - returns an array of objects
+ */
+const transformData = (data) =>  data.map(el => ({id: el, name: el}));
+
+/**
  * create table for list of types
  */
- function makeTable(data) {
+function makeTable(data) {
     // an array with the columns of dataset table.
     const tableColumns = [
         {
@@ -211,11 +237,16 @@ const createVennDiagram = (data, updateSelectedData) => {
         },
     ];
 
-    const tableData = data.map(el => ({id: el, name: el}));
+    // table data
+    const tableData = transformData(data);
+
     return <Table columns={tableColumns} data={tableData}/>
 };
 
 
+/**
+ * Main Component
+ */
 const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
     // select data type; by default cell line
     const [selectedType, setSelectedType] = useState('Cell Line');
@@ -236,7 +267,7 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
     }, [selectedType])
 
     return (
-       <VennContainer>
+       <VennContainer className='venn-component'>
             <div className='venn-select-container'>
                 <Select 
                     className='venn-select'
@@ -253,8 +284,20 @@ const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
                 unlike a usual Venn Diagram.
             </div>
             {
-                selectedData ? <div> {makeTable(selectedData)} </div> : <div/>
-            }
+                selectedData ? (
+                    <SelectionTableStyle width={getMaxWidth(window.innerWidth)} className='table-container'>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={transformData(selectedData)}
+                                mode='csv'
+                                filename={`data`}
+                            />
+                        </div>
+                        <div className='selection-table'> {makeTable(selectedData)} </div>
+                    </SelectionTableStyle>
+                ) : <div/>
+            } 
         </VennContainer>
     )
 };
