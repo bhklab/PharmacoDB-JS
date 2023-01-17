@@ -31,6 +31,7 @@ cd PharmacoDB-JS
 ## Servers
 
 -   Production Server: https://pharmacodb.ca/
+-   Beta Server: beta.pharmacodb.ca
 
 ## Migrations
 
