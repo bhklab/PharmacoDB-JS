@@ -4,7 +4,7 @@ const { retrieveFields } = require('../helpers/queryHelpers');
 const { calculateRange } = require('../helpers/calculateRange');
 
 /**
- * 
+ *
  * @param {string} symbol - string matching the symbol or partial string
  * @returns {Object} - gene data that matches to input/arg symbol.
  */
@@ -73,6 +73,8 @@ const transformGene = data => {
  * @param {number} [args.page = 1] - Current page number with a default value of 1.
  * @param {number} [args.per_page = 20] - Total values per page with a default value of 20.
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
+ * @param parent
+ * @param info
  */
 const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
     // setting lower and upper bound.
@@ -139,7 +141,7 @@ const gene = async (args) => {
         } else if (geneName) { // using symbol column from the gene annotation table as it's being used as the gene name.
             gene = await query.where('gene_annotation.symbol', geneName);
         }
-        // transforming the rowdatapacket object.
+        // transforming the raw data packet object.
         gene = transformObject(gene);
         // getting the right data to be sent.
         const data = transformGene(gene);

@@ -34,10 +34,6 @@ const SYNONYM_COLUMNS = [
   },
 ];
 
-const LINK_COLUMNS = [
-
-];
-
 const SIDE_LINKS = [
   { label: 'Annotations', name: 'synonyms' },
   { label: 'Bar Plots', name: 'plots' },
@@ -47,12 +43,11 @@ const SIDE_LINKS = [
 
 /**
  * Format data for synonym and link tables
- * @param {String} id,link gene id and link to reference
  */
 const formatTableLinks = (data) => [
   {
     ensemblId: (
-      <a href={`http://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`} target="_blank">
+      <a href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${data.name}`} target="_blank">
         <div style={{ textAlign: 'center' }}> {data.name} </div>
       </a>
     ),
@@ -114,6 +109,7 @@ const IndivGenes = (props) => {
   /**
    *
    * @param {String} link
+   * @param i
    */
   const createSideLink = (link, i) => (
     <li key={i} className={display === link.name ? 'selected' : undefined}>
@@ -134,7 +130,7 @@ const IndivGenes = (props) => {
               gene.error ? <Error />
                 :
                 gene.loaded &&
-                <StyledIndivPage className="indiv-genes">
+                <StyledIndivPage className="individual-genes">
                   <div className='heading'>
                     <span className='title'>{gene.data.annotation.symbol}</span>
                     <span className='attributes'>
@@ -171,7 +167,7 @@ const IndivGenes = (props) => {
                         {
                           display === 'compoundsSummary' &&
                           <Element className='section'>
-                            <div className='section-title'>Drug Summary</div>
+                            <div className='section-title'>Compound Summary</div>
                             <CompoundsSummaryTable gene={gene.data} />
                           </Element>
                         }
@@ -195,7 +191,7 @@ const IndivGenes = (props) => {
 
 IndivGenes.propTypes = {
   /**
-   * IndivGenes' param id
+   * Individual Genes' param id
    */
   match: PropTypes.shape({
     params: PropTypes.shape({
