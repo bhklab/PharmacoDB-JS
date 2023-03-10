@@ -71,26 +71,38 @@ const CompoundsSummaryTable = (props) => {
     });
 
     function renderComponent() {
-        if(loading) {
+        if (loading) {
             return <Loading/>
         }
 
-        if(error) {
+        if (error) {
             return <Error/>
         }
 
         return (
             <React.Fragment>
-                <h4>
-                    <p align="center">
-                        {`Compounds targeting ${gene.annotation.symbol}`}
-                    </p>
-                </h4>
+                {
+                    tableData.numCompounds
+                        ? (
+                            <h4>
+                                <p align="center">
+                                    {`Compounds targeting ${gene.annotation.symbol}`}
+                                </p>
+                            </h4>
+                        )
+                        : ''
+                }
                 <p align="center">
                     {
                         tableData.numCompounds
                             ? `${tableData.numCompounds} compounds target gene products of ${gene.annotation.symbol}.`
-                            : `There are no compounds targeting ${gene.annotation.symbol} in the database`
+                            : (
+                                <h4>
+                                    <p align="center">
+                                        There are no compounds targeting {gene.annotation.symbol} in the database
+                                    </p>
+                                </h4>
+                            )
                     }
                 </p>
                 {

@@ -167,7 +167,7 @@ const IndivGenes = (props) => {
                         {
                           display === 'compoundsSummary' &&
                           <Element className='section'>
-                            <div className='section-title'>Compound Summary</div>
+                            <div className='section-title'>Compounds Summary</div>
                             <CompoundsSummaryTable gene={gene.data} />
                           </Element>
                         }
