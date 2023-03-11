@@ -1,13 +1,17 @@
 // root query for the schema definition.
 const RootQuery = `type RootQuery {
 
+    """Root Query for search"""
+    search(input: String): [Search]
+
+
     """
         Root Query for compounds.
         'page' is the page number for output (default value is 1)'.
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    compounds(page: Int, per_page: Int, all: Boolean): [Compound!]!
+    compounds(page: Int, per_page: Int, all: Boolean): [CompoundWithDataset!]!
 
     """
         Root Query to get a single compound detail.
@@ -24,7 +28,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    cell_lines(page: Int, per_page: Int, all: Boolean): [CellLine!]!
+    cell_lines(page: Int, per_page: Int, all: Boolean): [CellLineWithTissueDataset!]!
 
     """
         Root Query to get a single cell detail.
@@ -56,22 +60,22 @@ const RootQuery = `type RootQuery {
     """
         Root Query for returning tested Types for all datasets
     """
-    datasets_types: [DatasetsTypes!]!
+    datatypes_information_all_datasets: [DataTypesInformationPerDataset!]!
     
     """
         Root Query for returning tested Types for a dataset
     """
-    dataset_type(datasetId: Int, datasetName: String): [DatasetsTypes!]!
+    datatypes_information_per_dataset(datasetId: Int, datasetName: String): [DataTypesInformationPerDataset!]!
     
     """
         This is a query to get the cell lines that are grouped based on the dataset.
     """
-    cell_lines_grouped_by_dataset: [Summary!]!
+    cell_lines_grouped_by_dataset: [CellLinePerDataset!]!
 
     """
-        arguments that can be passed: 'cell', 'tissue', 'drug'
+        arguments that can be passed: 'cell', 'tissue', 'compound'
     """
-    type_tested_on_dataset_summary(type: AllowedValues!, datasetId: Int!): Summary!
+    type_tested_on_dataset(type: AllowedValues!, datasetId: Int!): CellLinePerDataset!
 
 
     """
@@ -114,12 +118,12 @@ const RootQuery = `type RootQuery {
     single_compound_target(compoundId: Int, compoundName: String): CompoundTarget
     single_gene_target(geneId: Int, geneName: String): GeneTarget
     all_compound_targets(page: Int, per_page: Int, all: Boolean): [CompoundTarget]
-    single_gene_targets_group_by_dataset(geneId: Int, geneName: String): GeneTargetCompoundCounts!
+    compound_targeting_gene_count_per_dataset(geneId: Int, geneName: String): GeneTargetCompoundCounts!
     
     """
         Root Query for the stats for the different types.
     """
-    data_type_stats: [Statistics!]!
+    data_type_stats: [DatatypeCount!]!
 
     """
         Root Query for tissues.
@@ -127,7 +131,7 @@ const RootQuery = `type RootQuery {
         'per_page' is the number of items returned per page (default value is 30)'.
         If 'all' flag set to true, the API return all available data (default value is false)
     """
-    tissues(page: Int, per_page: Int, all: Boolean): [Tissue!]!
+    tissues(page: Int, per_page: Int, all: Boolean): [TissueWithDataset!]!
 
     """
         Root Query to get a single tissue detail.
@@ -138,12 +142,12 @@ const RootQuery = `type RootQuery {
     tissue(tissueId: Int, tissueName: String): TissueDetail!
     
         """
-        Root Query to get a mol cell detail.
+        Root Query to get a molecular profiling  based on cell line detail.
         'cellId' is the id of the cell in the database and is an optional field.
         'cellName' is the name of the cell in the database and is also an optional field.
         One of the parameters has to be passed either an ID or the cell Name
     """
-    mol_cell(cellLineId: Int, cellLineName: String): [Mol]!
+    molecular_profiling(cellLineId: Int, cellLineName: String): [MolecularProfiling]!
 }`;
 
 module.exports = {

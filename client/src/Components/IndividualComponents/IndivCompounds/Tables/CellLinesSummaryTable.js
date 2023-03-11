@@ -42,7 +42,7 @@ const generateTableData = (data) => {
                 tissue: experiments[0].tissue,
                 num_experiments: experiments.length,
                 id: experiments[0].cell_line.id,
-                uid: experiments[0].cell_line.cell_uid,
+                uid: experiments[0].cell_line.uid,
                 datasetList: datasetList
             });
         }
@@ -142,31 +142,31 @@ const CellLinesSummaryTable = (props) => {
             }
             {
                 loading || !tableData.ready ?
-                <Loading />
-                :
-                tableData.cellLine.length > 0 ?
-                <React.Fragment>
-                    <h4>
+                    <Loading />
+                    :
+                    tableData.cellLine.length > 0 ?
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    {`Cell lines tested with ${compound.name}`}
+                                </p>
+                            </h4>
+                            <p align="center">
+                                {`${tableData.numCellLines} cell line(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).`}
+                            </p>
+                            <div className='download-button'>
+                                <DownloadButton
+                                    label='CSV'
+                                    data={csv}
+                                    mode='csv'
+                                    filename={`${compound.name} - cellLines`}
+                                />
+                            </div>
+                            <Table columns={CELL_SUMMARY_COLUMNS} data={tableData.cellLine} />
+                        </React.Fragment>
+                        :
                         <p align="center">
-                            {`Cell lines tested with ${compound.name}`}
-                        </p>
-                    </h4>
-                    <p align="center">
-                        {`${tableData.numCellLines} cell line(s) have been tested with this compound, using data from ${tableData.numDataset} dataset(s).`}
-                    </p>
-                    <div className='download-button'>
-                        <DownloadButton
-                            label='CSV'
-                            data={csv}
-                            mode='csv'
-                            filename={`${compound.name} - cellLines`}
-                        />
-                    </div>
-                    <Table columns={CELL_SUMMARY_COLUMNS} data={tableData.cellLine} />
-                </React.Fragment>
-                :
-                <p align="center">
-                    No cell lines have been tested with {compound.name}.
+                            No cell lines have been tested with {compound.name}.
                 </p>
             }
         </React.Fragment>

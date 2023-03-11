@@ -8,7 +8,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 // Import the module to be tested.
-const calcLimitOffset = require('../helpers/calcLimitOffset');
+const calcLimitOffset = require('../../graphql/helpers/calcLimitOffset');
 
 describe('Tests: calcLimitOffset module', () => {
     // declare variables used in this test block.

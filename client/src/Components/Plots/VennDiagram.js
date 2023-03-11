@@ -1,18 +1,61 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
 import * as d3 from 'd3';
 import * as venn from 'venn.js';
 import PropTypes from 'prop-types';
 import colors from '../../styles/colors';
+import styled from 'styled-components';
+import DownloadButton from '../UtilComponents/DownloadButton';
+import Table from '../UtilComponents/Table/Table';
+import getMaxWidth from '../../utils/maxWidthOfAnElement';
 
+// venn component styles and selection data table styles
+const VennContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    .venn-select-container {
+        width: 250px;
+        align-self: flex-end;
+    }
+
+    #venn {
+        align-self: center;
+    }
+
+    .venn-description {
+        color: ${colors.dark_pink_highlight};
+        margin-bottom: 20px;
+        text-align: center;
+        font-style: italic;
+
+        span {
+            font-weight: 700;
+        }
+    }
+
+    .table-container {
+        align-self: center;
+    }
+`;
+
+const SelectionTableStyle = styled.div`
+    margin-top: 30px;
+    width: ${props => props.width};
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .download-button {
+        align-self: flex-end;
+    }
+`;
+
+
+// dimensions for the venn plot
 const dimensions = {
-    width: 600,
-    height: 600,
-}
-
-
-// Inline style for the venn to align it in the center.
-const vennStyle = {
-    textAlign: 'center'
+    width: 650,
+    height: 450,
 }
 
 /**
@@ -26,7 +69,7 @@ const createVennDiagramStructure = (width = dimensions.width, height = dimension
         .width(width)
         .height(height)
         .fontSize(fontSize)
-        .padding(50);
+        .padding(20);
 };
 
 /**
@@ -35,7 +78,20 @@ const createVennDiagramStructure = (width = dimensions.width, height = dimension
  * @param {Array} data - data array.
  * @param {string} id - div id to append the venn diagram to.
  */
-const enterData = (chart, data, id = 'venn') => d3.select(`#${id}`).datum(data).call(chart);
+const enterData = (chart, data, id = 'venn', updateSelectedData) => d3.select(`#${id}`)
+    .datum(data)
+    .call(chart)
+    .on('mouseover', function () {
+        // change the cursor type.
+        d3.select(this).style('cursor', 'pointer')
+    })
+    .on('mouseout', function () {
+        // change the cursor to default.
+        d3.select(this).style('cursor', 'default');
+    })
+    .on('click', function (d) { 
+        updateSelectedData(d.target.__data__.values);
+    });
 
 /**
  * Changes the text color.
@@ -95,13 +151,13 @@ const appendText = (data) => {
     // position of the text based on data length (2^2-1 or 2^3-1).
     const location = data.length === 7 || data.length === 8
         ? {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 40 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 40 },
-            2: { x: 100, y: 80 },
+            0: { x: (dimensions.width) / 8, y: dimensions.height - 30 },
+            1: { x: (dimensions.width * 2) / 2.65, y: dimensions.height - 30 },
+            2: { x: 140, y: 80 },
         }
         : {
-            0: { x: (dimensions.width) / 4, y: dimensions.height - 120 },
-            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 120 },
+            0: { x: (dimensions.width) / 4, y: dimensions.height - 20 },
+            1: { x: (dimensions.width * 2) / 3 - 20, y: dimensions.height - 20 },
         };
 
     // appends the text.
@@ -113,7 +169,7 @@ const appendText = (data) => {
                 .attr('x', location[count]['x'])
                 .attr('y', location[count]['y'])
                 .attr('stroke', `${colors.dark_teal_heading}`)
-                .style('font-size', 14)
+                .style('font-size', 13)
                 .style('font-weight', 500)
                 .text(`${el.sets.join('+')} (${el.label})`);
             count += 1;
@@ -123,7 +179,10 @@ const appendText = (data) => {
 
 
 
-const createVennDiagram = (data) => {
+const createVennDiagram = (data, updateSelectedData) => {
+    // remove the existing svg element.
+    d3.select('#venn svg').remove();
+    
     // get the set and concat it in case the set size is three (3).
     let innerInstersection = '';
 
@@ -137,7 +196,7 @@ const createVennDiagram = (data) => {
     const chart = createVennDiagramStructure();
 
     // add the data to the venn diagram.
-    enterData(chart, data, 'venn');
+    enterData(chart, data, 'venn', updateSelectedData);
 
     // change the text color.
     changeText('venn', 'white');
@@ -157,20 +216,95 @@ const createVennDiagram = (data) => {
     appendText(data);
 };
 
+/**
+ * 
+ * @param {Array} data 
+ * @returns {Array} - returns an array of objects
+ */
+const transformData = (data) =>  data.map(el => ({id: el, name: el}));
 
-const VennDiagram = ({ data }) => {
+/**
+ * create table for list of types
+ */
+function makeTable(data) {
+    // an array with the columns of dataset table.
+    const tableColumns = [
+        {
+            Header: 'Name',
+            accessor: 'name',
+            center: true,
+            rowSpan: 2,
+        },
+    ];
+
+    // table data
+    const tableData = transformData(data);
+
+    return <Table columns={tableColumns} data={tableData}/>
+};
+
+
+/**
+ * Main Component
+ */
+const VennDiagram = ({ tissueData, cellData, compoundData, selectOptions }) => {
+    // select data type; by default cell line
+    const [selectedType, setSelectedType] = useState('Cell Line');
+    const [selectedData, updateSelectedData] = useState();
+
     useEffect(() => {
-        createVennDiagram(data)
-    }, [data])
+        if(selectedType === 'Cell Line') {
+            createVennDiagram(cellData, updateSelectedData);
+        }
+
+        if(selectedType === 'Tissue') {
+            createVennDiagram(tissueData, updateSelectedData);
+        }
+
+        if(selectedType === 'Compound') {
+            createVennDiagram(compoundData, updateSelectedData);
+        }
+    }, [selectedType])
 
     return (
-        <div id='venn' style={vennStyle} />
+       <VennContainer className='venn-component'>
+            <div className='venn-select-container'>
+                <Select 
+                    className='venn-select'
+                    defaultValue={{ value: selectedType, label: selectedType }}
+                    options={selectOptions} 
+                    onChange={(e) => setSelectedType(e.label)}
+                />
+            </div>
+            <div id='venn'/>
+            <div className='venn-description'>
+                <span> Note: </span>
+                Numbers represent total members of intersection, 
+                not excluding those in other intersections, 
+                unlike a usual Venn Diagram.
+            </div>
+            {
+                selectedData ? (
+                    <SelectionTableStyle width={getMaxWidth(window.innerWidth)} className='table-container'>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={transformData(selectedData)}
+                                mode='csv'
+                                filename={`data`}
+                            />
+                        </div>
+                        <div className='selection-table'> {makeTable(selectedData)} </div>
+                    </SelectionTableStyle>
+                ) : <div/>
+            } 
+        </VennContainer>
     )
 };
 
 
 VennDiagram.propTypes = {
-    datasets: PropTypes.arrayOf(
+    tissueData: PropTypes.arrayOf(
         PropTypes.shape({
             sets: PropTypes.arrayOf(PropTypes.string).isRequired,
             size: PropTypes.number.isRequired,
@@ -178,6 +312,26 @@ VennDiagram.propTypes = {
             values: PropTypes.arrayOf(PropTypes.string),
         }).isRequired,
     ),
+    compoundData: PropTypes.arrayOf(
+        PropTypes.shape({
+            sets: PropTypes.arrayOf(PropTypes.string).isRequired,
+            size: PropTypes.number.isRequired,
+            label: PropTypes.string.isRequired,
+            values: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
+    ),
+    cellData: PropTypes.arrayOf(
+        PropTypes.shape({
+            sets: PropTypes.arrayOf(PropTypes.string).isRequired,
+            size: PropTypes.number.isRequired,
+            label: PropTypes.string.isRequired,
+            values: PropTypes.arrayOf(PropTypes.string),
+        }).isRequired,
+    ),
+    selectOptions: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.string,
+        label: PropTypes.string,
+    })).isRequired,
 };
 
 export default VennDiagram;

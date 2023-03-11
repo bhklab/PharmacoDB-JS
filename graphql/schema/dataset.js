@@ -25,14 +25,13 @@ const datasetDetailType = `
         cells_tested: [CellLine!]
         """compound names tested in the dataset"""
         compounds_tested: [Compound!]
-        
     }
 `;
 
 const datasetStatsType = `
     type DatasetStats {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """number of tested cell lines in the dataset"""
         cell_line_count: Int!
         """number of tested experiments in the dataset"""
@@ -44,11 +43,12 @@ const datasetStatsType = `
     }
 `;
 
-
-const datasetsTypesType = `
-    type DatasetsTypes {
+// TODO: only tissues_tested field is extra when compared to dataset detail schema definition
+// TODO: is there a difference when we get data from experiments table and dataset + a particular type table??
+const dataTypesInformationPerDatasetType = `
+    type DataTypesInformationPerDataset {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """tissue ids and names tested in the dataset"""
         tissues_tested: [Tissue!]
         """cell line ids and names tested in the dataset"""
@@ -58,10 +58,11 @@ const datasetsTypesType = `
     }
 `;
 
+// TODO: maybe we might not need this??
 const datasetsCompoundStatType = `
-    type DatasetCompoundStat{
+    type DatasetCompoundStat {
         """name and id of the dataset"""
-        dataset: Generic!
+        dataset: Dataset!
         """compound ids and names tested in the dataset"""
         compound_count: Int!
     }
@@ -71,6 +72,6 @@ module.exports = {
     datasetType,
     datasetDetailType,
     datasetStatsType,
-    datasetsTypesType,
+    dataTypesInformationPerDatasetType,
     datasetsCompoundStatType,
 };

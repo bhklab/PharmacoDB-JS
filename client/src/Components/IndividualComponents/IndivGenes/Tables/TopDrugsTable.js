@@ -100,35 +100,59 @@ const TopDrugsTable = (props) => {
         }
     });
 
+    function renderComponent() {
+        if (loading) {
+            return <Loading/>
+        }
+
+        if (error) {
+            return <Error/>
+        }
+
+        if (tableData.length === 0) {
+            return (
+                <>
+                    <h4>
+                        <p align="center">
+                            {`There are no compound associations in the database`}
+                        </p>
+                    </h4>
+                </>
+            )
+        }
+
+        return (
+            tableData.length > 0 &&
+            (
+                <>
+                    <h4>
+                        <p align="center">
+                            {`Top compounds associated with response to ${gene.annotation.symbol}`}
+                        </p>
+                    </h4>
+                    <div className='download-button'>
+                        <DownloadButton
+                            label='CSV'
+                            data={tableData}
+                            mode='csv'
+                            filename={`${gene.annotation.symbol} - top compounds`}
+                        />
+                    </div>
+                    <Table
+                        columns={columns}
+                        data={tableData}
+                        defaultSort={[{id: 'correlation', desc: true}]}
+                        highlightRows={highlightRowsByCorrelation}
+                    />
+                </>
+            )
+        )
+    }
+
     return (
         <React.Fragment>
             {
-                loading ? <Loading />
-                    :
-                    error ? <Error />
-                        :
-                        tableData.length > 0 &&
-                        <React.Fragment>
-                            <h4>
-                                <p align="center">
-                                    {`Top compounds associated with response to ${gene.annotation.symbol}`}
-                                </p>
-                            </h4>
-                            <div className='download-button'>
-                                <DownloadButton
-                                    label='CSV'
-                                    data={tableData}
-                                    mode='csv'
-                                    filename={`${gene.annotation.symbol} - top compounds`}
-                                />
-                            </div>
-                            <Table
-                                columns={columns}
-                                data={tableData}
-                                defaultSort={[{id: 'correlation', desc: true}]}
-                                highlightRows={highlightRowsByCorrelation}
-                            />
-                        </React.Fragment>
+                renderComponent()
             }
         </React.Fragment>
     );

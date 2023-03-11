@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
-import { Download } from 'react-bootstrap-icons';
 import FileSaver from 'file-saver';
-import Plotly from 'plotly.js-dist';
+import Plotly from 'plotly.js';
 import PropTypes from 'prop-types';
+import downloadImg from '../../images/download.webp';
 
 /**
  * Button used to download plot in .svg or .png format,
@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
  */
 
 const StyledButton = styled.button`
+    width: 70px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,9 +23,9 @@ const StyledButton = styled.button`
     letter-spacing: 0.5px;
     padding: 0.2rem 0.4rem 0.1rem 0.4rem;
     background-color: #ffffff;
-    border: 1px solid ${colors.light_blue};
+    border: 1px solid ${colors.dark_teal_heading};
     font-size: clamp(12px, calc(1vw + 1px), 14px);
-    color: ${colors.light_blue};
+    color: ${colors.dark_teal_heading};
     cursor: pointer;
 
     .download-icon {
@@ -32,12 +34,17 @@ const StyledButton = styled.button`
     }
 
     :hover {
-        outline: ${colors.dark_teal_heading};
-        border: 1px solid ${colors.dark_teal_heading};
-        color: ${colors.dark_teal_heading};
-        .download-icon {
-            color: ${colors.dark_teal_heading};
-        }
+        outline: ${colors.light_blue};
+        border: 1px solid ${colors.light_blue};
+        // color: ${colors.dark_teal_heading};
+        // .download-icon {
+        //     color: ${colors.dark_teal_heading};
+        // }
+    }
+
+    img {
+        width: 25px;
+        height: 25px;
     }
 `;
 
@@ -85,8 +92,8 @@ const DownloadButton = (props) => {
 
     return (
         <StyledButton className={className} onClick={download} disabled={props.disabled} >
-            {label}<Download className='download-icon'/>
-        </StyledButton>
+            {label}<img alt='hello' src={downloadImg} />
+        </StyledButton>  
     );
 }
 

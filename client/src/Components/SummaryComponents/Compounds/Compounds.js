@@ -7,6 +7,7 @@ import { getCompoundsQuery } from '../../../queries/compound';
 import StyledWrapper from '../../../styles/utils';
 import BarPlot from '../../Plots/BarPlot';
 import Loading from '../../UtilComponents/Loading';
+import getMaxWidth from '../../../utils/maxWidthOfAnElement';
 
 // links for pubchem and dtc.
 const PUBCHEM_LINK = 'https://pubchem.ncbi.nlm.nih.gov/compound/';
@@ -104,8 +105,10 @@ const renderComponent = (loading, error, columns, data) => {
   }
   return (
     <>
-      <h2 className="new-section"> Number of Compounds Tested in Each Dataset </h2>
-      <BarPlot />
+      <h2 className="new-section"> Number of Compounds tested in each Dataset </h2>
+      <div style={{maxWidth: getMaxWidth(window.innerWidth)}}>
+        <BarPlot />
+      </div>
       <h2 className="new-section">List of Compounds</h2>
       <Table columns={columns} data={data} defaultSort={[{ id: 'fda_status' }]} />
     </>

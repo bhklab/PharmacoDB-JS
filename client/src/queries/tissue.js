@@ -35,7 +35,7 @@ const getTissueQuery = gql`
       name
       synonyms {
         name
-        source {
+        dataset {
           id
           name
         }

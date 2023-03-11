@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getMolCellQuery } from '../../../../queries/mol';
+import { getMolecularProfilingQuery } from '../../../../queries/molecular_profiling';
 import Table from '../../../UtilComponents/Table/Table';
 import Loading from '../../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
@@ -85,10 +85,10 @@ const MolecularProfilingTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getMolCellQuery, {
+    const { loading } = useQuery(getMolecularProfilingQuery, {
         variables: { cellLineId: cellLine.id },
         onCompleted: (data) => {
-            let parsed = generateTableData(data.mol_cell);
+            let parsed = generateTableData(data.molecular_profiling);
             setTableData(parsed);
         },
         onError: (err) => {
@@ -103,26 +103,26 @@ const MolecularProfilingTable = (props) => {
             }
             {
                 loading || !tableData.ready ?
-                <Loading />
-                :
-                tableData.molProf.length > 0 ?
-                <React.Fragment>
-                    <h4>
-                        <p align="center">
-                            {`Available Molecular Profiling in PharmacoGx`}
-                        </p>
-                    </h4>
-                    <p align="center">
-                        {`# of profiles of each type per dataset`}
-                    </p>
-                    {
-                        tableData.molProf.length > 0 &&
-                        <Table columns={COLUMNS()} data={tableData.molProf} center={true} />
-                    }
-                </React.Fragment>
-                :
-                <h6 align="center">
-                    No molecular profiling data with {cellLine.name} is available in PharmacoGx.
+                    <Loading />
+                    :
+                    tableData.molProf.length > 0 ?
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    {`Available Molecular Profiling in PharmacoGx`}
+                                </p>
+                            </h4>
+                            <p align="center">
+                                {`# of profiles of each type per dataset`}
+                            </p>
+                            {
+                                tableData.molProf.length > 0 &&
+                                <Table columns={COLUMNS()} data={tableData.molProf} center={true} />
+                            }
+                        </React.Fragment>
+                        :
+                        <h6 align="center">
+                            No molecular profiling data with {cellLine.name} is available in PharmacoGx.
                 </h6>
             }
         </React.Fragment>

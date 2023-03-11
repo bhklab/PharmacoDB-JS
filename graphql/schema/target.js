@@ -25,16 +25,16 @@ const targetWithCompoundInfoType = `
         """target name"""
         target_name: String!
         """compound object"""
-        compounds: [CompoundTable]
+        compounds: [Compound]
     }
 `;
 
 const geneTargetType = `
     type GeneTarget {
         """gene id in the database"""
-        gene_id: Int!
+        gene_id: Int
         """gene name in the database"""
-        gene_name: String!
+        gene_name: String
         """gene annotation"""
         gene_annotation: GeneAnnotation
         """target object"""

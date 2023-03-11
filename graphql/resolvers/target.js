@@ -46,7 +46,7 @@ const single_compound_target = async (args) => {
 
         // target query.
         let query = targetQuery();
-        // subquery.
+        // sub-query.
         if (compoundId) {
             query = query.where('compound.id', compoundId);
         } else if (compoundName) {
@@ -115,6 +115,7 @@ const single_compound_target = async (args) => {
                 }
             }
         });
+
         // return object
         // assign empty array for the target field if the compound does not have any targets (returnObject.targets is null).
         return {
@@ -156,7 +157,8 @@ const single_gene_target = async (args) => {
 
         // target query.
         let query = targetQuery();
-        // subquery.
+
+        // sub-query.
         if (geneId) {
             query = query.where('gene.id', geneId);
         } else if (geneName) {
@@ -217,6 +219,12 @@ const single_gene_target = async (args) => {
                 }
             }
         });
+
+        // if the object is empty return
+        if(returnObject && Object.keys(returnObject).length === 0) {
+            return {}
+        }
+
         // return object
         return {
             ...returnObject,
@@ -264,15 +272,16 @@ const all_compound_targets = async () => {
 
 /**
  * @param args either geneId or geneName
- * @returns {Object} returns the list of datasets and the count of compounds in them that are targetting a given gene.
+ * @returns {Object} returns the list of datasets and the count of compounds in them that are targeting a given gene.
  */
-const single_gene_targets_group_by_dataset = async (args) => {
+const compound_targeting_gene_count_per_dataset = async (args) => {
     try {
         const {
             geneId,
             geneName
         } = args;
         const returnObject = [];
+
         let query = knex.countDistinct('ct.compound_id as compound_count')
             .select('g.id as gene_id', 'g.name as gene_name', 'd.name as dataset_name','d.id as dataset_id')
             .from('gene_target as gt')
@@ -281,14 +290,15 @@ const single_gene_targets_group_by_dataset = async (args) => {
             .join('compound_target as ct', 't.id', 'ct.target_id')
             .join('dataset_compound as dc', 'dc.compound_id', 'ct.compound_id')
             .join('dataset as d', 'd.id', 'dc.dataset_id');
-            if (geneId) {
-                query = query.where('g.id', geneId).groupBy('d.id');
-            } else {
-                query = query.where('g.name', geneName).groupBy('d.id');
-            };
+        if (geneId) {
+            query = query.where('g.id', geneId).groupBy('d.id');
+        } else {
+            query = query.where('g.name', geneName).groupBy('d.id');
+        }
+
         const datasets = await query;
         const targetsStat = [];
-        datasets.forEach((dataset, i) => {
+        datasets.forEach((dataset) => {
             const {
                 dataset_id,
                 dataset_name,
@@ -301,8 +311,9 @@ const single_gene_targets_group_by_dataset = async (args) => {
             targetsStat.push({
                 dataset : { id : dataset_id , name: dataset_name},
                 compound_count: compound_count,
-            })
+            });
         });
+
         returnObject['targetsStat'] = targetsStat;
         return returnObject;
     } catch(err) {
@@ -316,5 +327,5 @@ module.exports = {
     single_compound_target,
     single_gene_target,
     all_compound_targets,
-    single_gene_targets_group_by_dataset,
+    compound_targeting_gene_count_per_dataset,
 };

@@ -50,7 +50,7 @@ const PlotSection = (props) => {
   const { loading } = useQuery(getGeneTargetCountCompoundsByDataset, {
     variables: { geneId: gene.id },
     onCompleted: (data) => {
-      setData(generateCountPlotData(data.single_gene_targets_group_by_dataset));
+      setData(generateCountPlotData(data.compound_targeting_gene_count_per_dataset));
     },
     onError: (err) => {
       console.log(err);

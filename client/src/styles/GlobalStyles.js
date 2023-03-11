@@ -3,7 +3,7 @@ import colors from './colors';
 
 const GlobalStyles = createGlobalStyle`
     body {
-        margin:0;
+        margin: 0;
         color: ${colors.dark_gray_text};
         font-family: 'Open Sans', sans-serif;
         font-weight: 400;
@@ -16,19 +16,22 @@ const GlobalStyles = createGlobalStyle`
         align-items: center;
         margin-bottom: 20px;
     }
+    
     .js-plotly-plot {
         width: 100%;
     }
-    .noscroll
-    {
+
+    .noscroll {
         position: fixed; 
         overflow-y: scroll;
         width: 100%;
     }
+
     a {
         text-decoration: none;
         transition: all 0.25s ease-out 0s;
     }
+
     a:hover {
         transition: all 0.25s ease-out 0s;
     }
@@ -63,11 +66,13 @@ const GlobalStyles = createGlobalStyle`
     }
 
     .burger-menu {
-        position:fixed;
+        position: fixed;
+
         h2 {
             margin-bottom: 10px;
         }
-        .burger-item{ 
+
+        .burger-item { 
             border-left: 1px solid white;
             padding: 10px;
             margin-left: 5px;
@@ -77,6 +82,7 @@ const GlobalStyles = createGlobalStyle`
                 border-left: 5px solid white;
             }
         }
+
         p {
             margin: 2em;
         }
@@ -84,18 +90,21 @@ const GlobalStyles = createGlobalStyle`
 
     .plot {
         margin-bottom: 20px;
+
         h3 {
             text-align: center;
             margin: 15px 0;
         }
+
         .notifications {
             margin-left: 65px;
-            P {
+            p {
                 font-size: 10px;
                 color: ${colors.teal}
             }
         }
     }
+
     /* desktop */
     @media only screen and (min-width: 1082px) { 
         .burger-menu, .bm-burger-button {
@@ -103,11 +112,5 @@ const GlobalStyles = createGlobalStyle`
         }
     }
 `;
-
-// font-family: 'Nunito', sans-serif; 400, 600
-// font-family: 'Open Sans', sans-serif; 400, 600
-// font-family: 'Overpass', sans-serif; 400, 600
-// font-family: 'Roboto Slab', serif; 600
-// font-family: 'Rubik', sans-serif; 400, 500
 
 export default GlobalStyles;

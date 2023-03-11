@@ -55,24 +55,24 @@ const App = () => {
                         <Route path="/pharmacogx/:id" exact component={PharmacoGx} />
                         <Route
                             path="/compounds/:id"
-                            component={IndivCompounds}
+                            exact component={IndivCompounds}
                         />
                         <Route
                             path="/cell_lines/:id"
-                            component={IndivCellLines}
+                            exact component={IndivCellLines}
                         />
-                        <Route path="/tissues/:id" component={IndivTissues} />
-                        <Route path="/genes/:id" component={IndivGenes} />
+                        <Route path="/tissues/:id" exact component={IndivTissues} />
+                        <Route path="/genes/:id" exact component={IndivGenes} />
                         <Route
                             path="/datasets/:id"
                             exact
                             component={IndivDatasets}
                         />
-                        <Route path="/search" component={IntersectionMain} />
-                        <Route path="/about" component={AboutUs} />
-                        <Route path="/documentation" component={Documentation} />
-                        <Route path="/cite" component={CiteUs} />
-                        <Route path="*" component={NotFoundPage} />
+                        <Route path="/search" exact component={IntersectionMain} />
+                        <Route path="/about" exact component={AboutUs} />
+                        <Route path="/documentation" exact component={Documentation} />
+                        <Route path="/cite" exact component={CiteUs} />
+                        <Route path="*" exact component={NotFoundPage} /> 
                     </Switch>
                 </Router>
             </ApolloProvider>

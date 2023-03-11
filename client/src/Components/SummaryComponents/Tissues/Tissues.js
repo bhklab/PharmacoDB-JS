@@ -42,22 +42,22 @@ const getTableData = (data) => {
 /**
  * Function to render the cell lines page component depending on 
  * the API request outcome.
- * @param {*} loading 
- * @param {*} error 
- * @param {*} pieData 
- * @param {*} tableData 
+ * @param {boolean} loading 
+ * @param {object} error 
+ * @param {Array} pieData 
+ * @param {Array} tableData 
  * @returns a component to be rendered.
  */
 const renderComponent = (loading, error, pieData, tableData) => {
-  if(error){
+  if(error){ 
     return(<Error />);
   }
 
-  if(loading){
+  if(loading) {
     return(<Loading />)
   }
 
-  return(
+  return (
     <React.Fragment>
       <h2>Relative Percentage of Cell lines per Tissue</h2>
       <TissueCellsPieChart cells={pieData} />

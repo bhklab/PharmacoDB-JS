@@ -3,9 +3,6 @@ import styled from 'styled-components';
 
 import colors from '../../../../styles/colors';
 
-import CodeContainer from 'react-code-container'
-import 'react-code-container/dist/index.css'
-
 const StyledDescription = styled.div`
     display: flex;
     justify-content: space-between;

@@ -1,78 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { getCellLinesQuery } from '../../../queries/cell';
-import { getDatasetsTypesQuery } from '../../../queries/dataset';
 import { getDatasetsQuery } from '../../../queries/dataset';
+import { getTypeInformationAllDatasetsQuery } from '../../../queries/dataset';
+import RenderUpsetPlot from './RenderUpsetPlot';
+import createSetsWithData from './CreateSetsWithData';
 import StyledWrapper from '../../../styles/utils';
 import Layout from '../../UtilComponents/Layout';
 import createAllSubsets from '../../../utils/createAllSubsets';
-import UpsetPlot from '../../Plots/UpsetPlot';
 import VennDiagram from '../../Plots/VennDiagram';
 import Loading from '../../UtilComponents/Loading';
-import Select from 'react-select';
-import StyledSelectorContainer from '../../../styles/Utils/StyledSelectorContainer';
+import Error from '../../UtilComponents/Error';
 
-/**
- * Parses the data and prepare an object for each dataset and all the related types in the dataset.
- * @param {Array} data - input data that has to be parsed.
- */
-const parseCellLineData = (data) => {
-    // object to store the final result.
-    let dataObject = {};
-    // iterate through the data to prepare the data Object.
-    data.forEach((element) => {
-        element.dataset.forEach(dataset => {
-            if (!dataObject[dataset.name]) {
-                dataObject[dataset.name] = [element.name]
-            } else if (dataObject[dataset.name]) {
-                dataObject[dataset.name].push(element.name);
-            }
-        })
-    });
-    // this is set each key to unique list of data type.
-    Object.keys(dataObject).forEach((key) => {
-        dataObject[key] = [...new Set(dataObject[key])]
-    })
-    return dataObject;
-};
-
-/**
- *
- * @param {Object} data - input data.
- * @param {Array} subsets - list of all the subsets.
- */
-const createUpsetPlotData = (data, subsets) => {
-    const finalObject = {};
-    subsets.forEach((subset, i) => {
-        if (subset.length > 0) {
-            // union of the data.
-            // subset.forEach(el => uniqueValues.push(...data[el]));
-
-            // intersection
-            let result = [];
-            if (subset.length === 1) {
-                result = data[subset[0]];
-            } else {
-                result = subset.reduce((acc, cur) => {
-                    if (typeof (acc) === "string") {
-                        return data[acc].filter((el) => data[cur].includes(el));
-                    } else {
-                        return acc.filter((el) => data[cur].includes(el));
-                    }
-                });
-            }
-
-            // append the object to final object variable.
-            finalObject[`set${i}`] = {
-                keys: subset,
-                values: [...new Set(result)],
-                count: result.length,
-            }
-        }
-    })
-    return finalObject;
-};
+// datatype options 
+const dataTypeOptions = [
+    { value: 'cell', label: 'Cell Line' },
+    { value: 'tissue', label: 'Tissue' },
+    { value: 'compound', label: 'Compound' },
+];
 
 /**
  *
@@ -124,84 +69,45 @@ const createUpdatedDatasetArray = (datasets, keys) => {
     return data;
 };
 
-const DrawUpsetPlot = (props) => {
-    const {
-        data, datasets
-    } = props;
-
-    let datasetSubSets = {}, tissues_tested = {}, cells_tested = {}, compounds_tested = {};
-
-    const [plotData, setPlotData] = useState(props.data);
-    useEffect(() => { setPlotData(data) }, [data])
-
-    const [selectedType, setSelectedType] = useState('Cell line');
-    useEffect(() => {
-        if (selectedType === "Tissue") {
-            setPlotData(createUpsetPlotData(tissues_tested, datasetSubSets))
-        } else if (selectedType === "Compound") {
-            setPlotData(createUpsetPlotData(compounds_tested, datasetSubSets))
-        }
-        else {
-            setPlotData(props.data)
-        }
-    }, [selectedType])
-    const dataTypeOptions = [
-        { value: 'cell', label: 'Cell Line' },
-        { value: 'tissue', label: 'Tissue' },
-        { value: 'compound', label: 'Compound' },
-    ]
-
-    const { loading: typesLoading, error: typesError, data: types } = useQuery(getDatasetsTypesQuery);
-    if (!typesLoading) {
-        const datasets = types.datasets_types.map(item => item.dataset.name);
-        datasetSubSets = createAllSubsets(datasets);
-        types.datasets_types.map(item => tissues_tested[item.dataset.name] = item.tissues_tested.map(t => t.name));
-        // types.datasets_types.map(item => cells_tested[item.dataset.name]= item.cells_tested);
-        types.datasets_types.map(item => compounds_tested[item.dataset.name] = item.compounds_tested.map(c => c.name));
-    }
-
-    return (
-        <React.Fragment>
-            <StyledSelectorContainer>
-                <div className="single-selector-container">
-                    {/* <div className='label'>Type:</div> */}
-                    <Select
-                        className='selector'
-                        defaultValue={{ value: selectedType, label: selectedType }}
-                        options={dataTypeOptions}
-                        onChange={(e) => setSelectedType(e.label)}
-                    />
-                </div>
-            </StyledSelectorContainer>
-            <UpsetPlot data={plotData} datasets={props.datasets} type={selectedType} />
-        </React.Fragment>
-    );
-};
-
 /**
  *
- * @param {boolean} cellDataLoading
+ * @param {boolean} loading
  * @param {boolean} datasetDataLoading
  * @param {Object} parsedCellData
  * @param {Array} updatedDatasets
  */
-const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn = false) => {
-    const datasetString = updatedDatasets.join(' + ');
-
-    if (cellDataLoading || datasetDataLoading) {
+const renderComponent = (loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, data, isVenn = false) => {
+    if (loading || datasetDataLoading) {
         return <Loading />
-    } else if (isVenn) {
+    }
+
+    if (error || datasetDataError) {
+        return <Error />
+    }
+
+    if (isVenn) {
         return (
             <>
-                <h2>Overlaps among datasets</h2>
-                <VennDiagram data={createVennDiagramData(parsedCellData)} />
+                <h2>Overlap among datasets</h2>
+                <VennDiagram 
+                    tissueData={createVennDiagramData(parsedTissueData)} 
+                    compoundData={createVennDiagramData(parsedCompoundData)}
+                    cellData={createVennDiagramData(parsedCellData)}
+                    selectOptions={dataTypeOptions}
+                />
             </>
         )
     } else {
         return (
             <>
-                <h2>Overlaps among datasets</h2>
-                <DrawUpsetPlot data={parsedCellData} datasets={updatedDatasets} />
+                <h2>Overlap among datasets</h2>
+                <RenderUpsetPlot
+                    compoundData={parsedCompoundData}
+                    tissueData={parsedTissueData}
+                    cellData={parsedCellData}
+                    datasets={updatedDatasets}
+                    selectOptions={dataTypeOptions}
+                />
             </>
         )
     }
@@ -212,42 +118,60 @@ const renderComponent = (cellDataLoading, datasetDataLoading, parsedCellData, up
  * Parses data from the cell line query for the upset plot.
  * @component
  */
-const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = false }) => {
+const DatasetIntersection = ({ datasets: datasetProp = [], isIntersection = false }) => {
+
     // array of the datasets from the prop.
-    const datasetsPropArray = createDatasetArray(datasetsProp);
+    const datasetsPropArray = createDatasetArray(datasetProp);
 
     // cell line and dataset data from the APIs.
-    const { loading: cellDataLoading, error: cellDataError, data: cellLineData } = useQuery(getCellLinesQuery);
+    const { loading, error, data } = useQuery(getTypeInformationAllDatasetsQuery);
+
     const { loading: datasetDataLoading, error: datasetDataError, data: datasetData } = useQuery(getDatasetsQuery);
 
     // setting the state to grab the updated dataset array and cell line data.
     const [updatedDatasets, setDatasets] = useState([]);
     const [parsedCellData, setParsedCellData] = useState({});
+    const [parsedCompoundData, setParsedCompoundData] = useState({});
+    const [parsedTissueData, setParsedTissueData] = useState({});
     const [isVenn, setIsVenn] = useState(false);
+    const [plotData, setPlotData] = useState([]);
 
     useEffect(() => {
-        if (cellLineData && datasetData) {
-            // array of the datasets from the database and parsed cell line data.
+        if (data && datasetData) {
+
+            // array of the datasets from the database.
             const datasets = datasetData.datasets.map(dataset => dataset.name);
-            const parsedCells = parseCellLineData(cellLineData.cell_lines);
+
+            // cell data object.
+            const cells = {}, tissues = {}, compounds = {};
+            data.datatypes_information_all_datasets.forEach(el => cells[el.dataset.name] = el.cells_tested.map(cell => cell.name));
+            data.datatypes_information_all_datasets.forEach(el => tissues[el.dataset.name] = el.tissues_tested.map(tissue => tissue.name));
+            data.datatypes_information_all_datasets.forEach(el => compounds[el.dataset.name] = el.compounds_tested.map(compound => compound.name));
 
             // update the dataset names according to the names in the database.
             const updatedDatasetArray = createUpdatedDatasetArray(datasetsPropArray, datasets);
 
             // all the subsets of the dataset array and upset plot data for cell lines.
             const datasetSubSets = createAllSubsets(updatedDatasetArray);
-            const subSetCells = createUpsetPlotData(parsedCells, datasetSubSets);
+
+            // dataset subsets with cell data, tissue data and compound data.
+            const subSetCells = createSetsWithData(cells, datasetSubSets);
+            const subSetTissues = createSetsWithData(tissues, datasetSubSets);
+            const subSetCompounds = createSetsWithData(compounds, datasetSubSets);
 
             // update the state to include a dataset list and
             setDatasets(updatedDatasetArray);
             setParsedCellData(subSetCells);
+            setParsedCompoundData(subSetCompounds);
+            setParsedTissueData(subSetTissues);
+            setPlotData(data.datasets_types);
 
             // set the state of isVenn to true if the dataset prop length is 3 or less than 3.
             if (datasetsPropArray.length <= 3) {
                 setIsVenn(true);
             }
         }
-    }, [cellLineData, datasetData])
+    }, [data, datasetData])
 
     return (
         isIntersection
@@ -255,7 +179,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
                 <Layout page="dataset_intersection">
                     <StyledWrapper>
                         {
-                            renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets, isVenn)
+                            renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, plotData, isVenn)
                         }
                     </StyledWrapper>
                 </Layout>
@@ -263,7 +187,7 @@ const DatasetIntersection = ({ datasets: datasetsProp = [], isIntersection = fal
             : (
                 <>
                     {
-                        renderComponent(cellDataLoading, datasetDataLoading, parsedCellData, updatedDatasets)
+                        renderComponent(loading, datasetDataLoading, error, datasetDataError, parsedCellData, parsedCompoundData, parsedTissueData, updatedDatasets, plotData)
                     }
                 </>
             )

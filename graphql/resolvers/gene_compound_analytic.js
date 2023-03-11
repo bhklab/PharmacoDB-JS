@@ -2,7 +2,7 @@ const knex = require('../../db/knex');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields } = require('../helpers/queryHelpers');
-const { getIdBasedOnCompound } = require('./compound');
+const { getCompoundIdBasedOnCompoundName } = require('./compound');
 const { getIdBasedOnGene } = require('./gene');
 const { getTissueIdBasedOnTissueName } = require('./tissue');
 
@@ -87,7 +87,7 @@ const mapDatasetOrTissue = (data, mapData, mapDataType) => {
         item[mapDataType] = {
             id: found.id,
             name: found.name
-        }
+        };
         return item;
     });
 };
@@ -125,7 +125,7 @@ const gene_compound_dataset = async (args, context, info) => {
     let { geneId, geneName, compoundId, compoundName, page = 1, per_page = 20, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
     geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
 
     // check if the gene or compound id is passed?
     if (!geneId && !compoundId) throw new Error('Invalid input! Query must include geneId or compoundId');
@@ -140,25 +140,25 @@ const gene_compound_dataset = async (args, context, info) => {
 
         listOfFields.forEach(el => {
             switch (el.name) {
-                case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol', 'gene_seq_start', 'gene_seq_end']);
-                    subtypes.push(el.name);
-                    break;
-                case 'compound':
-                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    subtypes.push(el.name);
-                    break;
-                case 'dataset':
-                    columns.push(...['GD.dataset_id as dataset_id']);
-                    // columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'id':
-                    columns.push('GD.id as gct_id');
-                    break;
-                default:
-                    columns.push(el.name);
-                    break;
+            case 'gene':
+                columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_annotation.symbol as symbol', 'gene_seq_start', 'gene_seq_end']);
+                subtypes.push(el.name);
+                break;
+            case 'compound':
+                columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                subtypes.push(el.name);
+                break;
+            case 'dataset':
+                columns.push(...['GD.dataset_id as dataset_id']);
+                // columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
+                subtypes.push(el.name);
+                break;
+            case 'id':
+                columns.push('GD.id as gct_id');
+                break;
+            default:
+                columns.push(el.name);
+                break;
             }
         });
 
@@ -175,14 +175,14 @@ const gene_compound_dataset = async (args, context, info) => {
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-                case 'gene':
-                    query = query.join('gene', 'gene.id', 'GD.gene_id')
-                        .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
-                    break;
-                case 'compound':
-                    query = query.join('compound', 'compound.id', 'GD.compound_id')
-                        .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    break;
+            case 'gene':
+                query = query.join('gene', 'gene.id', 'GD.gene_id')
+                    .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
+                break;
+            case 'compound':
+                query = query.join('compound', 'compound.id', 'GD.compound_id')
+                    .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                break;
                 // case 'dataset':
                 //     query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
                 //     break;
@@ -224,7 +224,7 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
     try {
         tissueId = await tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
         geneId = geneName ? await getIdBasedOnGene(geneName) : geneId || null;
-        compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+        compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
     } catch (error) {
         console.log(error);
         throw error;
@@ -245,36 +245,36 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
 
         listOfFields.forEach(el => {
             switch (el.name) {
-                case 'gene':
-                    columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end', 'gene_annotation.symbol as symbol', 'gene_annotation.chr as chr']);
-                    subtypes.push(el.name);
-                    break;
-                case 'compound':
-                    // if(compoundId){
-                    //     columns.push(...['GD.compound_id as compound_id']);
-                    // }else{
-                    //     columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    //     subtypes.push(el.name);
-                    // }
-                    columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
-                    subtypes.push(el.name);
-                    break;
-                case 'tissue':
-                    // columns.push(...['GD.tissue_id as tissue_id']);
-                    columns.push(...['tissue.id as tissue_id', 'tissue.name as tissue_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'dataset':
-                    // columns.push(...['GD.dataset_id as dataset_id']);
-                    columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
-                    subtypes.push(el.name);
-                    break;
-                case 'id':
-                    columns.push('GD.id as gct_id');
-                    break;
-                default:
-                    columns.push(el.name);
-                    break;
+            case 'gene':
+                columns.push(...['gene.id as gene_id', 'gene.name as gene_name', 'gene_seq_start', 'gene_seq_end', 'gene_annotation.symbol as symbol', 'gene_annotation.chr as chr']);
+                subtypes.push(el.name);
+                break;
+            case 'compound':
+                // if(compoundId){
+                //     columns.push(...['GD.compound_id as compound_id']);
+                // }else{
+                //     columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                //     subtypes.push(el.name);
+                // }
+                columns.push(...['compound.id as compound_id', 'compound.compound_uid as compound_uid', 'compound.name as compound_name', 'smiles', 'inchikey', 'pubchem', 'fda_status']);
+                subtypes.push(el.name);
+                break;
+            case 'tissue':
+                // columns.push(...['GD.tissue_id as tissue_id']);
+                columns.push(...['tissue.id as tissue_id', 'tissue.name as tissue_name']);
+                subtypes.push(el.name);
+                break;
+            case 'dataset':
+                // columns.push(...['GD.dataset_id as dataset_id']);
+                columns.push(...['dataset.id as dataset_id', 'dataset.name as dataset_name']);
+                subtypes.push(el.name);
+                break;
+            case 'id':
+                columns.push('GD.id as gct_id');
+                break;
+            default:
+                columns.push(el.name);
+                break;
             }
         });
 
@@ -298,24 +298,24 @@ const gene_compound_tissue_dataset = async (args, context, info) => {
         // updates query to contain joins based on requested fields
         subtypes.forEach(subtype => {
             switch (subtype) {
-                case 'gene':
-                    query = query.join('gene', 'gene.id', 'GD.gene_id')
-                        .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
-                    break;
-                case 'compound':
-                    // if(!compoundId){
-                    //     query = query.join('compound', 'compound.id', 'GD.compound_id')
-                    //         .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    // }
-                    query = query.join('compound', 'compound.id', 'GD.compound_id')
-                        .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
-                    break;
-                case 'tissue':
-                    query = query.join('tissue', 'tissue.id', 'GD.tissue_id');
-                    break;
-                case 'dataset':
-                    query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
-                    break;
+            case 'gene':
+                query = query.join('gene', 'gene.id', 'GD.gene_id')
+                    .join('gene_annotation', 'gene_annotation.gene_id', 'GD.gene_id');
+                break;
+            case 'compound':
+                // if(!compoundId){
+                //     query = query.join('compound', 'compound.id', 'GD.compound_id')
+                //         .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                // }
+                query = query.join('compound', 'compound.id', 'GD.compound_id')
+                    .join('compound_annotation', 'compound_annotation.compound_id', 'GD.compound_id');
+                break;
+            case 'tissue':
+                query = query.join('tissue', 'tissue.id', 'GD.tissue_id');
+                break;
+            case 'dataset':
+                query = query.join('dataset', 'dataset.id', 'GD.dataset_id');
+                break;
             }
         });
 
@@ -332,7 +332,7 @@ const gene_compound_dataset_biomarker = async (args, context, info) => {
     // arguments
     let { compoundId, compoundName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
 
     // check if the compound id is passed?
     if (!compoundId || !mDataType) {
@@ -380,7 +380,7 @@ const gene_compound_tissue_dataset_biomarker = async (args, context, info) => {
     // arguments
     let { compoundId, tissueId, compoundName, tissueName, mDataType, page = 1, per_page = 200, all = false } = args;
     // grab the ids of each data type if data type is passed in the parameters
-    compoundId = compoundName ? await getIdBasedOnCompound(compoundName) : compoundId;
+    compoundId = compoundName ? await getCompoundIdBasedOnCompoundName(compoundName) : compoundId;
     tissueId = tissueName ? await getTissueIdBasedOnTissueName(tissueName) : tissueId || null;
 
     // check if the gene or compound id is passed?
