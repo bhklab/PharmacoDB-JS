@@ -82,29 +82,24 @@ const CompoundsSummaryTable = (props) => {
         return (
             <React.Fragment>
                 {
-                    tableData.numCompounds
-                        ? (
-                            <h4>
-                                <p align="center">
-                                    {`Compounds targeting ${gene.annotation.symbol}`}
-                                </p>
-                            </h4>
-                        )
-                        : ''
+                    <h4>
+                        <p align="center">
+                            {
+                                tableData.numCompounds
+                                ? (
+                                    <>
+                                        <> {`Compounds targeting ${gene.annotation.symbol}`} </>
+                                        <br/>
+                                        <> {tableData.numCompounds} compounds target gene products of {gene.annotation.symbol}. </>
+                                    </>
+                                )
+                                : (
+                                    `There are no compounds targeting ${gene.annotation.symbol} in the database`
+                                )
+                            }
+                        </p>
+                    </h4>
                 }
-                <p align="center">
-                    {
-                        tableData.numCompounds
-                            ? `${tableData.numCompounds} compounds target gene products of ${gene.annotation.symbol}.`
-                            : (
-                                <h4>
-                                    <p align="center">
-                                        There are no compounds targeting {gene.annotation.symbol} in the database
-                                    </p>
-                                </h4>
-                            )
-                    }
-                </p>
                 {
                     tableData.data.length > 0 &&
                     <React.Fragment>
