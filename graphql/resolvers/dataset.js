@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
 

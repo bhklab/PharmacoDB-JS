@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { calculateRange } = require('../helpers/calculateRange');
 const { single_compound_target } = require('./target');
 const { transformFdaStatus } = require('../helpers/dataHelpers');

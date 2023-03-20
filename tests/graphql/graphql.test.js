@@ -17,7 +17,7 @@
  */
 describe('Tests: GraphQL API', () => {
     // Initialize knex connction pool and a server instance.
-    let knex = require('../../db/knex');
+    let knex = require('../../knex');
     delete require.cache[require.resolve('../../app')];
     let server = require('../../app');
 

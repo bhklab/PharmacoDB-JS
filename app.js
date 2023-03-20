@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const knexLogger = require('knex-logger');
 const morgan = require('morgan');
-const db = require('./db/knex');
+const db = require('./knex');
 const cors = require('cors');
 const compression = require('compression');
 

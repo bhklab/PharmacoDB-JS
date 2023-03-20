@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const {validatePageAndPerPageParameters} = require('../helpers/validatePageAndPerPageParameters');
 const {findElement} = require('../helpers/findElement');
