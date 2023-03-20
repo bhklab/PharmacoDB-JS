@@ -3,6 +3,7 @@ const { calculateRange } = require('../helpers/calculateRange');
 const { single_compound_target } = require('./target');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  * 
@@ -12,7 +13,8 @@ const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 const getCompoundBasedOnName = async (compound) => {
     const compounds = await knex.select()
         .from('compound')
-        .where('name', 'like', `%${compound}%`);
+        // .where('name', 'like', `%${compound}%`)
+        .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(compound)}`]));
 
     return compounds;
 };

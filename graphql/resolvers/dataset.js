@@ -1,7 +1,7 @@
 const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
-
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  * @returns {Object} - all datasets query
@@ -115,7 +115,9 @@ const allDatasets = async () => {
  * @returns {Object} - dataset data matching the name based on the query string
  */
 const getDatasetsBasedOnName = async (name = '') => (
-    await datasetQuery().where('name', 'like', `%${name}%`)
+    await datasetQuery()
+        // .where('name', 'like', `%${name}%`)
+        .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(name)}`]))
 );
 
 

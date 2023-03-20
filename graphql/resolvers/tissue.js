@@ -2,6 +2,7 @@ const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  * 
@@ -10,7 +11,8 @@ const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
  */
 const getTissueBasedOnName = (name) => knex.select()
     .from('tissue')
-    .where('name', 'like', `%${name}%`);
+    // .where('name', 'like', `%${name}%`)
+    .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(name)}`]));
 
 /**
  * 
