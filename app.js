@@ -28,12 +28,12 @@ app.use(bodyParser.json());
 
 // serves static build files
 // uses pug to serve maintenace page if the maintenance mode is turned on.
-if(process.env.MAINTENANCE === 'true'){
+if (process.env.MAINTENANCE === 'true') {
     app.use('/style', express.static('maintenance/style'));
     app.use('/image', express.static('maintenance/img'));
     app.set('views', './maintenance/views');
     app.set('view engine', 'pug');
-}else{
+} else {
     app.use(express.static(path.join(__dirname, 'client/build')));
 }
 
@@ -49,9 +49,9 @@ app.use('/graphql',
 // renders react files if request doesn't go to api
 app.get('/*', (req, res) => {
     // serves maintenance static page if the maintenance mode is turned on.
-    if(process.env.MAINTENANCE === 'true'){
+    if (process.env.MAINTENANCE === 'true') {
         res.render('maintenance', {start: process.env.MAINTENANCE_START, end: process.env.MAINTENANCE_END});
-    }else{
+    } else {
         res.sendFile('index.html', { root: './client/build' });
     }
 });
