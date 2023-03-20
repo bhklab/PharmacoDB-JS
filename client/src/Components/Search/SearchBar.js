@@ -79,7 +79,8 @@ const createDatasetIntersections = (data) => {
  * @param {Array} search 
  */
 const searchIntersectionOfDatasets = (datasetIntersections, search) => {
-  const regex = new RegExp(search, 'ig');
+  // const regex = new RegExp(search, 'ig');
+  const regex = new RegExp(search.split('').join('.{0,2}'), 'ig');
   let matchedDatasetIntersections = datasetIntersections.filter(el => el.value.match(regex));
   
   if(matchedDatasetIntersections.length) {
