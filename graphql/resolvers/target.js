@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 
 /**
  * target query.
@@ -222,7 +222,7 @@ const single_gene_target = async (args) => {
 
         // if the object is empty return
         if(returnObject && Object.keys(returnObject).length === 0) {
-            return {}
+            return {};
         }
 
         // return object

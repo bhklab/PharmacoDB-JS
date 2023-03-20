@@ -1,8 +1,9 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const {validatePageAndPerPageParameters} = require('../helpers/validatePageAndPerPageParameters');
 const {findElement} = require('../helpers/findElement');
 const {calculateRange} = require('../helpers/calculateRange');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  * 
@@ -142,8 +143,11 @@ const transformSingleCellLine = (data) => {
  * @returns {Array} - cell line data related to input cell name
  */
 const getCellLinesBasedOnName = async (name) => (
-    await cellLineQuery().where('name', 'like', `%${name}%`)
+    await cellLineQuery()
+        // .where('name', 'like', `%${name}%`)
+        .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(name)}`]))
 );
+
 
 /**
  * ----------------------------------------------------------------

@@ -1,7 +1,8 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
 const { calculateRange } = require('../helpers/calculateRange');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  *
@@ -11,7 +12,8 @@ const { calculateRange } = require('../helpers/calculateRange');
 const getGenesBasedOnSymbol = (symbol) => knex.select('gene.id', 'symbol')
     .from('gene')
     .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
-    .where('symbol', 'like', `%${symbol}%`);
+    // .where('symbol', 'like', `%${symbol}%`)
+    .where(knex.raw('?? REGEXP ?', ['symbol', `${createSearchRegexString(symbol)}`]));
 
 /**
  *

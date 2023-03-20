@@ -1,8 +1,9 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { calculateRange } = require('../helpers/calculateRange');
 const { single_compound_target } = require('./target');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
 /**
  * 
@@ -12,7 +13,8 @@ const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
 const getCompoundBasedOnName = async (compound) => {
     const compounds = await knex.select()
         .from('compound')
-        .where('name', 'like', `%${compound}%`);
+        // .where('name', 'like', `%${compound}%`)
+        .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(compound)}`]));
 
     return compounds;
 };
@@ -208,18 +210,26 @@ const compoundSynonymQuery = async (compoundUID, compoundId, compoundName) => {
  * @param {Array} listOfFields - array of fields
  * @returns {Object} - query object
  */
-const compoundQuery = (listOfFields) => {
+const compoundQuery = (listOfFields, isSingleCompound=false) => {
     // select fields.
     const selectFields = ['c.id as compound_id', 'c.name as compound_name', 'c.compound_uid'];
+
     // add dataset detail to the list of knex columns to select.
     if (listOfFields.includes('datasets')) selectFields.push('d.name as dataset_name', 'd.id as dataset_id');
+
     // add compound annotation to the list of knex columns to select.
-    if (listOfFields.includes('annotation')) selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id', 'ca.reactome_id');
+    if (listOfFields.includes('annotation')) {
+        isSingleCompound
+            ? selectFields.push('ca.smiles', 'ca.pubchem', 'ca.fda_status', 'ca.inchikey', 'ca.chembl_id', 'ca.reactome_id')
+            : selectFields.push('ca.fda_status', 'ca.pubchem', 'ca.chembl_id');
+    }
 
     // query to get the data for all the compounds.
     let query = knex.select(...selectFields).from('compound as c');
+
     // add a join to grab the compound annotations in case it's queried by the user.
     if (listOfFields.includes('annotation')) query = query.join('compound_annotation as ca', 'ca.compound_id', 'c.id');
+
     // add a join to grab the dataset information if it's been queried by the user.
     if (listOfFields.includes('datasets')) query = query.join('dataset_compound as dc', 'c.id', 'dc.compound_id')
         .join('dataset as d', 'dc.dataset_id', 'd.id');
@@ -310,7 +320,7 @@ const compound = async (args, parent, info) => {
         const subtypes = retrieveSubtypes(listOfFields);
 
         // query to get the data based on the compound id.
-        let compoundBaseQuery = compoundQuery(subtypes);
+        let compoundBaseQuery = compoundQuery(subtypes, true);
 
         // update compound query based on the parameter passed to the query
         if (compoundUID) {

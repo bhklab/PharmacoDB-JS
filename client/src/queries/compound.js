@@ -26,12 +26,9 @@ const getCompoundsQuery = gql`
       name
       uid
       annotation {
-        smiles
-        inchikey
         pubchem
         chembl
         fda_status
-        reactome
       }
     }
   }

@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { transformFdaStatus } = require('../helpers/dataHelpers');
 const { retrieveFields } = require('../helpers/queryHelpers');
