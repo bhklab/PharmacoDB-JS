@@ -1,8 +1,18 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { calcLimitOffset } = require('../helpers/calcLimitOffset');
 const { retrieveFields, retrieveSubtypes } = require('../helpers/queryHelpers');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
+/**
+ * 
+ * @param {string} name 
+ * @returns {Array} - array of tissues
+ */
+const getTissueBasedOnName = (name) => knex.select()
+    .from('tissue')
+    // .where('name', 'like', `%${name}%`)
+    .where(knex.raw('?? REGEXP ?', ['name', `${createSearchRegexString(name)}`]));
 
 /**
  * 
@@ -101,14 +111,14 @@ const compoundTestedQuery = async (tissueId, tissueName) => {
  *      ]
  *  }
  */
-const tissueSourceQuery = async (tissueId, tissueName, subtypes) => {
+const tissueSynonymQuery = async (tissueId, tissueName, subtypes) => {
     let query;
     // if the subtypes contains 'synonyms'.
     if (subtypes.includes('synonyms')) {
         query = knex
             .select('tissue.id as tissue_id',
                 'tissue.name as tissue_name',
-                'tissue_synonym.tissue_name as source_tissue_name',
+                'tissue_synonym.tissue_name as tissue_synonym_name',
                 'dataset.id as dataset_id',
                 'dataset.name as dataset_name')
             .from('tissue')
@@ -198,8 +208,8 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
     };
     // looping through each data point.
     tissue.forEach((row, i) => {
-        // only return tissue_name if source_tissue_name is N/A
-        if (row.source_tissue_name == null) {
+        // only return tissue_name if tissue_synonym_name is N/A
+        if (row.tissue_synonym_name == null) {
             returnObject.name = row.tissue_name;
             return returnObject;
         }
@@ -210,18 +220,18 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
             dataset_name
         } = row;
         let {
-            source_tissue_name
+            tissue_synonym_name
         } = row;
 
-        if (subtypes.includes('synonyms')) source_tissue_name = source_tissue_name.replace(' ', '');
+        if (subtypes.includes('synonyms')) tissue_synonym_name = tissue_synonym_name.replace(' ', '');
 
         // if it's the first element.
-        if (!i || !Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
+        if (!i || !Object.keys(returnObject['synonyms']).includes(tissue_synonym_name.trim())) {
             returnObject['id'] = tissue_id;
             returnObject['name'] = tissue_name;
-            returnObject['synonyms'][source_tissue_name.trim()] = {
-                name: source_tissue_name,
-                source: [{ 'id': dataset_id, 'name': dataset_name }]
+            returnObject['synonyms'][tissue_synonym_name.trim()] = {
+                name: tissue_synonym_name,
+                dataset: [{ 'id': dataset_id, 'name': dataset_name }]
             };
             returnObject['cell_count'] = cell_count.map(value => {
                 return {
@@ -241,9 +251,9 @@ const transformTissueAnnotation = (tissue, cell_count, compound_tested, subtypes
                     count: value.total
                 };
             });
-        } else if (Object.keys(returnObject['synonyms']).includes(source_tissue_name.trim())) {
-            if (!returnObject['synonyms'][source_tissue_name.trim()]['source'].filter(source => source.id === dataset_id).length > 0)
-                returnObject['synonyms'][source_tissue_name.trim()]['source'].push({ 'id': dataset_id, 'name': dataset_name });
+        } else if (Object.keys(returnObject['synonyms']).includes(tissue_synonym_name.trim())) {
+            if (!returnObject['synonyms'][tissue_synonym_name.trim()]['dataset'].filter(source => source.id === dataset_id).length > 0)
+                returnObject['synonyms'][tissue_synonym_name.trim()]['dataset'].push({ 'id': dataset_id, 'name': dataset_name });
         }
     });
     returnObject['synonyms'] = Object.values(returnObject['synonyms']);
@@ -289,7 +299,7 @@ const tissues = async ({ page = 1, per_page = 20, all = false }) => {
  * @param {number} args.tissueId
  */
 // this is not the annotation directly like compound and gene,
-// but more like names in different sources.
+// but more like names in different sources/datasets.
 const tissue = async (args, parent, info) => {
     try {
         // grabbing the tissue line id from the args.
@@ -304,7 +314,7 @@ const tissue = async (args, parent, info) => {
         const listOfFields = retrieveFields(info);
         const subtypes = retrieveSubtypes(listOfFields);
 
-        const tissue = await tissueSourceQuery(tissueId, tissueName, subtypes);
+        const tissue = await tissueSynonymQuery(tissueId, tissueName, subtypes);
         const cell_count = subtypes.includes('cell_count') ? await cellCountQuery(tissueId, tissueName) : [];
         const compound_tested = subtypes.includes('compounds_tested') ? await compoundTestedQuery(tissueId, tissueName) : [];
 
@@ -329,4 +339,5 @@ module.exports = {
     tissues,
     tissue,
     getTissueIdBasedOnTissueName,
+    getTissueBasedOnName,
 };

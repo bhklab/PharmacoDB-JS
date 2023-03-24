@@ -35,7 +35,7 @@ const CompoundsSummaryTable = (props) => {
         variables: { datasetId: dataset.id },
         fetchPolicy: "cache-first",
         onCompleted: (res) => {
-            let data = res.dataset_type[0];
+            let data = res.datatypes_information_per_dataset[0];
             data = { id : data.dataset.id, name: data.dataset.name, compounds_tested : data.compounds_tested}
             setCompounds(parseTableData(data.name, data, data.id));
         },

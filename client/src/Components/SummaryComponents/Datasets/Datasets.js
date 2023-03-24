@@ -4,6 +4,7 @@ import Table from '../../UtilComponents/Table/Table';
 import { Link } from 'react-router-dom';
 import Layout from '../../UtilComponents/Layout';
 import { getDatasetsQuery } from '../../../queries/dataset';
+import Error from '../../UtilComponents/Error';
 import StyledWrapper from '../../../styles/utils';
 import Loading from '../../UtilComponents/Loading';
 import DatasetIntersection from '../../IntersectionComponents/DatasetIntersection/DatasetIntersection';
@@ -31,14 +32,14 @@ const renderComponent = (loading, error, columns, data) => {
     return <Loading />;
   }
   if (error) {
-    return <p> Error! </p>;
+    return <Error />;
   }
   return (
-      <>
-        <DatasetIntersection />
-        <h2>Dataset names</h2>
-        <Table columns={columns} data={data} />
-      </>
+    <>
+      <DatasetIntersection />
+      <h2 style={{marginTop: '50px'}}> List of Datasets </h2>
+      <Table columns={columns} data={data} center={true} />
+    </>
   );
 };
 
@@ -57,13 +58,13 @@ const Datasets = () => {
   const columns = React.useMemo(() => table_columns, []);
   const dataset_data = React.useMemo(() => (data ? data.datasets : []), [data]);
   return (
-      <Layout page="datasets">
-        <StyledWrapper>
-          {
-            renderComponent(loading, error, columns, dataset_data)
-          }
-        </StyledWrapper>
-      </Layout>
+    <Layout page="datasets">
+      <StyledWrapper>
+        {
+          renderComponent(loading, error, columns, dataset_data)
+        }
+      </StyledWrapper>
+    </Layout>
   );
 };
 

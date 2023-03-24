@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import bg from '../images/bg.jpg';
+import bg from '../images/bg.webp';
 import colors from './colors';
 
 /**
@@ -241,7 +241,7 @@ const SearchBarStyles = {
   }),
   input: (provided) => ({
     ...provided,
-    padding: '0 0px',
+    padding: '0',
     color: colors.dark_gray_text,
   }),
   clearIndicator: (provided) => ({
@@ -290,7 +290,7 @@ const SearchBarStyles = {
     background: 'white',
     color: colors.dark_gray_text,
     cursor: 'pointer',
-    padding: '0',
+    padding: '10px',
     margin: '0',
     fontSize: '1em',
     '&:hover': {

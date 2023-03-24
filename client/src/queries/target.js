@@ -59,7 +59,7 @@ const getAllCompoundTargetsQuery = gql`
 
 const getGeneTargetCountCompoundsByDataset = gql`
     query getGeneTargetCountCompoundByDataset($geneId: Int, $geneName: String) {
-        single_gene_targets_group_by_dataset(geneId: $geneId, geneName: $geneName) {
+        compound_targeting_gene_count_per_dataset(geneId: $geneId, geneName: $geneName) {
             gene_id,
             gene_name,
             targetsStat

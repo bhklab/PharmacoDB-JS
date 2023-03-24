@@ -82,14 +82,14 @@ const getDatasetCellLinesQuery = gql`
 
 const getDatasetTestedCellsQuery = gql`
   query getDatasetTestedCellsQuery($datasetId: Int!) {
-    dataset_type(datasetId: $datasetId) {
+    datatypes_information_per_dataset(datasetId: $datasetId) {
       dataset {
         id
         name
       }
       cells_tested {
         id
-        cell_uid
+        uid
         name
       }
     }
@@ -112,7 +112,7 @@ const getDatasetCompoundQuery = gql`
 
 const getDatasetTestedCompoundsQuery = gql`
   query getDatasetTestedCompoundQuery($datasetId: Int!) {
-    dataset_type(datasetId: $datasetId) {
+    datatypes_information_per_dataset(datasetId: $datasetId) {
       dataset {
         id
         name
@@ -130,9 +130,9 @@ const getDatasetTestedCompoundsQuery = gql`
  * @returns - Query returns the list of datasets with information about how many
  * cell lines, tissues, experiments and compounds are in those datsets.
  */
-const getDatasetsTypesQuery = gql`
+const getTypeInformationAllDatasetsQuery = gql`
   {
-    datasets_types {
+    datatypes_information_all_datasets {
       dataset {
         id
         name
@@ -143,7 +143,7 @@ const getDatasetsTypesQuery = gql`
       }
       cells_tested {
         id
-        cell_uid
+        uid
         name
       }
       compounds_tested {
@@ -164,5 +164,5 @@ export {
   getDatasetTestedCellsQuery,
   getDatasetCellLinesQuery,
   getDatasetCompoundQuery,
-  getDatasetsTypesQuery,
+  getTypeInformationAllDatasetsQuery,
 };

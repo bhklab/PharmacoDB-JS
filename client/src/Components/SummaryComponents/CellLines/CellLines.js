@@ -14,7 +14,7 @@ const tableColumns = [
   {
     Header: 'Name',
     accessor: 'name',
-    Cell: (row) => (<Link to={`/cell_lines/${row.row.original.cell_uid}`}>{row.value}</Link>),
+    Cell: (row) => (<Link to={`/cell_lines/${row.row.original.uid}`}>{row.value}</Link>),
   },
   {
     Header: 'Tissue',
@@ -31,10 +31,10 @@ const getTableData = (data) => {
   let tableData = [];
   if (data) {
     tableData = data.cell_lines.map((value) => {
-      const { name, tissue, id, cell_uid } = value;
+      const { name, tissue, id, uid } = value;
       return {
         id,
-        cell_uid,
+        uid,
         name: name.replace(/_/g, ' '),
         tissue: convertToTitleCase(tissue.name),
         tissue_id: tissue.id
@@ -54,14 +54,14 @@ const getTableData = (data) => {
  * @returns a component to be rendered.
  */
 const renderComponent = (loading, error, pieData, tableData) => {
-  if(error){
-    return(<Error />);
+  if (error) {
+    return (<Error />);
   }
 
-  if(loading){
-    return(<Loading />)
+  if (loading) {
+    return (<Loading />)
   }
-  
+
   return (
     <React.Fragment>
       <h2>Relative Percentage of Cell lines per Tissue</h2>
@@ -85,11 +85,11 @@ const CellLines = () => {
   const { loading, error, data } = useQuery(getCellLinesQuery);
   // setting data for the table.
   const cell_data = React.useMemo(() => getTableData(data), [data]);
-  
+
   return (
     <Layout page="cells">
       <StyledWrapper>
-        { 
+        {
           renderComponent(loading, error, data, cell_data)
         }
       </StyledWrapper>

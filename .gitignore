@@ -2,7 +2,7 @@
 node_modules/
 package-lock.json
 
-# ds store and env. variables.
+# ds store and env. variables and some other files/folders
 .DS_Store
 .env
 .vscode

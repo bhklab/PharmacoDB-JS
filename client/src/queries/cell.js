@@ -8,13 +8,13 @@ const getCellLinesQuery = gql`
   query getAllCellLines {
     cell_lines(all: true) {
       id
-      cell_uid
+      uid
       name
       tissue {
         id
         name
       }
-      dataset {
+      datasets {
         id
         name
       }
@@ -31,17 +31,17 @@ const getCellLineQuery = gql`
   query getSingleCellLine($cellId: Int, $cellName: String, $cellUID: String) {
     cell_line(cellId: $cellId, cellName: $cellName, cellUID: $cellUID) {
       id
-      cell_uid
+      uid
       name
       diseases
-      accessions
+      accession_id
       tissue {
         id
         name
       }
       synonyms {
         name
-        source {
+        dataset {
           id
           name
         }

@@ -14,7 +14,7 @@ const parseTableData = (data) => {
         numCompounds: 0,
     };
 
-    if (data.compounds !== null) {
+    if (data.targets) {
         data.targets.forEach(target => {
             target.compounds.forEach(compound => {
                 tableData.numCompounds += 1;
@@ -70,41 +70,58 @@ const CompoundsSummaryTable = (props) => {
         }
     });
 
+    function renderComponent() {
+        if (loading) {
+            return <Loading/>
+        }
+
+        if (error) {
+            return <Error/>
+        }
+
+        return (
+            <React.Fragment>
+                {
+                    <h4>
+                        <p align="center">
+                            {
+                                tableData.numCompounds
+                                ? (
+                                    <>
+                                        <> {`Compounds targeting ${gene.annotation.symbol}`} </>
+                                        <br/>
+                                        <> {tableData.numCompounds} compounds target gene products of {gene.annotation.symbol}. </>
+                                    </>
+                                )
+                                : (
+                                    `There are no compounds targeting ${gene.annotation.symbol} in the database`
+                                )
+                            }
+                        </p>
+                    </h4>
+                }
+                {
+                    tableData.data.length > 0 &&
+                    <React.Fragment>
+                        <div className='download-button'>
+                            <DownloadButton
+                                label='CSV'
+                                data={tableData.data}
+                                mode='csv'
+                                filename={`${gene.annotation.symbol} - compounds`}
+                            />
+                        </div>
+                        <Table columns={columns} data={tableData.data} />
+                    </React.Fragment>
+                }
+            </React.Fragment>
+        )
+    }
+
     return (
         <React.Fragment>
             {
-                loading ? <Loading />
-                    :
-                    error ? <Error />
-                        :
-                        <React.Fragment>
-                            <h4>
-                                <p align="center">
-                                    {`Compounds targeting ${gene.annotation.symbol}`}
-                                </p>
-                            </h4>
-                            <p align="center">
-                                {
-                                    tableData.numCompounds
-                                        ? `${tableData.numCompounds} compounds target gene products of ${gene.annotation.symbol}.`
-                                        : `There are no compounds targeting ${gene.annotation.symbol} in the database`
-                                }
-                            </p>
-                            {
-                                tableData.data.length > 0 &&
-                                <React.Fragment>
-                                    <div className='download-button'>
-                                        <DownloadButton
-                                            label='CSV'
-                                            data={tableData.data}
-                                            mode='csv'
-                                            filename={`${gene.annotation.symbol} - compounds`}
-                                        />
-                                    </div>
-                                    <Table columns={columns} data={tableData.data} />
-                                </React.Fragment>
-                            }
-                        </React.Fragment>
+                renderComponent()
             }
         </React.Fragment>
     );

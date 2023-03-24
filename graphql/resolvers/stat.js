@@ -1,4 +1,4 @@
-const knex = require('../../db/knex');
+const knex = require('../../knex');
 
 /**
  * @returns {Array} - an array of the object of total count for each data type with it's name.

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import SearchHeader from '../SearchHeader/SearchHeader';
+import SearchHeader from '../Search/SearchHeader';
 import PageContext from '../../context/PageContext';
 import SearchContext from '../../context/SearchContext';
-import BurgerMenu from '../SearchHeader/BurgerMenu';
+import BurgerMenu from '../Search/BurgerMenu';
 
 /**
  * Capitalize first letter

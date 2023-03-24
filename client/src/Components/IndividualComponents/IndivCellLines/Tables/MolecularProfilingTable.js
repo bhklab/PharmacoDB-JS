@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
-import { getMolCellQuery } from '../../../../queries/mol';
+import { getMolecularProfilingQuery } from '../../../../queries/molecular_profiling';
 import Table from '../../../UtilComponents/Table/Table';
 import Loading from '../../../UtilComponents/Loading';
 import { Link } from 'react-router-dom';
-import { convertMDataType, mDataTypeList } from '../../../../utils/convertMDataType';
+import { mDataTypeList } from '../../../../utils/convertMDataType';
 
 /**
  * Format data for Molecular Profiling Table
@@ -19,24 +19,25 @@ const generateTableData = (data) => {
         // filter only the entries with mDataTypes of interest
         let converted = data.map(item => ({
             dataset: item.dataset,
-            mDataType: convertMDataType(item.mDataType),
+            mDataType: mDataTypeList[item.mDataType],
             num_prof: item.num_prof
-        })).filter(item => Object.values(mDataTypeList).includes(item.mDataType));
+        })).filter(item => typeof item.mDataType !== 'undefined');
 
         // organize the entries by dataset
         let datasets = [...new Set(converted.map(item => item.dataset.name))].sort((a, b) => a.localeCompare(b));
+        let datatypes = [...new Set(Object.values(mDataTypeList))];
         datasets.forEach(dataset => {
             let filtered = converted.filter(item => item.dataset.name === dataset)
             let obj = {
                 id: filtered[0].dataset.id,
                 dataset_name: dataset,
             };
-            Object.keys(mDataTypeList).forEach(key => {
-                let mDataEntries = filtered.filter(item => item.mDataType === mDataTypeList[key]); // filter all the datatype in the dataset by datatype name.
+            datatypes.forEach(datatype => {
+                let mDataEntries = filtered.filter(item => item.mDataType === datatype); // filter all the datatype in the dataset by datatype name.
                 if(mDataEntries.length){
-                    obj[key] = mDataEntries.map(item => item.num_prof).reduce((a, b) => a + b, 0);
+                    obj[datatype.replace(' ', '_')] = mDataEntries.map(item => item.num_prof).reduce((a, b) => a + b, 0);
                 }else{
-                    obj[key] = '-'; // '-' if the molecular data type doesn't exist in the dataset
+                    obj[datatype.replace(' ', '_')] = '-'; // '-' if the molecular data type doesn't exist in the dataset
                 }
             });
             tableData.molProf.push(obj);
@@ -60,11 +61,12 @@ const COLUMNS = () => {
             accessor: 'dataset_name',
             Cell: (row) => (<Link to={`/datasets/${row.row.original.id}`}>{row.value}</Link>),
         }
-    )
-    Object.keys(mDataTypeList).forEach(key => {
+    );
+    let datatypes = [...new Set(Object.values(mDataTypeList))];
+    datatypes.forEach(datatype => {
         columns.push({
-            Header: mDataTypeList[key],
-            accessor: key
+            Header: datatype,
+            accessor: datatype.replace(' ', '_')
         });
     });
     return columns;
@@ -83,10 +85,10 @@ const MolecularProfilingTable = (props) => {
     const [tableData, setTableData] = useState({ ready: false, compound: [], numCompounds: 0, numDataset: 0 });
     const [error, setError] = useState(false);
 
-    const { loading } = useQuery(getMolCellQuery, {
+    const { loading } = useQuery(getMolecularProfilingQuery, {
         variables: { cellLineId: cellLine.id },
         onCompleted: (data) => {
-            let parsed = generateTableData(data.mol_cell);
+            let parsed = generateTableData(data.molecular_profiling);
             setTableData(parsed);
         },
         onError: (err) => {
@@ -101,26 +103,26 @@ const MolecularProfilingTable = (props) => {
             }
             {
                 loading || !tableData.ready ?
-                <Loading />
-                :
-                tableData.molProf.length > 0 ?
-                <React.Fragment>
-                    <h4>
-                        <p align="center">
-                            {`Available Molecular Profiling in PharmacoGx`}
-                        </p>
-                    </h4>
-                    <p align="center">
-                        {`# of profiles of each type per dataset`}
-                    </p>
-                    {
-                        tableData.molProf.length > 0 &&
-                        <Table columns={COLUMNS()} data={tableData.molProf} center={true} />
-                    }
-                </React.Fragment>
-                :
-                <h6 align="center">
-                    No molecular profiling data with {cellLine.name} is available in PharmacoGx.
+                    <Loading />
+                    :
+                    tableData.molProf.length > 0 ?
+                        <React.Fragment>
+                            <h4>
+                                <p align="center">
+                                    {`Available Molecular Profiling in PharmacoGx`}
+                                </p>
+                            </h4>
+                            <p align="center">
+                                {`# of profiles of each type per dataset`}
+                            </p>
+                            {
+                                tableData.molProf.length > 0 &&
+                                <Table columns={COLUMNS()} data={tableData.molProf} center={true} />
+                            }
+                        </React.Fragment>
+                        :
+                        <h6 align="center">
+                            No molecular profiling data with {cellLine.name} is available in PharmacoGx.
                 </h6>
             }
         </React.Fragment>

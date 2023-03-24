@@ -28,7 +28,7 @@ const SYNONYM_COLUMNS = [
         Header: 'Sources',
         accessor: 'source',
         Cell: (item) => {
-            let datasets = item.cell.row.original.source;
+            let datasets = item.cell.row.original.dataset;
             return (datasets.map((obj, i) => (
                 obj.id
                     ? (
@@ -78,8 +78,8 @@ const SIDE_LINKS = [
 const formatSynonymData = (data) => {
     if (data.synonyms) {
         const returnObj = data.synonyms.filter(obj => { return obj.name !== "" });
-        if (returnObj.filter(obj => { return obj.source[0].name === "Standardized name in PharmacoSet" }).length === 0) {
-            returnObj.push({ name: data.compound.name, source: [{ name: "Standardized name in PharmacoSet", id: '' }] });
+        if (!returnObj.find(obj => { return obj.dataset[0].name === "Standardized name in PharmacoSet" })) {
+            returnObj.push({ name: data.compound.name, dataset: [{ name: "Standardized name in PharmacoSet", id: '' }] });
         }
         return returnObj;
     }

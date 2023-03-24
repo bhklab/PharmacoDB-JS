@@ -1,11 +1,17 @@
-const compoundTableType = `
-    type CompoundTable {
-        """compound id in the database"""
-        id: Int!
-        """compound name in the database"""
-        name: String!
-        """compound uid"""
-        uid: String!
+const compound = `
+    """compound id in the database"""
+    id: Int!
+    """compound name in the database"""
+    name: String!
+    """compound uid"""
+    uid: String!
+    """compound annotation object"""
+    annotation: CompoundAnnotation!
+`;
+
+const compoundType = `
+    type Compound {
+       ${compound}
     }
 `;
 
@@ -23,37 +29,28 @@ const compoundAnnotationType = `
     }
 `;
 
-const compoundType = ` 
-    type Compound {
-        """compound id in the database"""
-        id: Int!
-        """compound name in the database"""
-        name: String!
-        """compound uid"""
-        uid: String!
-        """compound annotation object"""
-        annotation: CompoundAnnotation! # to-one
+const compoundWithDatasetType = ` 
+    type CompoundWithDataset {
+        ${compound}
         """dataset information object"""
-        dataset: Generic!
+        datasets: [Dataset!]
     }
 `;
 
 const compoundDetailType = `
     type CompoundDetail {
         """compound object with id, name and annotation"""
-        compound: Compound!
+        compound: CompoundWithDataset!
         """synonyms (names) in different sources (datasets)"""
-        synonyms: [SourceAnnotation!]
+        synonyms: [Synonym!]
         """compound targets"""
         targets: [TargetWithGeneInfo]
-        """dataset information object"""
-        datasets: [Generic]!
     }
 `;
 
 module.exports = {
     compoundType,
     compoundAnnotationType,
+    compoundWithDatasetType,
     compoundDetailType,
-    compoundTableType,
 };

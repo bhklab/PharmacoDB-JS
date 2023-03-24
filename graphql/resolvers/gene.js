@@ -1,8 +1,19 @@
-const knex = require('../../db/knex');
-const { calcLimitOffset } = require('../helpers/calcLimitOffset');
+const knex = require('../../knex');
 const { transformObject } = require('../helpers/transformObject');
 const { retrieveFields } = require('../helpers/queryHelpers');
+const { calculateRange } = require('../helpers/calculateRange');
+const {createSearchRegexString} = require('../helpers/createSearchRegexString');
 
+/**
+ *
+ * @param {string} symbol - string matching the symbol or partial string
+ * @returns {Object} - gene data that matches to input/arg symbol.
+ */
+const getGenesBasedOnSymbol = (symbol) => knex.select('gene.id', 'symbol')
+    .from('gene')
+    .join('gene_annotation', 'gene.id', 'gene_annotation.gene_id')
+    // .where('symbol', 'like', `%${symbol}%`)
+    .where(knex.raw('?? REGEXP ?', ['symbol', `${createSearchRegexString(symbol)}`]));
 
 /**
  *
@@ -64,10 +75,13 @@ const transformGene = data => {
  * @param {number} [args.page = 1] - Current page number with a default value of 1.
  * @param {number} [args.per_page = 20] - Total values per page with a default value of 20.
  * @param {boolean} [args.all = false] - Boolean value whether to show all the data or not with a default value of false.
+ * @param parent
+ * @param info
  */
 const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => {
-    // setting limit and offset.
-    const { limit, offset } = calcLimitOffset(page, per_page);
+    // setting lower and upper bound.
+    const { lowerBound, upperBound } = calculateRange(page, per_page);
+
     try {
         // extracts list of fields requested by the client
         const listOfFields = retrieveFields(info).map(el => el.name);
@@ -81,16 +95,16 @@ const genes = async ({ page = 1, per_page = 20, all = false }, parent, info) => 
         // if the user has not queried to get all the genes,
         // then limit and offset will be used to give back the queried limit.
         if (!all) {
-            query.limit(limit).offset(offset);
+            query.whereBetween('gene.id', [lowerBound, upperBound]);
         }
 
         // omitting the names that include 'AFFX' in them.
         query = query.whereNot('name', 'like', '%AFFX%');
 
         // if includes annotation then order by symbol.
-        if (listOfFields.includes('annotation')) {
-            query.orderBy('symbol', 'asc');
-        }
+        // if (listOfFields.includes('annotation')) {
+        //     query.orderBy('symbol', 'asc');
+        // }
 
         // execute the query.
         const genes = await query;
@@ -129,7 +143,7 @@ const gene = async (args) => {
         } else if (geneName) { // using symbol column from the gene annotation table as it's being used as the gene name.
             gene = await query.where('gene_annotation.symbol', geneName);
         }
-        // transforming the rowdatapacket object.
+        // transforming the raw data packet object.
         gene = transformObject(gene);
         // getting the right data to be sent.
         const data = transformGene(gene);
@@ -145,4 +159,5 @@ module.exports = {
     genes,
     gene,
     getIdBasedOnGene,
+    getGenesBasedOnSymbol,
 };
