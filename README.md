@@ -32,13 +32,3 @@ cd PharmacoDB-JS
 
 -   Production Server: https://pharmacodb.ca/
 -   Beta Server: [beta.pharmacodb.ca](http://beta.pharmacodb.ca/)
-
-## Migrations
-
--   `knex migrate:make (migration_name)` - To create a new migration file.
--   `knex migrate:latest` - To run the lastest migrations and create corresponding tables.
-
-## Seeds (Seeding Files)
-
--   Create manually a file (`touch file_name`).
--   Run `knex seed:run` to run the seeding file(s) in order to seed the table(s) in the database.
